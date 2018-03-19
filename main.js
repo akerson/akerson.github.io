@@ -12,6 +12,7 @@ var isAttack = false;
 var dmgDone = 0;
 var totalHP = 1000;
 var lastTime;
+var deltaTime;
 
 function toggleAttack(id) {
 	isAttack = !isAttack;
@@ -20,7 +21,7 @@ function toggleAttack(id) {
 
 window.setInterval(function(){
 	console.log(player.dollarMod)
-	var deltaTime = Date.now() -lastTime;
+	deltaTime = Date.now() -lastTime;
 	lastTime = Date.now();
 	//deltaTime is the total time since this last checked
 	dmgDone += player.attack*deltaTime/10
