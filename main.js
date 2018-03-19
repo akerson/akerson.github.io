@@ -23,7 +23,7 @@ window.setInterval(function(){
 		if (dmgDone > totalHP) {
 			player.dollars += player.dollarMod;
 			dmgDone = 0;
-			refreshPage();
+			refreshStats();
 			refreshButtons();
 		}
 	}
@@ -56,10 +56,43 @@ function purchase(type) {
 			refreshButtons();
 		}
 	}
-	refreshPage();
+	refreshStats();
 }
 
-function refreshPage() {
+
+function prettify(input){
+    var output = Math.round(input * 1000000)/1000000;
+	return output;
+}
+
+function loadGame() {
+	player = JSON.parse(localStorage.getItem("player"));
+	/*if (typeof savegame.dollars !== "undefined") dollars = savegame.dollars;
+	if (typeof savegame.dollarValue !== "undefined") dollarMod = savegame.dollarValue;
+	if (typeof savegame.atkMod !== "undefined") attack = savegame.atkMod;
+	if (typeof savegame.progressCost !== "undefined") progressCost = savegame.progressCost;
+	if (typeof savegame.valueCost !== "undefined") valueCost = savegame.valueCost;*/
+	refreshCost();
+	refreshStats();
+	refreshButtons();
+}
+
+function saveGame() {
+	localStorage.setItem("save",JSON.stringify(player));
+}
+
+function colorchange(id) {
+	var el = document.getElementById(id);
+	var currentClass = el.getAttribute("class");
+      if(currentClass == "button")
+      {
+          el.setAttribute("class", "buttonSelect");
+      } else {
+         el.setAttribute("class", "button");
+      }
+}
+
+function refreshStats() {
 	document.getElementById('progValue').innerHTML = player.attack;
 	document.getElementById('valueValue').innerHTML = player.dollarMod;
 	document.getElementById('dollarCount').innerHTML = player.dollars;
@@ -67,6 +100,11 @@ function refreshPage() {
 	elem.innerText = "Progress ($"+progressCost.toString()+")";
 	elem = document.getElementById("value");
 	elem.innerText = "Value ($"+valueCost.toString()+")";
+}
+
+function refreshCost() {
+	progressCost = Math.floor(10 * Math.pow(1.07,player.attack));
+	valueCost = Math.floor(10 * Math.pow(1.07,player.dollarMod));
 }
 
 function refreshButtons() {
@@ -86,35 +124,4 @@ function refreshButtons() {
 	else {
 		el.setAttribute("class", "buttonGrey");
 	}
-}
-
-function prettify(input){
-    var output = Math.round(input * 1000000)/1000000;
-	return output;
-}
-
-function loadGame() {
-	player = JSON.parse(localStorage.getItem("player"));
-	/*if (typeof savegame.dollars !== "undefined") dollars = savegame.dollars;
-	if (typeof savegame.dollarValue !== "undefined") dollarMod = savegame.dollarValue;
-	if (typeof savegame.atkMod !== "undefined") attack = savegame.atkMod;
-	if (typeof savegame.progressCost !== "undefined") progressCost = savegame.progressCost;
-	if (typeof savegame.valueCost !== "undefined") valueCost = savegame.valueCost;*/
-	refreshPage();
-	refreshButtons();
-}
-
-function saveGame() {
-	localStorage.setItem("save",JSON.stringify(player));
-}
-
-function colorchange(id) {
-	var el = document.getElementById(id);
-	var currentClass = el.getAttribute("class");
-      if(currentClass == "button")
-      {
-          el.setAttribute("class", "buttonSelect");
-      } else {
-         el.setAttribute("class", "button");
-      }
 }
