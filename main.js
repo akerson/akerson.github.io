@@ -11,6 +11,7 @@ var valueCost = 1;
 var isAttack = false;
 var dmgDone = 0;
 var totalHP = 1000;
+var lastTime;
 
 function toggleAttack(id) {
 	isAttack = !isAttack;
@@ -18,15 +19,18 @@ function toggleAttack(id) {
 }
 
 window.setInterval(function(){
-	if (isAttack) {
-		dmgDone += player.attack;
-		if (dmgDone > totalHP) {
-			player.dollars += player.dollarMod;
-			dmgDone = 0;
-			refreshStats();
-			refreshButtons();
-		}
+	var deltaTime = Date.now() -lastTime;
+	lastTime = Date.now();
+	//deltaTime is the total time since this last checked
+	dmgDone += player.attack*deltaTime/10
+	totalAdd = Math.floor(dmgDone / totalHP) //the total bars we filled
+	console.log(totalAdd)
+	if (totalAdd >= 1) {
+		player.dollars += player.dollarMod*totalAdd;
+		dmgDone = dmgDone % totalHP;
 	}
+	refreshStats();
+	refreshButtons();
 	refreshBar();
 	saveGame();
 }, 10);
@@ -44,7 +48,7 @@ function purchase(type) {
 		if (player.dollars >= progressCost) {
 			player.attack += 1;
 			player.dollars -= progressCost;
-			progressCost = Math.floor(10 * Math.pow(1.1,progressCost));
+			refreshCost();
 			refreshButtons();
 		}
 	}
@@ -52,7 +56,7 @@ function purchase(type) {
 		if (player.dollars >= valueCost) {
 			player.dollarMod += 1;
 			player.dollars -= valueCost;
-			valueCost = Math.floor(10 * Math.pow(1.1,valueCost));
+			refreshCost();
 			refreshButtons();
 		}
 	}
@@ -66,12 +70,11 @@ function prettify(input){
 }
 
 function loadGame() {
-	var saveplayer = JSON.parse(localStorage.getItem("player"));
-	if (typeof player.dollars !== "undefined") player.dollars = saveplayer.dollars;
-	if (typeof player.dollarValue !== "undefined") player.dollarMod = saveplayer.dollarValue;
-	if (typeof player.atkMod !== "undefined") player.attack = saveplayer.atkMod;
-	if (typeof player.progressCost !== "undefined") player.progressCost = saveplayer.progressCost;
-	if (typeof player.valueCost !== "undefined") player.valueCost = saveplayer.valueCost;
+	var saveplayer = JSON.parse(localStorage.getItem("save"));
+	if (typeof saveplayer.dollars !== "undefined") player.dollars = saveplayer.dollars;
+	if (typeof saveplayer.dollarMod !== "undefined") player.dollarMod = saveplayer.dollarMod;
+	if (typeof saveplayer.attack !== "undefined") player.attack = saveplayer.attack;
+	lastTime = Date.now();
 	refreshCost();
 	refreshStats();
 	refreshButtons();
@@ -103,8 +106,8 @@ function refreshStats() {
 }
 
 function refreshCost() {
-	progressCost = Math.floor(10 * Math.pow(1.07,player.attack));
-	valueCost = Math.floor(10 * Math.pow(1.07,player.dollarMod));
+	progressCost = Math.floor(10 * Math.pow(1.1,player.attack))-5;
+	valueCost = Math.floor(10 * Math.pow(1.1,player.dollarMod))-5;
 }
 
 function refreshButtons() {
