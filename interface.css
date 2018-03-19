@@ -1,0 +1,66 @@
+body {
+    background-color: rgb(60, 60, 60);
+}
+
+p {
+    font-family: tahoma;
+	color: white;
+    font-size: 12px;
+}
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.buttonSelect {
+    background-color: #A52A2A;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.buttonGrey {
+	background-color: #696969;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.progressBorder {
+    width:275px;
+    height:25px;
+    border:1px solid black;
+    position:relative;
+}
+.progress {
+    width:255px;
+    height:25px;
+    content:'\A';
+    position:relative;
+    background:black;
+    top:0; bottom:0;
+    left:0; 
+    width:0%; /* Specify the width.. */
+	background-color:#4CAF50;
+}

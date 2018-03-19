@@ -1,31 +1,89 @@
-var cookies = 0;
-var factories = 0;
+var dollars = 0;
+var dollarValue = 1;
 
-function cookieClick(number){
-    cookies = cookies + number;
-	document.getElementById("cookies").innerHTML = cookies;
+var atkNeed = 1000;
+var atkCurrent = 0;
+var atkMod = 1;
+var isAttack = false;
+
+var progressCost = 1;
+var valueCost = 1;
+
+function attack(id) {
+	isAttack = !isAttack;
+	colorchange(id);
 }
 
-function buyFactory(){
-    var factoryCost = Math.floor(10 * Math.pow(1.1,factories));     //works out the cost of this cursor
-    if(cookies >= factoryCost){                                   //checks that the player can afford the cursor
-        factories = factories + 1;                                   //increases number of cursors
-    	cookies = cookies - factoryCost;                          //removes the cookies spent
-        refreshPage();
-    };
-    var nextCost = Math.floor(10 * Math.pow(1.1,factories));       //works out the cost of the next cursor
-    document.getElementById('factoryCost').innerHTML = nextCost;  //updates the cursor cost for the user
-};
-
-
-
 window.setInterval(function(){
-	cookieClick(factories);
-	saveGame()
-}, 1000);
+	if (isAttack) {
+		atkCurrent = atkCurrent + atkMod;
+		if (atkCurrent > atkNeed) {
+			dollars = dollars + dollarValue;
+			console.log(dollars)
+			atkCurrent = 0;
+			refreshPage();
+			refreshButtons();
+		}
+	}
+	refreshBar();
+}, 10);
 
+function refreshBar() {
+	//update the CSS of the bar to the timer
+	var elem = document.getElementById("progress");
+	//calculate percent fill
+	var pFill = atkCurrent/atkNeed*100;
+	elem.style.width = pFill.toString() + "%";
+}
 
+function purchase(type) {
+	if (type == "prog") {
+		if (dollars >= progressCost) {
+			atkMod = atkMod + 1;
+			dollars = dollars - progressCost;
+			progressCost = Math.floor(10 * Math.pow(1.1,progressCost));
+			refreshButtons();
+		}
+	}
+	if (type == "value") {
+		if (dollars >= valueCost) {
+			dollarValue = dollarValue + 1;
+			dollars = dollars - valueCost;
+			valueCost = Math.floor(10 * Math.pow(1.1,valueCost));
+			refreshButtons();
+		}		
+	}
+	refreshPage();
+}
 
+function refreshPage() {
+	document.getElementById('progValue').innerHTML = atkMod;
+	document.getElementById('valueValue').innerHTML = dollarValue;
+	document.getElementById('dollarCount').innerHTML = dollars;
+	var elem = document.getElementById("prog");
+	elem.innerText = "Progress ($"+progressCost.toString()+")";
+	elem = document.getElementById("value");
+	elem.innerText = "Value ($"+valueCost.toString()+")";
+}
+
+function refreshButtons() {
+	id = "prog";
+	var el = document.getElementById(id);
+	if (dollars >= progressCost) {
+		el.setAttribute("class", "button");
+	}
+	else {
+		el.setAttribute("class", "buttonGrey");
+	}
+	id = "value";
+	el = document.getElementById(id);
+	if (dollars >= valueCost) {
+		el.setAttribute("class", "button");
+	}
+	else {
+		el.setAttribute("class", "buttonGrey");
+	}
+}
 
 function prettify(input){
     var output = Math.round(input * 1000000)/1000000;
@@ -34,20 +92,26 @@ function prettify(input){
 
 function loadGame() {
 	var savegame = JSON.parse(localStorage.getItem("save"));
-	if (typeof savegame.cookies !== "undefined") cookies = savegame.cookies;
+	if (typeof savegame.dollars !== "undefined") dollars = savegame.dollars;
 	if (typeof savegame.factories !== "undefined") factories = savegame.factories;
 	refreshPage();
 }
 
-function refreshPage() {
-	document.getElementById('cookies').innerHTML = prettify(cookies);
-	document.getElementById('factory').innerHTML = prettify(factories);
-}
-
 function saveGame() {
 	var save = {
-		cookies: cookies,
+		dollars: dollars,
 		factories: factories,
 	}
 	localStorage.setItem("save",JSON.stringify(save));
+}
+
+function colorchange(id) {
+	var el = document.getElementById(id);
+	var currentClass = el.getAttribute("class");
+      if(currentClass == "button")
+      {
+          el.setAttribute("class", "buttonSelect");
+      } else {
+         el.setAttribute("class", "button");
+      }
 }

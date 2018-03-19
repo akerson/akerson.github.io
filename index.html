@@ -2,14 +2,20 @@
 <HEAD>
 <link rel="stylesheet" type="text/css" href="interface.css" />
 </HEAD>
-<BODY onload="loadGame();">
-<button type="button" onClick="cookieClick(1)">Buy Cookie</button>
-<button type="button" onClick="buyFactory()">Buy Factory</button>
+<BODY>
+<button id="1" class="button" onClick="attack(this.id)">Attack</button>
+<button id="prog" class="buttonGrey" onClick="purchase(this.id)">Progress ($1)</button>
+<button id="value" class="buttonGrey" onClick="purchase(this.id)">Value ($1)</button>
 <p>
-Cookie number: <span id="cookies">0</span>
+<div class="progressBorder">
+<div id="progress" class="progress"></div>
+</div>
 <p>
-Factories: <span id="factory">0</span><br />
-Cost: <span id="factoryCost">10</span>
+<b>STATS:</b></br>
+Progress: <span id="progValue">1</span></br>
+Value: <span id="valueValue">1</span></br>
+Current Dollars: $<span id="dollarCount">0</span></p>
+ 
 <script type="text/javascript" src="main.js"></script>
 </BODY>
 </HTML>
