@@ -67,11 +67,11 @@ function prettify(input){
 
 function loadGame() {
 	player = JSON.parse(localStorage.getItem("player"));
-	/*if (typeof savegame.dollars !== "undefined") dollars = savegame.dollars;
-	if (typeof savegame.dollarValue !== "undefined") dollarMod = savegame.dollarValue;
-	if (typeof savegame.atkMod !== "undefined") attack = savegame.atkMod;
-	if (typeof savegame.progressCost !== "undefined") progressCost = savegame.progressCost;
-	if (typeof savegame.valueCost !== "undefined") valueCost = savegame.valueCost;*/
+	if (typeof player.dollars !== "undefined") dollars = player.dollars;
+	if (typeof player.dollarValue !== "undefined") dollarMod = player.dollarValue;
+	if (typeof player.atkMod !== "undefined") attack = player.atkMod;
+	if (typeof player.progressCost !== "undefined") progressCost = player.progressCost;
+	if (typeof player.valueCost !== "undefined") valueCost = player.valueCost;
 	refreshCost();
 	refreshStats();
 	refreshButtons();
