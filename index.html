@@ -2,7 +2,7 @@
 <HEAD>
 <link rel="stylesheet" type="text/css" href="interface.css" />
 </HEAD>
-<BODY>
+<BODY onload="loadGame()">
 <button id="1" class="button" onClick="attack(this.id)">Attack</button>
 <button id="prog" class="buttonGrey" onClick="purchase(this.id)">Progress ($1)</button>
 <button id="value" class="buttonGrey" onClick="purchase(this.id)">Value ($1)</button>
@@ -15,7 +15,6 @@
 Progress: <span id="progValue">1</span></br>
 Value: <span id="valueValue">1</span></br>
 Current Dollars: $<span id="dollarCount">0</span></p>
- 
 <script type="text/javascript" src="main.js"></script>
 </BODY>
 </HTML>

@@ -1,13 +1,14 @@
+//player important ones
 var dollars = 0;
 var dollarValue = 1;
-
-var atkNeed = 1000;
-var atkCurrent = 0;
 var atkMod = 1;
-var isAttack = false;
-
 var progressCost = 1;
 var valueCost = 1;
+
+//instance important
+var isAttack = false;
+var atkCurrent = 0;
+var atkNeed = 1000;
 
 function attack(id) {
 	isAttack = !isAttack;
@@ -26,6 +27,7 @@ window.setInterval(function(){
 		}
 	}
 	refreshBar();
+	saveGame();
 }, 10);
 
 function refreshBar() {
@@ -93,14 +95,21 @@ function prettify(input){
 function loadGame() {
 	var savegame = JSON.parse(localStorage.getItem("save"));
 	if (typeof savegame.dollars !== "undefined") dollars = savegame.dollars;
-	if (typeof savegame.factories !== "undefined") factories = savegame.factories;
+	if (typeof savegame.dollarValue !== "undefined") dollarValue = savegame.dollarValue;
+	if (typeof savegame.atkMod !== "undefined") atkMod = savegame.atkMod;
+	if (typeof savegame.progressCost !== "undefined") progressCost = savegame.progressCost;
+	if (typeof savegame.valueCost !== "undefined") valueCost = savegame.valueCost;
 	refreshPage();
+	refreshButtons();
 }
 
 function saveGame() {
 	var save = {
 		dollars: dollars,
-		factories: factories,
+		dollarValue: dollarValue,
+		atkMod : atkMod,
+		progressCost : progressCost,
+		valueCost : valueCost,		
 	}
 	localStorage.setItem("save",JSON.stringify(save));
 }
