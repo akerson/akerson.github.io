@@ -82,7 +82,7 @@ function loadGame() {
 	refreshCost();
 	refreshStats();
 	refreshButtons();
-	window.setInterval(gameLoop(), 10);
+	window.mainLoop = setInterval(gameLoop, 10);
 }
 
 function saveGame() {
