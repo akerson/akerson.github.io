@@ -71,10 +71,11 @@ function prettify(input){
 
 function loadGame() {
 	var saveplayer = JSON.parse(localStorage.getItem('save'));
-	console.log(saveplayer)
-	if (typeof saveplayer.dollars !== "undefined") player.dollars = saveplayer.dollars;
-	if (typeof saveplayer.dollarMod !== "undefined") player.dollarMod = saveplayer.dollarMod;
-	if (typeof saveplayer.attack !== "undefined") player.attack = saveplayer.attack;
+	if (saveplayer !== null) {
+		if (typeof saveplayer.dollars !== "undefined") player.dollars = saveplayer.dollars;
+		if (typeof saveplayer.dollarMod !== "undefined") player.dollarMod = saveplayer.dollarMod;
+		if (typeof saveplayer.attack !== "undefined") player.attack = saveplayer.attack;
+	}
 	lastTime = Date.now();
 	refreshCost();
 	refreshStats();
