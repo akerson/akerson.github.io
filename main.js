@@ -23,7 +23,10 @@ window.setInterval(function(){
 	deltaTime = Date.now() -lastTime;
 	lastTime = Date.now();
 	//deltaTime is the total time since this last checked
+	console.log(dmgDone);
+	console.log(player.attack*deltaTime/10)
 	dmgDone += player.attack*deltaTime/10
+	console.log(dmgDone);
 	totalAdd = Math.floor(dmgDone / totalHP) //the total bars we filled
 	if (totalAdd >= 1) {
 		console.log("over 1");
