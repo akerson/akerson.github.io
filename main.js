@@ -26,7 +26,6 @@ function gameLoop() {
 	dmgDone += player.attack*deltaTime/10
 	totalAdd = Math.floor(dmgDone / totalHP) //the total bars we filled
 	if (totalAdd >= 1) {
-		console.log("over 1");
 		player.dollars += player.dollarMod*totalAdd;
 		dmgDone = dmgDone % totalHP;
 	}
@@ -84,6 +83,7 @@ function loadGame() {
 }
 
 function saveGame() {
+	console.log(JSON.stringify(player))
 	localStorage.setItem('save',JSON.stringify(player));
 }
 
