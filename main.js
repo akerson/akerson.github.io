@@ -23,11 +23,13 @@ function gameLoop() {
 	deltaTime = Date.now() -lastTime;
 	lastTime = Date.now();
 	//deltaTime is the total time since this last checked
-	dmgDone += player.attack*deltaTime/10
-	totalAdd = Math.floor(dmgDone / totalHP) //the total bars we filled
-	if (totalAdd >= 1) {
-		player.dollars += player.dollarMod*totalAdd;
-		dmgDone = dmgDone % totalHP;
+	if (isAttack) {
+		dmgDone += player.attack*deltaTime/10
+		totalAdd = Math.floor(dmgDone / totalHP) //the total bars we filled
+		if (totalAdd >= 1) {
+			player.dollars += player.dollarMod*totalAdd;
+			dmgDone = dmgDone % totalHP;
+		}
 	}
 	refreshStats();
 	refreshButtons();
