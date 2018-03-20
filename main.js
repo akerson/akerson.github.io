@@ -84,8 +84,9 @@ function loadGame() {
 }
 
 function saveGame() {
-	console.log(JSON.stringify(player))
-	localStorage.setItem('save',JSON.stringify(player));
+	var saveplayer = JSON.stringify(player)
+	console.log(saveplayer)
+	localStorage.setItem('save',saveplayer);
 }
 
 function colorchange(id) {
