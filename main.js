@@ -19,7 +19,7 @@ function toggleAttack(id) {
 	colorchange(id);
 }
 
-window.setInterval(function(){
+function gameLoop() {
 	deltaTime = Date.now() -lastTime;
 	lastTime = Date.now();
 	//deltaTime is the total time since this last checked
@@ -37,7 +37,7 @@ window.setInterval(function(){
 	refreshButtons();
 	refreshBar();
 	saveGame();
-}, 10);
+}
 
 function refreshBar() {
 	//update the CSS of the bar to the timer
@@ -82,6 +82,7 @@ function loadGame() {
 	refreshCost();
 	refreshStats();
 	refreshButtons();
+	window.setInterval(gameLoop(), 10);
 }
 
 function saveGame() {
