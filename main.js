@@ -20,13 +20,13 @@ function toggleAttack(id) {
 }
 
 window.setInterval(function(){
-	console.log(player.dollarMod)
 	deltaTime = Date.now() -lastTime;
 	lastTime = Date.now();
 	//deltaTime is the total time since this last checked
 	dmgDone += player.attack*deltaTime/10
 	totalAdd = Math.floor(dmgDone / totalHP) //the total bars we filled
 	if (totalAdd >= 1) {
+		console.log("over 1");
 		player.dollars += player.dollarMod*totalAdd;
 		dmgDone = dmgDone % totalHP;
 	}
