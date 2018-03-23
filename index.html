@@ -3,20 +3,47 @@
 <link rel="stylesheet" type="text/css" href="interface.css" />
 </HEAD>
 <BODY onload="loadGame()">
-<button id="1" class="button" onClick="toggleAttack(this.id)">Attack</button>
-<button id="prog" class="buttonGrey" onClick="purchase(this.id)">Progress ($1)</button>
-<button id="value" class="buttonGrey" onClick="purchase(this.id)">Value ($1)</button>
-<p>
-<div class="progressBorder">
-<div id="progress" class="progress"></div>
+<div id="wrapper">
+  <div id="log">
+    <fieldset>
+      <legend>Log</legend>
+      <div id="logFlow">
+      <table id="logTable">
+      </table>
+    </div>
+    </fieldset>
+  </div>
+  <div id="game">
+    <h1>Actions</h1>
+    <div id="tabs">
+      <span class="button" id="0" onClick="toggleButton(0)">Scavange</span>
+      <span class="button" id="1" onClick="toggleButton(1)">Attack</span>
+      <span class="button" id="2" onClick="toggleButton(2)">Craft</span>
+    </div>
+    <p>
+    <div class="progressBorder">
+
+      <div id="progress" class="progress"></div>
+      <span id="progressPercent" class="progressPercent">[  0%] 00:00</span>
+    </div>
+    <p>
+    <b><u><h3>STATS:</h3></u></b>
+    Money: $<span id="money">1.00</span></br>
+    <p>
+  </div>
 </div>
-<p>
-<b>STATS:</b></br>
-Progress: <span id="progValue">1</span></br>
-Value: <span id="valueValue">1</span></br>
-Current Dollars: $<span id="dollarCount">0</span></p>
-<p>
-v1.0.1
+<div id="invtwrap">
+<div id="inventory" class="hidden">
+<fieldset>
+<legend>Inventory</legend>
+<table id="invTable">
+</table>
+</fieldset>
+</div>
+</div>
+
+<div id="date">Day 1 12:00</div>
+<div id="version">v0.0.2 <a href="changelog.txt">View Changelog</a></div>
 <script type="text/javascript" src="main.js"></script>
 </BODY>
 </HTML>

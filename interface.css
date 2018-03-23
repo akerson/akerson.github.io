@@ -1,11 +1,40 @@
 body {
-    background-color: rgb(60, 60, 60);
+    background-color: #222;
+    color:white;
+    font-family: lucida console;
+    font-size: 12px;
 }
 
-p {
-    font-family: tahoma;
-	color: white;
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: 0.35em 0.625em 0.75em;
+    background-color: #383838;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
     font-size: 12px;
+}
+
+#inventory {
+	position: absolute;
+	top:10px;
+	right:25px;
+	width:250px;
+	padding:10px;
+}
+
+#version {
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+}
+
+#date {
+  position: absolute;
+  bottom: 10px;
+  right: 16px;
 }
 
 .button {
@@ -16,7 +45,7 @@ p {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
     margin: 4px 2px;
     cursor: pointer;
 }
@@ -29,7 +58,7 @@ p {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
     margin: 4px 2px;
     cursor: pointer;
 }
@@ -48,19 +77,60 @@ p {
 }
 
 .progressBorder {
-    width:275px;
+    width:400px;
     height:25px;
+    /*line-height: 25px;*/
     border:1px solid black;
     position:relative;
+    padding: 2px;
 }
+.progressPercent {
+  position: absolute;
+  left: 5px;
+  top: 25.5%;
+}
+
 .progress {
-    width:255px;
+    width:400px;
     height:25px;
-    content:'\A';
     position:relative;
-    background:black;
     top:0; bottom:0;
     left:0;
-    width:0%; /* Specify the width.. */
-	background-color:#4CAF50;
+    width:50%; /* Specify the width.. */
+    background-color:#4CAF50;
+}
+#textpad {
+  margin: 0px;
+  padding-left: 5px;
+}
+div.inventory {
+  width: 500px;
+  padding: 3px;
+  color:white;
+  background-color: Gray;
+  border: 1px solid #FFFFFF;
+}
+
+#wrapper {
+    width: 1000px;
+    border: none;
+    overflow: auto; /* will contain if #first is longer than #second */
+    padding: 10px;
+
+}
+#log {
+    width: 300px;
+    float:left; /* add this */
+    border: none;
+    margin-right: 40px;
+    overflow: auto;
+}
+#logFlow {
+  height: 400px;
+  overflow: auto;
+}
+#game {
+    float:left;
+    border: none;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
 }
