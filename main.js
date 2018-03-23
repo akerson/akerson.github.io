@@ -139,12 +139,12 @@ function toggleButton(id) {
 	console.log("test");
 	var s;
 	if (id == 0) {
-		//we started scavaging!
+		//we started scavenging!
 		if (!buttonToggle[0]) {
-			s = "You begin scavanging the basement. Hopefully something turns up."
+			s = "You begin scavenging the basement. Hopefully something turns up."
 		}
 		else {
-			s = "You stopped scavaging and wait idly in this idle game."
+			s = "You stopped scaveging and wait idly in this idle game."
 		}
 	}
 	else if (id == 1) {
@@ -192,7 +192,7 @@ function gameLoop() {
 				s = "You found $" + newitem.value.toString() + ".";
 			}
 			else if (newitem.type == ItemType.NONE) {
-				s = "You scavanged but found nothing."
+				s = "You scavenged but found nothing."
 			}
 			else {
 				addInventory(newitem);
