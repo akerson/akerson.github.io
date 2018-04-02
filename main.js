@@ -1,327 +1,645 @@
-//player important ones
-var player = {
-	money : 0,
-	area : null,
-	inventory : {},
-	scavProgress : 0,
-	timePassed : 0,
-	Date: [0,0,0],
-}
-
-var firstLogEntry = true;
-
-function addInventory(item) {
-	if (item in player.inventory) {
-		player.inventory[item] += 1
-	}
-	else {
-		player.inventory[item] = 1
-	}
-}
-
-function Area(name, scavTime, money, moneyPercent) {
-	this.name = name;
-	this.scavTime = scavTime;
-	this.drops = [];
-	this.money = money;
-	this.moneyPercent = moneyPercent;
-	this.addDrop = function(item) {
-		this.drops.push(item);
-	}
-	this.getDrop = function() {
-		//Roll money, then roll through items until you don't exceed max value.
-		//If it doesn't go, drop nothing
-		var roll = Math.floor(Math.random() * 101);
-		if (roll <= this.moneyPercent) {
-			return new Item("money",getRandMoney(this.money),0,ItemType.MONEY);
-		}
-		else {
-			roll -= this.moneyPercent;
-		}
-		for (i=0;i<this.drops.length;i++) {
-			if (roll <= this.drops[i][1]) {
-				return this.drops[i][0];
-			}
-			else {
-				roll -= this.drops[i][1];
-			}
-		}
-		return new Item("none",0,0,ItemType.NONE);
-	}
-	this.Money = function() {
-		return getRandMoney(this.money);
-	}
-}
-
-function calculateDate() {
-	seconds = Math.floor(player.timePassed/1000);
-	var interval = 30
-	if (seconds >= interval) {
-		player.Date[2] += Math.floor(seconds/interval)*5;
-		player.timePassed = player.timePassed % (interval*1000);
-	}
-	if (player.Date[2] >= 12) {
-		player.Date[1] += Math.floor(player.Date[2]/60);
-		player.Date[2] = player.Date[2]%60;
-	}
-	if (player.Date[1] >= 24) {
-		player.Date[0] += Math.floor(player.Date[1]/24);
-		player.Date[1] = player.Date[1]%24;
-	}
-	//make a string out of it
-	s = "Day " + (player.Date[0]+1).toString() + " "
-	hr = player.Date[1];
-	ampm = "am"
-	if (player.Date[1] > 12) {
-		hr -= 12;
-		ampm = "pm"
-	}
-
-	if (hr == 0) {
-		s += "12:";
-	}
-	else {
-		if (hr < 10) {
-			s += "0"
-		}
-		s += hr.toString() + ":";
-	}
-	if (player.Date[2] < 10) {
-		s += "0"
-	}
-	s += player.Date[2].toString();
-	s += ampm;
-	return s
-}
-
-function Item(name, value, weight, type) {
-  this.name = name;
-  this.value = value;
-  this.weight = weight;
-  this.type = type;
-}
-
-function setupGame() {
-	var newlvl = new Area(Areas.BASEMENT,30000,100,25);
-	//in form of [ItemID,probability]
-	newlvl.addDrop([0,15])
-	newlvl.addDrop([1,10]);
-	newlvl.addDrop([2,20]);
-	newlvl.addDrop([3,1]);
-	player.area = newlvl;
-}
-
 const Areas = {
 	BASEMENT : 0,
 }
 
 const ItemType = {
-	EQUIPMENT : 0,
-	COMPONENT : 1,
-	CONSUMABLE : 2,
-	MONEY : 3,
-	NONE : 4,
+	EQUIPMENT : "Equipment",
+	COMPONENT : "Component",
+	CONSUMABLE : "Consumable",
+	MONEY : "Money",
+	NONE : "None",
+	MISC : "Misc.",
+	CHEMICAL : "Chemical",
+}
+
+const ItemRarity = {
+	COMMON : 0,
+	UNCOMMON: 1,
+	RARE : 2,
+}
+
+const Actions = {
+	NONE : "None",
+	SCAVENGE: "Scavenging...",
+	FIGHT : "Fighting...",
+	TALK : "Talking...",
+	GRAB : "Picking Up...",
+	BUTCHER : "Butchering...",
+	DROP : "Dropping...",
+}
+
+var player;
+
+//player important variable
+function Player() {
+	this.name = "You"
+	this.hp = 10;
+	this.maxhp = this.hp;
+	this.lasthit = 0,
+	this.area = null,
+	this.inventory = {},
+	this.currentAction = Actions.NONE,
+	this.actionTarget = null,
+	this.actionTime = [0,0], //[start,finish]
+	this.scavFound = {}, //list of places and what you found there
+	this.dodge = 14,
+	this.spd = 2000,
+	this.stats = {
+		brawn : 7,
+		brains : 7,
+		cool : 7,
+		senses : 7,
+		reflexes : 7,
+		endurance : 7,
+	},
+	this.skills = {
+		fists : 0,
+		scavenge : 0,
+		blades : 0,
+		clubs : 0,
+		pistols : 0,
+		medic : 0,
+		craft : 0,
+		focus : 0,
+	},
+	this.equip = {
+		head : null,
+		hand : null,
+		body : null,
+		pants : null,
+		shoes : null,
+	}
+	this.addScavengeFind = function(item) {
+		//see if it's unique
+		var areaName = player.area.name;
+		if (areaName in player.scavFound) {
+			if (!player.scavFound[areaName].includes(item)) {
+				player.scavFound[areaName].push(item);
+			}
+		}
+		else {
+			player.scavFound[areaName] = [item];
+		}
+	}
+	this.addInventory = function(item) {
+		if (item in player.inventory) {
+			player.inventory[item] += 1;
+		}
+		else {
+			player.inventory[item] = 1
+		}
+		refreshInventory();
+	}
+	this.dropItem = function(item) {
+		player.inventory[item] -= 1;
+		if (player.inventory[item] == 0) {
+			delete player.inventory[item];
+		}
+		player.area.addFloorItem(item);
+		refreshInventory();
+	}
+	//combat stuff, these will get fleshed out later by factoring in stats....
+	this.getHit = function() {
+		return 50;
+	}
+	this.getDodge = function() {
+		return this.dodge
+	}
+	this.getDmg = function() {
+		return 3;
+	}
+	this.getSoak = function() {
+		return 0;
+	}
+	this.getSpd = function() {
+		return this.spd;
+	}
+	this.die = function() {
+		addLog("Sorry you died, here's your life back for now, since those rats aren't balanced.");
+		this.hp = 10;
+		this.lasthit = 0;
+	}
+}
+
+var repopArea = function() {
+	//this function attempts to repopulate areas as a measure of setTimeout(function () {
+
+}
+
+
+function Area(name, description, scavTime, money, moneyPercent, scavMax, scavRepop, actions, mobs) {
+	this.name = name;
+	this.description = description;
+	this.scavTime = scavTime;
+	this.comDrops = [];
+	this.uncDrops = [];
+	this.rareDrops = [];
+	this.scavTable = []; //list of all the stuff the player can CURRENTLY scav (not the full list of scav'able things)
+	this.scavTableMax = scavMax;
+	this.scavTableRepopNum = scavRepop;
+	this.floorItems = [];
+	this.floorDeadThings = [];
+	this.canScav = actions[0];
+	this.canFight = actions[1];
+	this.canTalk = actions[2];
+	this.mobs = [new HostileEnemy("rat",10,1200,10,0,5,1,8),new HostileEnemy("rat",10,1200,10,0,5,1,8),new HostileEnemy("rat",10,1200,10,0,5,1,8)]
+	this.addFloorItem = function(item) {
+		this.floorItems.push(item);
+		refreshAreaFloor();
+	}
+	this.removeFloorItem = function(loc) {
+		this.floorItems.splice(loc,1);
+		refreshAreaFloor();
+	}
+	this.addScavDrop = function(item) { //[item, weighed%]
+		if (item[1] == ItemRarity.RARE) {
+			this.rareDrops.push(item[0])
+		}
+		else if (item[1] == ItemRarity.UNCOMMON) {
+			this.uncDrops.push(item[0]);
+		}
+		else {
+			this.comDrops.push(item[0]);
+		}
+	}
+	this.addDeadThings = function(body) {
+		this.floorDeadThings.push(body);
+		refreshDeadThings();
+	}
+	this.removeDeadThing = function(loc) {
+		this.floorDeadThings.splice(loc,1);
+		refreshDeadThings();
+	}
+	this.repopScav = function(numTimes) {
+		//adds a number of items to the scav table based on how long it's been, UP to the maximum number of items that it can hold.
+		//roll an item rarity -- 70% common, 25% uncommon, 5% rare
+		for (i=0;i<numTimes;i++) {
+			var rand = Math.floor(Math.random() * 101);
+			var haveRare = this.rareDrops.length > 0;
+			var haveUnc = this.uncDrops.length > 0;
+			if (haveRare && rand <= 5) {
+				this.scavTable.push(this.rareDrops[Math.floor(Math.random()*this.rareDrops.length)]);
+			}
+			else if (haveUnc && rand <= 30) {
+				this.scavTable.push(this.uncDrops[Math.floor(Math.random()*this.uncDrops.length)]);
+			}
+			else {
+				this.scavTable.push(this.comDrops[Math.floor(Math.random()*this.comDrops.length)]);
+			}
+		}
+	}
+	this.getDrop = function() {
+		//If this is empty, return nothing
+		//TODO: add in a chance to fail at scav'ing, DIFFERENT from no items;
+		if (this.scavTable.length > 0) {
+			return this.scavTable.pop();
+		}
+		else {
+			return null;
+		}
+	}
+	this.cleanUp = function() {
+		//roll through enemy list, remove ones that HP = 0;
+		for (i=0;i<this.mobs.length;i++) {
+			if (this.mobs[i].hp == 0) {
+				this.mobs.splice(i,1);
+			}
+		}
+		refreshMobs();
+	}
+}
+
+function Item(name, value, weight, type, article) {
+  this.name = name;
+  this.value = value;
+  this.weight = weight;
+  this.type = type;
+	this.article = article;
+}
+
+function refreshInventory() {
+	//make an array that kind of looks like This
+	//inv = {
+	//   "misc" : [[0,1],[2,1],[5,1]],
+	//   "clothing" : [[1,1]],
+	//}
+	var inv = {}
+	console.log(player.inventory);
+	for (const [itemID, num] of Object.entries(player.inventory)) {
+		//player.inventory is a dictionary in form [itemID,num]
+		category = itemLookup[itemID].type;
+		if (category in inv) {
+			inv[category].push([itemLookup[itemID].name,num,itemID]);
+		}
+		else {
+			inv[category] = [[itemLookup[itemID].name,num,itemID]];
+		}
+	}
+	//now we have to print it out
+	ele = document.getElementById("inventory");
+	ele.innerHTML = "<h3>Inventory</h3>"
+	for (const [cat, item] of Object.entries(inv)) {
+		ele.innerHTML += "<p><span id='yellowtxt'>" + cat + "</span></p>"
+		for (i=0;i<inv[cat].length;i++) {
+			ele.innerHTML += "[" + inv[cat][i][1] + "] <span onClick=\"startAction('drop'," + inv[cat][i][2].toString() +")\" class='link'>" + inv[cat][i][0] + "</span></br>"
+		}
+
+	}
+}
+
+function setupGame() {
+	player = new Player();
+	console.log(player);
+	console.log(player.actionTime)
+	document.getElementById("defaultOpen").click();
+	d = "You find yourself in a dimly lit basement.";
+	var newlvl = new Area(Areas.BASEMENT,d, 30000,100,25,10,5, [true, true, false]);
+	//in form of [ItemID,probability]
+	newlvl.addScavDrop([0,0])
+	newlvl.addScavDrop([1,1]);
+	newlvl.addScavDrop([2,2]);
+	newlvl.repopScav(5);
+	player.area = newlvl;
+	player.addInventory(4);
+	player.area.addFloorItem(5);
+	player.area.addFloorItem(6);
+	player.area.addFloorItem(7);
+	refreshMobs();
 }
 
 var itemLookup = {
-	0 : new Item("stone",0.03,0.5,ItemType.COMPONENT),
-	1 : new Item("plank",0.15,0.4,ItemType.COMPONENT),
-	2 : new Item("trash",0.01,0.1,ItemType.COMPONENT),
-	3 : new Item("key",0.01,0.1,ItemType.COMPONENT),
+	0 : new Item("stone",0.03,0.5,ItemType.COMPONENT, "a"),
+	1 : new Item("plank",0.15,0.4,ItemType.COMPONENT, "a"),
+	2 : new Item("trash",0.01,0.1,ItemType.COMPONENT, "some"),
+	3 : new Item("key",0.01,0.1,ItemType.COMPONENT, "a"),
+	4 : new Item("wristpad",0,0.1,ItemType.MISC,"a"),
+	5 : new Item("bottle of ammonia",0,0.5,ItemType.CHEMICAL,"a"),
+	6 : new Item("ashtray",0,0,ItemType.MISC,"an"),
+	7 : new Item("resistor",0,0,ItemType.COMPONENT,"a"),
+	8 : new Item("rat tail",0.15,0.5,ItemType.MISC,"a")
 }
 
-//instance important
-var buttonToggle = [false,false,false];
-var lastTime;
-var deltaTime;
-
-function toggleButton(id) {
-	console.log("test");
-	var s;
-	if (id == 0) {
-		//we started scavenging!
-		if (!buttonToggle[0]) {
-			s = "You begin scavenging the basement. Hopefully something turns up."
-		}
-		else {
-			s = "You stopped scaveging and wait idly in this idle game."
-		}
+function HostileEnemy(name,hp,spd,dodge,soak,hit,dmg,part) {
+	//these are the things you can attack, they have stats
+	this.name = name;
+	this.hp = hp;
+	this.maxhp = hp;
+	this.lasthit = 0;
+	this.spd = spd;
+	this.dodge = dodge;
+	this.soak = soak;
+	this.hit = hit;
+	this.dmg = dmg;
+	this.part = part;
+	this.currentAction = Actions.NONE;
+	this.actionTime = [0,0];
+	this.actionTarget = null;
+	this.getHit = function() {
+		return this.hit;
 	}
-	else if (id == 1) {
-		if (!buttonToggle[1]) {
-			s = "You want to attack something, but Akerson hasn't coded it yet."
-		}
-		else {
-			s = "You stop not attacking anything and wait idly."
-		}
+	this.getDodge = function() {
+		return this.dodge;
 	}
-	else if (id == 2) {
-		if (!buttonToggle[2]) {
-			s = "You ponder about how cool a crafting system would be."
-		}
-		else {
-			s = "You stop pondering about how cool a crafting system would be."
-		}
+	this.getDmg = function() {
+		return this.dmg;
 	}
-	for (i=0;i<3;i++) {
-		if (id == i) {
-			buttonToggle[i] = !buttonToggle[i]
-		}
-		else {
-			buttonToggle[i] = false;
-		}
+	this.getSoak = function() {
+		return this.soak;
 	}
-	addLog(s);
-	colorchange();
+	this.getSpd = function() {
+		return this.spd;
+	}
+	this.getXP = function() {
+		return 1;
+	}
+	this.die = function() {
+		player.area.addDeadThings(this);
+		addLog("You killed the " + this.name + "! Awarded " + this.getXP() + "XP!");
+	}
+	this.butcher = function() {
+		return this.part;
+	}
 }
 
 function gameLoop() {
-	deltaTime = Date.now() - lastTime;
-	player.timePassed += deltaTime;
-	if (buttonToggle[0]) { //scav toggle
-		//get time that's passed
-		player.scavProgress += deltaTime;
-		if (player.scavProgress >= player.area.scavTime) {
-			//we did it!
-			var numTimes = Math.floor(player.scavProgress/player.area.scavTime);
-			player.scavProgress = player.scavProgress % player.area.scavTime;
-			var newitem = player.area.getDrop();
-			//if money
-			if (newitem.type == ItemType.MONEY) {
-				player.money += newitem.value;
-				s = "You found $" + newitem.value.toString() + ".";
-			}
-			else if (newitem.type == ItemType.NONE) {
-				s = "You scavenged but found nothing."
-			}
-			else {
-				addInventory(newitem);
-				s = "You found a " + itemLookup[newitem].name + ".";
-			}
-			addLog(s);
+	if (player.actionTime[1] < Date.now()) {
+		//we finished our action!
+		if (player.currentAction == Actions.SCAVENGE) {
+			executeAction(Actions.SCAVENGE);
+			player.currentAction = Actions.NONE;
 		}
-		//setup text for spam
-		s = "[";
-		//fix it up so it's two characters AND less than 100
-		pt = player.scavProgress/player.area.scavTime*100;
-		pts = Math.round(pt).toString();
-		if (pts == "100") {
-			pts = "99";
+		if (player.currentAction == Actions.FIGHT) {
+			Combat(player,player.actionTarget);
 		}
-		if (pts.length == 1) {
-			pts = " "+pts;
+		if (player.currentAction == Actions.GRAB) {
+			var itemID = player.area.floorItems[player.actionTarget];
+			player.addInventory(itemID);
+			player.area.removeFloorItem(player.actionTarget);
+			var item = itemLookup[itemID];
+			addLog("You pick up " + item.article + " " + item.name + ".")
+			player.currentAction = Actions.NONE;
 		}
-		s += pts
-		s += "%] "
-		t = player.area.scavTime - player.scavProgress;
-		s += msToTime(t)
-		document.getElementById("progressPercent").innerHTML = s;
+		if (player.currentAction == Actions.BUTCHER) {
+			var deadThing = player.area.floorDeadThings[player.actionTarget];
+			var part = deadThing.butcher();
+			player.addInventory(part);
+			player.area.removeDeadThing(player.actionTarget);
+			var item = itemLookup[part];
+			addLog("You hack off " + item.article + " " + item.name + " from the " + deadThing.name + ".");
+			player.currentAction = Actions.NONE;
+		}
+		if (player.currentAction == Actions.DROP) {
+			//drop an item based off ItemID
+			player.dropItem(player.actionTarget);
+			var item = itemLookup[player.actionTarget];
+			addLog("You dropped " +  item.article + " " + item.name + " on the floor.");
+			player.currentAction = Actions.NONE;
+		}
 	}
-	lastTime = Date.now();
+	//check if enemies need to fight
+	for (var i=0;i<player.area.mobs.length;i++) {
+		if (player.area.mobs[i].currentAction == Actions.FIGHT && player.area.mobs[i].actionTime[1] < Date.now()) {
+			Combat(player.area.mobs[i],player);
+		}
+	}
 	saveGame();
 	refreshGame();
 }
 
-function getRandMoney(max) {
-    var num = 0;
-    for (var i = 0; i < 4; i++) {
-        num += Math.random() * (max/4);
-    }
-    return Math.floor(num)/100;
+function Combat(attacker, defender) {
+	//checks combat actions
+	target = attacker.actionTarget;
+	hit = attacker.getHit() + roll(3,6);
+	if (hit >= defender.getDodge()) {
+		dmg = Math.max(0,attacker.getDmg()-defender.getSoak())
+		defender.hp = Math.max(defender.hp - dmg, 0);
+		defender.lasthit = dmg;
+		addLog(attacker.name + " hit the " + defender.name + " for " + dmg.toString() + " damage!");
+	}
+	else {
+		defender.lasthit = 0;
+		addLog(attacker.name + " missed!");
+	}
+	attacker.actionTime[0] = Date.now();
+	attacker.actionTime[1] = Date.now()+attacker.getSpd();
+	//engage them in combat if we haven't
+	if (defender.currentAction == Actions.NONE) {
+		console.log("fight me bich");
+		defender.currentAction = Actions.FIGHT;
+		defender.actionTime[0] = Date.now();
+		defender.actionTime[1] = Date.now() + defender.getSpd();
+	}
+	if (defender.hp == 0) {
+		attacker.currentAction = Actions.NONE;
+		defender.currentAction = Actions.NONE;
+		defender.die();
+		player.area.cleanUp();
+	}
+}
+
+function startAction(action,target) {
+	//called whenever a player clicks on a "link"
+	console.log(action);
+	if (action == "scav") {
+		if (player.currentAction == Actions.NONE) {
+			player.currentAction = Actions.SCAVENGE;
+			//set when it'll be complete
+			player.actionTime[0] = Date.now(); //this is to have a percentage
+			player.actionTime[1] = Date.now() + 500;
+			addLog("You start scavenging...");
+		}
+		else if (player.currentAction == Actions.SCAVENGE) {
+			player.currentAction = Actions.NONE;
+			addLog("You stop scavenging.");
+		}
+	}
+	else if (action == "attack") {
+		if (player.currentAction == Actions.NONE) {
+			player.currentAction = Actions.FIGHT;
+			player.actionTarget = player.area.mobs[target];
+			player.actionTime[0] = Date.now();
+			player.actionTime[1] = Date.now()+player.spd;
+		}
+	}
+	else if (action == "grab") {
+		if (player.currentAction == Actions.NONE) {
+			player.currentAction = Actions.GRAB;
+			player.actionTarget = target;
+			player.actionTime[0] = Date.now();
+			player.actionTime[1] = Date.now() + 100;
+		}
+	}
+	else if (action == "butcher") {
+		if (player.currentAction == Actions.NONE) {
+			player.currentAction = Actions.BUTCHER;
+			player.actionTarget = target;
+			player.actionTime[0] = Date.now();
+			player.actionTime[1] = Date.now() + 10000;
+		}
+	}
+	else if (action == "drop") {
+		if (player.currentAction == Actions.NONE) {
+			player.currentAction = Actions.DROP;
+			player.actionTarget = target;
+			player.actionTime[0] = Date.now();
+			player.actionTime[1] = Date.now() + 100;
+		}
+	}
+}
+
+function executeAction(action) {
+	if (action == Actions.SCAVENGE) {
+		var numTimes = 1;
+		var newitem = player.area.getDrop(); //this returns a numberID
+		if (newitem != null) {
+			player.addScavengeFind(newitem);
+			player.addInventory(newitem);
+			var item = itemLookup[newitem];
+			addLog("You dig around the ground and find a " + item.name + "!");
+		}
+		else {
+			addLog("You search around, but it looks like there's nothing here.");
+		}
+	}
 }
 
 function addLog(s) {
 	var table = document.getElementById("logTable");
 	var row = table.insertRow(0);
 	var cell = row.insertCell(0);
-	if (firstLogEntry) {
-		cell.innerHTML = "<i><b>" + calculateDate() + "</b></i><br>" + s;
-		firstLogEntry = false;
-	}
-	else {
-		cell.innerHTML = "<i><b>" + calculateDate() + "</b></i><br>" + s + "<br>---";
-	}
-}
-
-function prettify(input){
-  var output = Math.round(input * 1000000)/1000000;
-	return output;
+	cell.innerHTML = s;
 }
 
 function loadGame() {
-	var saveplayer = JSON.parse(localStorage.getItem('save'));
-	console.log(saveplayer);
+	/*var saveplayer = JSON.parse(localStorage.getItem('save'));
 	if (saveplayer !== null) {
-		if (typeof saveplayer.money !== "undefined") player.money = saveplayer.money;
-		if (typeof saveplayer.inventory !== "undefined") player.inventory = saveplayer.inventory;
-		if (typeof saveplayer.Date !== "undefined") player.Date = saveplayer.Date;
-	}
-	lastTime = Date.now();
+		//if (typeof saveplayer.scavFound !== "undefined") player.scavFound = saveplayer.scavFound;
+	}*/
 	setupGame();
 	window.mainLoop = setInterval(gameLoop, 10);
 }
 
 function saveGame() {
-	var saveplayer = JSON.stringify(player)
-	localStorage.setItem('save',saveplayer);
+	/*var saveplayer = JSON.stringify(player)
+	localStorage.setItem('save',saveplayer);*/
 }
+
+//********************
+//Make the game pretty
+//********************
 
 function refreshGame() {
-	refreshCost();
 	refreshStats();
-	refreshBar();
-	refreshDate();
-	refreshInventory();
+	refreshActions();
+	refreshScavTable();
+	refreshAction();
+	//refreshMobs(); This HAS to be whenever done, not every time as the constant refresh messes with the on-click
+	refreshHpBars();
 }
 
-function colorchange() {
-	for (id=0; id<3; id++) {
-			var el = document.getElementById(id);
-			if (buttonToggle[id]) {
-				el.setAttribute("class", "buttonSelect");
-			}
-			else {
-				el.setAttribute("class", "button");
-			}
+function refreshMobs() {
+	var ele = document.getElementById("mobs");
+	ele.innerHTML = "<p><h3> Hostile Creatures</h3></p>";
+	if (player.area.mobs.length > 0) {
+		for (var i=0;i<player.area.mobs.length;i++) {
+				ele.innerHTML += "<span id='yellowtxt'>[ </span><span onClick=\"startAction('attack'," + i.toString() +")\" class='link'>Attack</span><span id='yellowtxt'> ] </span>Rat [<span class='greenBar' id='greenBarHE"+i+"'></span><span class='redBar' id='redBarHE"+i+"'></span><span class='greyBar' id='greyBarHE"+i+"'></span>] [<span id='hpHE"+i+"'></span>/<span id='hpMaxHE"+i+"'></span>]</br>";
+		}
+	}
+	else {
+		ele.innerHTML += "No monsters seem to be here</br>"
 	}
 }
 
 function refreshStats() {
-	var money = parseFloat(player.money).toFixed(2)
-	document.getElementById('money').innerHTML = money;
+	var ele = document.getElementById("brawnStat");
+	ele.innerHTML = player.stats.brawn.toFixed(2).toString();
+	ele = document.getElementById("brainStat");
+	ele.innerHTML = player.stats.brains.toFixed(2).toString();
+	ele = document.getElementById("coolStat");
+	ele.innerHTML = player.stats.cool.toFixed(2).toString();
+	ele = document.getElementById("senseStat");
+	ele.innerHTML = player.stats.senses.toFixed(2).toString();
+	ele = document.getElementById("reflexStat");
+	ele.innerHTML = player.stats.reflexes.toFixed(2).toString();
+	ele = document.getElementById("endStat");
+	ele.innerHTML = player.stats.endurance.toFixed(2).toString();
 }
 
-function refreshCost() {
-	progressCost = Math.floor(10 * Math.pow(1.1,player.attack))-5;
-	valueCost = Math.floor(10 * Math.pow(1.1,player.dollarMod))-5;
-}
-
-function refreshBar() {
-	//update the CSS of the bar to the timer
-	var elem = document.getElementById("progress");
-	//calculate percent fill
-	var pFill = player.scavProgress/player.area.scavTime*100;
-	elem.style.width = pFill.toString() + "%";
-}
-
-function refreshInventory() {
-	var table = document.getElementById("invTable");
-	table.innerHTML = "";
-	for (const [itemid, amt] of Object.entries(player.inventory)) {
-		var itemname = itemLookup[itemid].name;
-		row = table.insertRow(0);
-		cell1 = row.insertCell(0);
-		cell1.innerHTML = "[" + amt + "] " + itemname;
+function refreshActions() {
+//hide the ones you can't do
+	var scavLink = document.getElementById("scavAction");
+	if (player.area.canScav) {
+		scavLink.innerText = "Scavenge";
 	}
+	else {
+		scavLink.innerText = "";
+	}
+}
+
+function refreshScavTable() {
+	var table = document.getElementById("scavTable");
+	table.innerHTML = "";
 	var row = table.insertRow(0);
-	var cell = row.insertCell(0);
-	cell.innerHTML = "<b><u>Items</u></b>";
+	row.setAttribute("id", "heading");
+	row.innerHTML = "<td>Common Items</td><td>??</td><td>??</td>";
+	var drops = player.area.comDrops.concat(player.area.uncDrops, player.area.rareDrops);
+	for (i=0;i < drops.length; i++) {
+		var itemID = drops[i];
+		var areaName = player.area.name;
+		row = table.insertRow(-1);
+		var cell1 = row.insertCell(-1);
+		var cell2 = row.insertCell(-1);
+		var cell3 = row.insertCell(-1);
+		if (areaName in player.scavFound && player.scavFound[areaName].includes(itemID)) {
+			cell1.innerHTML = itemLookup[itemID].name;
+		}
+		else {
+			cell1.innerHTML = "???"
+		}
+		cell2.innerHTML = "???"
+		cell3.innerHTML = "???"
+	}
 }
 
-function refreshDate() {
-	document.getElementById('date').innerHTML = calculateDate();
+function refreshHpBars() {
+	//player
+	document.getElementById("playerHP").innerHTML = player.hp;
+	document.getElementById("playerHPmax").innerHTML = player.maxhp;
+	var greenHP = Math.floor(player.hp/player.maxhp*20);
+	var redHP = Math.floor(player.lasthit/player.maxhp*20);
+	var greyHP = 20-greenHP-redHP;
+	document.getElementById("greenBarHP").innerHTML = "|".repeat(greenHP)
+	document.getElementById("redBarHP").innerHTML = "*".repeat(redHP);
+	document.getElementById("greyBarHP").innerHTML = "-".repeat(greyHP);
+	//hostilemobs
+	for (var i=0;i<player.area.mobs.length;i++) {
+		mob = player.area.mobs[i];
+		document.getElementById("hpHE"+i).innerHTML = mob.hp;
+		document.getElementById("hpMaxHE"+i).innerHTML = mob.maxhp;
+		var greenHP = Math.floor(mob.hp/mob.maxhp*20);
+		var redHP = Math.floor(mob.lasthit/mob.maxhp*20);
+		var greyHP = 20-greenHP-redHP;
+		document.getElementById("greenBarHE"+i).innerHTML = "|".repeat(greenHP);
+		document.getElementById("redBarHE"+i).innerHTML = "*".repeat(redHP);
+		document.getElementById("greyBarHE"+i).innerHTML = "-".repeat(greyHP);
+	}
 }
 
+function refreshAction() {
+	var actionTxt = document.getElementById("action");
+	if (player.currentAction == Actions.NONE) {
+		actionTxt.innerHTML = "None!"
+		document.getElementById("greenBar").innerHTML = "";
+		document.getElementById("greyBar").innerHTML = "-".repeat(20);
+	}
+	else {
+		actionTxt.innerHTML = player.currentAction;
+		var percentDone = Math.floor((Date.now() - player.actionTime[0])/(player.actionTime[1] - player.actionTime[0])*20);
+		var percentLeft = 20-percentDone;
+		document.getElementById("greenBar").innerHTML = "|".repeat(percentDone)
+		document.getElementById("greyBar").innerHTML = "-".repeat(percentLeft)
+	}
+}
+
+function refreshAreaFloor() {
+	//fix the floor text
+	ele = document.getElementById("floorItems")
+	ele.innerHTML = "";
+	if (player.area.floorItems.length > 0) {
+		ele.innerHTML += "You see "
+		for (var i=0;i<player.area.floorItems.length;i++) {
+			var item = itemLookup[player.area.floorItems[i]]
+			if (i+1 == player.area.floorItems.length) {
+				ele.innerHTML += "and "
+			}
+			ele.innerHTML += item.article + " <span onClick=\"startAction('grab',"+i.toString()+")\" class='link'>" + item.name + "</span>, "
+		}
+		ele.innerHTML = ele.innerHTML.slice(0,-2);
+		ele.innerHTML += " on the floor."
+	}
+}
+
+function refreshDeadThings() {
+	ele = document.getElementById("floorDead")
+	ele.innerHTML = "";
+	if (player.area.floorDeadThings.length > 0) {
+		ele.innerHTML += "You see the corpse"
+		if (player.area.floorDeadThings.length > 1) {
+			ele.innerHTML += "s"
+		}
+		ele.innerHTML += " of "
+		for (var i=0;i<player.area.floorDeadThings.length;i++) {
+			deadThing = player.area.floorDeadThings[i];
+			ele.innerHTML += "a <span onClick=\"startAction('butcher',"+i.toString()+")\" class='link'>" + deadThing.name + "</span>, "
+		}
+		ele.innerHTML = ele.innerHTML.slice(0,-2);
+		ele.innerHTML += " on the floor."
+	}
+}
+
+//*************************
+//Misc functions that exist
+//*************************
 function msToTime(duration) {
     var milliseconds = parseInt((duration%1000)/100)
         , seconds = parseInt((duration/1000)%60)
@@ -329,4 +647,33 @@ function msToTime(duration) {
     minutes = (minutes < 10) ? "0" + minutes : minutes;
     seconds = (seconds < 10) ? "0" + seconds : seconds;
     return minutes + ":" + seconds;
+}
+
+function openTab(evt, tab) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(tab).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+function roll(n,d) {
+	result = 0
+	for (var i=0;i<n;i++) {
+		result += Math.floor(Math.random() * d) + 1;
+	}
+	return result;
 }

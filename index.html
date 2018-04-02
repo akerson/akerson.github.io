@@ -1,49 +1,88 @@
 <HTML>
 <HEAD>
-<link rel="stylesheet" type="text/css" href="interface.css" />
+<link rel="stylesheet" type="text/css" href="interface2.css" />
 </HEAD>
 <BODY onload="loadGame()">
-<div id="wrapper">
-  <div id="log">
+<h1>A Hellmoo Ripoff by Akerson</h1>
+<div id="topDiv">
+  <div id="area-map">
+    <table>
+    <tr><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="r">^^</td><td id="b">:(</td></tr>
+    <tr><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="lb">|o</td><td id="b">:(</td></tr>
+    <tr><td id="b">:(</td><td id="b">:(</td><td id="p">()</td><td id="lb">/]</td><td id="b">:(</td></tr>
+    <tr><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td></tr>
+    <tr><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td></tr>
+    </table>
+  </div>
+  <div id="area-desc">
+    <b>Basement</b></br>
+    <b>Cramped Tunnel (orphanage)</b>
+    <p>
+    Home sweet home.  This dank little hideaway has kept the younger orphans like
+     you safe for years from the rabid predations of your peers and the tyranny of
+     the dread Sister Agnes, but lately it's begun to look...  smaller, somehow.
+     Confining.  Stifling.
+  </div>
+</div>
+<div style="border: 1px solid gray; width: 913px;"></div>
+<div id="leftDiv">
+  <p>Hit Points: [<span id="greenBarHP"></span><span id="redBarHP"></span><span id="greyBarHP"></span>] [<span id="playerHP">10</span>/<span id="playerHPmax">10</span>]</p>
+  <p>Current Action: <span id="action">None</span> [<span id="greenBar"></span><span id="greyBar">----------</span>]</p>
+  <div id="Status">
     <fieldset>
-      <legend>Log</legend>
-      <div id="logFlow">
+    <legend>Status</legend>
+    <div id="logFlow">
       <table id="logTable">
       </table>
     </div>
     </fieldset>
   </div>
+</div>
+<div id="rightDiv">
+  <!--Area info, equipment, inventory, status-->
+  <div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'area')" id="defaultOpen">Area</button>
+    <button class="tablinks" onclick="openTab(event, 'stats')">Stats</button>
+    <button class="tablinks" onclick="openTab(event, 'inventory')">Inventory</i></button>
+  </div>
   <div id="game">
-    <h1>Actions</h1>
-    <div id="tabs">
-      <span class="button" id="0" onClick="toggleButton(0)">Scavenge</span>
-      <span class="button" id="1" onClick="toggleButton(1)">Attack</span>
-      <span class="button" id="2" onClick="toggleButton(2)">Craft</span>
+    <div id="stats" class="tabcontent">
+      <h3>Stats</h3>
+      <p>
+      <table id="stattable">
+        <tr><td><span id="yellowtxt">&nbsp;brawn</span> [ <span id="brawnStat">7.00</span>/&nbsp;&nbsp;]</td><td><span id="yellowtxt">&nbsp;&nbsp;cool</span>
+           [ <span id="coolStat">7.00</span>/&nbsp;&nbsp;]</td><td><span id="yellowtxt">&nbsp;reflexes</span> [ <span id="reflexStat">7.00</span>/&nbsp;&nbsp;]</td></tr>
+        <tr><td><span id="yellowtxt">brains</span> [ <span id="brainStat">7.00</span>/&nbsp;&nbsp;]</td><td><span id="yellowtxt">senses</span>
+           [ <span id="senseStat">7.00</span>/&nbsp;&nbsp;]</td><td><span id="yellowtxt">endurance</span> [ <span id="endStat">7.00</span>/&nbsp;&nbsp;]</td></tr>
+      </table>
+      </p>
+      <h3>Skills</h3>
+      <table id="stattable">
+      <tr id="heading"><td>Skill</td><td>Raw</td><td>Mod</td><td>Stat</td><td>Tot</td><td>Depends</td></tr>
+      <tr><td>fists</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">brawn,endurance</span></td></tr>
+      <tr><td>scavenge</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">senses,endurance</span></td></tr>
+      <tr><td>blades</td><td>1.00</td><td>+1</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">cool,reflexes</span></td></tr>
+      <tr><td>clubs</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">brawn, cool</span></td></tr>
+      <tr><td>pistols</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">reflexes, senses</span></td></tr>
+      <tr><td>medic</td><td>1.00</td><td>-2</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">brains, senses</span></td></tr>
+      <tr><td>craft</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">brains, cool</span></td></tr>
+      <tr><td>focus</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">endurance, reflexes</span></td></tr>
+      </table>
     </div>
-    <p>
-    <div class="progressBorder">
-
-      <div id="progress" class="progress"></div>
-      <span id="progressPercent" class="progressPercent">[  0%] 00:00</span>
+    <div id="area" class="tabcontent">
+      <h3>Basement</h3>
+      <p><span id="yellowtxt">[ Exits: </span>east(dirt hole)<span id="yellowtxt"> ]</span></p>
+      <p><span id="yellowtxt">[ Actions: </span><span onClick="startAction('scav',0)" class="link" id="scavAction">Scavenge</span><span id="yellowtxt"> ]</span></p>
+      <p><div id="floorItems"></div></p>
+      <p><div id="floorDead"></div></p>
+      <div id="mobs"></div>
+      <p>
+      <p><h3>Scavenge List</h3></p>
+      <table id="scavTable"></table>
     </div>
-    <p>
-    <b><u><h3>STATS:</h3></u></b>
-    Money: $<span id="money">1.00</span></br>
-    <p>
+    <div id="inventory" class="tabcontent"></div>
   </div>
 </div>
-<div id="invtwrap">
-<div id="inventory" class="hidden">
-<fieldset>
-<legend>Inventory</legend>
-<table id="invTable">
-</table>
-</fieldset>
-</div>
-</div>
-
-<div id="date">Day 1 12:00</div>
-<div id="version">v0.0.2 <a href="changelog.txt">View Changelog</a></div>
 <script type="text/javascript" src="main.js"></script>
 </BODY>
 </HTML>

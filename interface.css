@@ -1,136 +1,190 @@
 body {
-    background-color: #222;
-    color:white;
+    background-color: #111;
+    color:silver;
     font-family: lucida console;
     font-size: 12px;
 }
 
-fieldset {
-    border: 1px solid #c0c0c0;
-    margin: 0 2px;
-    padding: 0.35em 0.625em 0.75em;
-    background-color: #383838;
-}
 table {
     border-collapse: collapse;
     border-spacing: 0;
     font-size: 12px;
 }
 
-#inventory {
-	position: absolute;
-	top:10px;
-	right:25px;
-	width:250px;
-	padding:10px;
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    height: 300px;
+    padding: 0.35em 0.625em 0.75em;
+    background-color: #383838;
 }
 
-#version {
-  position: absolute;
-  bottom: 10px;
-  left: 16px;
-}
-
-#date {
-  position: absolute;
-  bottom: 10px;
-  right: 16px;
-}
-
-.button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
-
-.buttonSelect {
-    background-color: #A52A2A;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
-
-.buttonGrey {
-	background-color: #696969;
-    border: none;
-    color: black;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
-
-.progressBorder {
-    width:400px;
-    height:25px;
-    /*line-height: 25px;*/
-    border:1px solid black;
-    position:relative;
-    padding: 2px;
-}
-.progressPercent {
-  position: absolute;
-  left: 5px;
-  top: 25.5%;
-}
-
-.progress {
-    width:400px;
-    height:25px;
-    position:relative;
-    top:0; bottom:0;
-    left:0;
-    width:50%; /* Specify the width.. */
-    background-color:#4CAF50;
-}
-#textpad {
+h3 {
+  padding: 0px;
   margin: 0px;
-  padding-left: 5px;
-}
-div.inventory {
-  width: 500px;
-  padding: 3px;
-  color:white;
-  background-color: Gray;
-  border: 1px solid #FFFFFF;
 }
 
-#wrapper {
-    width: 1000px;
-    border: none;
-    overflow: auto; /* will contain if #first is longer than #second */
-    padding: 10px;
+hr {
+  max-width: 912px;
+  margin: 0px;
+}
 
-}
-#log {
-    width: 300px;
-    float:left; /* add this */
-    border: none;
-    margin-right: 40px;
-    overflow: auto;
-}
 #logFlow {
-  height: 400px;
+  height: 290px;
   overflow: auto;
 }
-#game {
-    float:left;
+
+#topDiv {
+  width : 890px;
+  height: 80px;
+  padding: 5px;
+}
+
+#leftDiv {
+  width: 400px;
+  height: 500px;
+  float:left;
+  padding: 5px;
+}
+#rightDiv {
+  width: 500px;
+  border: 0px;
+  height: 500px;
+  float:left;
+  padding: 5px;
+}
+#area-map {
+  width:95px;
+  float:left;
+}
+
+#area-desc {
+  width:700px;
+  float : left;
+}
+
+/* ascii map colors */
+#b {
+  color: Navy;
+  background-color: black;
+}
+
+#p {
+  color:MediumTurquoise;
+  background-color:blue;
+}
+
+#lb {
+  color:SteelBlue;
+  background-color: blue;
+}
+
+#r {
+  color:LightCoral;
+  background-color: FireBrick	;
+}
+
+#scav {
+  padding-top: 10px;
+}
+
+/* right stuff */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+#stattable, #scavTable {
+  width: 450px;
+}
+
+#yellowtxt {
+  color: #DAA520;
+}
+
+.whitetxt {
+  color: Khaki;
+}
+
+#heading {
+  background-color: #0000CD;
+}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #c0c0c0;
+    background-color: #383838;
+    width : 498px;
+}
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
     border: none;
-    overflow: hidden; /* if you don't want #second to wrap below #first */
+    color: white;
+    outline: none;
+    cursor: pointer;
+    padding: 6px 16px;
+    transition: 0.3s;
+    font-family: lucida console;
+    font-size: 12px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+    color: black;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.greenBar {
+  color: #66ff66;
+}
+
+.greyBar {
+  color: #505050;
+}
+
+.redBar {
+  color: red;
+}
+
+#greenBar, #greenBarHP {
+  color: #66ff66;
+}
+
+#greyBar, #greyBarHP {
+  color: #505050;
+}
+
+#redBar, #redBarHP {
+  color: red;
+}
+
+.link {
+  cursor:pointer;
+  color:Khaki;
+}
+
+.link:hover {
+  text-decoration:underline;
+}
+
+.link:actie {
+  color: PaleGoldenrod;
 }
