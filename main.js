@@ -295,7 +295,7 @@ function setupGame() {
 	refreshStats();
 	refreshActions();
 	refreshScavTable();
-
+	refreshHpBars();
 	loadGame();
 	window.mainLoop = setInterval(gameLoop, 10);
 }
