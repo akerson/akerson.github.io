@@ -1,5 +1,5 @@
 const Areas = {
-	BASEMENT : 0,
+	BASEMENT : "Basement",
 }
 
 const ItemType = {
@@ -28,9 +28,29 @@ const Actions = {
 	DROP : "Dropping...",
 }
 
+const Items = {
+	0 : new Item("stone",0.03,0.5,ItemType.COMPONENT, "a"),
+	1 : new Item("plank",0.15,0.4,ItemType.COMPONENT, "a"),
+	2 : new Item("trash",0.01,0.1,ItemType.COMPONENT, "some"),
+	3 : new Item("key",0.01,0.1,ItemType.COMPONENT, "a"),
+	4 : new Item("wristpad",0,0.1,ItemType.MISC,"a"),
+	5 : new Item("bottle of ammonia",0,0.5,ItemType.CHEMICAL,"a"),
+	6 : new Item("ashtray",0,0,ItemType.MISC,"an"),
+	7 : new Item("resistor",0,0,ItemType.COMPONENT,"a"),
+	8 : new Item("rat tail",0.15,0.5,ItemType.MISC,"a")
+}
+
+//I'd love to make a variable that is a dictionary to generate monsters by name -- so
+//enemy = Enemies["rat"] would make a new copy of HostileEnemy("rat",10,1200,10,0,5,1,8)
+//as all "rats" should ahve the same stats.
+
 var player;
 
-//player important variable
+//************************
+//all the template objects
+//************************
+
+//is this the right way to handle a player object? or would I just var player = function() {}?
 function Player() {
 	this.name = "You"
 	this.hp = 10;
@@ -62,15 +82,8 @@ function Player() {
 		craft : 0,
 		focus : 0,
 	},
-	this.equip = {
-		head : null,
-		hand : null,
-		body : null,
-		pants : null,
-		shoes : null,
-	}
 	this.addScavengeFind = function(item) {
-		//see if it's unique
+		//tabulates the list of items you've found for the scav discovery table
 		var areaName = player.area.name;
 		if (areaName in player.scavFound) {
 			if (!player.scavFound[areaName].includes(item)) {
@@ -80,6 +93,7 @@ function Player() {
 		else {
 			player.scavFound[areaName] = [item];
 		}
+		refreshScavTable();
 	}
 	this.addInventory = function(item) {
 		if (item in player.inventory) {
@@ -120,12 +134,6 @@ function Player() {
 		this.lasthit = 0;
 	}
 }
-
-var repopArea = function() {
-	//this function attempts to repopulate areas as a measure of setTimeout(function () {
-
-}
-
 
 function Area(name, description, scavTime, money, moneyPercent, scavMax, scavRepop, actions, mobs) {
 	this.name = name;
@@ -188,7 +196,7 @@ function Area(name, description, scavTime, money, moneyPercent, scavMax, scavRep
 			}
 		}
 	}
-	this.getDrop = function() {
+	this.getScavengeDrop = function() {
 		//If this is empty, return nothing
 		//TODO: add in a chance to fail at scav'ing, DIFFERENT from no items;
 		if (this.scavTable.length > 0) {
@@ -215,68 +223,6 @@ function Item(name, value, weight, type, article) {
   this.weight = weight;
   this.type = type;
 	this.article = article;
-}
-
-function refreshInventory() {
-	//make an array that kind of looks like This
-	//inv = {
-	//   "misc" : [[0,1],[2,1],[5,1]],
-	//   "clothing" : [[1,1]],
-	//}
-	var inv = {}
-	console.log(player.inventory);
-	for (const [itemID, num] of Object.entries(player.inventory)) {
-		//player.inventory is a dictionary in form [itemID,num]
-		category = itemLookup[itemID].type;
-		if (category in inv) {
-			inv[category].push([itemLookup[itemID].name,num,itemID]);
-		}
-		else {
-			inv[category] = [[itemLookup[itemID].name,num,itemID]];
-		}
-	}
-	//now we have to print it out
-	ele = document.getElementById("inventory");
-	ele.innerHTML = "<h3>Inventory</h3>"
-	for (const [cat, item] of Object.entries(inv)) {
-		ele.innerHTML += "<p><span id='yellowtxt'>" + cat + "</span></p>"
-		for (i=0;i<inv[cat].length;i++) {
-			ele.innerHTML += "[" + inv[cat][i][1] + "] <span onClick=\"startAction('drop'," + inv[cat][i][2].toString() +")\" class='link'>" + inv[cat][i][0] + "</span></br>"
-		}
-
-	}
-}
-
-function setupGame() {
-	player = new Player();
-	console.log(player);
-	console.log(player.actionTime)
-	document.getElementById("defaultOpen").click();
-	d = "You find yourself in a dimly lit basement.";
-	var newlvl = new Area(Areas.BASEMENT,d, 30000,100,25,10,5, [true, true, false]);
-	//in form of [ItemID,probability]
-	newlvl.addScavDrop([0,0])
-	newlvl.addScavDrop([1,1]);
-	newlvl.addScavDrop([2,2]);
-	newlvl.repopScav(5);
-	player.area = newlvl;
-	player.addInventory(4);
-	player.area.addFloorItem(5);
-	player.area.addFloorItem(6);
-	player.area.addFloorItem(7);
-	refreshMobs();
-}
-
-var itemLookup = {
-	0 : new Item("stone",0.03,0.5,ItemType.COMPONENT, "a"),
-	1 : new Item("plank",0.15,0.4,ItemType.COMPONENT, "a"),
-	2 : new Item("trash",0.01,0.1,ItemType.COMPONENT, "some"),
-	3 : new Item("key",0.01,0.1,ItemType.COMPONENT, "a"),
-	4 : new Item("wristpad",0,0.1,ItemType.MISC,"a"),
-	5 : new Item("bottle of ammonia",0,0.5,ItemType.CHEMICAL,"a"),
-	6 : new Item("ashtray",0,0,ItemType.MISC,"an"),
-	7 : new Item("resistor",0,0,ItemType.COMPONENT,"a"),
-	8 : new Item("rat tail",0.15,0.5,ItemType.MISC,"a")
 }
 
 function HostileEnemy(name,hp,spd,dodge,soak,hit,dmg,part) {
@@ -321,52 +267,84 @@ function HostileEnemy(name,hp,spd,dodge,soak,hit,dmg,part) {
 	}
 }
 
+//*****************
+//Game running code
+//*****************
+
+var repopArea = function() {
+	//TODO: this will eventually repopulate areas with scavenges and monsters based off elapsed time
+}
+
+function setupGame() {
+	//I feel like this is a terrible way to initialize your game....
+	player = new Player();
+	document.getElementById("defaultOpen").click(); //make sure a tab starts open
+	d = "You find yourself in a dimly lit basement.";
+	var newlvl = new Area(Areas.BASEMENT,d, 30000,100,25,10,5, [true, true, false]);
+	//in form of [ItemID,probability]
+	newlvl.addScavDrop([0,0])
+	newlvl.addScavDrop([1,1]);
+	newlvl.addScavDrop([2,2]);
+	newlvl.repopScav(5);
+	player.area = newlvl;
+	player.addInventory(4);
+	player.area.addFloorItem(5);
+	player.area.addFloorItem(6);
+	player.area.addFloorItem(7);
+	refreshMobs();
+	refreshStats();
+	refreshActions();
+	refreshScavTable();
+
+	loadGame();
+	window.mainLoop = setInterval(gameLoop, 10);
+}
+
 function gameLoop() {
-	if (player.actionTime[1] < Date.now()) {
-		//we finished our action!
+	if (player.actionTime[1] < Date.now()) { //we finished our action!
 		if (player.currentAction == Actions.SCAVENGE) {
-			executeAction(Actions.SCAVENGE);
-			player.currentAction = Actions.NONE;
+			scavenge();
 		}
 		if (player.currentAction == Actions.FIGHT) {
-			Combat(player,player.actionTarget);
+			combat(player,player.actionTarget);
 		}
 		if (player.currentAction == Actions.GRAB) {
 			var itemID = player.area.floorItems[player.actionTarget];
 			player.addInventory(itemID);
 			player.area.removeFloorItem(player.actionTarget);
-			var item = itemLookup[itemID];
+			var item = Items[itemID];
 			addLog("You pick up " + item.article + " " + item.name + ".")
-			player.currentAction = Actions.NONE;
 		}
 		if (player.currentAction == Actions.BUTCHER) {
 			var deadThing = player.area.floorDeadThings[player.actionTarget];
 			var part = deadThing.butcher();
 			player.addInventory(part);
 			player.area.removeDeadThing(player.actionTarget);
-			var item = itemLookup[part];
+			var item = Items[part];
 			addLog("You hack off " + item.article + " " + item.name + " from the " + deadThing.name + ".");
-			player.currentAction = Actions.NONE;
 		}
 		if (player.currentAction == Actions.DROP) {
 			//drop an item based off ItemID
 			player.dropItem(player.actionTarget);
-			var item = itemLookup[player.actionTarget];
+			var item = Items[player.actionTarget];
 			addLog("You dropped " +  item.article + " " + item.name + " on the floor.");
+		}
+		if (player.currentAction != Actions.FIGHT) {
+			//fight is the only constant repeat...
 			player.currentAction = Actions.NONE;
 		}
 	}
 	//check if enemies need to fight
 	for (var i=0;i<player.area.mobs.length;i++) {
 		if (player.area.mobs[i].currentAction == Actions.FIGHT && player.area.mobs[i].actionTime[1] < Date.now()) {
-			Combat(player.area.mobs[i],player);
+			combat(player.area.mobs[i],player);
 		}
 	}
 	saveGame();
-	refreshGame();
+	refreshActionProgressBar();
 }
 
-function Combat(attacker, defender) {
+function combat(attacker, defender) {
 	//checks combat actions
 	target = attacker.actionTarget;
 	hit = attacker.getHit() + roll(3,6);
@@ -395,16 +373,16 @@ function Combat(attacker, defender) {
 		defender.die();
 		player.area.cleanUp();
 	}
+	refreshHpBars();
 }
 
+//is there a better state machine strictire for this kind of system??
 function startAction(action,target) {
 	//called whenever a player clicks on a "link"
-	console.log(action);
 	if (action == "scav") {
 		if (player.currentAction == Actions.NONE) {
 			player.currentAction = Actions.SCAVENGE;
-			//set when it'll be complete
-			player.actionTime[0] = Date.now(); //this is to have a percentage
+			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 500;
 			addLog("You start scavenging...");
 		}
@@ -419,6 +397,10 @@ function startAction(action,target) {
 			player.actionTarget = player.area.mobs[target];
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now()+player.spd;
+			addLog("You launch an attack!");
+		}
+		else if (player.currentAction == Actions.FIGHT) {
+			addLog("You have to finish this fight first!");
 		}
 	}
 	else if (action == "grab") {
@@ -435,6 +417,11 @@ function startAction(action,target) {
 			player.actionTarget = target;
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 10000;
+			addLog("You start butchering the carcass...");
+		}
+		else if (player.currentAction == Actions.BUTCHER) {
+			player.currentAction = Actions.NONE;
+			addLog("You stop butchering.");
 		}
 	}
 	else if (action == "drop") {
@@ -447,19 +434,15 @@ function startAction(action,target) {
 	}
 }
 
-function executeAction(action) {
-	if (action == Actions.SCAVENGE) {
-		var numTimes = 1;
-		var newitem = player.area.getDrop(); //this returns a numberID
-		if (newitem != null) {
-			player.addScavengeFind(newitem);
-			player.addInventory(newitem);
-			var item = itemLookup[newitem];
-			addLog("You dig around the ground and find a " + item.name + "!");
-		}
-		else {
-			addLog("You search around, but it looks like there's nothing here.");
-		}
+function scavenge() {
+	var newitem = player.area.getScavengeDrop(); //this returns a numberID
+	if (newitem != null) {
+		player.addScavengeFind(newitem);
+		player.addInventory(newitem);
+		addLog("You dig around the ground and find a " + Items[newitem].name + "!");
+	}
+	else {
+		addLog("You search around, but it looks like there's nothing here.");
 	}
 }
 
@@ -471,31 +454,16 @@ function addLog(s) {
 }
 
 function loadGame() {
-	/*var saveplayer = JSON.parse(localStorage.getItem('save'));
-	if (saveplayer !== null) {
-		//if (typeof saveplayer.scavFound !== "undefined") player.scavFound = saveplayer.scavFound;
-	}*/
-	setupGame();
-	window.mainLoop = setInterval(gameLoop, 10);
+	//this will eventually have the save/load code when I'm far enough along that it makes sense
 }
 
 function saveGame() {
-	/*var saveplayer = JSON.stringify(player)
-	localStorage.setItem('save',saveplayer);*/
+	//this will eventually have the save code when I'm far enough along that it makes sense
 }
 
 //********************
 //Make the game pretty
 //********************
-
-function refreshGame() {
-	refreshStats();
-	refreshActions();
-	refreshScavTable();
-	refreshAction();
-	//refreshMobs(); This HAS to be whenever done, not every time as the constant refresh messes with the on-click
-	refreshHpBars();
-}
 
 function refreshMobs() {
 	var ele = document.getElementById("mobs");
@@ -551,7 +519,7 @@ function refreshScavTable() {
 		var cell2 = row.insertCell(-1);
 		var cell3 = row.insertCell(-1);
 		if (areaName in player.scavFound && player.scavFound[areaName].includes(itemID)) {
-			cell1.innerHTML = itemLookup[itemID].name;
+			cell1.innerHTML = Items[itemID].name;
 		}
 		else {
 			cell1.innerHTML = "???"
@@ -585,7 +553,7 @@ function refreshHpBars() {
 	}
 }
 
-function refreshAction() {
+function refreshActionProgressBar() {
 	var actionTxt = document.getElementById("action");
 	if (player.currentAction == Actions.NONE) {
 		actionTxt.innerHTML = "None!"
@@ -608,7 +576,7 @@ function refreshAreaFloor() {
 	if (player.area.floorItems.length > 0) {
 		ele.innerHTML += "You see "
 		for (var i=0;i<player.area.floorItems.length;i++) {
-			var item = itemLookup[player.area.floorItems[i]]
+			var item = Items[player.area.floorItems[i]]
 			if (i+1 == player.area.floorItems.length) {
 				ele.innerHTML += "and "
 			}
@@ -637,6 +605,37 @@ function refreshDeadThings() {
 	}
 }
 
+function refreshInventory() {
+	//makes an array in this form
+	//inv = {
+	//   "misc" : [[0,1],[2,1],[5,1]],
+	//   "clothing" : [[1,1]],
+	//}
+	//where [itemID,count]
+	var inv = {}
+	console.log(player.inventory);
+	for (const [itemID, num] of Object.entries(player.inventory)) {
+		//player.inventory is a dictionary in form [itemID,num]
+		category = Items[itemID].type;
+		if (category in inv) {
+			inv[category].push([Items[itemID].name,num,itemID]);
+		}
+		else {
+			inv[category] = [[Items[itemID].name,num,itemID]];
+		}
+	}
+	//now we have to print it out
+	ele = document.getElementById("inventory");
+	ele.innerHTML = "<h3>Inventory</h3>"
+	for (const [cat, item] of Object.entries(inv)) {
+		ele.innerHTML += "<p><span id='yellowtxt'>" + cat + "</span></p>"
+		for (i=0;i<inv[cat].length;i++) {
+			ele.innerHTML += "[" + inv[cat][i][1] + "] <span onClick=\"startAction('drop'," + inv[cat][i][2].toString() +")\" class='link'>" + inv[cat][i][0] + "</span></br>"
+		}
+
+	}
+}
+
 //*************************
 //Misc functions that exist
 //*************************
@@ -647,7 +646,7 @@ function msToTime(duration) {
     minutes = (minutes < 10) ? "0" + minutes : minutes;
     seconds = (seconds < 10) ? "0" + seconds : seconds;
     return minutes + ":" + seconds;
-}
+} //not used but might later?
 
 function openTab(evt, tab) {
     // Declare all variables
