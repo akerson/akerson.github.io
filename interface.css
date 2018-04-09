@@ -11,13 +11,14 @@ table {
     font-size: 12px;
 }
 
-fieldset {
+.log {
     border: 1px solid #c0c0c0;
     margin: 0 2px;
     height: 300px;
     padding: 0.35em 0.625em 0.75em;
     background-color: #383838;
 }
+
 
 h3 {
   padding: 0px;
@@ -58,28 +59,32 @@ hr {
   float:left;
 }
 
-#area-desc {
+#area-info {
   width:700px;
   float : left;
 }
 
+.boldtxt {
+  font-weight: bold;
+}
+
 /* ascii map colors */
-#b {
+.d {
   color: Navy;
   background-color: black;
 }
 
-#p {
+.p {
   color:MediumTurquoise;
   background-color:blue;
 }
 
-#lb {
+.b {
   color:SteelBlue;
   background-color: blue;
 }
 
-#r {
+.r {
   color:LightCoral;
   background-color: FireBrick	;
 }
@@ -100,7 +105,7 @@ hr {
   width: 450px;
 }
 
-#yellowtxt {
+.yellowtxt {
   color: #DAA520;
 }
 

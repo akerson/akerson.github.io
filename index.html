@@ -6,19 +6,12 @@
 <h1>Dust and Ashes</h1>
 <div id="topDiv">
   <div id="area-map">
-    <table>
-    <tr><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="r">^^</td><td id="b">:(</td></tr>
-    <tr><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="lb">|o</td><td id="b">:(</td></tr>
-    <tr><td id="b">:(</td><td id="b">:(</td><td id="p">()</td><td id="lb">/]</td><td id="b">:(</td></tr>
-    <tr><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td></tr>
-    <tr><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td><td id="b">:(</td></tr>
-    </table>
+    <table id="area-map-table"></table>
   </div>
-  <div id="area-desc">
-    <b>Basement</b></br>
-    <b>Cramped Tunnel (????)</b>
-    <p>
-    This dark space is very familiar, although you can't remember why you'd find it that way. The dirt-laden floors contain debris from previous tenant's, and you can't seem to find a way out just yet. The tunnel you're in is cramped, and starting to feel suffocating.
+  <div id="area-info">
+    <div class="boldtxt" id="area-name"></div>
+    <div class="boldtxt" id="area-sub"></div>
+    <p><div id="area-desc"></div></p>
   </div>
 </div>
 <div style="border: 1px solid gray; width: 913px;"></div>
@@ -26,7 +19,7 @@
   <p>Hit Points: [<span id="greenBarHP"></span><span id="redBarHP"></span><span id="greyBarHP"></span>] [<span id="playerHP">10</span>/<span id="playerHPmax">10</span>]</p>
   <p>Current Action: <span id="action">None</span> [<span id="greenBar"></span><span id="greyBar">----------</span>]</p>
   <div id="Status">
-    <fieldset>
+    <fieldset class="log">
     <legend>Status</legend>
     <div id="logFlow">
       <table id="logTable">
@@ -36,6 +29,7 @@
   </div>
 </div>
 <div id="rightDiv">
+  <fieldset><legend>Examine</legend><div id="examine">Nothing currently selected.</div></fieldset></br>
   <!--Area info, equipment, inventory, status-->
   <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'area')" id="defaultOpen">Area</button>
@@ -68,16 +62,22 @@
     </div>
     <div id="area" class="tabcontent">
       <h3>Basement</h3>
-      <p><span id="yellowtxt">[ Exits: </span>east(dirt hole)<span id="yellowtxt"> ]</span></p>
-      <p><span id="yellowtxt">[ Actions: </span><span onClick="startAction('scav',0)" class="link" id="scavAction">Scavenge</span><span id="yellowtxt"> ]</span></p>
+      <p><div id="exits"><span class="yellowtxt">[ Exits: </span>east(dirt hole)<span class="yellowtxt"> ]</span></div></p>
+      <p><div id="actions"></div></p>
       <p><div id="floorItems"></div></p>
       <p><div id="floorDead"></div></p>
-      <div id="mobs"></div>
+      <div id="mobs">
+        <div id="mobHeader"></div>
+        <div id="mobList"></div>
+      </div>
       <p>
       <p><h3>Scavenge List</h3></p>
       <table id="scavTable"></table>
     </div>
-    <div id="inventory" class="tabcontent"></div>
+    <div id="inventory" class="tabcontent">
+      <h3>Inventory</h3>
+      <div id="inventoryList"></div>
+    </div>
   </div>
 </div>
 <script type="text/javascript" src="main.js"></script>
