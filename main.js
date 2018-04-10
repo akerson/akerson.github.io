@@ -15,6 +15,7 @@ const ItemType = {
 	NONE : "None",
 	MISC : "Misc.",
 	CHEMICAL : "Chemical",
+	CORPSE : "Corpse",
 }
 
 const ItemRarity = {
@@ -49,6 +50,7 @@ const ItemDB = {
 	9 : new Item("stone",0.03,0.5,ItemType.COMPONENT, "a","stones","A small stone, probably leftover debris from the crumbling infrastructure."),
 	10 : new Item("cinderblock",0.15,0.5,ItemType.MISC,"a", "cinderblocks", "A large, slightly crumbling, cinder block. It's heavy!"),
 	11 : new Item("packet of sugar",0.15,0.5,ItemType.CHEMICAL,"a", "packets of sugar", "A small packet of white crystals, and not the meth kind. You think it was used in cooking."),
+	12 : new Item("dead rat",0.15,0.5,ItemType.CORPSE,"a","dead rats","The lifeless body of a dead rat. Haven't you seen a dead rat before?"),
 }
 
 const Enemies = {
@@ -97,6 +99,18 @@ function itemPrep() {
 		addLog("Your credit chip shows: $500");
 		addLog("The time is: " + time.getHours() + ":" + time.getMinutes());
 		addLog("Your wristpad boots up.");
+	}
+	player.addInventory(4);
+	ItemDB[12].actions.push(Actions.BUTCHER);
+	ItemDB[12].butcher = function(area) {
+		player.addInventory(8);
+		if (area === "floor") {
+			player.area.removeFloorItem(12);
+		}
+		else if (area === "inventory") {
+			player.removeInventory(12);
+		}
+		addLog("You butchered the rat and managed to get 1 rat tail.");
 	}
 }
 
@@ -163,11 +177,16 @@ Player.prototype.addInventory = function(item) {
 	refreshInventory();
 }
 
-Player.prototype.dropItem = function(item) {
+Player.prototype.removeInventory = function(item) {
 	this.inventory[item] -= 1;
 	if (this.inventory[item] === 0) {
 		delete this.inventory[item];
 	}
+	refreshInventory();
+}
+
+Player.prototype.dropItem = function(item) {
+	this.removeInventory(item);
 	this.area.addFloorItem(item);
 	refreshInventory();
 }
@@ -214,7 +233,7 @@ function LoadAreas() {
 	AreaDB[Areas.BASEMENT].uncDrops = [1];
 	AreaDB[Areas.BASEMENT].rareDrops = [2];
 	AreaDB[Areas.BASEMENT].repopScav(5);
-	AreaDB[Areas.BASEMENT].floorItems = [5,6,7];
+	AreaDB[Areas.BASEMENT].floorItems = {5:1,6:1,7:1};
 	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
 	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
 	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
@@ -228,7 +247,7 @@ function LoadAreas() {
 	AreaDB[Areas.BASEMENT1].uncDrops = [1];
 	AreaDB[Areas.BASEMENT1].rareDrops = [2];
 	AreaDB[Areas.BASEMENT1].repopScav(5);
-	AreaDB[Areas.BASEMENT1].floorItems = [1,2];
+	AreaDB[Areas.BASEMENT1].floorItems = {1:1,2:1};
 	AreaDB[Areas.BASEMENT1].addEnemy(enemyGenerator(Enemies.RAT));
 	AreaDB[Areas.BASEMENT1].map = mapGenerator(Areas.BASEMENT,2,3);
 	AreaDB[Areas.BASEMENT1].actions = [Actions.SIT,Actions.SCAVENGE];
@@ -240,7 +259,7 @@ function LoadAreas() {
 	AreaDB[Areas.BASEMENT2].uncDrops = [1];
 	AreaDB[Areas.BASEMENT2].rareDrops = [2];
 	AreaDB[Areas.BASEMENT2].repopScav(4);
-	AreaDB[Areas.BASEMENT2].floorItems = [3,3,3,3];
+	AreaDB[Areas.BASEMENT2].floorItems = {3:4};
 	AreaDB[Areas.BASEMENT2].map = mapGenerator(Areas.BASEMENT,3,3);
 	AreaDB[Areas.BASEMENT2].actions = [Actions.SIT,Actions.SCAVENGE];
 	AreaDB[Areas.BASEMENT2].exits = [["north",Areas.BASEMENT4],["west",Areas.BASEMENT1],["south",Areas.BASEMENT3]];
@@ -251,7 +270,7 @@ function LoadAreas() {
 	AreaDB[Areas.BASEMENT3].uncDrops = [1];
 	AreaDB[Areas.BASEMENT3].rareDrops = [2];
 	AreaDB[Areas.BASEMENT3].repopScav(5);
-	AreaDB[Areas.BASEMENT3].floorItems = [11,10,5];
+	AreaDB[Areas.BASEMENT3].floorItems = {11:2,10:1,5:1};
 	AreaDB[Areas.BASEMENT1].addEnemy(enemyGenerator(Enemies.RAT));
 	AreaDB[Areas.BASEMENT3].map = mapGenerator(Areas.BASEMENT,3,4);
 	AreaDB[Areas.BASEMENT3].actions = [Actions.SIT,Actions.SCAVENGE];
@@ -269,7 +288,7 @@ function LoadAreas() {
 	AreaDB[Areas.BASEMENT5].uncDrops = [1];
 	AreaDB[Areas.BASEMENT5].rareDrops = [2];
 	AreaDB[Areas.BASEMENT5].repopScav(10);
-	AreaDB[Areas.BASEMENT5].floorItems = [3];
+	AreaDB[Areas.BASEMENT5].floorItems = {3:1};
 	AreaDB[Areas.BASEMENT5].addEnemy(enemyGenerator(Enemies.RAT));
 	AreaDB[Areas.BASEMENT5].map = mapGenerator(Areas.BASEMENT,2,2);
 	AreaDB[Areas.BASEMENT5].actions = [Actions.SIT,Actions.SCAVENGE];
@@ -284,13 +303,17 @@ function Area(name) {
 	this.uncDrops = [];
 	this.rareDrops = [];
 	this.scavTable = []; //list of all the stuff the player can CURRENTLY scav (not the full list of scav'able things)
-	this.floorItems = [];
-	this.floorDeadThings = [];
+	this.floorItems = {};
 	this.mobs = [];
 }
 
 Area.prototype.addFloorItem = function(item) {
-	this.floorItems.push(item);
+	if (item in this.floorItems) {
+		this.floorItems[item] += 1;
+	}
+	else {
+		this.floorItems[item] = 1;
+	}
 	refreshAreaFloor();
 }
 
@@ -309,12 +332,10 @@ Area.prototype.swapSitStand = function() {
 }
 
 Area.prototype.removeFloorItem = function(item) {
-	this.floorItems.forEach((invItem,i) => {
-		if (item == invItem) {
-			this.floorItems.splice(i,i+1);
-			return;
-		}
-	});
+	this.floorItems[item] -= 1;
+	if (this.floorItems[item] === 0) {
+		delete this.floorItems[item];
+	}
 	refreshAreaFloor();
 }
 
@@ -335,13 +356,7 @@ Area.prototype.addEnemy = function(enemy) {
 }
 
 Area.prototype.addDeadThings = function(body) {
-	this.floorDeadThings.push(body);
-	refreshDeadThings();
-}
-
-Area.prototype.removeDeadThing = function(loc) {
-	this.floorDeadThings.splice(loc,1);
-	refreshDeadThings();
+	this.addFloorItem(12);
 }
 
 Area.prototype.repopScav = function(numTimes) {
@@ -447,17 +462,19 @@ function examineBox() {
 	this.description = null;
 	this.actions = null;
 	this.availableActions = {
-		"floor" : [Actions.GRAB],
-		"inventory" : [Actions.DROP,Actions.USE],
+		"floor" : [Actions.GRAB,Actions.BUTCHER],
+		"inventory" : [Actions.DROP,Actions.USE,Actions.BUTCHER],
 	}
 	this.update = function(area,itemID) {
+		console.log(area,itemID);
 		this.examining = itemID;
 		this.itemname = ItemDB[itemID].name;
 		this.description = ItemDB[itemID].description;
 		this.actions = [];
+		this.actionFrom = area;
 		this.availableActions[area].forEach((action,_) => {
-			console.log(ItemDB[itemID].actions);
 			if (ItemDB[itemID].actions.includes(action)) {
+				console.log(action);
 				this.actions.push(action);
 			}
 		});
@@ -558,12 +575,10 @@ function gameLoop() {
 			examine.clear();
 		}
 		if (player.currentAction === Actions.BUTCHER) {
-			const deadThing = player.area.floorDeadThings[player.actionTarget];
-			const part = deadThing.butcher();
-			player.addInventory(part);
-			player.area.removeDeadThing(player.actionTarget);
-			const item = ItemDB[part];
-			addLog("You hack off " + item.article + " " + item.name + " from the " + deadThing.name + ".");
+			const deadThingID = player.actionTarget;
+			const item = ItemDB[deadThingID];
+			item.butcher(player.actionLocation);
+			examine.clear();
 		}
 		if (player.currentAction === Actions.DROP) {
 			//drop an item based off ItemID
@@ -682,6 +697,7 @@ function startAction(action) {
 		if (player.currentAction === Actions.NONE) {
 			player.currentAction = Actions.BUTCHER;
 			player.actionTarget = examine.examining;
+			player.actionLocation = examine.actionFrom;
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 10000;
 			addLog("You start butchering the carcass...");
@@ -963,52 +979,35 @@ function refreshAreaFloor() {
 	//fix the floor text
 	const floorDiv = document.getElementById("floorItems")
 	floorDiv.innerHTML = "";
-	return (() => {
-		if (player.area.floorItems.length > 0) {
-			floorDiv.textContent += "You see ";
-			player.area.floorItems.forEach((item,i) => {
-				const itemSpan = floorDiv.appendChild(document.createElement('span'));
-				itemSpan.classList.add("link");
-				itemSpan.setAttribute("itemID",item)
-				itemSpan.textContent = formattedItem(item,1);
-				let delimiter = ""
-				if (i+2 === player.area.floorItems.length) { //second last element needs the and
-					if (player.area.floorItems.length === 2) {
-						delimiter = document.createTextNode(" and ");
-					}
-					else {
-						delimiter = document.createTextNode(", and ");
-					}
-				}
-				else {
-					delimiter = document.createTextNode(", ");
-				}
-				floorDiv.appendChild(delimiter);
-			});
-			floorDiv.removeChild(floorDiv.lastChild);
-			floorDiv.innerHTML += " on the floor."
+	let empty = true;
+	floorDiv.textContent += "You see ";
+	for (const [itemID, count] of Object.entries(player.area.floorItems)) {
+		console.log(itemID,count);
+		empty = false;
+		const itemSpan = floorDiv.appendChild(document.createElement('span'));
+		itemSpan.classList.add("link");
+		itemSpan.setAttribute("itemID",itemID)
+		itemSpan.textContent = formattedItem(itemID,count);
+		let delimiter = ""
+		if (i+2 === player.area.floorItems.length) { //second last element needs the and
+			if (player.area.floorItems.length === 2) {
+				delimiter = document.createTextNode(" and ");
+			}
+			else {
+				delimiter = document.createTextNode(", and ");
+			}
 		}
 		else {
-			floorDiv.textContent += "There is nothing on the floor."
+			delimiter = document.createTextNode(", ");
 		}
-	})();
-}
-
-function refreshDeadThings() {
-	const ele = document.getElementById("floorDead")
-	ele.innerHTML = "";
-	if (player.area.floorDeadThings.length > 0) {
-		ele.innerHTML += "You see the corpse"
-		if (player.area.floorDeadThings.length > 1) {
-			ele.innerHTML += "s"
-		}
-		ele.innerHTML += " of "
-		for (var i=0;i<player.area.floorDeadThings.length;i++) {
-			const deadThing = player.area.floorDeadThings[i];
-			ele.innerHTML += "a <span onClick=\"startAction('butcher',"+i.toString()+")\" class='link'>" + deadThing.name + "</span>, "
-		}
-		ele.innerHTML = ele.innerHTML.slice(0,-2);
-		ele.innerHTML += " on the floor."
+		floorDiv.appendChild(delimiter);
+	};
+	if (empty) {
+		floorDiv.textContent = "There is nothing on the floor."
+	}
+	else {
+		floorDiv.removeChild(floorDiv.lastChild);
+		floorDiv.innerHTML += " on the floor."
 	}
 }
 
