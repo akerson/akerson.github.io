@@ -1,5 +1,10 @@
 const Areas = {
 	BASEMENT : "Basement",
+	BASEMENT1 : "Basement1",
+	BASEMENT2 : "Basement2",
+	BASEMENT3 : "Basement3",
+	BASEMENT4 : "Basement4",
+	BASEMENT5 : "Basement5",
 }
 
 const ItemType = {
@@ -29,6 +34,7 @@ const Actions = {
 	SIT : ["Sitting down...","Sit"],
 	STAND : ["Standing up...","Stand"],
 	USE : ["Using item...","Use"],
+	MOVE : ["Moving...","Move"],
 }
 
 const ItemDB = {
@@ -41,6 +47,8 @@ const ItemDB = {
 	7 : new Item("resistor",0,0,ItemType.COMPONENT,"a", "resistors", "A small electrical component used in various electronics."),
 	8 : new Item("rat tail",0.15,0.5,ItemType.MISC,"a", "rat tails", "The cut off tail of a rat (you savage!)"),
 	9 : new Item("stone",0.03,0.5,ItemType.COMPONENT, "a","stones","A small stone, probably leftover debris from the crumbling infrastructure."),
+	10 : new Item("cinderblock",0.15,0.5,ItemType.MISC,"a", "cinderblocks", "A large, slightly crumbling, cinder block. It's heavy!"),
+	11 : new Item("packet of sugar",0.15,0.5,ItemType.CHEMICAL,"a", "packets of sugar", "A small packet of white crystals, and not the meth kind. You think it was used in cooking."),
 }
 
 const Enemies = {
@@ -54,25 +62,26 @@ const mapGenerator = (() => {
 	    map: [
 				["d:(","d:(","d:(","d:(","d:(","d:("],
 				["d:(","d:(","d:(","d:(","d:(","d:("],
-				["d:(","d:(","d:(","r^^","d:(","d:("],
-				["d:(","d:(","d:(","b|o","d:(","d:("],
-				["d:(","d:(","b[-","b/]","d:(","d:("],
+				["d:(","d:(","b||","r^^","d:(","d:("],
+				["d:(","d:(","b|'","bo|","d:(","d:("],
+				["d:(","d:(","bL.","b,]","d:(","d:("],
 				["d:(","d:(","d:(","d:(","d:(","d:("],
 				["d:(","d:(","d:(","d:(","d:(","d:("],
 			],
 		},
 	// other enemies
-];
+	];
 	return (typeParam,x,y) => {
 	  const foundMap = this.maps.find(({ type }) => type === typeParam).map;
-		const mapSizeX = foundMap[0].length;
-		const mapSizeY = foundMap.length;
+		const newMap = JSON.parse(JSON.stringify(foundMap)); //this is a fast way to make a copy not a reference to the map
+		const mapSizeX = newMap[0].length;
+		const mapSizeY = newMap.length;
 		//locate the center x and center y that still is a 5x5
 		//bump out the sides and splice
 		const xAdj = x-Math.max(0,x+2-mapSizeX)-Math.min(0,x-2);
 		const yAdj = y-Math.max(0,y+2-mapSizeY)-Math.min(0,y-2);
-		foundMap[y][x] = "p()";
-		return (foundMap.slice(yAdj-2,yAdj+3).map( function(row){ return row.slice(xAdj-2,xAdj+3); }));
+		newMap[y][x] = "p()";
+		return (newMap.slice(yAdj-2,yAdj+3).map( function(row){ return row.slice(xAdj-2,xAdj+3); }));
 	}
 })();
 
@@ -189,22 +198,84 @@ Player.prototype.die = function() {
 	this.lasthit = 0;
 }
 
-function LoadAreas() {
-	const area = new Area(Areas.BASEMENT)
-	area.area = "Basement Corner (basement)"
-	area.description = "The air is musky, with debris scattered around the dirt floor. This dark space is very familiar, although you can't remember why you'd find it that way."
-	area.comDrops = [9];
-	area.uncDrops = [1];
-	area.rareDrops = [2];
-	area.repopScav(5);
-	area.floorItems = [5,6,7];
-	area.addEnemy(enemyGenerator(Enemies.RAT));
-	area.addEnemy(enemyGenerator(Enemies.RAT));
-	area.addEnemy(enemyGenerator(Enemies.RAT));
-	area.map = mapGenerator(Areas.BASEMENT,2,4);
-	area.actions = [Actions.SIT,Actions.SCAVENGE];
+const AreaDB = {
+	"Basement" : new Area(Areas.BASEMENT),
+	"Basement1" : new Area(Areas.BASEMENT1),
+	"Basement2" : new Area(Areas.BASEMENT2),
+	"Basement3" : new Area(Areas.BASEMENT3),
+	"Basement4" : new Area(Areas.BASEMENT4),
+	"Basement5" : new Area(Areas.BASEMENT5),
+}
 
-	player.area = area;
+function LoadAreas() {
+	AreaDB[Areas.BASEMENT].area = "Southwest Corner (basement)"
+	AreaDB[Areas.BASEMENT].description = "The air is musky, with debris scattered around the dirt floor. This dark space is very familiar, although you can't remember why you'd find it that way."
+	AreaDB[Areas.BASEMENT].comDrops = [9];
+	AreaDB[Areas.BASEMENT].uncDrops = [1];
+	AreaDB[Areas.BASEMENT].rareDrops = [2];
+	AreaDB[Areas.BASEMENT].repopScav(5);
+	AreaDB[Areas.BASEMENT].floorItems = [5,6,7];
+	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
+	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
+	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
+	AreaDB[Areas.BASEMENT].map = mapGenerator(Areas.BASEMENT,2,4);
+	AreaDB[Areas.BASEMENT].actions = [Actions.SIT,Actions.SCAVENGE];
+	AreaDB[Areas.BASEMENT].exits = [["north",Areas.BASEMENT1],["east",Areas.BASEMENT3]];
+
+	AreaDB[Areas.BASEMENT1].area = "Basement West Wall (basement)"
+	AreaDB[Areas.BASEMENT1].description = "Dirt makes up the whole floor. To the north you see a cramped hole that you might be able to squeeze in."
+	AreaDB[Areas.BASEMENT1].comDrops = [9];
+	AreaDB[Areas.BASEMENT1].uncDrops = [1];
+	AreaDB[Areas.BASEMENT1].rareDrops = [2];
+	AreaDB[Areas.BASEMENT1].repopScav(5);
+	AreaDB[Areas.BASEMENT1].floorItems = [1,2];
+	AreaDB[Areas.BASEMENT1].addEnemy(enemyGenerator(Enemies.RAT));
+	AreaDB[Areas.BASEMENT1].map = mapGenerator(Areas.BASEMENT,2,3);
+	AreaDB[Areas.BASEMENT1].actions = [Actions.SIT,Actions.SCAVENGE];
+	AreaDB[Areas.BASEMENT1].exits = [["north (hole)",Areas.BASEMENT5],["south",Areas.BASEMENT],["east",Areas.BASEMENT2]];
+
+	AreaDB[Areas.BASEMENT2].area = "Basement Corner (basement)"
+	AreaDB[Areas.BASEMENT2].description = "The air is musky, with debris scattered around the dirt floor. This dark space is very familiar, although you can't remember why you'd find it that way."
+	AreaDB[Areas.BASEMENT2].comDrops = [9];
+	AreaDB[Areas.BASEMENT2].uncDrops = [1];
+	AreaDB[Areas.BASEMENT2].rareDrops = [2];
+	AreaDB[Areas.BASEMENT2].repopScav(4);
+	AreaDB[Areas.BASEMENT2].floorItems = [3,3,3,3];
+	AreaDB[Areas.BASEMENT2].map = mapGenerator(Areas.BASEMENT,3,3);
+	AreaDB[Areas.BASEMENT2].actions = [Actions.SIT,Actions.SCAVENGE];
+	AreaDB[Areas.BASEMENT2].exits = [["north",Areas.BASEMENT4],["west",Areas.BASEMENT1],["south",Areas.BASEMENT3]];
+
+	AreaDB[Areas.BASEMENT3].area = "Southeast Corner (basement)"
+	AreaDB[Areas.BASEMENT3].description = "There's a large pile of dirty laundry and a washing machine in the corner. Same dirt floors -- what a terrible place to do laundry."
+	AreaDB[Areas.BASEMENT3].comDrops = [9];
+	AreaDB[Areas.BASEMENT3].uncDrops = [1];
+	AreaDB[Areas.BASEMENT3].rareDrops = [2];
+	AreaDB[Areas.BASEMENT3].repopScav(5);
+	AreaDB[Areas.BASEMENT3].floorItems = [11,10,5];
+	AreaDB[Areas.BASEMENT1].addEnemy(enemyGenerator(Enemies.RAT));
+	AreaDB[Areas.BASEMENT3].map = mapGenerator(Areas.BASEMENT,3,4);
+	AreaDB[Areas.BASEMENT3].actions = [Actions.SIT,Actions.SCAVENGE];
+	AreaDB[Areas.BASEMENT3].exits = [["west",Areas.BASEMENT],["north",Areas.BASEMENT2]];
+
+	AreaDB[Areas.BASEMENT4].area = "Staircase (basement)"
+	AreaDB[Areas.BASEMENT4].description = "The stairs seem to lead up, although there's a locked door (and even if you had the key, the content isn't done yet!)"
+	AreaDB[Areas.BASEMENT4].map = mapGenerator(Areas.BASEMENT,3,2);
+	AreaDB[Areas.BASEMENT4].actions = [Actions.SIT,Actions.SCAVENGE];
+	AreaDB[Areas.BASEMENT4].exits = [["south",Areas.BASEMENT2]];
+
+	AreaDB[Areas.BASEMENT5].area = "Basement Cubby (basement)"
+	AreaDB[Areas.BASEMENT5].description = "The area is tight and cramped, but it looks man-made. Almost shoveled out."
+	AreaDB[Areas.BASEMENT5].comDrops = [9];
+	AreaDB[Areas.BASEMENT5].uncDrops = [1];
+	AreaDB[Areas.BASEMENT5].rareDrops = [2];
+	AreaDB[Areas.BASEMENT5].repopScav(10);
+	AreaDB[Areas.BASEMENT5].floorItems = [3];
+	AreaDB[Areas.BASEMENT5].addEnemy(enemyGenerator(Enemies.RAT));
+	AreaDB[Areas.BASEMENT5].map = mapGenerator(Areas.BASEMENT,2,2);
+	AreaDB[Areas.BASEMENT5].actions = [Actions.SIT,Actions.SCAVENGE];
+	AreaDB[Areas.BASEMENT5].exits = [["south",Areas.BASEMENT1]];
+
+	player.area = AreaDB[Areas.BASEMENT];
 }
 
 function Area(name) {
@@ -447,10 +518,12 @@ function setupGame() {
 	itemPrep();
 	LoadAreas();
 	refreshMobs();
+	refreshAreaFloor();
 	refreshStats();
 	refreshActions();
 	refreshScavTable();
 	refreshHpBars();
+	refreshExits();
 	loadGame();
 	refreshMiniMap();
 	refreshHeader();
@@ -460,6 +533,17 @@ function setupGame() {
 
 function gameLoop() {
 	if (player.actionTime[1] < Date.now()) { //we finished our action!
+		if (player.currentAction === Actions.MOVE) {
+			player.area = player.actionTarget;
+			refreshMobs();
+			refreshAreaFloor();
+			refreshActions();
+			refreshScavTable();
+			refreshHpBars();
+			refreshExits();
+			refreshMiniMap();
+			refreshHeader();
+		}
 		if (player.currentAction === Actions.SCAVENGE) {
 			scavenge();
 		}
@@ -543,14 +627,27 @@ function combat(attacker, defender) {
 }
 
 function fightsomething(target) {
-	console.log(target, player.area.mobs[target]);
 	player.actionTarget = player.area.mobs[target];
 	startAction(Actions.FIGHT[1]);
+}
+
+function exitSomewhere(target) {
+	areaName = player.area.exits[target][1];
+	startAction(Actions.MOVE[1],areaName)
+
 }
 //is there a better state machine strictire for this kind of system??
 function startAction(action) {
 	//called whenever a player clicks on a "link"
-	if (action === Actions.SCAVENGE[1]) {
+	if (action === Actions.MOVE[1]) {
+		if (player.currentAction === Actions.NONE) {
+			player.currentAction = Actions.MOVE;
+			player.actionTarget = AreaDB[areaName];
+			player.actionTime[0] = Date.now();
+			player.actionTime[1] = Date.now() + 1000;
+		}
+	}
+	else if (action === Actions.SCAVENGE[1]) {
 		if (player.currentAction === Actions.NONE) {
 			player.currentAction = Actions.SCAVENGE;
 			player.actionTime[0] = Date.now();
@@ -662,6 +759,7 @@ function saveGame() {
 //********************
 
 function refreshMobs() {
+	console.log(player.area);
   const mobsDiv = document.getElementById('mobHeader');
 	mobsDiv.innerHTML = "";
 	mobsDiv.appendChild(document.createElement('h3')).textContent = 'Hostile Creatures';
@@ -739,7 +837,33 @@ function refreshActions() {
 	})();
 }
 
+function refreshExits() {
+	const exitDiv = document.getElementById("exits");
+	exitDiv.innerHTML = "";
+	if (player.area.exits.length === 0) {
+		exitDiv.textContent = 'No available exits.';
+		return;
+	}
+	exitDiv.innerHTML = "<span class='yellowtxt'>[ Exits: </span>";
+	player.area.exits.forEach((exitText,location) => {
+		const exitSpan = exitDiv.appendChild(document.createElement('span'));
+		exitSpan.classList.add("link");
+		exitSpan.setAttribute("exit",location);
+		exitSpan.textContent = exitText[0];
+		const delimiter = document.createTextNode(", ");
+		exitDiv.appendChild(delimiter);
+	});
+	exitDiv.removeChild(exitDiv.lastChild);
+	exitDiv.innerHTML += "<span class='yellowtxt'> ]</span>";
+}
+
 function addListeners() {
+	const exitDiv = document.getElementById('exits');
+  exitDiv.addEventListener('click', (e) => {
+    if (!e.target.classList.contains("link")) return;
+		const exitNum = e.target.getAttribute("exit");
+		exitSomewhere(exitNum);
+  });
 	const actionDiv = document.getElementById("actions");
 	actionDiv.addEventListener('click', (e) => {
 		if (!e.target.classList.contains("link")) return;
@@ -921,10 +1045,11 @@ function refreshInventory() {
 function refreshMiniMap() {
 	//takes an array of array, splits off the first character as the td class and the other two as the guts and outputs a table
 	const mapR = player.area.map;
-	const mapDiv = document.getElementById("area-map-table");
-	mapDiv.innterHTML = "";
+	const mapDiv = document.getElementById("area-map");
+	mapDiv.innerHTML = "";
+	const mapTable = mapDiv.appendChild(document.createElement('table'));
 	mapR.forEach((rowC) => {
-		const row = mapDiv.insertRow(-1);
+		const row = mapTable.insertRow(-1);
 		rowC.forEach((txt) => {
 			const cellClass = txt.charAt(0);
 			const cellContent = txt.slice(-2);
