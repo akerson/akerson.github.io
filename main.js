@@ -1047,6 +1047,7 @@ function refreshMiniMap() {
 	const mapDiv = document.getElementById("area-map");
 	mapDiv.innerHTML = "";
 	const mapTable = mapDiv.appendChild(document.createElement('table'));
+	mapTable.classList.add('whiteborder');
 	mapR.forEach((rowC) => {
 		const row = mapTable.insertRow(-1);
 		rowC.forEach((txt) => {
