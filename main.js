@@ -516,15 +516,15 @@ function formattedItem(item,num) {
 	if (num === 0) return "";
 	if (num === 1) return article + " " + name;
 	const ones = ["","one","two","three","four","five","six","seven","eight","nine"]
-	const tens = ["eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eightteen","nineteen"]
+	const tens = ["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eightteen","nineteen"]
 	const big = ["","","twenty","thirty","fourty","fifty","sixty","seventy","eighty","ninety","one hundred"];
 	if (num < 10) return ones[num] + " " + plural;
 	if (num < 20) return tens[num-10] + " " + plural;
-	bigNum = Math.floor(num/10);
-	bigNumRemainder = num%10;
-	const hyphen = "-";
-	if (bigNumRemainer === 0) hyphen = "";
-	return big[bigNum] + hyphen + ones[bigNumRemainer] + " " + plural;
+	const bigNum = Math.floor(num/10);
+	const bigNumRemainder = num%10;
+	let hyphen = "-";
+	if (bigNumRemainder === 0) hyphen = "";
+	return big[bigNum] + hyphen + ones[bigNumRemainder] + " " + plural;
 }
 
 //*****************
@@ -838,7 +838,12 @@ function refreshMobs() {
 		mobsDiv.appendChild(delimiter);
 	});
 	mobsDiv.removeChild(mobsDiv.lastChild);
-	mobsDiv.innerHTML += " are standing here.";
+	if (player.area.mobs.length === 1) {
+		mobsDiv.innerHTML += " is standing here.";
+	}
+	else {
+		mobsDiv.innerHTML += " are standing here.";
+	}
 }
 
 function refreshStats() {
@@ -950,6 +955,7 @@ function refreshAreaFloor() {
 	floorDiv.innerHTML = "";
 	let empty = true;
 	floorDiv.textContent += "You see ";
+	let i = 0;
 	for (const [itemID, count] of Object.entries(player.area.floorItems)) {
 		empty = false;
 		const itemSpan = floorDiv.appendChild(document.createElement('span'));
@@ -957,8 +963,8 @@ function refreshAreaFloor() {
 		itemSpan.setAttribute("itemID",itemID)
 		itemSpan.textContent = formattedItem(itemID,count);
 		let delimiter = ""
-		if (i+2 === player.area.floorItems.length) { //second last element needs the and
-			if (player.area.floorItems.length === 2) {
+		if (i+2 === Object.keys(player.area.floorItems).length) { //second last element needs the and
+			if (Object.keys(player.area.floorItems).length === 2) {
 				delimiter = document.createTextNode(" and ");
 			}
 			else {
@@ -969,6 +975,7 @@ function refreshAreaFloor() {
 			delimiter = document.createTextNode(", ");
 		}
 		floorDiv.appendChild(delimiter);
+		i++;
 	};
 	if (empty) {
 		floorDiv.textContent = "There is nothing on the floor."
