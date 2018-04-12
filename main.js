@@ -437,6 +437,8 @@ HostileEnemy.prototype.getXP = function() {
 }
 HostileEnemy.prototype.die = function() {
 	player.area.addDeadThings(this);
+	examine.clear();
+	clearLog();
 	addCombatLog("You killed the " + this.name + "! Awarded " + this.getXP() + "XP!");
 }
 HostileEnemy.prototype.butcher = function() {
@@ -577,6 +579,7 @@ function gameLoop() {
 		if (player.currentAction === Actions.FIGHT) {
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 1500;
+			combatLoop();
 		}
 		if (player.currentAction === Actions.GRAB) {
 			//grab an item from the floor with the right ID
@@ -652,7 +655,6 @@ function combatLoop() {
 		attacker.currentAction = Actions.NONE;
 		defender.die();
 		player.area.cleanUp();
-		clearInterval(window.combatLoop);
 	}
 	refreshCombatHP(player.actionTarget);
 }
@@ -698,7 +700,7 @@ function startAction(action) {
 			combatTime.enemyTimer = player.actionTarget.getSpd();
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 1500;
-			window.combatLoop = setInterval(combatLoop, 1500);
+			console.log(player.actionTarget);
 		}
 		else if (player.currentAction === Actions.FIGHT) {
 			addLog("You have to finish this fight first!");
