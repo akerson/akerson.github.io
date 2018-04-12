@@ -646,7 +646,7 @@ function combatLoop() {
 		dmg = Math.max(0,attacker.getDmg()-defender.getSoak());
 		defender.hp = Math.max(defender.hp - dmg, 0);
 		defender.lasthit = dmg;
-		addCombatLog(attacker.name + " hit the " + defender.name + " for " + dmg.toString() + " damage!");
+		addCombatLog(attacker.name + " hit " + defender.name + " for " + dmg.toString() + " damage!");
 	}
 	else {
 		defender.lasthit = 0;
