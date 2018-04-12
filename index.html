@@ -4,37 +4,42 @@
 </HEAD>
 <BODY onload="setupGame()">
 <h1>Dust and Ashes</h1>
-<div id="topDiv">
-  <div id="area-map"></div>
-  <div id="area-info">
-    <div class="boldtxt" id="area-name"></div>
-    <div class="boldtxt" id="area-sub"></div>
-    <p><div id="area-desc"></div></p>
-  </div>
-</div>
-<div style="border: 1px solid gray; width: 913px;"></div>
 <div id="leftDiv">
-  <p>Hit Points: [<span id="greenBarHP"></span><span id="redBarHP"></span><span id="greyBarHP"></span>] [<span id="playerHP">10</span>/<span id="playerHPmax">10</span>]</p>
-  <p>Current Action: <span id="action">None</span> [<span id="greenBar"></span><span id="greyBar">----------</span>]</p>
-  <div id="Status">
-    <fieldset class="log">
-    <legend>Status</legend>
-    <div id="logFlow">
-      <table id="logTable">
-      </table>
+  Current Action: <span id="action">None</span> [<span id="greenBar"></span><span id="greyBar">----------</span>]
+  <div id="area">
+    <div id="area-map"></div>
+    <div id="area-info">
+      <div class="boldtxt" id="area-name"></div>
+      <div class="boldtxt" id="area-sub"></div>
+      <p><div id="area-desc"></div></p>
     </div>
-    </fieldset>
+    <p><div id="exits" class="inline"></div></p>
+    <p><div id="actions"></div></p>
+    <p><div id="floorItems"></div></p>
+    <p><div id="floorDead"></div></p>
+    <div id="mobs">
+      <div id="mobHeader"></div>
+      <div id="mobList"></div>
+    </div>
   </div>
 </div>
 <div id="rightDiv">
-  <fieldset><legend>Examine</legend><div id="examine">Nothing currently selected.</div></fieldset></br>
   <!--Area info, equipment, inventory, status-->
   <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'area')" id="defaultOpen">Area</button>
+    <button class="tablinks" onclick="openTab(event, 'examine')" id="defaultOpen">Examine</button>
     <button class="tablinks" onclick="openTab(event, 'stats')">Stats</button>
-    <button class="tablinks" onclick="openTab(event, 'inventory')">Inventory</i></button>
+    <button class="tablinks" onclick="openTab(event, 'inventory')">Inventory</button>
+    <button class="tablinks" onclick="openTab(event, 'attack')" id="combatPane">Attack</button>
   </div>
   <div id="game">
+    <div id="examine" class="tabcontent">
+      <div id="examineMain">
+        <h3>Examine</h3></br>
+        Nothing currently selected.
+      </div>
+      <p></p>
+      <div id="examineResult"></div>
+    </div>
     <div id="stats" class="tabcontent">
       <h3>Stats</h3>
       <p>
@@ -58,23 +63,12 @@
       <tr><td>focus</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">endurance, reflexes</span></td></tr>
       </table>
     </div>
-    <div id="area" class="tabcontent">
-      <h3>Basement</h3>
-      <p><div id="exits"></div></p>
-      <p><div id="actions"></div></p>
-      <p><div id="floorItems"></div></p>
-      <p><div id="floorDead"></div></p>
-      <div id="mobs">
-        <div id="mobHeader"></div>
-        <div id="mobList"></div>
-      </div>
-      <p>
-      <p><h3>Scavenge List</h3></p>
-      <table id="scavTable"></table>
-    </div>
     <div id="inventory" class="tabcontent">
-      <h3>Inventory</h3>
-      <div id="inventoryList"></div>
+      <h3>Inventory</h3></br>
+    </div>
+    <div id="attack" class="tabcontent">
+      <div id="attackHeading"></div><p>
+      <div id="attackLog"></div>
     </div>
   </div>
 </div>

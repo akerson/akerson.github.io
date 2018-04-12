@@ -129,7 +129,6 @@ function Player() {
 	this.currentAction = Actions.NONE,
 	this.actionTarget = null,
 	this.actionTime = [0,0], //[start,finish]
-	this.scavFound = {}, //list of places and what you found there
 	this.dodge = 14,
 	this.spd = 2000,
 	this.stats = {
@@ -150,20 +149,6 @@ function Player() {
 		craft : 0,
 		focus : 0,
 	}
-}
-
-Player.prototype.addScavengeFind = function(item) {
-	//tabulates the list of items you've found for the scav discovery table
-	const areaName = this.area.name;
-	if (areaName in player.scavFound) {
-		if (!this.scavFound[areaName].includes(item)) {
-			this.scavFound[areaName].push(item);
-		}
-	}
-	else {
-		this.scavFound[areaName] = [item];
-	}
-	refreshScavTable();
 }
 
 Player.prototype.addInventory = function(item) {
@@ -212,7 +197,7 @@ Player.prototype.getSpd = function() {
 }
 
 Player.prototype.die = function() {
-	addLog("Sorry you died, here's your life back for now, since those rats aren't balanced.");
+	addCombatLog("Sorry you died, here's your life back for now, since those rats aren't balanced.");
 	this.hp = 10;
 	this.lasthit = 0;
 }
@@ -410,9 +395,10 @@ function Item(name, value, weight, type, article, plural, description) {
 	this.actions = [Actions.GRAB,Actions.DROP];
 }
 
-function HostileEnemy(name,hp,spd,dodge,soak,hit,dmg,part) {
+function HostileEnemy(name,hp,spd,dodge,soak,hit,dmg,part,description) {
 	//these are the things you can attack, they have stats
 	this.name = name;
+	this.description = description
 	this.hp = hp;
 	this.maxhp = hp;
 	this.lasthit = 0;
@@ -425,6 +411,7 @@ function HostileEnemy(name,hp,spd,dodge,soak,hit,dmg,part) {
 	this.currentAction = Actions.NONE;
 	this.actionTime = [0,0];
 	this.actionTarget = null;
+	this.actions = [Actions.FIGHT];
 }
 
 HostileEnemy.prototype.getHit = function() {
@@ -450,7 +437,7 @@ HostileEnemy.prototype.getXP = function() {
 }
 HostileEnemy.prototype.die = function() {
 	player.area.addDeadThings(this);
-	addLog("You killed the " + this.name + "! Awarded " + this.getXP() + "XP!");
+	addCombatLog("You killed the " + this.name + "! Awarded " + this.getXP() + "XP!");
 }
 HostileEnemy.prototype.butcher = function() {
 	return this.part;
@@ -461,23 +448,40 @@ function examineBox() {
 	this.itemname = null;
 	this.description = null;
 	this.actions = null;
+	this.actionFrom = null;
 	this.availableActions = {
 		"floor" : [Actions.GRAB,Actions.BUTCHER],
 		"inventory" : [Actions.DROP,Actions.USE,Actions.BUTCHER],
+		"mob" : [Actions.FIGHT],
 	}
 	this.update = function(area,itemID) {
-		console.log(area,itemID);
-		this.examining = itemID;
-		this.itemname = ItemDB[itemID].name;
-		this.description = ItemDB[itemID].description;
-		this.actions = [];
-		this.actionFrom = area;
-		this.availableActions[area].forEach((action,_) => {
-			if (ItemDB[itemID].actions.includes(action)) {
-				console.log(action);
-				this.actions.push(action);
-			}
-		});
+		if (area === "inventory" || area === "floor") {
+			this.examining = itemID;
+			this.itemname = ItemDB[itemID].name;
+			this.description = ItemDB[itemID].description;
+			this.actions = [];
+			this.actionFrom = area;
+			this.availableActions[area].forEach((action,_) => {
+				if (ItemDB[itemID].actions.includes(action)) {
+					this.actions.push(action);
+				}
+			});
+		}
+		else {
+			//it's a mob!
+			this.examining = player.area.mobs[itemID];
+			this.itemname = this.examining.name;
+			this.description = this.examining.description;
+			this.actions = [];
+			this.actionFrom = area;
+			this.availableActions[area].forEach((action,_) => {
+				if (this.examining.actions.includes(action)) {
+					this.actions.push(action);
+				}
+			});
+		}
+		document.getElementById("defaultOpen").click();
+		clearLog();
 		refreshExamineBox();
 	}
 	this.clear = function() {
@@ -496,18 +500,21 @@ function examineBox() {
 //this could be factored into area but I wanted to keep it separated
 function enemyGenerator(type) {
 	if (type === Enemies.RAT) {
-		return new HostileEnemy("Rat",10,1200,10,0,5,1,8);
+		return new HostileEnemy("a rat",10,1200,10,0,5,1,8,"A dirty old rat that looks like it maintains a good diet in this dusty basement.");
 	}
 }
 
 function formattedItem(item,num) {
+	if (!num) {
+		return "no " + plural;
+	}
 	const name = ItemDB[item].name;
 	const plural = ItemDB[item].plural;
 	const article = ItemDB[item].article;
 	if (num === 0) return "";
 	if (num === 1) return article + " " + name;
 	const ones = ["","one","two","three","four","five","six","seven","eight","nine"]
-	const tens = ["eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eightteen","ninetine"]
+	const tens = ["eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eightteen","nineteen"]
 	const big = ["","","twenty","thirty","fourty","fifty","sixty","seventy","eighty","ninety","one hundred"];
 	if (num < 10) return ones[num] + " " + plural;
 	if (num < 20) return tens[num-10] + " " + plural;
@@ -538,8 +545,6 @@ function setupGame() {
 	refreshAreaFloor();
 	refreshStats();
 	refreshActions();
-	refreshScavTable();
-	refreshHpBars();
 	refreshExits();
 	loadGame();
 	refreshMiniMap();
@@ -548,15 +553,20 @@ function setupGame() {
 	window.mainLoop = setInterval(gameLoop, 10);
 }
 
+function combatTest() {
+	const i = 0;
+	console.log(i)
+	i+1;
+}
+
 function gameLoop() {
 	if (player.actionTime[1] < Date.now()) { //we finished our action!
 		if (player.currentAction === Actions.MOVE) {
+			examine.clear();
 			player.area = player.actionTarget;
 			refreshMobs();
 			refreshAreaFloor();
 			refreshActions();
-			refreshScavTable();
-			refreshHpBars();
 			refreshExits();
 			refreshMiniMap();
 			refreshHeader();
@@ -565,31 +575,34 @@ function gameLoop() {
 			scavenge();
 		}
 		if (player.currentAction === Actions.FIGHT) {
-			combat(player,player.actionTarget);
+			player.actionTime[0] = Date.now();
+			player.actionTime[1] = Date.now() + 1500;
 		}
 		if (player.currentAction === Actions.GRAB) {
 			//grab an item from the floor with the right ID
 			player.addInventory(player.actionTarget);
 			player.area.removeFloorItem(player.actionTarget);
+			if (!(player.actionTarget in player.area.floorItems)) {
+				//aka no more items on the floor
+			}
 			addLog("You pick up " + formattedItem(player.actionTarget,1) + ".")
-			examine.clear();
+			refreshExamineBox();
 		}
 		if (player.currentAction === Actions.BUTCHER) {
 			const deadThingID = player.actionTarget;
 			const item = ItemDB[deadThingID];
 			item.butcher(player.actionLocation);
-			examine.clear();
+			refreshExamineBox();
 		}
 		if (player.currentAction === Actions.DROP) {
 			//drop an item based off ItemID
 			player.dropItem(player.actionTarget);
 			const item = ItemDB[player.actionTarget];
 			addLog("You dropped " +  item.article + " " + item.name + " on the floor.");
-			examine.clear();
+			refreshExamineBox();
 		}
 		if (player.currentAction === Actions.SIT) {
 			player.hp = Math.min(player.maxhp, player.hp + 1);
-			refreshHpBars();
 			player.lasthit = 0;
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 5000;
@@ -600,50 +613,48 @@ function gameLoop() {
 			player.currentAction = Actions.NONE;
 		}
 	}
-	//check if enemies need to fight
-	for (var i=0;i<player.area.mobs.length;i++) {
-		if (player.area.mobs[i].currentAction === Actions.FIGHT && player.area.mobs[i].actionTime[1] < Date.now()) {
-			combat(player.area.mobs[i],player);
-		}
-	}
 	saveGame();
 	refreshActionProgressBar();
 }
 
-function combat(attacker, defender) {
+const combatTime = {
+	playerTimer : 0,
+	enemyTimer : 0,
+}
+
+function combatLoop() {
+	//whoever's timer is lower attacks this round, player wins tie
+	let attacker = null;
+	let defender = null;
+	if (combatTime.playerTimer <= combatTime.enemyTimer) {
+		attacker = player;
+		defender = player.actionTarget;
+		combatTime.playerTimer += player.getSpd();
+	}
+	else {
+		attacker = player.actionTarget;
+		defender = player;
+		combatTime.enemyTimer += player.actionTarget.getSpd();
+	}
 	//checks combat actions
-	target = attacker.actionTarget;
 	hit = attacker.getHit() + roll(3,6);
 	if (hit >= defender.getDodge()) {
 		dmg = Math.max(0,attacker.getDmg()-defender.getSoak());
 		defender.hp = Math.max(defender.hp - dmg, 0);
 		defender.lasthit = dmg;
-		addLog(attacker.name + " hit the " + defender.name + " for " + dmg.toString() + " damage!");
+		addCombatLog(attacker.name + " hit the " + defender.name + " for " + dmg.toString() + " damage!");
 	}
 	else {
 		defender.lasthit = 0;
-		addLog(attacker.name + " missed!");
-	}
-	attacker.actionTime[0] = Date.now();
-	attacker.actionTime[1] = Date.now()+attacker.getSpd();
-	//engage them in combat if we haven't
-	if (defender.currentAction === Actions.NONE) {
-		defender.currentAction = Actions.FIGHT;
-		defender.actionTime[0] = Date.now();
-		defender.actionTime[1] = Date.now() + defender.getSpd();
+		addCombatLog(attacker.name + " missed!");
 	}
 	if (defender.hp === 0) {
 		attacker.currentAction = Actions.NONE;
-		defender.currentAction = Actions.NONE;
 		defender.die();
 		player.area.cleanUp();
+		clearInterval(window.combatLoop);
 	}
-	refreshHpBars();
-}
-
-function fightsomething(target) {
-	player.actionTarget = player.area.mobs[target];
-	startAction(Actions.FIGHT[1]);
+	refreshCombatHP(player.actionTarget);
 }
 
 function exitSomewhere(target) {
@@ -667,6 +678,7 @@ function startAction(action) {
 			player.currentAction = Actions.SCAVENGE;
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 500;
+			examine.clear();
 			addLog("You start scavenging...");
 		}
 		else if (player.currentAction === Actions.SCAVENGE) {
@@ -677,9 +689,16 @@ function startAction(action) {
 	else if (action === Actions.FIGHT[1]) {
 		if (player.currentAction === Actions.NONE) {
 			player.currentAction = Actions.FIGHT;
+			player.actionTarget = examine.examining;
+			refreshCombatHP(player.actionTarget);
+			document.getElementById("combatPane").click();
+			clearCombatLog();
+			addCombatLog("You launch an attack!");
+			combatTime.playerTimer = player.getSpd()*1.25;
+			combatTime.enemyTimer = player.actionTarget.getSpd();
 			player.actionTime[0] = Date.now();
-			player.actionTime[1] = Date.now()+player.spd;
-			addLog("You launch an attack!");
+			player.actionTime[1] = Date.now() + 1500;
+			window.combatLoop = setInterval(combatLoop, 1500);
 		}
 		else if (player.currentAction === Actions.FIGHT) {
 			addLog("You have to finish this fight first!");
@@ -723,6 +742,7 @@ function startAction(action) {
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 5000;
 			player.area.swapSitStand();
+			examine.clear();
 			addLog("You sit down.");
 		}
 	}
@@ -733,6 +753,7 @@ function startAction(action) {
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 100;
 			player.area.swapSitStand();
+			examine.clear();
 			addLog("You stand up.");
 		}
 	}
@@ -750,17 +771,11 @@ function scavenge() {
 		addLog("You search around, but it looks like there's nothing here.");
 		return;
 	}
-	player.addScavengeFind(newitem);
 	player.addInventory(newitem);
 	addLog("You dig around the ground and find a " + ItemDB[newitem].name + "!");
 }
 
-function addLog(s) {
-	const table = document.getElementById("logTable");
-	const row = table.insertRow(0);
-	const cell = row.insertCell(0);
-	cell.textContent = s;
-}
+
 
 function loadGame() {
 	//this will eventually have the save/load code when I'm far enough along that it makes sense
@@ -774,53 +789,54 @@ function saveGame() {
 //Make the game pretty
 //********************
 
+function addLog(s) {
+const logDiv = document.getElementById('examineResult');
+logDiv.appendChild(document.createElement('div')).textContent = s;
+}
+
+function addCombatLog(s) {
+	const logDiv = document.getElementById('attackLog');
+	logDiv.appendChild(document.createElement('div')).textContent = s;
+}
+
+function clearCombatLog() {
+	document.getElementById('attackLog').innerHTML = "";
+}
+
 function refreshMobs() {
-	console.log(player.area);
   const mobsDiv = document.getElementById('mobHeader');
 	mobsDiv.innerHTML = "";
-	mobsDiv.appendChild(document.createElement('h3')).textContent = 'Hostile Creatures';
-  const mobsContainer = mobsDiv.appendChild(document.createElement('div'));
-	const mobsList = document.getElementById('mobList');
-  return (() => {
-    if (player.area.mobs.length === 0) {
-      mobsList.textContent = 'No monsters seem to be here';
-      return;
-    }
-    mobsList.innerHTML = '';
-    player.area.mobs.forEach((mob, i) => {
-      // each monster has a line break before and after, so better to use a div:
-      const mobContainer = mobsList.appendChild(document.createElement('div'));
-			const lContainer = mobContainer.appendChild(document.createElement('span'));
-			lContainer.classList.add("yellowtxt");
-			lContainer.textContent = "[ ";
-			const attackContainer = mobContainer.appendChild(document.createElement('span'));
-			attackContainer.classList.add("link");
-			attackContainer.textContent = "Attack";
-			attackContainer.setAttribute("mobnum",i);
-			const rContainer = mobContainer.appendChild(document.createElement('span'));
-			rContainer.classList.add("yellowtxt");
-			rContainer.textContent = " ] ";
-			const mobName = mobContainer.appendChild(document.createElement('span'));
-      mobName.innerHTML = mob.name;
-			mobContainer.innerHTML += " ["
-			const greenBar = mobContainer.appendChild(document.createElement('span'));
-			greenBar.classList.add("greenBar");
-			greenBar.id = "greenBarHE" + i.toString()
-			const redBar = mobContainer.appendChild(document.createElement('span'));
-			redBar.classList.add("redBar");
-			redBar.id = "redBarHE" + i.toString();
-			const greyBar = mobContainer.appendChild(document.createElement('span'));
-			greyBar.classList.add("greyBar");
-			greyBar.id = "greyBarHE" + i.toString();
-			mobContainer.innerHTML += "] ["
-			const hpCurrent = mobContainer.appendChild(document.createElement('span'));
-			hpCurrent.id = "hpHE" + i.toString();
-			mobContainer.innerHTML += "/";
-			const hpMax = mobContainer.appendChild(document.createElement('span'));
-			hpMax.id = "hpMaxHE" + i.toString();
-			mobContainer.innerHTML += "]"
-    });
-  })();
+	if (player.area.mobs.length === 0) {
+		return;
+	}
+
+	player.area.mobs.forEach((mob,i)=> {
+
+		const mobName = mobsDiv.appendChild(document.createElement('span'));
+		mobName.classList.add("link");
+		mobName.setAttribute("mobnum",i);
+		if (i===0) {
+			mobName.innerText = mob.name.charAt(0).toUpperCase() + mob.name.slice(1);
+		}
+		else {
+			mobName.innerText = mob.name;
+		}
+		let delimiter = ""
+		if (i+2 === player.area.mobs.length) {
+			if (player.area.mobs.length === 2) {
+				delimiter = document.createTextNode(" and ");
+			}
+			else {
+				delimiter = document.createTextNode(", and ");
+			}
+		}
+		else {
+			delimiter = document.createTextNode(", ");
+		}
+		mobsDiv.appendChild(delimiter);
+	});
+	mobsDiv.removeChild(mobsDiv.lastChild);
+	mobsDiv.innerHTML += " are standing here.";
 }
 
 function refreshStats() {
@@ -886,11 +902,11 @@ function addListeners() {
     const index = [...actionDiv.children].indexOf(e.target);
     startAction([...actionDiv.children][index].textContent, index);
   });
-	const mobsDiv = document.getElementById('mobList');
+	const mobsDiv = document.getElementById('mobs');
   mobsDiv.addEventListener('click', (e) => {
-    if (!e.target.classList.contains("link")) return;
+		if (!e.target.classList.contains("link")) return;
 		const mobNum = e.target.getAttribute("mobnum");
-		fightsomething(mobNum);
+    examine.update("mob",mobNum);
   });
 	const floorDiv = document.getElementById("floorItems");
 	floorDiv.addEventListener('click', (e) => {
@@ -909,55 +925,6 @@ function addListeners() {
 		if (!e.target.classList.contains("link")) return;
 		startAction(e.target.textContent, 0);
 	});
-}
-
-function refreshScavTable() {
-	const table = document.getElementById("scavTable");
-	table.innerHTML = "";
-	let row = table.insertRow(0);
-	row.setAttribute("id", "heading");
-	row.innerHTML = "<td>Common Items</td><td>??</td><td>??</td>";
-	const drops = player.area.comDrops.concat(player.area.uncDrops, player.area.rareDrops);
-	for (var i=0;i < drops.length; i++) {
-		const itemID = drops[i];
-		const areaName = player.area.name;
-		row = table.insertRow(-1);
-		const cell1 = row.insertCell(-1);
-		const cell2 = row.insertCell(-1);
-		const cell3 = row.insertCell(-1);
-		if (areaName in player.scavFound && player.scavFound[areaName].includes(itemID)) {
-			cell1.innerHTML = ItemDB[itemID].name;
-		}
-		else {
-			cell1.innerHTML = "???"
-		}
-		cell2.innerHTML = "???"
-		cell3.innerHTML = "???"
-	}
-}
-
-function refreshHpBars() {
-	//player
-	document.getElementById("playerHP").innerHTML = player.hp;
-	document.getElementById("playerHPmax").innerHTML = player.maxhp;
-	const greenHP = Math.floor(player.hp/player.maxhp*20);
-	const redHP = Math.floor(player.lasthit/player.maxhp*20);
-	const greyHP = 20-greenHP-redHP;
-	document.getElementById("greenBarHP").innerHTML = "|".repeat(greenHP)
-	document.getElementById("redBarHP").innerHTML = "*".repeat(redHP);
-	document.getElementById("greyBarHP").innerHTML = "-".repeat(greyHP);
-	//hostilemobs
-	for (var i=0;i<player.area.mobs.length;i++) {
-		const mob = player.area.mobs[i];
-		document.getElementById("hpHE"+i).innerHTML = mob.hp;
-		document.getElementById("hpMaxHE"+i).innerHTML = mob.maxhp;
-		const greenHP = Math.floor(mob.hp/mob.maxhp*20);
-		const redHP = Math.floor(mob.lasthit/mob.maxhp*20);
-		const greyHP = 20-greenHP-redHP;
-		document.getElementById("greenBarHE"+i).innerHTML = "|".repeat(greenHP);
-		document.getElementById("redBarHE"+i).innerHTML = "*".repeat(redHP);
-		document.getElementById("greyBarHE"+i).innerHTML = "-".repeat(greyHP);
-	}
 }
 
 function refreshActionProgressBar() {
@@ -982,7 +949,6 @@ function refreshAreaFloor() {
 	let empty = true;
 	floorDiv.textContent += "You see ";
 	for (const [itemID, count] of Object.entries(player.area.floorItems)) {
-		console.log(itemID,count);
 		empty = false;
 		const itemSpan = floorDiv.appendChild(document.createElement('span'));
 		itemSpan.classList.add("link");
@@ -1026,7 +992,7 @@ function refreshInventory() {
 	}
 	//now we have to print it out
 	const invDiv = document.getElementById("inventory");
-	invDiv.innerHTML = "";
+	invDiv.innerHTML = "<h3>Inventory</h3></br>";
 	for (const [category, itemList] of Object.entries(sortedInventory)) {
 		const headerDiv = invDiv.appendChild(document.createElement('div'));
 		headerDiv.classList.add("yellowtxt");
@@ -1070,29 +1036,98 @@ function refreshHeader() {
 }
 
 function refreshExamineBox() {
-	const examDiv = document.getElementById("examine");
-	examDiv.innerHTML = "";
+	const examDiv = document.getElementById("examineMain");
+	examDiv.innerHTML = "<h3>Examine</h3></br>"
 	if (!examine.examining) {
-		examDiv.textContent = "Nothing currently selected.";
+		examDiv.innerHTML += "Nothing currently selected.";
 		return;
 	}
+
 	const examName = examDiv.appendChild(document.createElement('div'));
 	examName.classList.add('yellowtxt');
 	examName.textContent = examine.itemname;
 	const examDesc = examDiv.appendChild(document.createElement('div'));
 	examDesc.textContent = examine.description;
+
 	examDiv.appendChild(document.createElement('p'));
+
+	let num = 0;
+	const countText = examDiv.appendChild(document.createElement('div'));
+
+	if (examine.actionFrom == "floor" && examine.examining in player.area.floorItems) {
+		num = player.area.floorItems[examine.examining];
+		if (num == 1) countText.textContent = "There is " + formattedItem(examine.examining,num) + " on the floor here."
+		else countText.innerHTML = "There are " + formattedItem(examine.examining,num) + " on the floor here."
+	}
+	else if (examine.actionFrom === "inventory" && examine.examining in player.inventory) {
+		num = player.inventory[examine.examining];
+		if (num == 1) countText.textContent = "There is " + formattedItem(examine.examining,num) + " in your inventory."
+		else countText.innerHTML = "There are " + formattedItem(examine.examining,num) + " in your inventory."
+	}
+	else if (examine.actionFrom === "mob") {
+		num = 1;
+	}
+
+ examDiv.appendChild(document.createElement('p'));
+
 	const actionDiv = examDiv.appendChild(document.createElement('div'));
 	actionDiv.innerHTML = "<span class='yellowtxt'>[ Actions: </span>";
-	examine.actions.forEach((action,_) => {
-		const actionSpan = actionDiv.appendChild(document.createElement('span'));
-		actionSpan.classList.add("link");
-		actionSpan.textContent = action[1];
-		const delimiter = document.createTextNode(", ");
-		actionDiv.appendChild(delimiter);
-	});
-	actionDiv.removeChild(actionDiv.lastChild);
+	if (num > 0) {
+		examine.actions.forEach((action,_) => {
+			const actionSpan = actionDiv.appendChild(document.createElement('span'));
+			actionSpan.classList.add("link");
+			actionSpan.textContent = action[1];
+			const delimiter = document.createTextNode(", ");
+			actionDiv.appendChild(delimiter);
+		});
+		actionDiv.removeChild(actionDiv.lastChild);
+	}
+	else {
+		actionDiv.appendChild(document.createElement('span')).textContent = "None Available";
+	}
 	actionDiv.innerHTML += "<span class='yellowtxt'> ]</span>";
+}
+
+function clearLog() {
+	//clear the bottom part
+	document.getElementById('examineResult').innerHTML = "";
+}
+
+function refreshCombatHP(enemy) {
+	const attackDiv = document.getElementById('attackHeading');
+	attackDiv.innerHTML = "";
+	attackDiv.appendChild(document.createElement('h3')).textContent = 'Attack';
+
+	attackDiv.appendChild(document.createElement('p'));
+	const playerStats = attackDiv.appendChild(document.createElement('div'))
+	playerStats.innerHTML = "You:&nbsp;&nbsp;&nbsp;[";
+	const playerGreenHP = playerStats.appendChild(document.createElement('span'));
+	playerGreenHP.classList.add("greenBarHP");
+	const hp1 = Math.floor(player.hp/player.maxhp*20);
+	playerGreenHP.textContent = "|".repeat(hp1);
+	const playerRedHP = playerStats.appendChild(document.createElement('span'));
+	playerRedHP.classList.add("redBarHP");
+	const hp2 = Math.floor(player.lasthit/player.maxhp*20)
+	playerRedHP.textContent = "*".repeat(hp2);
+	const playergreyHP = playerStats.appendChild(document.createElement('span'));
+	playergreyHP.classList.add("greyBarHP");
+	playergreyHP.textContent = "*".repeat(20-hp1-hp2);
+	playerStats.innerHTML += "] [" + player.hp + "/" + player.maxhp + "]"
+
+	const enemyStats = attackDiv.appendChild(document.createElement('div'))
+	enemyStats.innerHTML = "Enemy: [";
+	const enemyGreenHP = enemyStats.appendChild(document.createElement('span'));
+	enemyGreenHP.classList.add("greenBarHP");
+	const hp3 = Math.floor(enemy.hp/enemy.maxhp*20);
+	enemyGreenHP.textContent = "|".repeat(hp3);
+	const enemyRedHP = enemyStats.appendChild(document.createElement('span'));
+	enemyRedHP.classList.add("redBarHP");
+	const hp4 = Math.floor(enemy.lasthit/enemy.maxhp*20)
+	enemyRedHP.textContent = "*".repeat(hp4);
+	const enemygreyHP = enemyStats.appendChild(document.createElement('span'));
+	enemygreyHP.classList.add("greyBarHP");
+	enemygreyHP.textContent = "*".repeat(20-hp3-hp4);
+	enemyStats.innerHTML += "] [" + enemy.hp + "/" + enemy.maxhp + "]"
 }
 
 //*************************

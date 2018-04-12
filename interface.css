@@ -11,15 +11,6 @@ table {
     font-size: 12px;
 }
 
-.log {
-    border: 1px solid #c0c0c0;
-    margin: 0 2px;
-    height: 300px;
-    padding: 0.35em 0.625em 0.75em;
-    background-color: #383838;
-}
-
-
 h3 {
   padding: 0px;
   margin: 0px;
@@ -28,6 +19,10 @@ h3 {
 hr {
   max-width: 912px;
   margin: 0px;
+}
+
+.italics {
+  font-style: italic;
 }
 
 #logFlow {
@@ -42,7 +37,7 @@ hr {
 }
 
 #leftDiv {
-  width: 400px;
+  width: 525px;
   height: 500px;
   float:left;
   padding: 5px;
@@ -60,8 +55,12 @@ hr {
 }
 
 #area-info {
-  width:700px;
+  width:375px;
   float : left;
+}
+
+.inline {
+  display:inline-block
 }
 
 .boldtxt {
@@ -175,15 +174,15 @@ hr {
   color: red;
 }
 
-#greenBar, #greenBarHP {
+#greenBar, .greenBarHP {
   color: #66ff66;
 }
 
-#greyBar, #greyBarHP {
+#greyBar, .greyBarHP {
   color: #505050;
 }
 
-#redBar, #redBarHP {
+#redBar, .redBarHP {
   color: red;
 }
 
