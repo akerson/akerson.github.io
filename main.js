@@ -395,9 +395,10 @@ function Item(name, value, weight, type, article, plural, description) {
 	this.actions = [Actions.GRAB,Actions.DROP];
 }
 
-function HostileEnemy(name,hp,spd,dodge,soak,hit,dmg,part,description) {
+function HostileEnemy(name,areaname,hp,spd,dodge,soak,hit,dmg,part,description) {
 	//these are the things you can attack, they have stats
-	this.name = name;
+	this.name = name; //used for combat
+	this.areaname = areaname; //used for when you see one in the area
 	this.description = description
 	this.hp = hp;
 	this.maxhp = hp;
@@ -502,7 +503,7 @@ function examineBox() {
 //this could be factored into area but I wanted to keep it separated
 function enemyGenerator(type) {
 	if (type === Enemies.RAT) {
-		return new HostileEnemy("a rat",10,1200,10,0,5,1,8,"A dirty old rat that looks like it maintains a good diet in this dusty basement.");
+		return new HostileEnemy("rat","a rat",10,1200,10,0,5,1,8,"A dirty old rat that looks like it maintains a good diet in this dusty basement.");
 	}
 }
 
@@ -818,10 +819,10 @@ function refreshMobs() {
 		mobName.classList.add("link");
 		mobName.setAttribute("mobnum",i);
 		if (i===0) {
-			mobName.innerText = mob.name.charAt(0).toUpperCase() + mob.name.slice(1);
+			mobName.innerText = mob.areaname.charAt(0).toUpperCase() + mob.areaname.slice(1);
 		}
 		else {
-			mobName.innerText = mob.name;
+			mobName.innerText = mob.areaname;
 		}
 		let delimiter = ""
 		if (i+2 === player.area.mobs.length) {
