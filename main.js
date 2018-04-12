@@ -244,7 +244,7 @@ function LoadAreas() {
 	AreaDB[Areas.BASEMENT2].uncDrops = [1];
 	AreaDB[Areas.BASEMENT2].rareDrops = [2];
 	AreaDB[Areas.BASEMENT2].repopScav(4);
-	AreaDB[Areas.BASEMENT2].floorItems = {3:4};
+	AreaDB[Areas.BASEMENT2].floorItems = {5:4};
 	AreaDB[Areas.BASEMENT2].map = mapGenerator(Areas.BASEMENT,3,3);
 	AreaDB[Areas.BASEMENT2].actions = [Actions.SIT,Actions.SCAVENGE];
 	AreaDB[Areas.BASEMENT2].exits = [["north",Areas.BASEMENT4],["west",Areas.BASEMENT1],["south",Areas.BASEMENT3]];
