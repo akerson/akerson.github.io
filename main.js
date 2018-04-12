@@ -36,6 +36,8 @@ const Actions = {
 	STAND : ["Standing up...","Stand"],
 	USE : ["Using item...","Use"],
 	MOVE : ["Moving...","Move"],
+	EQUIP : ["Equipping...","Equip"],
+	UNEQUIP : ["Unequipping...","Unequip"],
 }
 
 const ItemDB = {
@@ -93,6 +95,8 @@ let examine = null;
 function itemPrep() {
 	//this changes all the items out of their generic functions
 	//wristpad
+	ItemDB[1].actions.push(Actions.EQUIP);
+	ItemDB[1].actions.push(Actions.UNEQUIP);
 	ItemDB[4].actions = [Actions.USE];
 	ItemDB[4].use = function() {
 		var time = new Date();
@@ -454,7 +458,7 @@ function examineBox() {
 	this.actionFrom = null;
 	this.availableActions = {
 		"floor" : [Actions.GRAB,Actions.BUTCHER],
-		"inventory" : [Actions.DROP,Actions.USE,Actions.BUTCHER],
+		"inventory" : [Actions.DROP,Actions.USE,Actions.BUTCHER,Actions.EQUIP],
 		"mob" : [Actions.FIGHT],
 	}
 	this.update = function(area,itemID) {
@@ -896,7 +900,7 @@ function refreshExits() {
 	player.area.exits.forEach((exitText,_) => {
 		const exitSpan = exitDiv.appendChild(document.createElement('span'));
 		exitSpan.classList.add("link");
-		exitSpan.setAttribute("exit",exitText);
+		exitSpan.setAttribute("exit",exitText[0]);
 		exitSpan.textContent = exitText[0];
 		const delimiter = document.createTextNode(", ");
 		exitDiv.appendChild(delimiter);
