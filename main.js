@@ -236,7 +236,7 @@ function LoadAreas() {
 	AreaDB[Areas.BASEMENT1].addEnemy(enemyGenerator(Enemies.RAT));
 	AreaDB[Areas.BASEMENT1].map = mapGenerator(Areas.BASEMENT,2,3);
 	AreaDB[Areas.BASEMENT1].actions = [Actions.SIT,Actions.SCAVENGE];
-	AreaDB[Areas.BASEMENT1].exits = [["north (hole)",Areas.BASEMENT5],["south",Areas.BASEMENT],["east",Areas.BASEMENT2]];
+	AreaDB[Areas.BASEMENT1].exits = [["north",Areas.BASEMENT5],["south",Areas.BASEMENT],["east",Areas.BASEMENT2]];
 
 	AreaDB[Areas.BASEMENT2].area = "Basement Corner (basement)"
 	AreaDB[Areas.BASEMENT2].description = "The air is musky, with debris scattered around the dirt floor. This dark space is very familiar, although you can't remember why you'd find it that way."
@@ -661,9 +661,17 @@ function combatLoop() {
 }
 
 function exitSomewhere(target) {
-	areaName = player.area.exits[target][1];
-	startAction(Actions.MOVE[1],areaName)
-
+	if (player.currentAction === Actions.NONE) {
+		console.log(target,player.area.exits);
+		for (let i=0;i<player.area.exits.length;i++) {
+			if (target === player.area.exits[i][0]) {
+				player.actionTarget = player.area.exits[i][1];
+				startAction(Actions.MOVE[1]);
+				return;
+			}
+		}
+		addLog("You can't go that direction!");
+	}
 }
 //is there a better state machine strictire for this kind of system??
 function startAction(action) {
@@ -671,7 +679,7 @@ function startAction(action) {
 	if (action === Actions.MOVE[1]) {
 		if (player.currentAction === Actions.NONE) {
 			player.currentAction = Actions.MOVE;
-			player.actionTarget = AreaDB[areaName];
+			player.actionTarget = AreaDB[player.actionTarget];
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 1000;
 		}
@@ -885,10 +893,10 @@ function refreshExits() {
 		return;
 	}
 	exitDiv.innerHTML = "<span class='yellowtxt'>[ Exits: </span>";
-	player.area.exits.forEach((exitText,location) => {
+	player.area.exits.forEach((exitText,_) => {
 		const exitSpan = exitDiv.appendChild(document.createElement('span'));
 		exitSpan.classList.add("link");
-		exitSpan.setAttribute("exit",location);
+		exitSpan.setAttribute("exit",exitText);
 		exitSpan.textContent = exitText[0];
 		const delimiter = document.createTextNode(", ");
 		exitDiv.appendChild(delimiter);
@@ -898,6 +906,12 @@ function refreshExits() {
 }
 
 function addListeners() {
+	document.addEventListener('keyup', (e) => {
+		if (e.keyCode === 87) exitSomewhere("north");
+		else if (e.keyCode === 65) exitSomewhere("west");
+		else if (e.keyCode === 83) exitSomewhere("south");
+		else if (e.keyCode === 68) exitSomewhere("east");
+	});
 	const exitDiv = document.getElementById('exits');
   exitDiv.addEventListener('click', (e) => {
     if (!e.target.classList.contains("link")) return;
