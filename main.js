@@ -24,6 +24,17 @@ const ItemRarity = {
 	RARE : 2,
 }
 
+const EquipSlots = {
+	HEAD : "head",
+	FACE : "face",
+	CHEST : "chest",
+	HAND : "hand",
+	LEG : "leg",
+	FEET : "foot",
+	MH : "mainHand",
+	OH : "offHand",
+}
+
 const Actions = {
 	NONE : ["None","None"],
 	SCAVENGE: ["Scavenging...","Scavenge"],
@@ -97,6 +108,9 @@ function itemPrep() {
 	//wristpad
 	ItemDB[1].actions.push(Actions.EQUIP);
 	ItemDB[1].actions.push(Actions.UNEQUIP);
+	ItemDB[1].slot = EquipSlots.MH;
+	ItemDB[1].spd = 1200;
+	ItemDB[1].raw = [2,3];
 	ItemDB[4].actions = [Actions.USE];
 	ItemDB[4].use = function() {
 		var time = new Date();
@@ -153,6 +167,16 @@ function Player() {
 		craft : 0,
 		focus : 0,
 	}
+	this.equip = {
+		"head" : 0,
+		"face" : 0,
+		"chest" : 0,
+		"hand" : 0,
+		"leg" : 0,
+		"foot" : 0,
+		"mainHand" : 0,
+		"offHand" : 0,
+	}
 }
 
 Player.prototype.addInventory = function(item) {
@@ -189,7 +213,13 @@ Player.prototype.getDodge = function() {
 }
 
 Player.prototype.getDmg = function() {
-	return 3;
+	const item = player.equip["mainHand"]
+	if (item === 0) {
+		return 1;
+	}
+	else {
+		return Math.floor(Math.random()) + 2  ;
+	}
 }
 
 Player.prototype.getSoak = function() {
@@ -197,13 +227,34 @@ Player.prototype.getSoak = function() {
 }
 
 Player.prototype.getSpd = function() {
-	return this.spd;
+	const item = player.equip["mainHand"]
+	if (item === 0) {
+		return 1000;
+	}
+	else {
+		return ItemDB[item].spd;
+	}
 }
 
 Player.prototype.die = function() {
 	addCombatLog("Sorry you died, here's your life back for now, since those rats aren't balanced.");
 	this.hp = 10;
 	this.lasthit = 0;
+}
+
+Player.prototype.equipItem = function(itemID) {
+	this.removeInventory(itemID);
+	const someitem = ItemDB[itemID];
+	if (this.equip[someitem.slot] !== 0) this.unequipItem(itemID);
+	this.equip[someitem.slot] = itemID;
+	addLog("You equip your " + someitem.name + ".");
+}
+
+Player.prototype.unequipItem = function(itemID) {
+	const someitem = ItemDB[itemID];
+	this.equip[someitem.slot] = 0;
+	this.addInventory(itemID);
+	addLog("You unequip your " + someitem.name + ".");
 }
 
 const AreaDB = {
@@ -507,7 +558,7 @@ function examineBox() {
 //this could be factored into area but I wanted to keep it separated
 function enemyGenerator(type) {
 	if (type === Enemies.RAT) {
-		return new HostileEnemy("rat","a rat",10,1200,10,0,5,1,8,"A dirty old rat that looks like it maintains a good diet in this dusty basement.");
+		return new HostileEnemy("rat","a rat",6,1200,10,0,5,1,8,"A dirty old rat that looks like it maintains a good diet in this dusty basement.");
 	}
 }
 
@@ -557,6 +608,7 @@ function setupGame() {
 	refreshMiniMap();
 	refreshHeader();
 	addListeners();
+	refreshGear();
 	window.mainLoop = setInterval(gameLoop, 10);
 }
 
@@ -634,6 +686,7 @@ function combatLoop() {
 	//whoever's timer is lower attacks this round, player wins tie
 	let attacker = null;
 	let defender = null;
+	console.log(combatTime.playerTimer,combatTime.enemyTimer)
 	if (combatTime.playerTimer <= combatTime.enemyTimer) {
 		attacker = player;
 		defender = player.actionTarget;
@@ -778,6 +831,22 @@ function startAction(action) {
 			ItemDB[examine.examining].use();
 		}
 	}
+	else if (action === Actions.EQUIP[1]) {
+		if (player.currentAction === Actions.NONE) {
+			player.actionTarget = examine.examining;
+			player.equipItem(examine.examining);
+		}
+		refreshGear();
+		refreshExamineBox();
+	}
+	else if (action === Actions.UNEQUIP[1]) {
+		if (player.currentAction === Actions.NONE) {
+			player.actionTarget = examine.examining;
+			player.unequipItem(examine.examining);
+		}
+	}
+	refreshGear();
+	refreshExamineBox();
 }
 
 function scavenge() {
@@ -949,7 +1018,7 @@ function addListeners() {
 	const examDiv = document.getElementById("examine");
 	examDiv.addEventListener('click', (e) => {
 		if (!e.target.classList.contains("link")) return;
-		startAction(e.target.textContent, 0);
+		startAction(e.target.textContent);
 	});
 }
 
@@ -1156,6 +1225,48 @@ function refreshCombatHP(enemy) {
 	enemygreyHP.classList.add("greyBarHP");
 	enemygreyHP.textContent = "*".repeat(20-hp3-hp4);
 	enemyStats.innerHTML += "] [" + enemy.hp + "/" + enemy.maxhp + "]"
+}
+
+function refreshGear() {
+	const gearDiv = document.getElementById('gear');
+	gearDiv.innerHTML = "";
+	gearDiv.appendChild(document.createElement('h3')).textContent = 'Gear';
+	gearDiv.appendChild(document.createElement('p'));
+	const gearTable = gearDiv.appendChild(document.createElement('table'))
+	gearTable.classList.add("gearTable");
+	const row = gearTable.insertRow(-1);
+	row.classList.add('heading');
+	const bpCell = row.insertCell(-1);
+	bpCell.innerHTML = "Bodypart"
+	bpCell.setAttribute("width","100px")
+	row.insertCell(-1).innerHTML = "Armor";
+	row.insertCell(-1).innerHTML = "Soak";
+	for (const [gearSlot, equippedItem] of Object.entries(player.equip)) {
+		if (gearSlot != "mainHand" && gearSlot != "offHand") {
+			const iRow = gearTable.insertRow(-1);
+			iRow.insertCell(-1).innerHTML = gearSlot;
+			if (equippedItem > 0) {
+				iRow.insertCell(-1).innerHTML = ItemDB[equippedItem].name;
+			}
+		}
+	}
+	const wRowHead = gearTable.insertRow(-1);
+	wRowHead.classList.add('heading');
+	wRowHead.insertCell(-1).innerHTML = "Weapon"
+	wRowHead.insertCell(-1).innerHTML = "Raw"
+	wRowHead.insertCell(-1).innerHTML = "Spd"
+	const wRow = gearTable.insertRow(-1);
+	if (player.equip["mainHand"] == 0) {
+		wRow.insertCell(-1).innerHTML = "Fist"
+		wRow.insertCell(-1).innerHTML = "1-1"
+		wRow.insertCell(-1).innerHTML = "1.0"
+	}
+	else {
+		const weapon = ItemDB[player.equip["mainHand"]];
+		wRow.insertCell(-1).innerHTML = weapon.name;
+		wRow.insertCell(-1).innerHTML = weapon.raw[0] + "-" + weapon.raw[1];
+		wRow.insertCell(-1).innerHTML = weapon.spd;
+	}
 }
 
 //*************************
