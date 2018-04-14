@@ -1,11 +1,4 @@
-const Areas = {
-	BASEMENT : "Basement",
-	BASEMENT1 : "Basement1",
-	BASEMENT2 : "Basement2",
-	BASEMENT3 : "Basement3",
-	BASEMENT4 : "Basement4",
-	BASEMENT5 : "Basement5",
-}
+
 
 const ItemType = {
 	EQUIPMENT : "Equipment",
@@ -49,6 +42,7 @@ const Actions = {
 	MOVE : ["Moving...","Move"],
 	EQUIP : ["Equipping...","Equip"],
 	UNEQUIP : ["Unequipping...","Unequip"],
+	CUDDLE : ["Cuddling...","Cuddle"],
 }
 
 const ItemDB = {
@@ -75,15 +69,18 @@ const mapGenerator = (() => {
 		{
 	    type: Areas.BASEMENT,
 	    map: [
-				["d:(","d:(","d:(","d:(","d:(","d:("],
-				["d:(","d:(","d:(","d:(","d:(","d:("],
-				["d:(","d:(","b||","r^^","d:(","d:("],
-				["d:(","d:(","b|'","bo|","d:(","d:("],
-				["d:(","d:(","bL.","b,]","d:(","d:("],
-				["d:(","d:(","d:(","d:(","d:(","d:("],
-				["d:(","d:(","d:(","d:(","d:(","d:("],
-			],
-		},
+			["d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`"],
+			["d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`"],
+			["d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`"],
+			["d`.`","d`.`","d`.`","d`.`","b||","r^^","d`.`","d`.`","d`.`","d`.`"],
+			["d`.`","d`.`","d`.`","d`.`","b|'","bo|","d`.`","d`.`","d`.`","d`.`"],
+			["d`.`","d`.`","d`.`","d`.`","bL.","b,]","d`.`","d`.`","d`.`","d`.`"],
+			["d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`"],
+			["d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`"],
+			["d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`"],
+			["d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`","d`.`"],
+		],
+	},
 	// other enemies
 	];
 	return (typeParam,x,y) => {
@@ -93,10 +90,10 @@ const mapGenerator = (() => {
 		const mapSizeY = newMap.length;
 		//locate the center x and center y that still is a 5x5
 		//bump out the sides and splice
-		const xAdj = x-Math.max(0,x+2-mapSizeX)-Math.min(0,x-2);
-		const yAdj = y-Math.max(0,y+2-mapSizeY)-Math.min(0,y-2);
+		const xAdj = x-Math.max(0,x+3-mapSizeX)-Math.min(0,x-3);
+		const yAdj = y-Math.max(0,y+3-mapSizeY)-Math.min(0,y-3);
 		newMap[y][x] = "p()";
-		return (newMap.slice(yAdj-2,yAdj+3).map( function(row){ return row.slice(xAdj-2,xAdj+3); }));
+		return (newMap.slice(yAdj-3,yAdj+4).map( function(row){ return row.slice(xAdj-3,xAdj+4); }));
 	}
 })();
 
@@ -257,249 +254,19 @@ Player.prototype.unequipItem = function(itemID) {
 	addLog("You unequip your " + someitem.name + ".");
 }
 
-const AreaDB = {
-	"Basement" : new Area(Areas.BASEMENT),
-	"Basement1" : new Area(Areas.BASEMENT1),
-	"Basement2" : new Area(Areas.BASEMENT2),
-	"Basement3" : new Area(Areas.BASEMENT3),
-	"Basement4" : new Area(Areas.BASEMENT4),
-	"Basement5" : new Area(Areas.BASEMENT5),
-}
 
-function LoadAreas() {
-	AreaDB[Areas.BASEMENT].area = "Southwest Corner (basement)"
-	AreaDB[Areas.BASEMENT].description = "The air is musky, with debris scattered around the dirt floor. This dark space is very familiar, although you can't remember why you'd find it that way."
-	AreaDB[Areas.BASEMENT].comDrops = [9];
-	AreaDB[Areas.BASEMENT].uncDrops = [1];
-	AreaDB[Areas.BASEMENT].rareDrops = [2];
-	AreaDB[Areas.BASEMENT].repopScav(5);
-	AreaDB[Areas.BASEMENT].floorItems = {5:1,6:1,7:1};
-	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
-	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
-	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
-	AreaDB[Areas.BASEMENT].map = mapGenerator(Areas.BASEMENT,2,4);
-	AreaDB[Areas.BASEMENT].actions = [Actions.SIT,Actions.SCAVENGE];
-	AreaDB[Areas.BASEMENT].exits = [["north",Areas.BASEMENT1],["east",Areas.BASEMENT3]];
-
-	AreaDB[Areas.BASEMENT1].area = "Basement West Wall (basement)"
-	AreaDB[Areas.BASEMENT1].description = "Dirt makes up the whole floor. To the north you see a cramped hole that you might be able to squeeze in."
-	AreaDB[Areas.BASEMENT1].comDrops = [9];
-	AreaDB[Areas.BASEMENT1].uncDrops = [1];
-	AreaDB[Areas.BASEMENT1].rareDrops = [2];
-	AreaDB[Areas.BASEMENT1].repopScav(5);
-	AreaDB[Areas.BASEMENT1].floorItems = {1:1,2:1};
-	AreaDB[Areas.BASEMENT1].addEnemy(enemyGenerator(Enemies.RAT));
-	AreaDB[Areas.BASEMENT1].map = mapGenerator(Areas.BASEMENT,2,3);
-	AreaDB[Areas.BASEMENT1].actions = [Actions.SIT,Actions.SCAVENGE];
-	AreaDB[Areas.BASEMENT1].exits = [["north",Areas.BASEMENT5],["south",Areas.BASEMENT],["east",Areas.BASEMENT2]];
-
-	AreaDB[Areas.BASEMENT2].area = "Basement Corner (basement)"
-	AreaDB[Areas.BASEMENT2].description = "The air is musky, with debris scattered around the dirt floor. This dark space is very familiar, although you can't remember why you'd find it that way."
-	AreaDB[Areas.BASEMENT2].comDrops = [9];
-	AreaDB[Areas.BASEMENT2].uncDrops = [1];
-	AreaDB[Areas.BASEMENT2].rareDrops = [2];
-	AreaDB[Areas.BASEMENT2].repopScav(4);
-	AreaDB[Areas.BASEMENT2].floorItems = {5:4};
-	AreaDB[Areas.BASEMENT2].map = mapGenerator(Areas.BASEMENT,3,3);
-	AreaDB[Areas.BASEMENT2].actions = [Actions.SIT,Actions.SCAVENGE];
-	AreaDB[Areas.BASEMENT2].exits = [["north",Areas.BASEMENT4],["west",Areas.BASEMENT1],["south",Areas.BASEMENT3]];
-
-	AreaDB[Areas.BASEMENT3].area = "Southeast Corner (basement)"
-	AreaDB[Areas.BASEMENT3].description = "There's a large pile of dirty laundry and a washing machine in the corner. Same dirt floors -- what a terrible place to do laundry."
-	AreaDB[Areas.BASEMENT3].comDrops = [9];
-	AreaDB[Areas.BASEMENT3].uncDrops = [1];
-	AreaDB[Areas.BASEMENT3].rareDrops = [2];
-	AreaDB[Areas.BASEMENT3].repopScav(5);
-	AreaDB[Areas.BASEMENT3].floorItems = {11:2,10:1,5:1};
-	AreaDB[Areas.BASEMENT1].addEnemy(enemyGenerator(Enemies.RAT));
-	AreaDB[Areas.BASEMENT3].map = mapGenerator(Areas.BASEMENT,3,4);
-	AreaDB[Areas.BASEMENT3].actions = [Actions.SIT,Actions.SCAVENGE];
-	AreaDB[Areas.BASEMENT3].exits = [["west",Areas.BASEMENT],["north",Areas.BASEMENT2]];
-
-	AreaDB[Areas.BASEMENT4].area = "Staircase (basement)"
-	AreaDB[Areas.BASEMENT4].description = "The stairs seem to lead up, although there's a locked door (and even if you had the key, the content isn't done yet!)"
-	AreaDB[Areas.BASEMENT4].map = mapGenerator(Areas.BASEMENT,3,2);
-	AreaDB[Areas.BASEMENT4].actions = [Actions.SIT,Actions.SCAVENGE];
-	AreaDB[Areas.BASEMENT4].exits = [["south",Areas.BASEMENT2]];
-
-	AreaDB[Areas.BASEMENT5].area = "Basement Cubby (basement)"
-	AreaDB[Areas.BASEMENT5].description = "The area is tight and cramped, but it looks man-made. Almost shoveled out."
-	AreaDB[Areas.BASEMENT5].comDrops = [9];
-	AreaDB[Areas.BASEMENT5].uncDrops = [1];
-	AreaDB[Areas.BASEMENT5].rareDrops = [2];
-	AreaDB[Areas.BASEMENT5].repopScav(10);
-	AreaDB[Areas.BASEMENT5].floorItems = {3:1};
-	AreaDB[Areas.BASEMENT5].addEnemy(enemyGenerator(Enemies.RAT));
-	AreaDB[Areas.BASEMENT5].map = mapGenerator(Areas.BASEMENT,2,2);
-	AreaDB[Areas.BASEMENT5].actions = [Actions.SIT,Actions.SCAVENGE];
-	AreaDB[Areas.BASEMENT5].exits = [["south",Areas.BASEMENT1]];
-
-	player.area = AreaDB[Areas.BASEMENT];
-}
-
-function Area(name) {
-	this.name = name;
-	this.comDrops = [];
-	this.uncDrops = [];
-	this.rareDrops = [];
-	this.scavTable = []; //list of all the stuff the player can CURRENTLY scav (not the full list of scav'able things)
-	this.floorItems = {};
-	this.mobs = [];
-}
-
-Area.prototype.addFloorItem = function(item) {
-	if (item in this.floorItems) {
-		this.floorItems[item] += 1;
-	}
-	else {
-		this.floorItems[item] = 1;
-	}
-	refreshAreaFloor();
-}
-
-Area.prototype.swapSitStand = function() {
-	for (let i=0;i<this.actions.length;i++) {
-		if (this.actions[i][0] === Actions.SIT[0]) {
-			this.actions[i] = Actions.STAND;
-			break;
-		}
-		else if (this.actions[i][0] === Actions.STAND[0]) {
-			this.actions[i] = Actions.SIT;
-			break;
-		}
-	}
-	refreshActions();
-}
-
-Area.prototype.removeFloorItem = function(item) {
-	this.floorItems[item] -= 1;
-	if (this.floorItems[item] === 0) {
-		delete this.floorItems[item];
-	}
-	refreshAreaFloor();
-}
-
-Area.prototype.addScavDrop = function(item) { //[item, weighed%]
-	if (item[1] === ItemRarity.RARE) {
-		this.rareDrops.push(item[0])
-	}
-	else if (item[1] === ItemRarity.UNCOMMON) {
-		this.uncDrops.push(item[0]);
-	}
-	else {
-		this.comDrops.push(item[0]);
-	}
-}
-
-Area.prototype.addEnemy = function(enemy) {
-	this.mobs.push(enemy);
-}
-
-Area.prototype.addDeadThings = function(body) {
-	this.addFloorItem(12);
-}
-
-Area.prototype.repopScav = function(numTimes) {
-	//adds a number of items to the scav table based on how long it's been, UP to the maximum number of items that it can hold.
-	//roll an item rarity -- 70% common, 25% uncommon, 5% rare
-	for (i=0;i<numTimes;i++) {
-		const rand = Math.floor(Math.random() * 101);
-		const haveRare = this.rareDrops.length > 0;
-		const haveUnc = this.uncDrops.length > 0;
-		if (haveRare && rand <= 5) {
-			this.scavTable.push(this.rareDrops[Math.floor(Math.random()*this.rareDrops.length)]);
-		}
-		else if (haveUnc && rand <= 30) {
-			this.scavTable.push(this.uncDrops[Math.floor(Math.random()*this.uncDrops.length)]);
-		}
-		else {
-			this.scavTable.push(this.comDrops[Math.floor(Math.random()*this.comDrops.length)]);
-		}
-	}
-}
-
-Area.prototype.getScavengeDrop = function() {
-	//If this is empty, return nothing
-	//TODO: add in a chance to fail at scav'ing, DIFFERENT from no items;
-	if (this.scavTable.length > 0) {
-		return this.scavTable.pop();
-	}
-	else {
-		return null;
-	}
-}
-
-Area.prototype.cleanUp = function() {
-	//roll through enemy list, remove ones that HP = 0;
-	for (i=0;i<this.mobs.length;i++) {
-		if (this.mobs[i].hp === 0) {
-			this.mobs.splice(i,1);
-		}
-	}
-	refreshMobs();
-}
 
 function Item(name, value, weight, type, article, plural, description) {
 	this.name = name;
-  this.value = value;
-  this.weight = weight;
-  this.type = type;
+  	this.value = value;
+  	this.weight = weight;
+  	this.type = type;
 	this.article = article;
 	this.plural = plural;
 	this.description = description;
 	this.actions = [Actions.GRAB,Actions.DROP];
 }
 
-function HostileEnemy(name,areaname,hp,spd,dodge,soak,hit,dmg,part,description) {
-	//these are the things you can attack, they have stats
-	this.name = name; //used for combat
-	this.areaname = areaname; //used for when you see one in the area
-	this.description = description
-	this.hp = hp;
-	this.maxhp = hp;
-	this.lasthit = 0;
-	this.spd = spd;
-	this.dodge = dodge;
-	this.soak = soak;
-	this.hit = hit;
-	this.dmg = dmg;
-	this.part = part;
-	this.currentAction = Actions.NONE;
-	this.actionTime = [0,0];
-	this.actionTarget = null;
-	this.actions = [Actions.FIGHT];
-}
-
-HostileEnemy.prototype.getHit = function() {
-	return this.hit;
-}
-
-HostileEnemy.prototype.getDodge = function() {
-	return this.dodge;
-}
-
-HostileEnemy.prototype.getDmg = function() {
-	return this.dmg;
-}
-
-HostileEnemy.prototype.getSoak = function() {
-	return this.soak;
-}
-HostileEnemy.prototype.getSpd = function() {
-	return this.spd;
-}
-HostileEnemy.prototype.getXP = function() {
-	return 1;
-}
-HostileEnemy.prototype.die = function() {
-	player.area.addDeadThings(this);
-	examine.clear();
-	clearLog();
-	addCombatLog("You killed the " + this.name + "! Awarded " + this.getXP() + "XP!");
-}
-HostileEnemy.prototype.butcher = function() {
-	return this.part;
-}
 
 function examineBox() {
 	this.examining = null;
@@ -508,9 +275,9 @@ function examineBox() {
 	this.actions = null;
 	this.actionFrom = null;
 	this.availableActions = {
-		"floor" : [Actions.GRAB,Actions.BUTCHER],
+		"floor" : [Actions.GRAB,Actions.BUTCHER, Actions.EQUIP],
 		"inventory" : [Actions.DROP,Actions.USE,Actions.BUTCHER,Actions.EQUIP],
-		"mob" : [Actions.FIGHT],
+		"mob" : [Actions.FIGHT, Actions.CUDDLE],
 	}
 	this.update = function(area,itemID) {
 		if (area === "inventory" || area === "floor") {
@@ -555,20 +322,15 @@ function examineBox() {
 //Generator?
 //**********
 
-//this could be factored into area but I wanted to keep it separated
-function enemyGenerator(type) {
-	if (type === Enemies.RAT) {
-		return new HostileEnemy("rat","a rat",6,1200,10,0,5,1,8,"A dirty old rat that looks like it maintains a good diet in this dusty basement.");
-	}
-}
+
 
 function formattedItem(item,num) {
-	if (!num) {
-		return "no " + plural;
-	}
 	const name = ItemDB[item].name;
 	const plural = ItemDB[item].plural;
 	const article = ItemDB[item].article;
+	if (!num) {
+		return "no " + plural;
+	}
 	if (num === 0) return "";
 	if (num === 1) return article + " " + name;
 	const ones = ["","one","two","three","four","five","six","seven","eight","nine"]
@@ -609,13 +371,8 @@ function setupGame() {
 	refreshHeader();
 	addListeners();
 	refreshGear();
+	refreshHP();
 	window.mainLoop = setInterval(gameLoop, 10);
-}
-
-function combatTest() {
-	const i = 0;
-	console.log(i)
-	i+1;
 }
 
 function gameLoop() {
@@ -663,6 +420,7 @@ function gameLoop() {
 		}
 		if (player.currentAction === Actions.SIT) {
 			player.hp = Math.min(player.maxhp, player.hp + 1);
+			refreshHP();
 			player.lasthit = 0;
 			player.actionTime[0] = Date.now();
 			player.actionTime[1] = Date.now() + 5000;
@@ -733,6 +491,11 @@ function exitSomewhere(target) {
 //is there a better state machine strictire for this kind of system??
 function startAction(action) {
 	//called whenever a player clicks on a "link"
+	if (player.currentAction === Actions.SIT) {
+		player.currentAction = Actions.NONE;
+		player.area.swapSitStand();;
+		addLog("You stand up.");
+	}
 	if (action === Actions.MOVE[1]) {
 		if (player.currentAction === Actions.NONE) {
 			player.currentAction = Actions.MOVE;
@@ -845,6 +608,10 @@ function startAction(action) {
 			player.unequipItem(examine.examining);
 		}
 	}
+	else if (action === Actions.CUDDLE[1]) {
+		addLog("You cuddle the rat.");
+		addLog("The rat cuddles you back.")
+	}
 	refreshGear();
 	refreshExamineBox();
 }
@@ -900,10 +667,10 @@ function refreshMobs() {
 		mobName.classList.add("link");
 		mobName.setAttribute("mobnum",i);
 		if (i===0) {
-			mobName.innerText = mob.areaname.charAt(0).toUpperCase() + mob.areaname.slice(1);
+			mobName.innerText = mob.areaname.charAt(0).toUpperCase() + mob.areaname.slice(1) + mob.name;
 		}
 		else {
-			mobName.innerText = mob.areaname;
+			mobName.innerText = mob.areaname + mob.name;
 		}
 		let delimiter = ""
 		if (i+2 === player.area.mobs.length) {
@@ -1225,6 +992,7 @@ function refreshCombatHP(enemy) {
 	enemygreyHP.classList.add("greyBarHP");
 	enemygreyHP.textContent = "*".repeat(20-hp3-hp4);
 	enemyStats.innerHTML += "] [" + enemy.hp + "/" + enemy.maxhp + "]"
+	refreshHP();
 }
 
 function refreshGear() {
@@ -1267,6 +1035,12 @@ function refreshGear() {
 		wRow.insertCell(-1).innerHTML = weapon.raw[0] + "-" + weapon.raw[1];
 		wRow.insertCell(-1).innerHTML = weapon.spd;
 	}
+}
+
+function refreshHP() {
+	const hp = Math.floor(player.hp/player.maxhp*20);
+	document.getElementById('pHealth').textContent = "|".repeat(hp)
+	document.getElementById('pMissingHealth').textContent = "-".repeat(20-hp)
 }
 
 //*************************

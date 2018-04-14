@@ -38,10 +38,10 @@ hr {
 
 #leftDiv {
   width: 525px;
-  height: 500px;
   float:left;
   padding: 5px;
 }
+
 #rightDiv {
   width: 500px;
   border: 0px;
@@ -50,12 +50,18 @@ hr {
   padding: 5px;
 }
 #area-map {
-  width:95px;
+  width:130px;
+  float:left;
+}
+
+#area {
+  width:520px;
+  padding-bottom: 10px;
   float:left;
 }
 
 #area-info {
-  width:375px;
+  width:380px;
   float : left;
 }
 
@@ -74,8 +80,8 @@ hr {
 }
 
 .p {
-  color:MediumTurquoise;
-  background-color:blue;
+  color:blue;
+  background-color:MediumTurquoise;
 }
 
 .b {
@@ -118,8 +124,10 @@ hr {
   color: Khaki;
 }
 
-#heading, .heading {
+.heading {
   background-color: #0000CD;
+  border-bottom: 1px solid white;
+  font-weight: bold;
 }
 
 .tab {

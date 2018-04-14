@@ -3,9 +3,8 @@
 <link rel="stylesheet" type="text/css" href="interface.css" />
 </HEAD>
 <BODY onload="setupGame()">
-<h1>Dust and Ashes</h1>
+<h1>You Found a Trash</h1>
 <div id="leftDiv">
-  Current Action: <span id="action">None</span> [<span id="greenBar"></span><span id="greyBar">----------</span>]
   <div id="area">
     <div id="area-map"></div>
     <div id="area-info">
@@ -13,14 +12,16 @@
       <div class="boldtxt" id="area-sub"></div>
       <p><div id="area-desc"></div></p>
     </div>
-    <p><div id="exits" class="inline"></div></p>
-    <p><div id="actions"></div></p>
-    <p><div id="floorItems"></div></p>
-    <p><div id="floorDead"></div></p>
-    <div id="mobs">
-      <div id="mobHeader"></div>
-      <div id="mobList"></div>
-    </div>
+  </div>
+  <div>Health: [<span id="pHealth" class="greenBar"></span><span id="pMissingHealth" class="greyBar"></span>]</div>
+  <div>Action: [<span id="greenBar"></span><span id="greyBar">----------</span>] <span id="action">None</span></div>
+  <p><div id="exits" class="inline"></div></p>
+  <p><div id="actions"></div></p>
+  <p><div id="floorItems"></div></p>
+  <p><div id="floorDead"></div></p>
+  <div id="mobs">
+    <div id="mobHeader"></div>
+    <div id="mobList"></div>
   </div>
 </div>
 <div id="rightDiv">
@@ -53,7 +54,7 @@
       </p>
       <h3>Skills</h3>
       <table id="stattable">
-      <tr id="heading"><td>Skill</td><td>Raw</td><td>Mod</td><td>Stat</td><td>Tot</td><td>Depends</td></tr>
+      <tr class="heading"><td>Skill</td><td>Raw</td><td>Mod</td><td>Stat</td><td>Tot</td><td>Depends</td></tr>
       <tr><td>fists</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">brawn,endurance</span></td></tr>
       <tr><td>scavenge</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">senses,endurance</span></td></tr>
       <tr><td>blades</td><td>1.00</td><td>+1</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">cool,reflexes</span></td></tr>
@@ -72,6 +73,8 @@
     </div>
   </div>
 </div>
+<script type="text/javascript" src="mobs.js"></script>
+<script type="text/javascript" src="areas.js"></script>
 <script type="text/javascript" src="main.js"></script>
 </BODY>
 </HTML>
