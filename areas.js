@@ -23,7 +23,7 @@ function LoadAreas() {
 	AreaDB[Areas.BASEMENT].uncDrops = [1];
 	AreaDB[Areas.BASEMENT].rareDrops = [2];
 	AreaDB[Areas.BASEMENT].repopScav(5);
-	AreaDB[Areas.BASEMENT].floorItems = {5:1,6:1,7:1};
+	AreaDB[Areas.BASEMENT].floorItems = {5:1,6:1,7:1,1:1};
 	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
 	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
 	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));

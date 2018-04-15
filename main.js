@@ -240,7 +240,6 @@ Player.prototype.die = function() {
 }
 
 Player.prototype.equipItem = function(itemID) {
-	this.removeInventory(itemID);
 	const someitem = ItemDB[itemID];
 	if (this.equip[someitem.slot] !== 0) this.unequipItem(itemID);
 	this.equip[someitem.slot] = itemID;
@@ -278,6 +277,7 @@ function examineBox() {
 		"floor" : [Actions.GRAB,Actions.BUTCHER, Actions.EQUIP],
 		"inventory" : [Actions.DROP,Actions.USE,Actions.BUTCHER,Actions.EQUIP],
 		"mob" : [Actions.FIGHT, Actions.CUDDLE],
+		"gear" : [Actions.UNEQUIP],
 	}
 	this.update = function(area,itemID) {
 		if (area === "inventory" || area === "floor") {
@@ -292,8 +292,7 @@ function examineBox() {
 				}
 			});
 		}
-		else {
-			//it's a mob!
+		else if (area === "mob") {
 			this.examining = player.area.mobs[itemID];
 			this.itemname = this.examining.name;
 			this.description = this.examining.description;
@@ -304,6 +303,29 @@ function examineBox() {
 					this.actions.push(action);
 				}
 			});
+		}
+		else if (area === "gear") {
+			//figure out the piece of gear by name and then add it's ID
+			for (const [slot, gear] of Object.entries(player.equip)) {
+				if (gear !== 0) {
+					const name = ItemDB[gear].name;
+					if (itemID === name) {
+						//that's the one we clicked on!
+						this.examining = gear;
+						this.itemname = name;
+						this.description = ItemDB[gear].description
+						this.actions = [];
+						this.actionFrom = area;
+						this.availableActions[area].forEach((action,_) => {
+							console.log(action,ItemDB[gear].actions);
+							if (ItemDB[gear].actions.includes(action)) {
+								console.log("success?");
+								this.actions.push(action);
+							}
+						});
+					}
+				}
+			};
 		}
 		document.getElementById("defaultOpen").click();
 		clearLog();
@@ -489,7 +511,7 @@ function exitSomewhere(target) {
 	}
 }
 //is there a better state machine strictire for this kind of system??
-function startAction(action) {
+function startAction(action,location) {
 	//called whenever a player clicks on a "link"
 	if (player.currentAction === Actions.SIT) {
 		player.currentAction = Actions.NONE;
@@ -598,6 +620,12 @@ function startAction(action) {
 		if (player.currentAction === Actions.NONE) {
 			player.actionTarget = examine.examining;
 			player.equipItem(examine.examining);
+			if (location === "floor") {
+				player.area.removeFloorItem(player.actionTarget);
+			}
+			else if (location === "inventory") {
+				player.removeInventory(player.actionTarget);
+			}
 		}
 		refreshGear();
 		refreshExamineBox();
@@ -780,26 +808,31 @@ function addListeners() {
 	invDiv.addEventListener('click', (e) => {
 		if (!e.target.classList.contains("link")) return;
 		const itemID = e.target.getAttribute("itemID");
-    examine.update("inventory",itemID);
+    	examine.update("inventory",itemID);
 	});
 	const examDiv = document.getElementById("examine");
 	examDiv.addEventListener('click', (e) => {
 		if (!e.target.classList.contains("link")) return;
-		startAction(e.target.textContent);
+		startAction(e.target.textContent,examine.actionFrom);
 	});
+	const gearDiv = document.getElementById("gear");
+	gearDiv.addEventListener('click', (e) => {
+		if (!e.target.classList.contains("link")) return;
+		examine.update("gear",e.target.textContent);
+	});	
 }
 
 function refreshActionProgressBar() {
 	const actionTxt = document.getElementById("action");
 	actionTxt.innerHTML = player.currentAction[0];
 	if (player.currentAction === Actions.NONE) {
-		document.getElementById("greenBar").innerHTML = "";
+		document.getElementById("yellowBar").innerHTML = "";
 		document.getElementById("greyBar").innerHTML = "-".repeat(20);
 	}
 	else {
 		const percentDone = Math.floor((Date.now() - player.actionTime[0])/(player.actionTime[1] - player.actionTime[0])*20);
 		const percentLeft = 20-percentDone;
-		document.getElementById("greenBar").innerHTML = "|".repeat(percentDone)
+		document.getElementById("yellowBar").innerHTML = "|".repeat(percentDone)
 		document.getElementById("greyBar").innerHTML = "-".repeat(percentLeft)
 	}
 }
@@ -928,7 +961,7 @@ function refreshExamineBox() {
 		if (num == 1) countText.textContent = "There is " + formattedItem(examine.examining,num) + " in your inventory."
 		else countText.innerHTML = "There are " + formattedItem(examine.examining,num) + " in your inventory."
 	}
-	else if (examine.actionFrom === "mob") {
+	else if (examine.actionFrom === "mob" || examine.actionFrom === "gear") {
 		num = 1;
 	}
 
@@ -1031,7 +1064,9 @@ function refreshGear() {
 	}
 	else {
 		const weapon = ItemDB[player.equip["mainHand"]];
-		wRow.insertCell(-1).innerHTML = weapon.name;
+		const weaponTD = wRow.insertCell(-1)
+		weaponTD.classList.add("link");
+		weaponTD.innerHTML = weapon.name;
 		wRow.insertCell(-1).innerHTML = weapon.raw[0] + "-" + weapon.raw[1];
 		wRow.insertCell(-1).innerHTML = weapon.spd;
 	}
