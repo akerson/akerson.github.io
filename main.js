@@ -1,50 +1,3 @@
-
-
-const ItemType = {
-	EQUIPMENT : "Equipment",
-	COMPONENT : "Component",
-	CONSUMABLE : "Consumable",
-	MONEY : "Money",
-	NONE : "None",
-	MISC : "Misc.",
-	CHEMICAL : "Chemical",
-	CORPSE : "Corpse",
-}
-
-const ItemRarity = {
-	COMMON : 0,
-	UNCOMMON: 1,
-	RARE : 2,
-}
-
-const EquipSlots = {
-	HEAD : "head",
-	FACE : "face",
-	CHEST : "chest",
-	HAND : "hand",
-	LEG : "leg",
-	FEET : "foot",
-	MH : "mainHand",
-	OH : "offHand",
-}
-
-const Actions = {
-	NONE : ["None","None"],
-	SCAVENGE: ["Scavenging...","Scavenge"],
-	FIGHT : ["Fighting...","Fight"],
-	TALK : ["Talking...","Talk"],
-	GRAB : ["Picking Up...","Pick Up"],
-	BUTCHER : ["Butchering...","Butcher"],
-	DROP : ["Dropping...","Drop"],
-	SIT : ["Sitting down...","Sit"],
-	STAND : ["Standing up...","Stand"],
-	USE : ["Using item...","Use"],
-	MOVE : ["Moving...","Move"],
-	EQUIP : ["Equipping...","Equip"],
-	UNEQUIP : ["Unequipping...","Unequip"],
-	CUDDLE : ["Cuddling...","Cuddle"],
-}
-
 const ItemDB = {
 	1 : new Item("plank",0.15,0.4,ItemType.COMPONENT, "a","planks","A wooden plank, in fairly decent condition. Could probably fashion as a makeshift weapon."),
 	2 : new Item("pile of trash",0.01,0.1,ItemType.COMPONENT, "a", "piles of trash","Someone didn't take the trash out prior to the apocalypse. Or it was a pile made after trash collection was no longer a thing."),
@@ -239,17 +192,17 @@ Player.prototype.die = function() {
 	this.lasthit = 0;
 }
 
-Player.prototype.equipItem = function(itemID) {
-	const someitem = ItemDB[itemID];
-	if (this.equip[someitem.slot] !== 0) this.unequipItem(itemID);
-	this.equip[someitem.slot] = itemID;
+Player.prototype.equipItem = function(ID) {
+	const someitem = ItemDB[ID];
+	if (this.equip[someitem.slot] !== 0) this.unequipItem(ID);
+	this.equip[someitem.slot] = ID;
 	addLog("You equip your " + someitem.name + ".");
 }
 
-Player.prototype.unequipItem = function(itemID) {
-	const someitem = ItemDB[itemID];
+Player.prototype.unequipItem = function(ID) {
+	const someitem = ItemDB[ID];
 	this.equip[someitem.slot] = 0;
-	this.addInventory(itemID);
+	this.addInventory(ID);
 	addLog("You unequip your " + someitem.name + ".");
 }
 
@@ -278,22 +231,23 @@ function examineBox() {
 		"inventory" : [Actions.DROP,Actions.USE,Actions.BUTCHER,Actions.EQUIP],
 		"mob" : [Actions.FIGHT, Actions.CUDDLE],
 		"gear" : [Actions.UNEQUIP],
+		"npc" : [Actions.TALK],
 	}
-	this.update = function(area,itemID) {
+	this.update = function(area,ID) {
 		if (area === "inventory" || area === "floor") {
-			this.examining = itemID;
-			this.itemname = ItemDB[itemID].name;
-			this.description = ItemDB[itemID].description;
+			this.examining = ID;
+			this.itemname = ItemDB[ID].name;
+			this.description = ItemDB[ID].description;
 			this.actions = [];
 			this.actionFrom = area;
 			this.availableActions[area].forEach((action,_) => {
-				if (ItemDB[itemID].actions.includes(action)) {
+				if (ItemDB[ID].actions.includes(action)) {
 					this.actions.push(action);
 				}
 			});
 		}
 		else if (area === "mob") {
-			this.examining = player.area.mobs[itemID];
+			this.examining = player.area.mobs[ID];
 			this.itemname = this.examining.name;
 			this.description = this.examining.description;
 			this.actions = [];
@@ -309,7 +263,7 @@ function examineBox() {
 			for (const [slot, gear] of Object.entries(player.equip)) {
 				if (gear !== 0) {
 					const name = ItemDB[gear].name;
-					if (itemID === name) {
+					if (ID === name) {
 						//that's the one we clicked on!
 						this.examining = gear;
 						this.itemname = name;
@@ -317,15 +271,30 @@ function examineBox() {
 						this.actions = [];
 						this.actionFrom = area;
 						this.availableActions[area].forEach((action,_) => {
-							console.log(action,ItemDB[gear].actions);
 							if (ItemDB[gear].actions.includes(action)) {
-								console.log("success?");
 								this.actions.push(action);
 							}
 						});
 					}
 				}
 			};
+		}
+		else if (area === "npc") {
+			player.area.npcs.forEach((npc,i) => {
+				if (npc.name === ID) {
+					//we have a match!
+					this.examining = npc;
+					this.itemname = ID;
+					this.description = npc.description;
+					this.actions = [];
+					this.actionFrom = area;
+					this.availableActions[area].forEach((action,_) => {
+						if (npc.actions.includes(action)) {
+							this.actions.push(action);
+						}
+					});
+				}
+			});
 		}
 		document.getElementById("defaultOpen").click();
 		clearLog();
@@ -382,6 +351,7 @@ function setupGame() {
 	examine = new examineBox();
 	document.getElementById("defaultOpen").click(); //make sure a tab starts open
 	itemPrep();
+	npcPrep();
 	LoadAreas();
 	refreshMobs();
 	refreshAreaFloor();
@@ -394,6 +364,8 @@ function setupGame() {
 	addListeners();
 	refreshGear();
 	refreshHP();
+	refreshNPC();
+	
 	window.mainLoop = setInterval(gameLoop, 10);
 }
 
@@ -434,7 +406,7 @@ function gameLoop() {
 			refreshExamineBox();
 		}
 		if (player.currentAction === Actions.DROP) {
-			//drop an item based off ItemID
+			//drop an item based off ID
 			player.dropItem(player.actionTarget);
 			const item = ItemDB[player.actionTarget];
 			addLog("You dropped " +  item.article + " " + item.name + " on the floor.");
@@ -636,10 +608,10 @@ function startAction(action,location) {
 			player.unequipItem(examine.examining);
 		}
 	}
-	else if (action === Actions.CUDDLE[1]) {
-		addLog("You cuddle the rat.");
-		addLog("The rat cuddles you back.")
+	else if (action === Actions.TALK[1]) {
+		refreshDialog("init");
 	}
+
 	refreshGear();
 	refreshExamineBox();
 }
@@ -690,7 +662,6 @@ function refreshMobs() {
 	}
 
 	player.area.mobs.forEach((mob,i)=> {
-
 		const mobName = mobsDiv.appendChild(document.createElement('span'));
 		mobName.classList.add("link");
 		mobName.setAttribute("mobnum",i);
@@ -801,14 +772,14 @@ function addListeners() {
 	const floorDiv = document.getElementById("floorItems");
 	floorDiv.addEventListener('click', (e) => {
 		if (!e.target.classList.contains("link")) return;
-		const itemID = e.target.getAttribute("itemID");
-    examine.update("floor",itemID);
+		const ID = e.target.getAttribute("ID");
+    examine.update("floor",ID);
   });
 	const invDiv = document.getElementById("inventory");
 	invDiv.addEventListener('click', (e) => {
 		if (!e.target.classList.contains("link")) return;
-		const itemID = e.target.getAttribute("itemID");
-    	examine.update("inventory",itemID);
+		const ID = e.target.getAttribute("ID");
+    	examine.update("inventory",ID);
 	});
 	const examDiv = document.getElementById("examine");
 	examDiv.addEventListener('click', (e) => {
@@ -820,6 +791,16 @@ function addListeners() {
 		if (!e.target.classList.contains("link")) return;
 		examine.update("gear",e.target.textContent);
 	});	
+	const npcDiv = document.getElementById("NPCs");
+	npcDiv.addEventListener('click', (e) => {
+		if (!e.target.classList.contains("link")) return;
+		examine.update("npc",e.target.textContent);
+	});
+	const dialogDiv = document.getElementById("conversation");
+	dialogDiv.addEventListener('click', (e) => {
+		if (!e.target.classList.contains("link")) return;
+		refreshDialog(e.target.textContent);
+	});
 }
 
 function refreshActionProgressBar() {
@@ -844,12 +825,12 @@ function refreshAreaFloor() {
 	let empty = true;
 	floorDiv.textContent += "You see ";
 	let i = 0;
-	for (const [itemID, count] of Object.entries(player.area.floorItems)) {
+	for (const [ID, count] of Object.entries(player.area.floorItems)) {
 		empty = false;
 		const itemSpan = floorDiv.appendChild(document.createElement('span'));
 		itemSpan.classList.add("link");
-		itemSpan.setAttribute("itemID",itemID)
-		itemSpan.textContent = formattedItem(itemID,count);
+		itemSpan.setAttribute("ID",ID)
+		itemSpan.textContent = formattedItem(ID,count);
 		let delimiter = ""
 		if (i+2 === Object.keys(player.area.floorItems).length) { //second last element needs the and
 			if (Object.keys(player.area.floorItems).length === 2) {
@@ -878,13 +859,13 @@ function refreshInventory() {
 	//inventory is a list of items, their count is in count property.
 	//dictionary for headers, fancy it during generation
 	sortedInventory = {};
-	for (const [itemID, count] of Object.entries(player.inventory)) {
-		item = ItemDB[itemID];
+	for (const [ID, count] of Object.entries(player.inventory)) {
+		item = ItemDB[ID];
 		if (item.type in sortedInventory) {
-			sortedInventory[item.type].push([itemID,count]);
+			sortedInventory[item.type].push([ID,count]);
 		}
 		else {
-			sortedInventory[item.type] = [[itemID,count]];
+			sortedInventory[item.type] = [[ID,count]];
 		}
 	}
 	//now we have to print it out
@@ -897,7 +878,7 @@ function refreshInventory() {
 		itemList.forEach((item,_) => {
 			const itemSpan = invDiv.appendChild(document.createElement('div'));
 			itemSpan.classList.add('link');
-			itemSpan.setAttribute("itemID",item[0]);
+			itemSpan.setAttribute("ID",item[0]);
 			itemSpan.textContent = formattedItem(item[0],item[1]);
 			itemSpan.id = "inv" + item.id;
 		})
@@ -961,11 +942,11 @@ function refreshExamineBox() {
 		if (num == 1) countText.textContent = "There is " + formattedItem(examine.examining,num) + " in your inventory."
 		else countText.innerHTML = "There are " + formattedItem(examine.examining,num) + " in your inventory."
 	}
-	else if (examine.actionFrom === "mob" || examine.actionFrom === "gear") {
+	else if (examine.actionFrom === "mob" || examine.actionFrom === "gear" || examine.actionFrom === "npc") {
 		num = 1;
 	}
 
- examDiv.appendChild(document.createElement('p'));
+ 	examDiv.appendChild(document.createElement('p'));
 
 	const actionDiv = examDiv.appendChild(document.createElement('div'));
 	actionDiv.innerHTML = "<span class='yellowtxt'>[ Actions: </span>";
@@ -1076,6 +1057,83 @@ function refreshHP() {
 	const hp = Math.floor(player.hp/player.maxhp*20);
 	document.getElementById('pHealth').textContent = "|".repeat(hp)
 	document.getElementById('pMissingHealth').textContent = "-".repeat(20-hp)
+}
+
+function refreshNPC() {
+	const npcDiv = document.getElementById('NPCs');
+	npcDiv.innerHTML = "";
+	if (player.area.npcs.length === 0) return;
+	npcDiv.textContent += "You see ";
+	player.area.npcs.forEach((npc,i) => {
+		const npcName = npcDiv.appendChild(document.createElement('span'));
+		npcName.classList.add("link");
+		npcName.innerText = npc.name;
+		let delimiter = ""
+		if (i+2 === player.area.npcs.length) {
+			if (player.area.npcs.length === 2) delimiter = document.createTextNode(" and ");
+			else delimiter = document.createTextNode(", and ");
+		}
+		else {
+			delimiter = document.createTextNode(", ");
+		}
+		npcDiv.appendChild(delimiter);
+	});
+	npcDiv.removeChild(npcDiv.lastChild);
+	npcDiv.innerHTML += " standing here.";
+}
+
+function refreshDialog(trigger) {
+	//remove action box if you chose end, otherwise pop it off.
+	if (trigger === "End") {
+		document.getElementById("dialogOptions").innerHTML = "";
+		return;
+	}
+	//dialog is handled in the examine box
+	const dialogDiv = document.getElementById("conversation");
+	let dialog = document.getElementById("dialogText");
+	if (dialog == null) {
+		dialog = dialogDiv.appendChild(document.createElement('div'));
+		dialog.id = "dialogText";
+	}
+	else {
+		dialog.appendChild(document.createElement('p'));
+	}
+	const name = dialog.appendChild(document.createElement('span'));
+	name.classList.add("yellowtxt");
+	name.innerHTML = 'Jerry says, "';
+	const text = dialog.appendChild(document.createElement('span'));
+	const todisplay = examine.examining.getDialog(trigger);
+	console.log(todisplay);
+	text.textContent = todisplay[0];
+	const endQuote = dialog.appendChild(document.createElement('span'));
+	endQuote.classList.add("yellowtxt");
+	endQuote.innerText = '"';
+
+	//actions, if it doesn't exist create it
+	let actionsDiv = document.getElementById("dialogOptions");
+	if (actionsDiv == null) {
+		actionsDiv = dialogDiv.appendChild(document.createElement('div'));
+		actionsDiv.id = "dialogOptions"
+	}
+	else {
+		actionsDiv.innerHTML = "";
+	}
+	actionsDiv.appendChild(document.createElement('p'));
+	const lead = actionsDiv.appendChild(document.createElement('span'));
+	lead.classList.add("yellowtxt");
+	lead.textContent = "[ Options: "
+	todisplay[1].forEach((action) => {
+		const actionSpan = actionsDiv.appendChild(document.createElement('span'));
+		actionSpan.classList.add("link");
+		actionSpan.textContent = action;
+		const delimiter = document.createTextNode(", ");
+		actionsDiv.appendChild(delimiter);
+	});
+	actionsDiv.removeChild(actionsDiv.lastChild);
+	const trail = actionsDiv.appendChild(document.createElement('span'));
+	trail.classList.add("yellowtxt");
+	trail.textContent = " ]";
+
 }
 
 //*************************

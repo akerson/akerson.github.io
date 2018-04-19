@@ -53,6 +53,7 @@ HostileEnemy.prototype.die = function() {
 	clearLog();
 	addCombatLog("You killed the " + this.name + "! Awarded " + this.getXP() + "XP!");
 }
+
 HostileEnemy.prototype.butcher = function() {
 	return this.part;
 }

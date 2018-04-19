@@ -26,7 +26,8 @@ function LoadAreas() {
 	AreaDB[Areas.BASEMENT].floorItems = {5:1,6:1,7:1,1:1};
 	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
 	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
-	AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
+    AreaDB[Areas.BASEMENT].addEnemy(enemyGenerator(Enemies.RAT));
+    AreaDB[Areas.BASEMENT].addNPC(NPCbank["Jerry"]);
 	AreaDB[Areas.BASEMENT].map = mapGenerator(Areas.BASEMENT,4,5);
 	AreaDB[Areas.BASEMENT].actions = [Actions.SIT,Actions.SCAVENGE];
 	AreaDB[Areas.BASEMENT].exits = [["north",Areas.BASEMENT1],["east",Areas.BASEMENT3]];
@@ -94,7 +95,8 @@ function Area(name) {
 	this.rareDrops = [];
 	this.scavTable = []; //list of all the stuff the player can CURRENTLY scav (not the full list of scav'able things)
 	this.floorItems = {};
-	this.mobs = [];
+    this.mobs = [];
+    this.npcs = [];
 }
 
 Area.prototype.addFloorItem = function(item) {
@@ -143,6 +145,10 @@ Area.prototype.addScavDrop = function(item) { //[item, weighed%]
 
 Area.prototype.addEnemy = function(enemy) {
 	this.mobs.push(enemy);
+}
+
+Area.prototype.addNPC = function(npc) {
+    this.npcs.push(npc);
 }
 
 Area.prototype.addDeadThings = function(body) {
