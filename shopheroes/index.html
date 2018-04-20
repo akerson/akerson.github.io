@@ -1,0 +1,25 @@
+<HTML>
+
+<HEAD>
+    <link rel="stylesheet" type="text/css" href="interface.css" />
+</HEAD>
+<BODY onload="initialize()">
+    <h1>Abqu Heroes</h1>
+    Money: <span id="money">$0</span>
+    <h3>Resources:</h3>
+    <div id="resources"></div>
+    <h3>Crafts List:</h3>
+    <div id="crafts"></div>
+    <h3>Craft Slots:</h3>
+    <div id="slots">
+        Slot 1: <span id="slot1"></span> <button id="slot1button" class="hidden" onclick="game.collect('slot1')">Sell!</button></br>
+        Slot 2: <span id="slot2"></span> <button id="slot2button" class="hidden" onclick="game.collect('slot2')">Sell!</button></br>
+        Slot 3: <span id="slot3"></span> <button id="slot3button" class="hidden" onclick="game.collect('slot3')">Sell!</button></br>
+        Slot 4: <span id="slot4"></span> <button id="slot4button" class="hidden" onclick="game.collect('slot4')">Sell!</button></br>
+        Slot 5: <span id="slot5"></span> <button id="slot5button" class="hidden" onclick="game.collect('slot5')">Sell!</button>
+    </div>
+
+    <script type="text/javascript" src="main.js"></script>
+</BODY>
+
+</HTML>
