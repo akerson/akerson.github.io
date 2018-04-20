@@ -75,6 +75,8 @@ Game.prototype.openSlot = function() {
 function initialize() {
     game = new Game();
     //this will make the function go FOREVER until they close the browser, every 10 ms
+    loadGame();
+    refreshMoney();
     refreshcanCraft();
     window.mainLoop = setInterval(gameLoop, 10);
 }
@@ -128,6 +130,7 @@ function gameLoop() {
     game.addResource(timePassed/500,"Wood");
     refreshResources();
     refreshcanCraftlots();
+    saveGame();
 }
 
 function refreshcanCraftlots() {
@@ -160,4 +163,21 @@ function refreshcanCraftlots() {
 
 function refreshMoney() {
     document.getElementById("money").innerText = "$" + game.money;
+}
+
+function saveGame () {
+    const gameSave = JSON.stringify(game);
+    window.localStorage.setItem('gameSave', gameSave);
+}
+
+function loadGame() {
+    const savegame = JSON.parse(window.localStorage.getItem('gameSave'));
+    if (savegame) {
+        if (typeof savegame.money !== "undefined") game.money = savegame.money;
+        if (typeof savegame.resources !== "undefined") game.resources = savegame.resources;
+        if (typeof savegame.canCraft !== "undefined") game.canCraft = savegame.canCraft;
+        if (typeof savegame.lastTime !== "undefined") game.lastTime = savegame.lastTime;
+        if (typeof savegame.canCraftlots !== "undefined") game.canCraftlots = savegame.canCraftlots;     
+    }
+
 }
