@@ -438,7 +438,6 @@ function combatLoop() {
 	//whoever's timer is lower attacks this round, player wins tie
 	let attacker = null;
 	let defender = null;
-	console.log(combatTime.playerTimer,combatTime.enemyTimer)
 	if (combatTime.playerTimer <= combatTime.enemyTimer) {
 		attacker = player;
 		defender = player.actionTarget;
