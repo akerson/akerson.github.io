@@ -8,8 +8,8 @@ const itemDB = {
     "Club" : new Item("Club",15000,0,7,25),
     "Longsword" : new Item("Longsword",10000,15,5,35),
     "Bastard Sword" : new Item("Bastard Sword",25000,25,10,105),
-    "Sawblade" : new Item("Sawbalde",35000,50,25,1200),
-    "Bloopinator" : new Item("Bloopinator",55000,100,100,2000),
+    "Sawblade" : new Item("Sawbalde",35000,50,25,2200),
+    "Bloopinator" : new Item("Bloopinator",55000,80,80,2000),
 }
 
 function Item(name,timeToCraft,oreCost,woodCost,value) {
