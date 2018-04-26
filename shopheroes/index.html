@@ -1,45 +1,32 @@
-<HTML>
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>Abqu Heroes</title>
+    <link href="jquery-ui.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+        <h2>Abqu Heroes</h2>
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Main</a></li>
+                <li><a href="#tabs-2">Second</a></li>
+                <li><a href="#tabs-3">Third</a></li>
+            </ul>
+            <div id="tabs-1">
+                <span class="money"></span></br>
+                <span class="workers"></span>
 
-<HEAD>
-    <link rel="stylesheet" type="text/css" href="interface.css" />
-</HEAD>
-<BODY onload="initialize()">
-    <h1>Abqu Heroes</h1>
-    Money: <span id="money">$0</span>
-    <h3>Resources:</h3>
-    <div id="resources"></div>
-    <h3>Crafts List:</h3>
-    <div id="crafts"></div>
-    <h3>Craft Slots:</h3>
-    <div id="slots">
-        <div id="slot1div" class="hidden">
-            Slot 1: <span id="slot1"></span> <button id="slot1button" class="hidden" onclick="game.collect('slot1')">Sell!</button>
+            </div>
+            <div id="tabs-2">Phasellus mattis tincidunt nibh. Cras orci urna, blandit id, pretium vel, aliquet ornare, felis. Maecenas scelerisque sem non nisl. Fusce sed lorem in enim dictum bibendum.</div>
+            <div id="tabs-3">Nam dui erat, auctor a, dignissim quis, sollicitudin eu, felis. Pellentesque nisi urna, interdum eget, sagittis et, consequat vestibulum, lacus. Mauris porttitor ullamcorper augue.</div>
         </div>
-        <div id="slot2div" class="hidden">
-            Slot 2: <span id="slot2"></span> <button id="slot2button" class="hidden" onclick="game.collect('slot2')">Sell!</button>
-        </div>
-        <div id="slot3div" class="hidden">
-            Slot 3: <span id="slot3"></span> <button id="slot3button" class="hidden" onclick="game.collect('slot3')">Sell!</button>
-        </div>
-        <div id="slot4div" class="hidden">
-            Slot 4: <span id="slot4"></span> <button id="slot4button" class="hidden" onclick="game.collect('slot4')">Sell!</button>
-        </div>
-        <div id="slot5div" class="hidden">
-            Slot 5: <span id="slot5"></span> <button id="slot5button" class="hidden" onclick="game.collect('slot5')">Sell!</button>
-        </div>
-        <div id="slot6div" class="hidden">
-                Slot 6: <span id="slot6"></span> <button id="slot6button" class="hidden" onclick="game.collect('slot6')">Sell!</button>
-            </div>       
-    </div>
-    <h3>Upgrades:</h3>
-    <div id="upgrades">
-    <button id="buyWood" onclick="game.buyUpgrade('buyWood')">Wood Access</br>$50</button>
-    <button id="MoreSlots" onclick="game.buyUpgrade('MoreSlots')">More Craftslots</br>$40</button>
-    <button id="OreSpeed" onclick="game.buyUpgrade('OreSpeed')">Ore Refill Speed</br>$1</button>
-    <button id="MoreOre" onclick="game.buyUpgrade('MoreOre')">Max Ore</br>$10</button>
-    <button id="WoodSpeed" onclick="game.buyUpgrade('WoodSpeed')" class="hidden">Wood Refill Speed</br>$1</button>
-    <button id="MoreWood" onclick="game.buyUpgrade('MoreWood')" class="hidden">Max Wood</br>$10</button>
-    <script type="text/javascript" src="main.js"></script>
-</BODY>
 
-</HTML>
+    
+<script src="external/jquery/jquery.js"></script>
+<script src="jquery-ui.js"></script>
+<script src="tabs.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

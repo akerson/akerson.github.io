@@ -1083,12 +1083,12 @@ function refreshNPC() {
 
 function refreshDialog(trigger) {
 	//remove action box if you chose end, otherwise pop it off.
-	if (trigger === "End") {
-		document.getElementById("dialogOptions").innerHTML = "";
-		return;
-	}
-	//dialog is handled in the examine box
 	const dialogDiv = document.getElementById("conversation");
+	const npc = examine.examining;
+	const dialogObj = npc.getDialog(trigger);
+	const playerResponse = dialogObj[1];
+	
+	const playerResponse = 
 	let dialog = document.getElementById("dialogText");
 	if (dialog == null) {
 		dialog = dialogDiv.appendChild(document.createElement('div'));
@@ -1097,6 +1097,20 @@ function refreshDialog(trigger) {
 	else {
 		dialog.appendChild(document.createElement('p'));
 	}
+
+	if (trigger !== "init") {
+		//we have a response!
+
+	}
+
+	if (trigger === "End") {
+		document.getElementById("dialogOptions").innerHTML = "";
+		return;
+	}
+	//dialog is handled in the examine box
+	const dialogDiv = document.getElementById("conversation");
+
+
 	const name = dialog.appendChild(document.createElement('span'));
 	name.classList.add("yellowtxt");
 	name.innerHTML = 'Jerry says, "';
