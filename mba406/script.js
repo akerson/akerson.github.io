@@ -95,6 +95,7 @@ function displayThisBullshit() {
     $results.empty();
     let content = `<div class="divTable"><div class="divTableBody" id="sortableTable">`;
     content += `<div class="divTableRow divTableHeading"><div class="divTableCell">Feature</div><div class="divTableCell">From</div><div class="divTableCell">To</div><div class="divTableCell">Costcutter</div><div class="divTableCell">Innovator</div><div class="divTableCell">Mercedes</div><div class="divTableCell">Workhorse</div><div class="divTableCell">Traveler</div></div>`;
+    features.map(f=>f.autoFlip());
     const sortedFeatures = features.sort((a,b) => {
         const textA = a["feature"];
         const textB = b["feature"];
@@ -189,6 +190,35 @@ class Feature {
     }
     getRow() {
         return `<div class="divTableRow"><div class="divTableCell featureName">${this.feature}</div><div class="divTableCell toFeature">${this.feature1}</div><div class="divTableCell fromFeature">${this.feature2}</div><div class="divTableCell cc">${this["Costcutter"]}</div><div class="divTableCell ino">${this["Innovator"]}</div><div class="divTableCell mer">${this["Mercedes"]}</div><div class="divTableCell wh">${this["Workhorse"]}</div><div class="divTableCell tra">${this["Traveler"]}</div></div>`;
+    }
+    reverse() {
+        const tempid = this.id1;
+        const tempdesign = this.design1;
+        const tempfeature = this.feature1;
+        this.id1 = this.id2;
+        this.design1 = this.design2;
+        this.feature1 = this.feature2;
+        this.id2 = tempid;
+        this.design2 = tempdesign;
+        this.feature2 = tempfeature;
+        this["Costcutter"] = -this["Costcutter"];
+        this["Innovator"] = -this["Innovator"];
+        this["Mercedes"] = -this["Mercedes"];
+        this["Workhorse"] = -this["Workhorse"];
+        this["Traveler"] = -this["Traveler"];
+    }
+    autoFlip() {
+        if (this.feature1 === "X") this.reverse();
+        if (this.feature1 === "Slim" && this.feature2 === "Standard") this.reverse();
+        if (this.feature1 === "High speed" && this.feature2 === "Budget") this.reverse();
+        if (this.feature1 === "Ultra fast" && this.feature2 === "Mid-range") this.reverse();
+        if (this.feature1 === "Ultra capacity" && this.feature2 === "High capacity") this.reverse();
+        if (this.feature2 === '14" standard (laptop)') this.reverse();
+        if (this.feature1 === '19" standard (desktop)' && this.feature2 === '17" advanced (laptop)') this.reverse();
+        if (this.feature1 === '21" high res. (desktop)') this.reverse();
+        if (this.feature1 === "Standard" && this.feature2 === "None") this.reverse();
+        if (this.feature1 === "Professional" && this.feature2 === "Lite") this.reverse();
+        if (this.feature1 === "For professionals" && this.feature2 === "Basic edition") this.reverse();
     }
 }
 
