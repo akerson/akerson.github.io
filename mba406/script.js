@@ -95,7 +95,14 @@ function displayThisBullshit() {
     $results.empty();
     let content = `<div class="divTable"><div class="divTableBody" id="sortableTable">`;
     content += `<div class="divTableRow divTableHeading"><div class="divTableCell">Feature</div><div class="divTableCell">From</div><div class="divTableCell">To</div><div class="divTableCell">Costcutter</div><div class="divTableCell">Innovator</div><div class="divTableCell">Mercedes</div><div class="divTableCell">Workhorse</div><div class="divTableCell">Traveler</div></div>`;
-    features.forEach(feature => content += feature.getRow());
+    const sortedFeatures = features.sort((a,b) => {
+        const textA = a["feature"];
+        const textB = b["feature"];
+        const text1A = a["feature1"];
+        const text1B = b["feature1"];
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : (text1A < text1B) ? -1 : (text1A > text1B) ? 1 : 0;
+    })
+    sortedFeatures.forEach(feature => content += feature.getRow());
     content += "</div></div>";
     $results.html(content);
     $('#sortableTable').sortable({
