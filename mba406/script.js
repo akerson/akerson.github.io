@@ -29,7 +29,7 @@ class Design {
 function compareDesigns(design1,design2) {
     let differences = 0;
     Object.keys(design1).forEach(key => {
-        if (key === "Company" || key === "Brand" || Segments.includes(key)) return;
+        if (key === "Company" || key === "Brand" || key === "Case" || Segments.includes(key)) return;
         if (design1[key] !== design2[key]) {
             differences += 1;
         }
@@ -42,7 +42,7 @@ function listDifferences(brand1,brand2) {
     const design2 = designs.find(d=>d["Brand"] === brand2);
     const differenceNames = [];
     Object.keys(design1).forEach(key => {
-        if (key === "Company" || key === "Brand" || Segments.includes(key)) return;
+        if (key === "Company" || key === "Brand" || key === "Case" || Segments.includes(key)) return;
         if (design1[key] !== design2[key]) {
             differenceNames.push(key);
         }
@@ -53,7 +53,7 @@ function listDifferences(brand1,brand2) {
 function listDifferences2(design1,design2) {
     const differenceNames = [];
     Object.keys(design1).forEach(key => {
-        if (key === "Company" || key === "Brand" || Segments.includes(key)) return;
+        if (key === "Company" || key === "Brand" || key === "Case" || Segments.includes(key)) return;
         if (design1[key] !== design2[key]) {
             differenceNames.push(key);
         }
@@ -117,6 +117,7 @@ function findValue() {
     //this attempts to identify the values associated with each feature
     //find differences between brands, log those differences and associated score changes
     let currentLength = 0;
+    let maxDifferences = 1;
     while (true) {
         for (let i=0;i<designs.length-1;i++) {
             for (let j=0;j<designs.length;j++) {
@@ -124,6 +125,7 @@ function findValue() {
                 //cycle through each feature, remove features already catalogued
                 //if only one feature remains, create new feature class and add to list
                 const differences = listDifferences2(designs[i],designs[j]);
+                if (differences > maxDifferences) continue;
                 const remainingdifferences = differences.filter(f=>
                     !catalog.includes(f+designs[i][f]+designs[j][f])
                 );
@@ -146,8 +148,9 @@ function findValue() {
                 catalog.push(newFeatureName+designs[j][newFeatureName]+designs[i][newFeatureName]);
             }
         }
-        if (currentLength === features.length) break;
+        if (currentLength === features.length && maxDifferences > 30) break;
         currentLength = features.length;
+        maxDifferences += 1;
     }
     displayThisBullshit();
 }
