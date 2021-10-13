@@ -29,7 +29,7 @@ class Design {
 function compareDesigns(design1,design2) {
     let differences = 0;
     Object.keys(design1).forEach(key => {
-        if (key === "Company" || key === "Brand" || key === "Case" || Segments.includes(key)) return;
+        if (key === "Company" || key === "Brand" || Segments.includes(key)) return;
         if (design1[key] !== design2[key]) {
             differences += 1;
         }
@@ -37,12 +37,28 @@ function compareDesigns(design1,design2) {
     return differences.toString();
 }
 
+function closestToDesign(brandName) {
+    const myDesign = designs.find(d=>d["Brand"] === brandName);
+    let closestDesign = null;
+    let minDifference = 100;
+    designs.forEach(design => {
+        if (design["Brand"] === brandName) return;
+        const difference = compareDesigns(myDesign,design);
+        console.log(difference);
+        if (difference < minDifference) {
+            minDifference = difference;
+            closestDesign = design["Brand"];
+        }
+    });
+    return [minDifference,closestDesign];
+}
+
 function listDifferences(brand1,brand2) {
     const design1 = designs.find(d=>d["Brand"] === brand1);
     const design2 = designs.find(d=>d["Brand"] === brand2);
     const differenceNames = [];
     Object.keys(design1).forEach(key => {
-        if (key === "Company" || key === "Brand" || key === "Case" || Segments.includes(key)) return;
+        if (key === "Company" || key === "Brand" || Segments.includes(key)) return;
         if (design1[key] !== design2[key]) {
             differenceNames.push(key);
         }
@@ -53,7 +69,7 @@ function listDifferences(brand1,brand2) {
 function listDifferences2(design1,design2) {
     const differenceNames = [];
     Object.keys(design1).forEach(key => {
-        if (key === "Company" || key === "Brand" || key === "Case" || Segments.includes(key)) return;
+        if (key === "Company" || key === "Brand" || Segments.includes(key)) return;
         if (design1[key] !== design2[key]) {
             differenceNames.push(key);
         }
@@ -125,7 +141,7 @@ function findValue() {
                 //cycle through each feature, remove features already catalogued
                 //if only one feature remains, create new feature class and add to list
                 const differences = listDifferences2(designs[i],designs[j]);
-                if (differences > maxDifferences) continue;
+                if (differences.length > maxDifferences) continue;
                 const remainingdifferences = differences.filter(f=>
                     !catalog.includes(f+designs[i][f]+designs[j][f])
                 );
@@ -135,6 +151,8 @@ function findValue() {
                 const existingdifference = differences.filter(f=>
                     catalog.includes(f+designs[i][f]+designs[j][f])
                 );
+                console.log(differences,maxDifferences);
+                console.log(existingdifference);
                 let scoremodification = [0,0,0,0,0]
                 existingdifference.forEach(d => {
                     const existingfeature = features.find(f=>f.match(d,designs[i][d],designs[j][d]));
@@ -166,6 +184,7 @@ class Feature {
         this["Mercedes"]   = design2["Mercedes"]   - design1["Mercedes"] + score[2];
         this["Workhorse"]  = design2["Workhorse"]  - design1["Workhorse"] + score[3];
         this["Traveler"]   = design2["Traveler"]   - design1["Traveler"] + score[4];
+        if (feature === "Autobackup") console.log(design1["Brand"],design2["Brand"],score)
         if (feature === "Case") {
             console.log(design1["Brand"],design2["Brand"]);
             console.log(score);
