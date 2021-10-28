@@ -20,6 +20,10 @@ function loadDesigns() {
     });
 }
 
+function nameToDesign(designName) {
+    return designs.find(d=>d["Brand"] === designName);
+}
+
 class Design {
     constructor(props) {
         Object.assign(this, props);
@@ -58,7 +62,7 @@ function listDifferences(brand1,brand2) {
     const design2 = designs.find(d=>d["Brand"] === brand2);
     const differenceNames = [];
     Object.keys(design1).forEach(key => {
-        if (key === "Company" || key === "Brand" || Segments.includes(key)) return;
+        if (key === "Company" || key === "Brand" || key === "Quarter" || Segments.includes(key)) return;
         if (design1[key] !== design2[key]) {
             differenceNames.push(key);
         }
@@ -69,7 +73,7 @@ function listDifferences(brand1,brand2) {
 function listDifferences2(design1,design2) {
     const differenceNames = [];
     Object.keys(design1).forEach(key => {
-        if (key === "Company" || key === "Brand" || Segments.includes(key)) return;
+        if (key === "Company" || key === "Brand" || key === "Quarter" || Segments.includes(key)) return;
         if (design1[key] !== design2[key]) {
             differenceNames.push(key);
         }
@@ -94,7 +98,7 @@ function compareAllDesigns() {
         const d = $("<div/>").appendTo($results);
         $("<div/>").html(`<h3>${result}:</h3>`).appendTo(d);
         results[result].forEach(r=>{
-            $("<div/>").html(`<b>${r[0]}, ${r[1]}</b>`).appendTo(d);
+            $("<div/>").html(`<b>${r[0]} (${nameToDesign(r[0])["Quarter"]}), ${r[1]} (${nameToDesign(r[1])["Quarter"]})</b>`).appendTo(d);
             const e = $("<div/>").appendTo(d);
             listDifferences(r[0],r[1]).forEach(difference => {
                 $("<span/>").html(`${difference}: ${b2d(r[0])[difference]}, ${b2d(r[1])[difference]}&nbsp;&nbsp;|&nbsp;&nbsp;`).appendTo(e);
