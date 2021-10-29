@@ -4,6 +4,7 @@ const designs = [];
 const results = {};
 const features = [];
 const catalog = [];
+let allowedRatings = ["Q9","Q8","Q7","Q6","Q5","Q4","Q3"];
 
 const $results = $("#results");
 
@@ -18,6 +19,11 @@ function loadDesigns() {
             designs.push(design);
         });
     });
+}
+
+function toggleRating(rating) {
+    if (allowedRatings.includes(rating)) allowedRatings = allowedRatings.filter(q=>q !== rating);
+    else allowedRatings.push(rating);
 }
 
 function nameToDesign(designName) {
@@ -87,7 +93,9 @@ function b2d(name) {
 
 function compareAllDesigns() {
     for (let i=0;i<designs.length-1;i++) {
+        if (!allowedRatings.includes(designs[i]["Quarter"])) continue;
         for (let j=i+1;j<designs.length;j++) {
+            if (!allowedRatings.includes(designs[j]["Quarter"])) continue;
             const result = compareDesigns(designs[i],designs[j]);
             if (results[result] === undefined) results[result] = [];
             results[result].push([designs[i]["Brand"],designs[j]["Brand"]]);
@@ -140,7 +148,9 @@ function findValue() {
     let maxDifferences = 1;
     while (true) {
         for (let i=0;i<designs.length-1;i++) {
+            if (!allowedRatings.includes(designs[i]["Quarter"])) continue;
             for (let j=0;j<designs.length;j++) {
+                if (!allowedRatings.includes(designs[j]["Quarter"])) continue;
                 //we need to cycle through each design. Identify every difference in feature.
                 //cycle through each feature, remove features already catalogued
                 //if only one feature remains, create new feature class and add to list
