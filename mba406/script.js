@@ -1,7 +1,7 @@
 "use explicit";
 
 const designs = [];
-const results = {};
+let results = {};
 const features = [];
 const catalog = [];
 let allowedRatings = ["Q9","Q8","Q7","Q6","Q5","Q4","Q3"];
@@ -24,6 +24,7 @@ function loadDesigns() {
 function toggleRating(rating) {
     if (allowedRatings.includes(rating)) allowedRatings = allowedRatings.filter(q=>q !== rating);
     else allowedRatings.push(rating);
+    console.log(allowedRatings);
 }
 
 function nameToDesign(designName) {
@@ -92,6 +93,7 @@ function b2d(name) {
 }
 
 function compareAllDesigns() {
+    results = {};
     for (let i=0;i<designs.length-1;i++) {
         if (!allowedRatings.includes(designs[i]["Quarter"])) continue;
         for (let j=i+1;j<designs.length;j++) {
