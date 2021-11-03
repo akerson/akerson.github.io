@@ -4,7 +4,7 @@ const designs = [];
 let results = {};
 const features = [];
 const catalog = [];
-let allowedRatings = ["Q9","Q8","Q7","Q6","Q5","Q4","Q3"];
+let allowedRatings = ["Q10","Q9","Q8","Q7","Q6","Q5","Q4","Q3"];
 
 const $results = $("#results");
 
