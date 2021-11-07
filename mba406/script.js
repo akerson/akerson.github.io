@@ -4,7 +4,7 @@ const designs = [];
 let results = {};
 const features = [];
 const catalog = [];
-let allowedRatings = ["Q10","Q9","Q8","Q7","Q6","Q5","Q4","Q3"];
+let allowedRatings = ["Q10","Q09","Q08","Q07","Q06","Q05","Q04","Q03"];
 
 const $results = $("#results");
 
@@ -95,6 +95,7 @@ function b2d(name) {
 function compareAllDesigns() {
     results = {};
     for (let i=0;i<designs.length-1;i++) {
+        console.log(designs[i]["Quarter"]);
         if (!allowedRatings.includes(designs[i]["Quarter"])) continue;
         for (let j=i+1;j<designs.length;j++) {
             if (!allowedRatings.includes(designs[j]["Quarter"])) continue;
