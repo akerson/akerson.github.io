@@ -1,0 +1,175 @@
+"use strict";
+
+const hexletters = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
+let counter = 0;
+
+class Slot {
+    constructor(id) {
+        this.id = id;
+        this.fr = false;
+    }
+    createSave() {
+        const save = {};
+        save.id = this.id;
+        save.fr = this.fr;
+    }
+    loadSave(save) {
+        this.fr = save.fr;
+        return;
+    }
+    freeze() {
+        this.fr = !this.fr;
+    }
+}
+
+class UnlockedColors {
+    constructor(id,name) {
+        this.id = id;
+        this.name = name;
+        this.found = false;
+    }
+    createSave() {
+        const save = {};
+        save.id = this.id;
+        save.found = this.found;
+        return save;
+    }
+    loadSave(save) {
+        this.found = save.found;
+    }
+    wasFound() {
+        return this.found;
+    }
+    findIt() {
+        this.found = true;
+    }
+}
+
+class Mixer {
+    constructor() {
+        this.time = 0;
+        this.color1 = null;
+        this.color2 = null;
+        this.count = counter;
+        counter++;
+    }
+    createSave() {
+        const save = {};
+        save.color1 = this.color1;
+        save.color2 = this.color2;
+        save.time = this.time;
+        return save;
+    }
+    loadSave(save) {
+        this.time = save.time;
+    }
+    addTime(ms) {
+        if (!this.color1 || !this.color2) {
+            this.time = 0;
+            return;
+        }
+        this.time += ms;
+        while (this.time >= this.maxTime()) {
+            this.time -= this.maxTime();
+            this.mixColor();
+        }
+    }
+    maxTime() {
+        return 2000;
+    }
+    addColor(color) {
+        if (!this.color1) this.color1 = color;
+        else if (!this.color2) this.color2 = color;
+    }
+    removeColor(position) {
+        if (position === 0) this.color1 = null;
+        else if (position === 1) this.color2 = null;
+    }
+    hasSpace() {
+        return !this.color1 || !this.color2;
+    }
+    mixColor() {
+        let result = [];
+        for (let i=0;i<6;i++) {
+            if (Math.random() < 0.05) result += hexletters[Math.floor(Math.random() * hexletters.length)];
+            else if (Math.random() < 0.525) result += this.color1[i]; // it's 0.525 since it's splitting the remaining 0.95
+            else result += this.color2[i];
+        }
+        gameData.mixedColor(result);
+    }
+}
+
+const gameData = {
+    colorGoals : [],
+    slots : [],
+    slotMax : 15,
+    mixers : [new Mixer()],
+    colorHistory : [],
+    lastTime : Date.now(),
+    createSave() {
+        const save = {};
+        save.slots = [];
+        save.mixers = [];
+        save.colorHistory = [];
+        this.slots.forEach(s=>save.slots.push(s.createSave()));
+        this.mixers.forEach(m=>save.mixers.push(m.createSave()));
+        this.colorHistory.forEach(ch=>save.colorHistory.push(ch.createSave()));
+    },
+    loadSave(save) {
+        save.slots.forEach(slotSave => {
+            const s = new Slot(slotSave.id);
+            s.loadSave(slotSave);
+            this.slots.push(s);
+        });
+        save.mixers.forEach(mixSave => {
+            const m = new Mixer();
+            m.loadSave(mixSave);
+            this.mixers.push(m);
+        });
+        save.colorHistory.forEach(chSave => {
+            const ch = this.idToColor(chSave.id);
+            ch.loadSave(chSave);
+        });
+    },
+    addColor(color) {
+        this.colorHistory.push(color);
+    },
+    idToColor(color) {
+        this.colorHistory.find(c=>c.id === color);
+    },
+    addTime(ms) {
+        this.mixers.forEach(mixer => mixer.addTime(ms));
+    },
+    mixedColor(color) {
+        this.unlockColor(color);
+        this.pushNew(color);
+    },
+    unlockColor(color) {
+        const unlock = this.colorGoals.find(c=>c.id === color);
+        if (unlock === undefined) return;
+        unlock.findIt();
+    },
+    pushNew(color) {
+        const newcolor = new Slot(color);
+        if (this.slots.length > 0 && this.slots.every(s=>s.fr)) return;
+        this.slots.unshift(newcolor);
+        if (this.slots.length <= this.slotMax) return;
+        for (let i = this.slots.length - 1; i >= 0; i--) {
+            if (!this.slots[i].freeze) {
+                this.slots.splice(i,1); //remove from the array
+                break;
+            }
+        }
+    },
+    addMixColor(color) {
+        const slot = this.mixers.find(m=>m.hasSpace());
+        console.log(slot);
+        if (!slot) return;
+        slot.addColor(color);
+    },
+    removeMix(mixer,position) {
+        const mix = this.mixers.find(m=>m.count === mixer);
+        if (!mix) return;
+        mix.removeColor(position);
+    }
+}
