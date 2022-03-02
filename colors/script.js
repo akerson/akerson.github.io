@@ -3,25 +3,6 @@
 const hexletters = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
 let counter = 0;
 
-class Slot {
-    constructor(id) {
-        this.id = id;
-        this.fr = false;
-    }
-    createSave() {
-        const save = {};
-        save.id = this.id;
-        save.fr = this.fr;
-    }
-    loadSave(save) {
-        this.fr = save.fr;
-        return;
-    }
-    freeze() {
-        this.fr = !this.fr;
-    }
-}
-
 class UnlockedColors {
     constructor(id,name) {
         this.id = id;
@@ -101,19 +82,20 @@ class Mixer {
 
 const gameData = {
     colorGoals : [],
-    slots : [],
-    slotMax : 15,
+    history : [],
+    historyMax : 15,
+    easel : [],
+    easelMax : 5,
     mixers : [new Mixer()],
-    colorHistory : [],
+    colorLibrary : [],
     lastTime : Date.now(),
     createSave() {
         const save = {};
-        save.slots = [];
         save.mixers = [];
-        save.colorHistory = [];
+        save.colorLibrary = [];
         this.slots.forEach(s=>save.slots.push(s.createSave()));
         this.mixers.forEach(m=>save.mixers.push(m.createSave()));
-        this.colorHistory.forEach(ch=>save.colorHistory.push(ch.createSave()));
+        this.colorLibrary.forEach(ch=>save.colorLibrary.push(ch.createSave()));
     },
     loadSave(save) {
         save.slots.forEach(slotSave => {
@@ -126,44 +108,26 @@ const gameData = {
             m.loadSave(mixSave);
             this.mixers.push(m);
         });
-        save.colorHistory.forEach(chSave => {
-            const ch = this.idToColor(chSave.id);
+        save.colorLibrary.forEach(chSave => {
+            const ch = this.colorLibrary.find(c=>c.id === color);
             ch.loadSave(chSave);
         });
-    },
-    addColor(color) {
-        this.colorHistory.push(color);
-    },
-    idToColor(color) {
-        this.colorHistory.find(c=>c.id === color);
     },
     addTime(ms) {
         this.mixers.forEach(mixer => mixer.addTime(ms));
     },
     mixedColor(color) {
-        this.unlockColor(color);
-        this.pushNew(color);
-    },
-    unlockColor(color) {
+        console.log(color);
+        //unlock a color
         const unlock = this.colorGoals.find(c=>c.id === color);
-        if (unlock === undefined) return;
-        unlock.findIt();
-    },
-    pushNew(color) {
-        const newcolor = new Slot(color);
-        if (this.slots.length > 0 && this.slots.every(s=>s.fr)) return;
-        this.slots.unshift(newcolor);
-        if (this.slots.length <= this.slotMax) return;
-        for (let i = this.slots.length - 1; i >= 0; i--) {
-            if (!this.slots[i].freeze) {
-                this.slots.splice(i,1); //remove from the array
-                break;
-            }
-        }
+        if (unlock !== undefined) unlock.findIt();
+        //add to history
+        this.history.push(color);
+        if (this.history.length < this.historyMax) return;
+        this.history.pop();
     },
     addMixColor(color) {
         const slot = this.mixers.find(m=>m.hasSpace());
-        console.log(slot);
         if (!slot) return;
         slot.addColor(color);
     },
@@ -171,5 +135,13 @@ const gameData = {
         const mix = this.mixers.find(m=>m.count === mixer);
         if (!mix) return;
         mix.removeColor(position);
+    },
+    addEasel(color) {
+        if (this.easel.includes(color)) return;
+        if (this.easel.length >= this.easelMax) return;
+        this.easel.push(color);
+    },
+    removeEasel(color) {
+        this.easel = this.easel.filter(c=>c !== color);
     }
 }

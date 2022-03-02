@@ -152,10 +152,10 @@ const fixedColors = {
 
 //setup!
 for (const [key, value] of Object.entries(fixedColors)) {
-    gameData.addColor(new UnlockedColors(key,value));
+    gameData.colorLibrary.push(new UnlockedColors(key,value));
 }
-gameData.mixedColor("000000");
-gameData.mixedColor("FFFFFF");
+gameData.easel.push("000000");
+gameData.easel.push("FFFFFF");
 initializeUI();
 setInterval(mainLoop, 10);
 setInterval(initializeUI, 1000);
