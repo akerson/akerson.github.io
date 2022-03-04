@@ -1,0 +1,44 @@
+.bottom {
+    padding: 20px;
+}
+
+.library-part {
+    width: 75%;
+    float: left;
+    padding: 20px;
+}
+
+.history-part {
+    width: 25%;
+    float: left;
+    padding: 20px;
+}
+
+.easle {
+    display:grid;
+    grid-template-columns: repeat(4, 45px);
+    grid-gap: 2em;
+}
+
+.library {
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr
+}
+
+.history {
+    display:inline-grid;
+}
+
+.progressBar {
+    width: 10%;
+    height: 30px;
+    background-color: #04AA6D;
+    text-align: left; /* To center it horizontally (if you want) */
+    line-height: 30px; /* To center it vertically */
+    color: white;
+    overflow:hidden;
+}
+
+.mixerBoxBar {
+    width: 200px;
+}

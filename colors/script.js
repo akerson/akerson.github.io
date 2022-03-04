@@ -18,12 +18,6 @@ class UnlockedColors {
     loadSave(save) {
         this.found = save.found;
     }
-    wasFound() {
-        return this.found;
-    }
-    findIt() {
-        this.found = true;
-    }
 }
 
 class Mixer {
@@ -109,22 +103,25 @@ const gameData = {
             this.mixers.push(m);
         });
         save.colorLibrary.forEach(chSave => {
-            const ch = this.colorLibrary.find(c=>c.id === color);
+            const ch = this.findColor(chSave.id);
             ch.loadSave(chSave);
         });
+    },
+    findColor(id) {
+        return this.colorLibrary.find(c=>c.id === id);
     },
     addTime(ms) {
         this.mixers.forEach(mixer => mixer.addTime(ms));
     },
     mixedColor(color) {
-        console.log(color);
         //unlock a color
         const unlock = this.colorGoals.find(c=>c.id === color);
         if (unlock !== undefined) unlock.findIt();
         //add to history
-        this.history.push(color);
-        if (this.history.length < this.historyMax) return;
+        this.history.unshift(color);
+        if (this.history.length < this.historyMax) return UITrigger.historyChange = true;;
         this.history.pop();
+        UITrigger.historyChange = true;
     },
     addMixColor(color) {
         const slot = this.mixers.find(m=>m.hasSpace());

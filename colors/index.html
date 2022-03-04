@@ -3,19 +3,30 @@
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://kit.fontawesome.com/968e41c805.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
     </head>
     <body>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
         <h1>RGBlender</h1>
-        <h2 id="progress">You've found 2/140 of the Colors!</h2>
         <h3>Mixers</h3>
         <div id="mixers"></div>
         <h3>Easel</h3>
-        <div id="easel"></div>
-        <h3>Mix History</h3>
-        <div id="history"></div>
-        <h3>Library</h3>
-        <div id="library"></div>
+        <div id="easel" class="easle"></div>
+        <div class="bottom">
+            <div class="history-part">
+                <h3>Mix History</h3>
+                <div id="history" class="history"></div>
+            </div>
+            <div class="library-part">
+                <h3>Completed Library (2/140)</h3>
+                <div id="completedLibrary" class="library"></div>
+                <h3>Remaining Library (138/140)</h3>
+                <div id="remainingLibrary" class="library"></div>
+            </div>
+
+        </div>
+
+        <script src="config.js"></script>
         <script src="script.js"></script>
         <script src="ui.js"></script>
         <script src="main.js"></script>

@@ -3,27 +3,69 @@
 const $mixers = $("#mixers");
 const $easel = $("#easel");
 const $history = $("#history");
-const $library = $("#library");
+const $completedLibrary = $("#completedLibrary");
+const $remainingLibrary = $("#remainingLibrary");
 
-function initializeUI() {
-    $mixers.empty();
-    gameData.mixers.forEach(mixer => {
-        $mixers.append(colorMixerBox(mixer));
-    });
-    $easel.empty();
-    gameData.easel.forEach(color => {
-        $easel.append(easelBox(color));
-    })
+function updateHistory() {
     $history.empty();
     gameData.history.forEach(color => {
         $history.append(historyBox(color));
     });
-    $library.empty();
-    gameData.colorLibrary.forEach(library => {
-        $library.append(colorLibraryBox(library));
+}
+
+const UITrigger = {
+    historyChange : false,
+    easleChange : false,
+    mixerChange : false,
+    libraryChange : false,
+}
+
+function updateMixerBars() {
+    gameData.mixers.forEach(mixer => {
+        const width = (mixer.time/mixer.maxTime()*100).toFixed(1)+"%";
+        mixer.pb.css("width", width);
+    });
+    if (UITrigger.historyChange) {
+        console.log("lol");
+        UITrigger.historyChange = false;
+        updateHistory();
+    } 
+    if (UITrigger.easleChange) {
+        UITrigger.easleChange = false;
+        updateEasles();
+    }
+    if (UITrigger.mixerChange) {
+        UITrigger.mixerChange = false;
+        updateMixers();
+    }
+    if (UITrigger.libraryChange) {
+        UITrigger.libraryChange = false;
+        updateLibrary();
+    }
+}
+
+function updateMixers() {
+    $mixers.empty();
+    gameData.mixers.forEach(mixer => {
+        $mixers.append(colorMixerBox(mixer));
     });
 }
 
+function updateEasles() {
+    $easel.empty();
+    gameData.easel.forEach(color => {
+        $easel.append(easelBox(color));
+    })
+}
+
+function updateLibrary() {
+    $completedLibrary.empty();
+    $remainingLibrary.empty();
+    gameData.colorLibrary.forEach(library => {
+        if (library.found) $completedLibrary.append(colorLibraryBox(library));
+        else $remainingLibrary.append(colorLibraryBox(library));
+    });
+}
 
 function colorBox(color) {
     const d = $("<div/>").addClass("colorBlock");
@@ -38,8 +80,8 @@ function colorBox(color) {
 }
 
 function colorMixerBox(mixer) {
-    const pb = $("<div/>").addClass("mixerBox").html("TODO Timer");
-    $("<div/>").addClass("mixerBoxBar").appendTo(pb);
+    const pb = $("<div/>").addClass("mixerBoxBar");
+    createProgressBar(mixer).appendTo(pb);
     colorBox(mixer.color1).addClass("colorUnslot").data({"position":0,"mixer":mixer.count}).appendTo(pb);
     colorBox(mixer.color2).addClass("colorUnslot").data({"position":1,"mixer":mixer.count}).appendTo(pb);
     return pb;
@@ -80,6 +122,7 @@ $(document).on("click",".historyBox",e => {
     e.preventDefault();
     const color = $(e.currentTarget).data("color");
     gameData.addEasel(color);
+    UITrigger.easleChange = true;
 });
 
 $(document).on("click",".easelBoxClose",e => {
@@ -87,6 +130,7 @@ $(document).on("click",".easelBoxClose",e => {
     e.stopPropagation();
     const color = $(e.currentTarget).data("color");
     gameData.removeEasel(color);
+    UITrigger.easleChange = true;
 });
 
 $(document).on("click",".easelBox",e => {
@@ -94,6 +138,7 @@ $(document).on("click",".easelBox",e => {
     e.preventDefault();
     const color = $(e.currentTarget).data("color");
     gameData.addMixColor(color);
+    UITrigger.mixerChange = true;
 });
 
 $(document).on("click",".libraryBox",e => {
@@ -101,11 +146,20 @@ $(document).on("click",".libraryBox",e => {
     e.preventDefault();
     const color = $(e.currentTarget).data("color");
     gameData.addMixColor(color);
+    UITrigger.mixerChange = true;
 });
 
 $(document).on("click",".colorUnslot",e => {
     e.preventDefault();
     const mixer = parseInt($(e.currentTarget).data("mixer"));
     const position = parseInt($(e.currentTarget).data("position"));
-    gameData.removeMix(mixer,position)
+    gameData.removeMix(mixer,position);
+    UITrigger.mixerChange = true;
 });
+
+function createProgressBar(mixer) {
+    const width = (mixer.time/mixer.maxTime()*100).toFixed(1)+"%";
+    const d = $("<div/>").addClass("progressBar").attr("id","MPB"+mixer.count).css("width", width).html("1 Color Per Fill");
+    mixer.pb = d;
+    return d;
+}
