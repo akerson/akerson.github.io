@@ -102,9 +102,10 @@ function historyBox(color) {
 
 function colorLibraryBox(library) {
     const ch = $("<div/>").addClass("libraryBox").data("color",library.id);
-    colorBox(library.id).appendTo(ch);
+    ch.css("background-color",`#${library.id}`);
+    ch.css("color",textColor(library.id));
     $("<div/>").addClass("chName").html(library.name).appendTo(ch); 
-    if (library.found) ch.addClass("found");
+    colorBox(library.id).appendTo(ch);
     return ch;
 }
 

@@ -22,7 +22,13 @@
 
 .library {
     display:grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    
+}
+
+.libraryBox {
+    border: 0.5px solid #000000;
+    
 }
 
 .history {
