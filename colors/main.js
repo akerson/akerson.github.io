@@ -17,6 +17,7 @@ updateMixers();
 updateEasles();
 updateHistory();
 updateLibrary();
+$("#remainingPts").html(`Points Remaining - ${gameData.ptsRemaining()}`);
 setInterval(mainLoop, 10);
 setInterval(updateMixerBars, 10);
 setInterval(saveGame,1000);
