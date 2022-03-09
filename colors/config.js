@@ -1,15 +1,20 @@
-//MIXER PROPERTIES
-const Upgrades = [
-    "Mix Speed",
-    "Mix Colors",
-    "Low Mixing",
-    "High Mixing",
-    "Mix 1 Hold",
-    "Mix 2 Hold",
-]
-
-
-
+const mixerProperties = [
+    "Hold 1 Left",
+    "Hold 2 Left",
+    "Hold 3 Left",
+    "Hold 4 Left",
+    "Hold 5 Left",
+    "Hold 6 Left",
+    "Hold 1 Right",
+    "Hold 2 Right",
+    "Hold 3 Right",
+    "Hold 4 Right",
+    "Hold 5 Right",
+    "Hold 6 Right",
+    "Fast",
+    "Low Mutate", 
+    "High Mutate",
+];
 
 const fixedColors = new Map([
     ["000000","Black"],

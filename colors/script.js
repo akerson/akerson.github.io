@@ -25,18 +25,26 @@ class Mixer {
         this.time = 0;
         this.color1 = null;
         this.color2 = null;
+        this.properties = [];
+        this.maxProperties = 0;
         this.count = counter;
         counter++;
     }
     createSave() {
         const save = {};
+        save.time = this.time;
         save.color1 = this.color1;
         save.color2 = this.color2;
-        save.time = this.time;
+        save.properties = this.properties;
+        save.maxProperties = this.maxProperties;
         return save;
     }
     loadSave(save) {
         this.time = save.time;
+        this.color1 = save.color1;
+        this.color2 = save.color2;
+        this.properties = save.properties;
+        this.maxProperties = save.maxProperties;
     }
     addTime(ms) {
         if (!this.color1 || !this.color2) {
@@ -50,7 +58,7 @@ class Mixer {
         }
     }
     maxTime() {
-        return 2000;
+        return this.properties.includes("Fast") ? 1000 : 2000;
     }
     addColor(color) {
         if (!this.color1) this.color1 = color;
@@ -65,38 +73,65 @@ class Mixer {
     }
     mixColor() {
         let result = [];
+        let mutateChance = 0.05;
+        if (this.properties.includes("Low Mutate")) mutateChance = 0.025;
+        if (this.properties.includes("High Mutate")) mutateChance = 0.2;
         for (let i=0;i<6;i++) {
-            if (Math.random() < 0.05) result += hexletters[Math.floor(Math.random() * hexletters.length)];
-            else if (Math.random() < 0.525) result += this.color1[i]; // it's 0.525 since it's splitting the remaining 0.95
+            if (this.properties.includes(`Hold ${i+1} Left`)) {
+                result += this.color1[i];
+                continue;
+            }
+            if (this.properties.includes(`Hold ${i+1} Right`)) {
+                result += this.color2[i];
+                continue;
+            }
+            const randNum = Math.random();
+            if (randNum < mutateChance) result += hexletters[Math.floor(Math.random() * hexletters.length)];
+            else if (randNum < (1-mutateChance)/2) result += this.color1[i];
             else result += this.color2[i];
         }
         gameData.mixedColor(result);
+    }
+    addProperty(property) {
+        if (this.properties.length >= this.maxProperties) return;
+        if (this.properties.includes(property)) return;
+        this.properties.push(property);
+        UITrigger.mixerProperty = this.count;
+    }
+    removeProperty(property) {
+        if (this.properties.length === 0) return;
+        this.properties = this.properties.filter(p=>p !== property);
+        UITrigger.mixerProperty = this.count;
+    }
+    buyPropertySlot() {
+        if (this.maxProperties >= 4) return;
+        if (gameData.ptsRemaining() < 1) return;
+        this.maxProperties++;
+        UITrigger.mixerProperty = this.count;
+        UITrigger.pointsRefresh = true;
     }
 }
 
 const gameData = {
     colorGoals : [],
     history : [],
-    historyMax : 15,
+    historyMax : 50,
     easel : [],
-    easelMax : 5,
-    mixers : [new Mixer()],
+    easelMax : 10,
+    mixers : [],
+    mixersMax : 10,
     colorLibrary : [],
     lastTime : Date.now(),
+    boughtProperties : [],
     createSave() {
         const save = {};
-        save.mixers = [];
-        save.colorLibrary = [];
-        this.slots.forEach(s=>save.slots.push(s.createSave()));
-        this.mixers.forEach(m=>save.mixers.push(m.createSave()));
-        this.colorLibrary.forEach(ch=>save.colorLibrary.push(ch.createSave()));
+        save.mixers = this.mixers.map(m=>m.createSave());
+        save.colorLibrary = this.colorLibrary.map(cl=>cl.createSave());
+        save.easel = this.easel;
+        return save;
     },
     loadSave(save) {
-        save.slots.forEach(slotSave => {
-            const s = new Slot(slotSave.id);
-            s.loadSave(slotSave);
-            this.slots.push(s);
-        });
+        console.log(save);
         save.mixers.forEach(mixSave => {
             const m = new Mixer();
             m.loadSave(mixSave);
@@ -106,6 +141,7 @@ const gameData = {
             const ch = this.findColor(chSave.id);
             ch.loadSave(chSave);
         });
+        this.easel = save.easel;
     },
     findColor(id) {
         return this.colorLibrary.find(c=>c.id === id);
@@ -115,8 +151,12 @@ const gameData = {
     },
     mixedColor(color) {
         //unlock a color
-        const unlock = this.colorGoals.find(c=>c.id === color);
-        if (unlock !== undefined) unlock.findIt();
+        const unlock = this.colorLibrary.find(c=>c.id === color);
+        if (unlock && !unlock.found) {
+            unlock.found = true;
+            UITrigger.libraryChange = true;
+            UITrigger.pointsRefresh = true;
+        }
         //add to history
         this.history.unshift(color);
         if (this.history.length < this.historyMax) return UITrigger.historyChange = true;;
@@ -140,5 +180,46 @@ const gameData = {
     },
     removeEasel(color) {
         this.easel = this.easel.filter(c=>c !== color);
+    },
+    ptsSpent() {
+        return this.mixers.length+this.boughtProperties.length*6+this.mixers.map(m=>m.maxProperties).reduce((a,b)=>a+b);
+    },
+    ptsRemaining() {
+        return this.colorLibrary.filter(c=>c.found).length - this.ptsSpent();
+    },
+    purchaseMixer() {
+        if (this.ptsRemaining() <= 0) return;
+        this.mixers.push(new Mixer());
+        UITrigger.mixerChange = true;
+        UITrigger.pointsRefresh = true;
+    },
+    //property stuff
+    removeProperty(mixerid,property) {
+        const mix = this.mixers.find(m=>m.count === mixerid);
+        if (!mix) return;
+        mix.removeProperty(property);
+    },
+    addProperty(mixerid,property) {
+        const mix = this.mixers.find(m=>m.count === mixerid);
+        if (!mix) return;
+        mix.addProperty(property);
+    },
+    buyPropertySlot(mixerid,property) {
+        const mix = this.mixers.find(m=>m.count === mixerid);
+        if (!mix) return;
+        mix.buyPropertySlot(property);
+    },
+    buyProperty(mixerid,property) {
+        if (this.boughtProperties.includes(property)) return;
+        if (this.ptsRemaining() <= 5) return;
+        this.boughtProperties.push(property);
+        UITrigger.mixerProperty = mixerid;
+        UITrigger.pointsRefresh = true;
     }
+}
+
+function cheat() {
+    gameData.colorLibrary.forEach(c=>c.found=true);
+    UITrigger.libraryChange = true;
+    UITrigger.pointsRefresh = true;
 }

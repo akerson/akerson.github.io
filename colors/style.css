@@ -3,27 +3,37 @@
 }
 
 .library-part {
-    width: 75%;
+    width: 90%;
     float: left;
     padding: 20px;
 }
 
 .history-part {
-    width: 25%;
+    width: 10%;
     float: left;
     padding: 20px;
 }
 
 .easle {
     display:grid;
-    grid-template-columns: repeat(4, 45px);
-    grid-gap: 2em;
+    grid-template-columns: repeat(auto-fill,minmax(110px,1fr));
+    grid-gap: 10px;
+    margin: 10px;
+    transform-origin: left top;
+}
+
+.easelBox, .easelBoxEmpty {
+    border-radius: 25px;
+    background: #CCCCCC;
+    padding: 2px;
+    width: 100px;
+    height: 60px;
+    text-align: center;
 }
 
 .library {
     display:grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    
 }
 
 .libraryBox {
@@ -37,7 +47,7 @@
 
 .progressBar {
     width: 10%;
-    height: 30px;
+    height: 5px;
     background-color: #04AA6D;
     text-align: left; /* To center it horizontally (if you want) */
     line-height: 30px; /* To center it vertically */
@@ -45,6 +55,27 @@
     overflow:hidden;
 }
 
+.mixers {
+    display:grid;
+    grid-template-columns: repeat(auto-fill,minmax(110px,1fr));
+    grid-gap: 10px;
+    margin: 10px;
+    transform-origin: left top;
+}
+
 .mixerBoxBar {
-    width: 200px;
+    width: 100px;
+    border : 0.5px solid black;
+    text-align: center;
+}
+
+.propertyBuyText {
+    font-style: italic;
+}
+
+.propertiesBox {
+    position: absolute;
+    background-color: #FFFFFF;
+    color: black;
+    border: 0.5px solid black;
 }
