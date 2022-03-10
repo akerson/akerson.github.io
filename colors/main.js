@@ -2,6 +2,7 @@
 
 //setup!
 fixedColors.forEach((value,key) => {
+    console.log("hi");
     gameData.colorLibrary.push(new UnlockedColors(key,value));
 });
 const gameFile = JSON.parse(localStorage.getItem("rgblender"));
@@ -13,11 +14,6 @@ if (!gameFile) {
     gameData.mixers.push(new Mixer());
 }
 else gameData.loadSave(gameFile);
-updateMixers();
-updateEasles();
-updateHistory();
-updateLibrary();
-$("#remainingPts").html(`Points Remaining - ${gameData.ptsRemaining()}`);
 setInterval(mainLoop, 10);
 setInterval(updateMixerBars, 10);
 setInterval(saveGame,1000);

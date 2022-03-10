@@ -2,8 +2,8 @@
     padding: 20px;
 }
 
-.library-part {
-    width: 90%;
+.completed-library-part, .remaining-library-part {
+    width: 45%;
     float: left;
     padding: 20px;
 }
@@ -22,7 +22,7 @@
     transform-origin: left top;
 }
 
-.easelBox, .easelBoxEmpty {
+.easelBox, .easelBoxEmpty, .easelBoxBuy {
     border-radius: 25px;
     background: #CCCCCC;
     padding: 2px;
@@ -33,7 +33,10 @@
 
 .library {
     display:grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fill,140px);
+    grid-gap: 1px;
+    text-align:center;
+    transform-origin: left top;
 }
 
 .libraryBox {
@@ -57,14 +60,27 @@
 
 .mixers {
     display:grid;
-    grid-template-columns: repeat(auto-fill,minmax(110px,1fr));
+    grid-template-columns: repeat(auto-fill,120px);
+    grid-gap: 5px;
+    margin: 10px;
+    transform-origin: left top;
+}
+
+.characterFilters {
+    display:grid;
+    grid-template-columns: repeat(6,20px);
     grid-gap: 10px;
     margin: 10px;
     transform-origin: left top;
 }
 
+.autoEaselFilterCharacter {
+    text-align: center;
+    padding: 5px;
+}
+
 .mixerBoxBar {
-    width: 100px;
+    width: 120px;
     border : 0.5px solid black;
     text-align: center;
 }
@@ -78,4 +94,23 @@
     background-color: #FFFFFF;
     color: black;
     border: 0.5px solid black;
+}
+
+.autoEasel {
+    position: absolute;
+    background-color: #FFFFFF;
+    color: black;
+    border: 0.5px solid black;
+}
+
+.highlight {
+    background-color: yellow;
+}
+
+.helpText {
+    font-style: italic;
+}
+
+.pause {
+    float: right;
 }

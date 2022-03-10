@@ -1,6 +1,4 @@
 "use strict";
-
-const hexletters = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
 let counter = 0;
 
 class UnlockedColors {
@@ -28,6 +26,9 @@ class Mixer {
         this.properties = [];
         this.maxProperties = 0;
         this.count = counter;
+        this.autoEasel = false;
+        this.autoEaselFilter = "******";
+        this.autoEaselOn = true;
         counter++;
     }
     createSave() {
@@ -37,6 +38,9 @@ class Mixer {
         save.color2 = this.color2;
         save.properties = this.properties;
         save.maxProperties = this.maxProperties;
+        save.autoEasel = this.autoEasel;
+        save.autoEaselFilter = this.autoEaselFilter;
+        save.autoEaselOn = this.autoEaselOn;
         return save;
     }
     loadSave(save) {
@@ -45,6 +49,9 @@ class Mixer {
         this.color2 = save.color2;
         this.properties = save.properties;
         this.maxProperties = save.maxProperties;
+        if (save.autoEasel) this.autoEasel = save.autoEasel;
+        if (save.autoEaselFilter) this.autoEaselFilter = save.autoEaselFilter;
+        if (save.autoEaselOn) this.autoEaselOn = save.autoEaselOn;
     }
     addTime(ms) {
         if (!this.color1 || !this.color2) {
@@ -58,7 +65,7 @@ class Mixer {
         }
     }
     maxTime() {
-        return this.properties.includes("Fast") ? 1000 : 2000;
+        return this.properties.includes("Fast") ? 2000 : 4000;
     }
     addColor(color) {
         if (!this.color1) this.color1 = color;
@@ -72,7 +79,7 @@ class Mixer {
         return !this.color1 || !this.color2;
     }
     mixColor() {
-        let result = [];
+        let result = "";
         let mutateChance = 0.05;
         if (this.properties.includes("Low Mutate")) mutateChance = 0.025;
         if (this.properties.includes("High Mutate")) mutateChance = 0.2;
@@ -89,6 +96,14 @@ class Mixer {
             if (randNum < mutateChance) result += hexletters[Math.floor(Math.random() * hexletters.length)];
             else if (randNum < (1-mutateChance)/2) result += this.color1[i];
             else result += this.color2[i];
+        }
+        //add to the easel if you can
+        if (this.autoEasel && this.autoEaselOn) {
+            let res = 0;
+            for (let i=0;i<6;i++) {
+                if (this.autoEaselFilter[i] === "*" || this.autoEaselFilter[i] === result[i]) res++
+            }
+            if (res === 6) gameData.addEasel(result);
         }
         gameData.mixedColor(result);
     }
@@ -110,17 +125,34 @@ class Mixer {
         UITrigger.mixerProperty = this.count;
         UITrigger.pointsRefresh = true;
     }
+    buyAutoEasel() {
+        if (this.autoEasel) return;
+        if (gameData.ptsRemaining() < 1) return;
+        this.autoEasel = true;
+        UITrigger.mixerChange = true;
+        UITrigger.pointsRefresh = true;
+    }
+    autoEaselFilterAdjust(idx,c) {
+        this.autoEaselFilter = setCharAt(this.autoEaselFilter,idx,c);
+        UITrigger.mixerChange = true;
+        UITrigger.autoEasel = this.count;
+    }
+    autoEaselEnable() {
+        this.autoEaselOn = !this.autoEaselOn;
+        UITrigger.mixerChange = true;
+        UITrigger.autoEasel = this.count;
+    }
 }
 
 const gameData = {
-    colorGoals : [],
     history : [],
     historyMax : 50,
     easel : [],
-    easelMax : 10,
+    easelMax : 5,
     mixers : [],
     mixersMax : 10,
     colorLibrary : [],
+    paused : false,
     lastTime : Date.now(),
     boughtProperties : [],
     createSave() {
@@ -128,6 +160,7 @@ const gameData = {
         save.mixers = this.mixers.map(m=>m.createSave());
         save.colorLibrary = this.colorLibrary.map(cl=>cl.createSave());
         save.easel = this.easel;
+        save.easelMax = this.easelMax;
         return save;
     },
     loadSave(save) {
@@ -142,11 +175,13 @@ const gameData = {
             ch.loadSave(chSave);
         });
         this.easel = save.easel;
+        if (save.easelMax) this.easelMax = save.easelMax;
     },
     findColor(id) {
         return this.colorLibrary.find(c=>c.id === id);
     },
     addTime(ms) {
+        if (this.paused) return;
         this.mixers.forEach(mixer => mixer.addTime(ms));
     },
     mixedColor(color) {
@@ -177,12 +212,13 @@ const gameData = {
         if (this.easel.includes(color)) return;
         if (this.easel.length >= this.easelMax) return;
         this.easel.push(color);
+        UITrigger.easleChange = true;
     },
     removeEasel(color) {
         this.easel = this.easel.filter(c=>c !== color);
     },
     ptsSpent() {
-        return this.mixers.length+this.boughtProperties.length*6+this.mixers.map(m=>m.maxProperties).reduce((a,b)=>a+b);
+        return this.mixers.length+this.boughtProperties.length*5+this.mixers.map(m=>m.maxProperties).reduce((a,b)=>a+b)+Math.floor(this.easelMax/5)+this.mixers.filter(m=>m.autoEasel).length;
     },
     ptsRemaining() {
         return this.colorLibrary.filter(c=>c.found).length - this.ptsSpent();
@@ -211,10 +247,29 @@ const gameData = {
     },
     buyProperty(mixerid,property) {
         if (this.boughtProperties.includes(property)) return;
-        if (this.ptsRemaining() <= 5) return;
+        if (this.ptsRemaining() <= 4) return;
         this.boughtProperties.push(property);
         UITrigger.mixerProperty = mixerid;
         UITrigger.pointsRefresh = true;
+    },
+    buyEasel() {
+        if (this.ptsRemaining() <= 0) return;
+        if (this.easelMax >= 25) return;
+        this.easelMax += 5;
+        UITrigger.easleChange = true;
+        UITrigger.pointsRefresh = true;
+    },
+    buyAutoEasel(mixerid) {
+        const mix = this.mixers.find(m=>m.count === mixerid);
+        mix.buyAutoEasel();
+    },
+    autoEaselFilterAdjust(mixerid,position,character) {
+        const mix = this.mixers.find(m=>m.count === mixerid);
+        mix.autoEaselFilterAdjust(position,character);
+    },
+    autoEaselEnable(mixerid) {
+        const mix = this.mixers.find(m=>m.count === mixerid);
+        mix.autoEaselEnable(); 
     }
 }
 
@@ -222,4 +277,9 @@ function cheat() {
     gameData.colorLibrary.forEach(c=>c.found=true);
     UITrigger.libraryChange = true;
     UITrigger.pointsRefresh = true;
+}
+
+function setCharAt(str,index,chr) {
+    if(index > str.length-1) return str;
+    return str.substring(0,index) + chr + str.substring(index+1);
 }

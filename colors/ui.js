@@ -14,12 +14,13 @@ function updateHistory() {
 }
 
 const UITrigger = {
-    historyChange : false,
-    easleChange : false,
-    mixerChange : false,
-    libraryChange : false,
+    historyChange : true,
+    easleChange : true,
+    mixerChange : true,
+    libraryChange : true,
+    pointsRefresh : true,
     mixerProperty : null,
-    pointsRefresh : false,
+    autoEasel : null,
 }
 
 function updateMixerBars() {
@@ -45,7 +46,12 @@ function updateMixerBars() {
     }
     if (UITrigger.pointsRefresh) {
         UITrigger.pointsRefresh = false;
-        $("#remainingPts").html(`Points Remaining - ${gameData.ptsRemaining()}`);
+        const ptText = gameData.ptsRemaining() === 1 ? `1 pt` : `${gameData.ptsRemaining()} pts`;
+        $("#pts").html(`Mix these for points (${ptText} remaining)`);
+    }
+    if (UITrigger.autoEasel !== null) {
+        autoEasel(UITrigger.autoEasel);
+        UITrigger.autoEasel = null;
     }
     gameData.mixers.forEach(mixer => {
         const width = (mixer.time/mixer.maxTime()*100).toFixed(1)+"%";
@@ -69,8 +75,11 @@ function updateEasles() {
         $easel.append(easelBox(color));
     })
     //up to 10, so do the rest
-    for (let i=0;i<10-gameData.easel.length;i++) {
+    for (let i=0;i<gameData.easelMax-gameData.easel.length;i++) {
         $("<div/>").addClass("easelBoxEmpty").html("Empty").appendTo($easel);
+    }
+    if (gameData.easel.length < gameData.easelMax && gameData.easelMax < 30) {
+        $("<div/>").addClass("easelBoxBuy").html("Buy 5 Easels - 1pt").appendTo($easel);
     }
 }
 
@@ -103,6 +112,9 @@ function colorMixerBox(mixer) {
     createProgressBar(mixer).appendTo(pb);
     colorBox(mixer.color1).addClass("colorUnslot").data({"position":0,"mixer":mixer.count}).appendTo(pb);
     colorBox(mixer.color2).addClass("colorUnslot").data({"position":1,"mixer":mixer.count}).appendTo(pb);
+    if (!mixer.autoEasel) $("<div/>").addClass("buyAutoEasel").data("mixer",mixer.count).html("AutoEasel - 1pt").appendTo(pb);
+    else if (mixer.autoEaselOn) $("<div/>").addClass("autoEaselView").data("mixer",mixer.count).html(`#${mixer.autoEaselFilter}`).appendTo(pb);
+    else $("<div/>").addClass("autoEaselView").data("mixer",mixer.count).html(`Auto Off`).appendTo(pb);
     $("<div/>").addClass("mixerProperties").data("mixer",mixer.count).html("Properties").appendTo(pb);
     return pb;
 }
@@ -143,8 +155,7 @@ $(document).on("click",".historyBox",e => {
     //add history to easel
     e.preventDefault();
     const color = $(e.currentTarget).data("color");
-    gameData.addEasel(color);
-    UITrigger.easleChange = true;
+    gameData.addEasel(color);;
 });
 
 $(document).on("click",".easelBoxClose",e => {
@@ -195,6 +206,11 @@ $(document).on("click",".propertiesBoxClose",e=> {
     $propertiesBox.hide();
 });
 
+$(document).on("click",".autoEaselClose",e=> {
+    e.preventDefault();
+    $autoEasel.hide();
+});
+
 $(document).on("click",".propertySlot",e=> {
     e.preventDefault();
     const mixer = parseInt($(e.currentTarget).data("mixer"));
@@ -222,6 +238,29 @@ $(document).on("click",".propertyNotBought",e=> {
     gameData.buyProperty(mixer,property);
 });
 
+$(document).on("click",".easelBoxBuy", e=> {
+    e.preventDefault();
+    gameData.buyEasel();
+});
+
+$(document).on("click",".buyAutoEasel",e=> {
+    e.preventDefault();
+    console.log("uh?");
+    const mixer = parseInt($(e.currentTarget).data("mixer"));
+    gameData.buyAutoEasel(mixer);
+});
+
+$(document).on("click",".autoEaselView",e=> {
+    e.preventDefault();
+    const mixer = parseInt($(e.currentTarget).data("mixer"));
+    autoEasel(mixer);
+});
+
+$(document).on("click",".pause",e=> {
+    e.preventDefault();
+    gamePause();
+})
+
 function createProgressBar(mixer) {
     const width = (mixer.time/mixer.maxTime()*100).toFixed(1)+"%";
     const d = $("<div/>").addClass("progressBar").attr("id","MPB"+mixer.count).css("width", width);
@@ -234,6 +273,7 @@ const $propertiesBox = $("#propertiesBox");
 function viewProperties(mixerID) {
     const mixer = gameData.mixers.find(m=>m.count === mixerID);
     $propertiesBox.empty().show();
+    $autoEasel.hide();
     $("<div/>").addClass("propertiesBoxClose").html(`<i class="fa-solid fa-xmark"></i>`).appendTo($propertiesBox);
     //property slots
     const d = $("<div/>").addClass("propertySlots").appendTo($propertiesBox);
@@ -251,14 +291,49 @@ function viewProperties(mixerID) {
             $("<div/>").addClass("propertyBought").data({"mixer":mixer.count,"property":property}).html(property).appendTo(e);
         }
         else {
-            $("<div/>").addClass("propertyNotBought").data({"mixer":mixer.count,"property":property}).html(`${property} - 6pts`).appendTo(e);
+            $("<div/>").addClass("propertyNotBought").data({"mixer":mixer.count,"property":property}).html(`${property} - 5pts`).appendTo(e);
         }
     });
     $("<div/>").addClass("propertyBuyText").html("Buying properties buys them for all mixers").appendTo($propertiesBox);
 }
 
+const $autoEasel = $("#autoEasel");
+function autoEasel(mixerID) {
+    const mixer = gameData.mixers.find(m=>m.count === mixerID);
+    $autoEasel.empty().show();
+    $propertiesBox.hide();
+    $("<div/>").addClass("autoEaselClose").html(`<i class="fa-solid fa-xmark"></i>`).appendTo($autoEasel);
+    if (mixer.autoEaselOn) $("<div/>").addClass("autoEaselEnable").data("mixer",mixer.count).html("AutoEasel: Enabled").appendTo($autoEasel);
+    else $("<div/>").addClass("autoEaselEnable").data("mixer",mixer.count).html("AutoEasel: Disabled").appendTo($autoEasel);
+    const d1 = $("<div/>").addClass("characterFilters").appendTo($autoEasel);
+    for (let i=0;i<6;i++) {
+        const e = $("<div/>").addClass("characterBound").appendTo(d1);
+        for (let j=0;j<17;j++) {
+            // i = position, j = character
+            const chars = "*0123456789ABCDEF";
+            const f = $("<div/>").addClass("autoEaselFilterCharacter").data({"mixer":mixer.count,"position":i,"character":chars[j]}).html(chars[j]).appendTo(e);
+            if (mixer.autoEaselFilter[i] === chars[j]) f.addClass("highlight");
+        }
+    }
+}
+
+$(document).on("click",".autoEaselFilterCharacter",e => {
+    e.preventDefault();
+    const mixer = parseInt($(e.currentTarget).data("mixer"));
+    const position = parseInt($(e.currentTarget).data("position"));
+    const character = $(e.currentTarget).data("character");
+    gameData.autoEaselFilterAdjust(mixer,position,character);
+});
+
+$(document).on("click",".autoEaselEnable",e => {
+    e.preventDefault();
+    const mixer = parseInt($(e.currentTarget).data("mixer"));
+    gameData.autoEaselEnable(mixer);
+})
+
 // Make the DIV element draggable:
 dragElement(document.getElementById("propertiesBox"));
+dragElement(document.getElementById("autoEasel"));
 
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -300,3 +375,14 @@ function dragElement(elmnt) {
     document.onmousemove = null;
   }
 }
+
+function gamePause() {
+    gameData.paused = !gameData.paused;
+    if (gameData.paused) $("#pause").html(`<i class="fa-solid fa-pause"></i> Game Paused`);
+    else $("#pause").html(`<i class="fa-solid fa-play"></i> Game Running`);
+}
+
+document.addEventListener('keydown', (event) => {
+    event.preventDefault();
+    if (event.code === "Space") gamePause();
+  }, false);

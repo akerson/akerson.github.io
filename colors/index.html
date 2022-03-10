@@ -7,25 +7,32 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
     </head>
     <body>
+        <div id="pause" class="pause"><i class="fa-solid fa-play"></i> Game Running</div>
         <h1>RGBlender</h1>
-        <h3 id="remainingPts">Points Remaining - 1</h3>
         <h3>Mixers</h3>
+        <span class="helpText">Mix two colors to make new ones (sometimes they mutate)</span>
         <div id="mixers" class="mixers"></div>
         <h3>Easel</h3>
+        <span class="helpText">Hold useful colors here</span>
         <div id="easel" class="easle"></div>
         <div class="bottom">
             <div class="history-part">
                 <h3>Mixtory</h3>
                 <div id="history" class="history"></div>
             </div>
-            <div class="library-part">
+            <div class="completed-library-part">
                 <h3 id="completedLibraryHeading">Completed Library (2/140)</h3>
+                <span class="helpText">You can click these to mix</span>
                 <div id="completedLibrary" class="library"></div>
+            </div>
+            <div class="remaining-library-part">
                 <h3 id="remainingLibraryHeading">Remaining Library (138/140)</h3>
+                <span id="pts" class="helpText"><i>Mix these for points (1 pt remaining)</i></span>
                 <div id="remainingLibrary" class="library"></div>
             </div>
         </div>
         <div id="propertiesBox" class="propertiesBox"></div>
+        <div id="autoEasel" class="autoEasel"></div>
         <script src="config.js"></script>
         <script src="script.js"></script>
         <script src="ui.js"></script>
