@@ -30,8 +30,6 @@ class Mixer {
         this.autoEaselFilter = "******";
         this.autoEaselOn = true;
         this.colorFlip = false;
-        this.mixedColors = 0;
-        this.startTime = Date.now();
         counter++;
     }
     createSave() {
@@ -151,6 +149,23 @@ class Mixer {
         UITrigger.mixerChange = true;
         UITrigger.autoEasel = this.count;
     }
+    clearMixer() {
+        this.color1 = null;
+        this.color2 = null;
+        this.properties = [];
+        this.autoEaselFilter = "******";
+        this.autoEaselOn = false;
+    }
+    applySettings(color1,color2,properties,autofilter,filteron) {
+        this.color1 = color1;
+        this.color2 = color2;
+        this.autoEaselFilter = autofilter;
+        this.autoEaselOn = filteron;
+        for (let i=0;i<this.maxProperties;i++) {
+            if (!properties[i]) break;
+            this.properties[i] = properties[i];
+        }
+    }
 }
 
 const gameData = {
@@ -164,6 +179,8 @@ const gameData = {
     paused : false,
     lastTime : Date.now(),
     boughtProperties : [],
+    startTime : Date.now(),
+    mixedColors : 0,
     createSave() {
         const save = {};
         save.mixers = this.mixers.map(m=>m.createSave());
@@ -171,6 +188,8 @@ const gameData = {
         save.easel = this.easel;
         save.easelMax = this.easelMax;
         save.boughtProperties = this.boughtProperties;
+        save.starTime = this.startTime;
+        save.mixedColors = this.mixedColors;
         return save;
     },
     loadSave(save) {
@@ -187,6 +206,8 @@ const gameData = {
         this.easel = save.easel;
         if (save.easelMax) this.easelMax = save.easelMax;
         if (save.boughtProperties) this.boughtProperties = save.boughtProperties;
+        if (save.startTime) this.startTime = save.startTime;
+        if (save.mixedColors) this.mixedColors = save.mixedColors;
     },
     findColor(id) {
         return this.colorLibrary.find(c=>c.id === id);
@@ -197,6 +218,7 @@ const gameData = {
     },
     mixedColor(color) {
         //unlock a color
+        this.mixedColors++;
         const unlock = this.colorLibrary.find(c=>c.id === color);
         if (unlock && !unlock.found) {
             unlock.found = true;
@@ -281,6 +303,15 @@ const gameData = {
     autoEaselEnable(mixerid) {
         const mix = this.mixers.find(m=>m.count === mixerid);
         mix.autoEaselEnable(); 
+    },
+    clearMixers() {
+        this.mixers.forEach(m=>m.clearMixer());
+        UITrigger.mixerChange = true;
+    },
+    propogateFirst() {
+        const mix = this.mixers[0];
+        this.mixers.forEach(m=>m.applySettings(mix.color1,mix.color2,mix.properties,mix.autoEaselFilter,mix.autoEaselOn));
+        UITrigger.mixerChange = true;
     }
 }
 

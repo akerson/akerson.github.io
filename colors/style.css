@@ -226,3 +226,15 @@ body {
 .propertySlot, .propertyPadding {
     cursor: pointer;
 }
+
+.mixerButton {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 150px;
+    text-align: center;
+    display:inline-block;
+}
+
+.mixerActionsDiv {
+    height: 25px;
+}

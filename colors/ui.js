@@ -123,7 +123,7 @@ function colorMixerBox(mixer) {
     else d.css("background-color",`#${mixer.color1}`);
     createProgressBar(mixer).appendTo(d);
     colorBox(mixer.color2).addClass("colorUnslot").data({"position":1,"mixer":mixer.count}).appendTo(pb);
-    $("<div/>").addClass("mixerProperties").data("mixer",mixer.count).html("Properties").appendTo(pb);
+    $("<div/>").addClass("mixerProperties").data("mixer",mixer.count).html(`Properties (${mixer.maxProperties})`).appendTo(pb);
     return pb;
 }
 
@@ -268,6 +268,16 @@ $(document).on("click",".autoEaselView",e=> {
 $(document).on("click",".pause",e=> {
     e.preventDefault();
     gamePause();
+})
+
+$(document).on("click","#mixersClear",e=> {
+    e.preventDefault();
+    gameData.clearMixers();
+})
+
+$(document).on("click","#mixersCopy",e=> {
+    e.preventDefault();
+    gameData.propogateFirst();
 })
 
 function createProgressBar(mixer) {
