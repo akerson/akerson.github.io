@@ -21,6 +21,7 @@ const UITrigger = {
     pointsRefresh : true,
     mixerProperty : null,
     autoEasel : null,
+    colorFlip : [],
 }
 
 function updateMixerBars() {
@@ -53,6 +54,10 @@ function updateMixerBars() {
         autoEasel(UITrigger.autoEasel);
         UITrigger.autoEasel = null;
     }
+    while (UITrigger.colorFlip.length > 0) {
+        const mix = UITrigger.colorFlip.pop();
+        colorFlip(mix);
+    }
     gameData.mixers.forEach(mixer => {
         const width = (mixer.time/mixer.maxTime()*100).toFixed(1)+"%";
         mixer.pb.css("width", width);
@@ -78,8 +83,8 @@ function updateEasles() {
     for (let i=0;i<gameData.easelMax-gameData.easel.length;i++) {
         $("<div/>").addClass("easelBoxEmpty").html("Empty").appendTo($easel);
     }
-    if (gameData.easel.length < gameData.easelMax && gameData.easelMax < 30) {
-        $("<div/>").addClass("easelBoxBuy").html("Buy 5 Easels - 1pt").appendTo($easel);
+    if (gameData.easelMax < 25) {
+        $("<div/>").addClass("easelBoxBuy").html("5 Easels - 1pt").appendTo($easel);
     }
 }
 
@@ -91,8 +96,8 @@ function updateLibrary() {
         else $remainingLibrary.append(colorLibraryBox(library));
     });
     const foundCount = gameData.colorLibrary.filter(c=>c.found).length;
-    $("#completedLibraryHeading").html(`Completed Library (${foundCount}/140)`);
-    $("#remainingLibraryHeading").html(`Remaining Library (${140-foundCount}/140)`);
+    $("#completedLibraryHeading").html(`Completed Library (${foundCount}/${gameData.colorLibrary.length})`);
+    $("#remainingLibraryHeading").html(`Remaining Library (${gameData.colorLibrary.length-foundCount}/${gameData.colorLibrary.length})`);
 }
 
 function colorBox(color) {
@@ -109,20 +114,24 @@ function colorBox(color) {
 
 function colorMixerBox(mixer) {
     const pb = $("<div/>").addClass("mixerBoxBar");
-    createProgressBar(mixer).appendTo(pb);
+    if (!mixer.autoEasel) $("<div/>").addClass("buyAutoEasel autoEaselHeading").data("mixer",mixer.count).html("AutoEasel - 1pt").appendTo(pb);
+    else if (mixer.autoEaselOn) $("<div/>").addClass("autoEaselView autoEaselHeading").data("mixer",mixer.count).html(`#${mixer.autoEaselFilter}`).appendTo(pb);
+    else $("<div/>").addClass("autoEaselView autoEaselHeading").data("mixer",mixer.count).html(`Auto Off`).appendTo(pb);
     colorBox(mixer.color1).addClass("colorUnslot").data({"position":0,"mixer":mixer.count}).appendTo(pb);
+    const d = $("<div/>").attr("id","MPBB"+mixer.count).addClass("pbHolder").appendTo(pb);
+    if (!mixer.colorFlip) d.css("background-color",`#${mixer.color2}`);
+    else d.css("background-color",`#${mixer.color1}`);
+    createProgressBar(mixer).appendTo(d);
     colorBox(mixer.color2).addClass("colorUnslot").data({"position":1,"mixer":mixer.count}).appendTo(pb);
-    if (!mixer.autoEasel) $("<div/>").addClass("buyAutoEasel").data("mixer",mixer.count).html("AutoEasel - 1pt").appendTo(pb);
-    else if (mixer.autoEaselOn) $("<div/>").addClass("autoEaselView").data("mixer",mixer.count).html(`#${mixer.autoEaselFilter}`).appendTo(pb);
-    else $("<div/>").addClass("autoEaselView").data("mixer",mixer.count).html(`Auto Off`).appendTo(pb);
     $("<div/>").addClass("mixerProperties").data("mixer",mixer.count).html("Properties").appendTo(pb);
     return pb;
 }
 
 function easelBox(color) {
-    const s = $("<div/>").addClass("easelBox").data("color",color);
-    $("<div/>").addClass("easelBoxClose").data("color",color).html(`<i class="fa-solid fa-xmark"></i>`).appendTo(s);
-    colorBox(color).appendTo(s);
+    const s = $("<div/>").addClass("easelBox").data("color",color).html("#"+color);
+    s.css({"background-color":`#${color}`,"color":textColor(color)});
+    const x = $("<div/>").addClass("easelBoxClose").data("color",color).html(`<i class="fa-solid fa-xmark"></i>`).appendTo(s);
+    x.css("color",textColor(color));
     return s;
 }
 
@@ -264,8 +273,24 @@ $(document).on("click",".pause",e=> {
 function createProgressBar(mixer) {
     const width = (mixer.time/mixer.maxTime()*100).toFixed(1)+"%";
     const d = $("<div/>").addClass("progressBar").attr("id","MPB"+mixer.count).css("width", width);
+    if (!mixer.colorFlip) d.css("background-color",`#${mixer.color1}`);
+    else d.css("background-color",`#${mixer.color2}`);
     mixer.pb = d;
     return d;
+}
+
+function colorFlip(mixer) {
+    mixer.colorFlip = !mixer.colorFlip;
+    const d = $("#MPB"+mixer.count.toString());
+    const e = $("#MPBB"+mixer.count.toString());
+    if (!mixer.colorFlip) {
+        d.css("background-color",`#${mixer.color1}`);
+        e.css("background-color",`#${mixer.color2}`);
+    }
+    else {
+        d.css("background-color",`#${mixer.color2}`);
+        e.css("background-color",`#${mixer.color1}`);
+    }
 }
 
 const $propertiesBox = $("#propertiesBox");
@@ -275,23 +300,25 @@ function viewProperties(mixerID) {
     $propertiesBox.empty().show();
     $autoEasel.hide();
     $("<div/>").addClass("propertiesBoxClose").html(`<i class="fa-solid fa-xmark"></i>`).appendTo($propertiesBox);
+    $("<div/>").addClass("mixerPropertyHeading").html("Mixer Properties").appendTo($propertiesBox);
     //property slots
     const d = $("<div/>").addClass("propertySlots").appendTo($propertiesBox);
     mixer.properties.forEach(property => {
-        $("<div/>").addClass("propertySlot").data({"property":property,"mixer":mixer.count}).html(property).appendTo(d);
+        $("<div/>").addClass("propertySlot propertyPadding").data({"property":property,"mixer":mixer.count}).html(property).appendTo(d);
     });
     for (let i=0;i<mixer.maxProperties-mixer.properties.length;i++) {
-        $("<div/>").addClass("propertySlot").data("propertySlotEmpty",i).html("Empty").appendTo(d);
+        $("<div/>").addClass("propertySlot propertyPadding").data("propertySlotEmpty",i).html("Empty").appendTo(d);
     }
-    if (mixer.maxProperties < 4) $("<div/>").addClass("buyPropertySlot").data("mixer",mixer.count).html("Buy - 1 pt").appendTo(d);
+    if (mixer.maxProperties < 4) $("<div/>").addClass("buyPropertySlot").data("mixer",mixer.count).html("Buy A Property Slot - 1 pt").appendTo(d);
     //available properties
     const e = $("<div/>").addClass("propertyPurchase").appendTo($propertiesBox);
+    $("<div/>").addClass("propertyHeading").html("Properties available:").appendTo(e);
     mixerProperties.forEach(property => {
         if (gameData.boughtProperties.includes(property)) {
-            $("<div/>").addClass("propertyBought").data({"mixer":mixer.count,"property":property}).html(property).appendTo(e);
+            $("<div/>").addClass("propertyBought propertyPadding").data({"mixer":mixer.count,"property":property}).html(property).appendTo(e);
         }
         else {
-            $("<div/>").addClass("propertyNotBought").data({"mixer":mixer.count,"property":property}).html(`${property} - 5pts`).appendTo(e);
+            $("<div/>").addClass("propertyNotBought propertyPadding").data({"mixer":mixer.count,"property":property}).html(`${property} - 6pts`).appendTo(e);
         }
     });
     $("<div/>").addClass("propertyBuyText").html("Buying properties buys them for all mixers").appendTo($propertiesBox);

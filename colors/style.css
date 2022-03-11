@@ -16,19 +16,26 @@
 
 .easle {
     display:grid;
-    grid-template-columns: repeat(auto-fill,minmax(110px,1fr));
-    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill,minmax(100px,1fr));
+    grid-gap: 5px;
     margin: 10px;
     transform-origin: left top;
 }
 
 .easelBox, .easelBoxEmpty, .easelBoxBuy {
-    border-radius: 25px;
+    position: relative;
+    border-radius: 10px;
     background: #CCCCCC;
-    padding: 2px;
+    padding: 18px 0px;
     width: 100px;
     height: 60px;
     text-align: center;
+    border: 0.5px solid black;
+    cursor: pointer;
+}
+
+.easelBoxEmpty {
+    background: white;
 }
 
 .library {
@@ -41,7 +48,7 @@
 
 .libraryBox {
     border: 0.5px solid #000000;
-    
+    cursor: pointer;
 }
 
 .history {
@@ -79,10 +86,15 @@
     padding: 5px;
 }
 
-.mixerBoxBar {
+.mixerBoxBar, .mixerBuy {
     width: 120px;
     border : 0.5px solid black;
     text-align: center;
+    margin: 5px;
+}
+
+.mixerBuy {
+    padding: 20px;
 }
 
 .propertyBuyText {
@@ -90,17 +102,24 @@
 }
 
 .propertiesBox {
+    display: none;
+    position: absolute;
+    background-color: #FFFFFF;
+    color: black;
+    border: 0.5px solid black;
+    width: 300px;
+}
+
+.autoEasel {
+    display: none;
     position: absolute;
     background-color: #FFFFFF;
     color: black;
     border: 0.5px solid black;
 }
 
-.autoEasel {
-    position: absolute;
-    background-color: #FFFFFF;
-    color: black;
-    border: 0.5px solid black;
+.buyAutoEasel, .autoEaselView, .mixerBuy, .mixerProperties {
+    cursor: pointer;
 }
 
 .highlight {
@@ -113,4 +132,97 @@
 
 .pause {
     float: right;
+}
+
+.easelBoxClose {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.mixerProperties {
+    background-color: lightgray;
+    border-top: 0.5px solid black;
+}
+
+.autoEaselHeading {
+    background-color: #333333;
+    color: white;
+}
+
+.mixerPropertyHeading {
+    text-align: center;
+    font-weight:bold;
+}
+
+.propertiesBoxClose, .autoEaselClose {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.autoEaselEnable {
+    text-align: center;
+    cursor: pointer;
+}
+
+.autoEasel {
+    background-color: #EEEEEE;
+}
+
+.autoEaselFilterCharacter {
+    cursor: pointer;
+}
+
+.propertyPurchase {
+    background-color: lightgray;
+}
+
+.propertyHeading {
+    text-align: center;
+    font-weight:bold;
+}
+
+.propertyPadding {
+    padding-left: 5px;
+}
+
+.propertySlot, .buyPropertySlot {
+    text-align: center;
+}
+
+.propertyBuyText {
+    background-color: lightgray;
+    text-align: center;
+}
+
+.colorBlock {
+    cursor: pointer;
+}
+
+
+body {
+    padding: 5px;
+}
+
+.pause {
+    cursor: pointer;
+}
+
+.propertySlot, .propertyPadding {
+    cursor: pointer;
 }

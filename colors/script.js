@@ -29,6 +29,9 @@ class Mixer {
         this.autoEasel = false;
         this.autoEaselFilter = "******";
         this.autoEaselOn = true;
+        this.colorFlip = false;
+        this.mixedColors = 0;
+        this.startTime = Date.now();
         counter++;
     }
     createSave() {
@@ -41,6 +44,8 @@ class Mixer {
         save.autoEasel = this.autoEasel;
         save.autoEaselFilter = this.autoEaselFilter;
         save.autoEaselOn = this.autoEaselOn;
+        save.mixedColors = this.mixedColors;
+        save.startTime = this.startTime;
         return save;
     }
     loadSave(save) {
@@ -52,6 +57,8 @@ class Mixer {
         if (save.autoEasel) this.autoEasel = save.autoEasel;
         if (save.autoEaselFilter) this.autoEaselFilter = save.autoEaselFilter;
         if (save.autoEaselOn) this.autoEaselOn = save.autoEaselOn;
+        if (save.mixedColors) this.mixedColors = save.mixedColors;
+        if (save.startTime) this.startTime = save.startTime;
     }
     addTime(ms) {
         if (!this.color1 || !this.color2) {
@@ -59,6 +66,7 @@ class Mixer {
             return;
         }
         this.time += ms;
+        if (this.time >= this.maxTime()) UITrigger.colorFlip.push(this);
         while (this.time >= this.maxTime()) {
             this.time -= this.maxTime();
             this.mixColor();
@@ -105,6 +113,7 @@ class Mixer {
             }
             if (res === 6) gameData.addEasel(result);
         }
+        this.mixedColors++;
         gameData.mixedColor(result);
     }
     addProperty(property) {
@@ -161,6 +170,7 @@ const gameData = {
         save.colorLibrary = this.colorLibrary.map(cl=>cl.createSave());
         save.easel = this.easel;
         save.easelMax = this.easelMax;
+        save.boughtProperties = this.boughtProperties;
         return save;
     },
     loadSave(save) {
@@ -176,6 +186,7 @@ const gameData = {
         });
         this.easel = save.easel;
         if (save.easelMax) this.easelMax = save.easelMax;
+        if (save.boughtProperties) this.boughtProperties = save.boughtProperties;
     },
     findColor(id) {
         return this.colorLibrary.find(c=>c.id === id);
@@ -218,7 +229,7 @@ const gameData = {
         this.easel = this.easel.filter(c=>c !== color);
     },
     ptsSpent() {
-        return this.mixers.length+this.boughtProperties.length*5+this.mixers.map(m=>m.maxProperties).reduce((a,b)=>a+b)+Math.floor(this.easelMax/5)+this.mixers.filter(m=>m.autoEasel).length;
+        return this.mixers.length+this.boughtProperties.length*6+this.mixers.map(m=>m.maxProperties).reduce((a,b)=>a+b)+Math.floor(this.easelMax/5)+this.mixers.filter(m=>m.autoEasel).length;
     },
     ptsRemaining() {
         return this.colorLibrary.filter(c=>c.found).length - this.ptsSpent();
@@ -247,7 +258,7 @@ const gameData = {
     },
     buyProperty(mixerid,property) {
         if (this.boughtProperties.includes(property)) return;
-        if (this.ptsRemaining() <= 4) return;
+        if (this.ptsRemaining() < 6) return;
         this.boughtProperties.push(property);
         UITrigger.mixerProperty = mixerid;
         UITrigger.pointsRefresh = true;
