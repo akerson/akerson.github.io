@@ -70,7 +70,7 @@ function updateMixers() {
         $mixers.append(colorMixerBox(mixer));
     });
     if (gameData.mixers.length < gameData.mixersMax) {
-        $("<div/>").addClass("mixerBuy").html("Buy Mixer - 1 Pt").appendTo($mixers);
+        $("<div/>").addClass("mixerBuy").html("Buy Mixer<br>1 Pt").appendTo($mixers);
     }
 }
 
@@ -113,7 +113,8 @@ function colorBox(color) {
 }
 
 function colorMixerBox(mixer) {
-    const pb = $("<div/>").addClass("mixerBoxBar");
+    const a = $("<div/>").addClass("mixerAll");
+    const pb = $("<div/>").addClass("mixerBoxBar").appendTo(a);
     if (!mixer.autoEasel) $("<div/>").addClass("buyAutoEasel autoEaselHeading").data("mixer",mixer.count).html("AutoEasel - 1pt").appendTo(pb);
     else if (mixer.autoEaselOn) $("<div/>").addClass("autoEaselView autoEaselHeading").data("mixer",mixer.count).html(`#${mixer.autoEaselFilter}`).appendTo(pb);
     else $("<div/>").addClass("autoEaselView autoEaselHeading").data("mixer",mixer.count).html(`Auto Off`).appendTo(pb);
@@ -123,8 +124,8 @@ function colorMixerBox(mixer) {
     else d.css("background-color",`#${mixer.color1}`);
     createProgressBar(mixer).appendTo(d);
     colorBox(mixer.color2).addClass("colorUnslot").data({"position":1,"mixer":mixer.count}).appendTo(pb);
-    $("<div/>").addClass("mixerProperties").data("mixer",mixer.count).html(`Properties (${mixer.maxProperties})`).appendTo(pb);
-    return pb;
+    $("<div/>").addClass("mixerProperties").data("mixer",mixer.count).html(`Properties (${mixer.maxProperties})`).appendTo(a);
+    return a;
 }
 
 function easelBox(color) {
@@ -254,7 +255,6 @@ $(document).on("click",".easelBoxBuy", e=> {
 
 $(document).on("click",".buyAutoEasel",e=> {
     e.preventDefault();
-    console.log("uh?");
     const mixer = parseInt($(e.currentTarget).data("mixer"));
     gameData.buyAutoEasel(mixer);
 });
@@ -278,6 +278,12 @@ $(document).on("click","#mixersClear",e=> {
 $(document).on("click","#mixersCopy",e=> {
     e.preventDefault();
     gameData.propogateFirst();
+})
+
+$(document).on("click",".mixerColorCount",e=> {
+    e.preventDefault();
+    const mixer = parseInt($(e.currentTarget).data("mixer"));
+    gameData.addColorCount(mixer);
 })
 
 function createProgressBar(mixer) {
@@ -309,6 +315,7 @@ function viewProperties(mixerID) {
     const mixer = gameData.mixers.find(m=>m.count === mixerID);
     $propertiesBox.empty().show();
     $autoEasel.hide();
+    $("<div/>").addClass("mixerColorCount").data("mixer",mixer.count).html(`${mixer.colorCount} Color${mixer.colorCount > 1 ? "s" : ""} Per Fill${mixer.colorCount < mixer.colorCountMax ? " - 1 Pt" : ""}`).appendTo($propertiesBox);
     $("<div/>").addClass("propertiesBoxClose").html(`<i class="fa-solid fa-xmark"></i>`).appendTo($propertiesBox);
     $("<div/>").addClass("mixerPropertyHeading").html("Mixer Properties").appendTo($propertiesBox);
     //property slots

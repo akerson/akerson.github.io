@@ -30,6 +30,8 @@ class Mixer {
         this.autoEaselFilter = "******";
         this.autoEaselOn = true;
         this.colorFlip = false;
+        this.colorCount = 1;
+        this.colorCountMax = 3;
         counter++;
     }
     createSave() {
@@ -44,6 +46,7 @@ class Mixer {
         save.autoEaselOn = this.autoEaselOn;
         save.mixedColors = this.mixedColors;
         save.startTime = this.startTime;
+        save.colorCount = this.colorCount;
         return save;
     }
     loadSave(save) {
@@ -57,6 +60,7 @@ class Mixer {
         if (save.autoEaselOn) this.autoEaselOn = save.autoEaselOn;
         if (save.mixedColors) this.mixedColors = save.mixedColors;
         if (save.startTime) this.startTime = save.startTime;
+        if (save.colorCount) this.colorCount = save.colorCount;
     }
     addTime(ms) {
         if (!this.color1 || !this.color2) {
@@ -85,34 +89,36 @@ class Mixer {
         return !this.color1 || !this.color2;
     }
     mixColor() {
-        let result = "";
-        let mutateChance = 0.05;
-        if (this.properties.includes("Low Mutate")) mutateChance = 0.025;
-        if (this.properties.includes("High Mutate")) mutateChance = 0.2;
-        for (let i=0;i<6;i++) {
-            if (this.properties.includes(`Hold ${i+1} Left`)) {
-                result += this.color1[i];
-                continue;
-            }
-            if (this.properties.includes(`Hold ${i+1} Right`)) {
-                result += this.color2[i];
-                continue;
-            }
-            const randNum = Math.random();
-            if (randNum < mutateChance) result += hexletters[Math.floor(Math.random() * hexletters.length)];
-            else if (randNum < (1-mutateChance)/2) result += this.color1[i];
-            else result += this.color2[i];
-        }
-        //add to the easel if you can
-        if (this.autoEasel && this.autoEaselOn) {
-            let res = 0;
+        for (let i=0;i<this.colorCount;i++) {
+            let result = "";
+            let mutateChance = 0.05;
+            if (this.properties.includes("Low Mutate")) mutateChance = 0.025;
+            if (this.properties.includes("High Mutate")) mutateChance = 0.2;
             for (let i=0;i<6;i++) {
-                if (this.autoEaselFilter[i] === "*" || this.autoEaselFilter[i] === result[i]) res++
+                if (this.properties.includes(`Hold ${i+1} Left`)) {
+                    result += this.color1[i];
+                    continue;
+                }
+                if (this.properties.includes(`Hold ${i+1} Right`)) {
+                    result += this.color2[i];
+                    continue;
+                }
+                const randNum = Math.random();
+                if (randNum < mutateChance) result += hexletters[Math.floor(Math.random() * hexletters.length)];
+                else if (randNum < (1-mutateChance)/2) result += this.color1[i];
+                else result += this.color2[i];
             }
-            if (res === 6) gameData.addEasel(result);
+            //add to the easel if you can
+            if (this.autoEasel && this.autoEaselOn) {
+                let res = 0;
+                for (let i=0;i<6;i++) {
+                    if (this.autoEaselFilter[i] === "*" || this.autoEaselFilter[i] === result[i]) res++
+                }
+                if (res === 6) gameData.addEasel(result);
+            }
+            this.mixedColors++;
+            gameData.mixedColor(result);
         }
-        this.mixedColors++;
-        gameData.mixedColor(result);
     }
     addProperty(property) {
         if (this.properties.length >= this.maxProperties) return;
@@ -166,6 +172,11 @@ class Mixer {
             this.properties[i] = properties[i];
         }
     }
+    addColorCount() {
+        this.colorCount++;
+        this.colorCount = Math.min(this.colorCount,this.colorCountMax);
+        UITrigger.mixerProperty = this.count;
+    }
 }
 
 const gameData = {
@@ -174,7 +185,7 @@ const gameData = {
     easel : [],
     easelMax : 5,
     mixers : [],
-    mixersMax : 10,
+    mixersMax : 3,
     colorLibrary : [],
     paused : false,
     lastTime : Date.now(),
@@ -193,15 +204,15 @@ const gameData = {
         return save;
     },
     loadSave(save) {
-        console.log(save);
         save.mixers.forEach(mixSave => {
+            if (this.mixers.length >= this.mixersMax) return;
             const m = new Mixer();
             m.loadSave(mixSave);
             this.mixers.push(m);
         });
         save.colorLibrary.forEach(chSave => {
             const ch = this.findColor(chSave.id);
-            ch.loadSave(chSave);
+            if (ch) ch.loadSave(chSave);
         });
         this.easel = save.easel;
         if (save.easelMax) this.easelMax = save.easelMax;
@@ -312,6 +323,10 @@ const gameData = {
         const mix = this.mixers[0];
         this.mixers.forEach(m=>m.applySettings(mix.color1,mix.color2,mix.properties,mix.autoEaselFilter,mix.autoEaselOn));
         UITrigger.mixerChange = true;
+    },
+    addColorCount(mixerid) {
+        const mix = this.mixers.find(m=>m.count === mixerid);
+        mix.addColorCount();
     }
 }
 

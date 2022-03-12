@@ -2,7 +2,6 @@
 
 //setup!
 fixedColors.forEach((value,key) => {
-    console.log("hi");
     gameData.colorLibrary.push(new UnlockedColors(key,value));
 });
 const gameFile = JSON.parse(localStorage.getItem("rgblender"));
