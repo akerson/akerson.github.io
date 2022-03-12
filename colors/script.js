@@ -95,11 +95,11 @@ class Mixer {
             if (this.properties.includes("Low Mutate")) mutateChance = 0.025;
             if (this.properties.includes("High Mutate")) mutateChance = 0.2;
             for (let i=0;i<6;i++) {
-                if (this.properties.includes(`Hold ${i+1} Left`)) {
+                if (this.properties.includes(`Hold ${i+1} Top`)) {
                     result += this.color1[i];
                     continue;
                 }
-                if (this.properties.includes(`Hold ${i+1} Right`)) {
+                if (this.properties.includes(`Hold ${i+1} Bottom`)) {
                     result += this.color2[i];
                     continue;
                 }
@@ -173,6 +173,7 @@ class Mixer {
         }
     }
     addColorCount() {
+        if (gameData.ptsRemaining() < 1) return;
         this.colorCount++;
         this.colorCount = Math.min(this.colorCount,this.colorCountMax);
         UITrigger.mixerProperty = this.count;
