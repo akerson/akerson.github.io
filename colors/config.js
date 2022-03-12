@@ -59,7 +59,7 @@ const fixedColors = new Map([
     ["663399","RebeccaPurple"],
     ["666666","PrinceofGrayness"],
     ["66CDAA","MediumAquaMarine"],
-    ["696969","DimGray"],
+    ["696969","NiceGray"],
     ["6A5ACD","SlateBlue"],
     ["6B8E23","OliveDrab"],
     ["708090","SlateGray"],
