@@ -27,7 +27,7 @@ class Mixer {
         this.maxProperties = 0;
         this.count = counter;
         this.autoEasel = false;
-        this.autoEaselFilter = "******";
+        this.autoEaselFilter = "xxxxxx";
         this.autoEaselOn = true;
         this.colorFlip = false;
         this.colorCount = 1;
@@ -56,7 +56,14 @@ class Mixer {
         this.properties = save.properties;
         this.maxProperties = save.maxProperties;
         if (save.autoEasel) this.autoEasel = save.autoEasel;
-        if (save.autoEaselFilter) this.autoEaselFilter = save.autoEaselFilter;
+        if (save.autoEaselFilter) {
+            //this.autoEaselFilter = save.autoEaselFilter;
+            this.autoEaselFilter = "";
+            for (let i=0;i<save.autoEaselFilter.length;i++) {
+                if (save.autoEaselFilter[i] === "*") this.autoEaselFilter += "x";
+                else this.autoEaselFilter += save.autoEaselFilter[i];
+            }
+        }
         if (save.autoEaselOn) this.autoEaselOn = save.autoEaselOn;
         if (save.mixedColors) this.mixedColors = save.mixedColors;
         if (save.startTime) this.startTime = save.startTime;
@@ -112,7 +119,7 @@ class Mixer {
             if (this.autoEasel && this.autoEaselOn) {
                 let res = 0;
                 for (let i=0;i<6;i++) {
-                    if (this.autoEaselFilter[i] === "*" || this.autoEaselFilter[i] === result[i]) res++
+                    if (this.autoEaselFilter[i] === "x" || this.autoEaselFilter[i] === result[i]) res++
                 }
                 if (res === 6) gameData.addEasel(result);
             }

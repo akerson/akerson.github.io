@@ -354,7 +354,7 @@ function autoEasel(mixerID) {
         const e = $("<div/>").addClass("characterBound").appendTo(d1);
         for (let j=0;j<17;j++) {
             // i = position, j = character
-            const chars = "*0123456789ABCDEF";
+            const chars = "x0123456789ABCDEF";
             const f = $("<div/>").addClass("autoEaselFilterCharacter").data({"mixer":mixer.count,"position":i,"character":chars[j]}).html(chars[j]).appendTo(e);
             if (mixer.autoEaselFilter[i] === chars[j]) f.addClass("highlight");
         }
