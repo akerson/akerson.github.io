@@ -1,42 +1,85 @@
 <!DOCTYPE html>
 <html lang="us">
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://kit.fontawesome.com/968e41c805.js" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/1cacaa9eda.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=League+Spartan&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+        <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/> -->
     </head>
     <body>
-        <div id="pause" class="pause"><i class="fa-solid fa-play"></i> Game Running</div>
-        <h1>RGBlender</h1>
-        <h3>Mixers</h3>
-        <span class="helpText">Mix two colors to make new ones (sometimes they mutate)</span>
-        <div class="mixerActionsDiv">
-            <div id="mixersClear" class="mixerButton">Clear All Mixers</div>
-            <div id="mixersCopy" class="mixerButton">Propagate First Mixer</div>
-        </div>
-        <div id="mixers" class="mixers"></div>
-        <h3>Easel</h3>
-        <span class="helpText">Hold useful colors here</span>
-        <div id="easel" class="easle"></div>
-        <div class="bottom">
-            <div class="history-part">
-                <h3>Mixtory</h3>
+        <!-- Top Actions -->
+        <section class="top-actions-container">
+            <div class="logo-container">
+                <img src="./logo.svg" class="game-logo" />
+                <h1 class="game-name">RGBlender</h1>
+            </div>
+            <button id="pause" class="pause action-button">
+                <span class="action-text">Game Running</span>
+                <i class="fa-solid fa-play"></i>
+            </button>
+        </section>
+        <!-- -->
+        <!-- Mixers Container -->
+        <section class="mixer-container">
+            <div class="header-container">
+                <h3 class="header-name">Mixers</h3>
+                <div class="header-description">Mix two colors to make new ones (sometimes they mutate)</div>
+            </div>
+            <div class="mixer-actions-container">
+                <div id="mixersClear" class="action-button">Clear All Mixers</div>
+                <div id="mixersCopy" class="action-button">Propagate First Mixer</div>
+            </div>
+            <div id="mixers" class="mixers"></div>
+            <div id="propertiesBox" class="propertiesBox"></div>
+            <div id="autoEasel" class="autoEasel"></div>
+        </section>
+        <!-- -->
+        <!-- Easel Container -->
+        <section class="easel-container">
+            <div class="header-container">
+                <h3 class="header-name">Easel</h3>
+                <div class="header-description">Hold useful colors here</div>
+            </div>
+            <div id="easel" class="easle"></div>
+        </section>
+        <!-- -->
+
+        <!-- Bottom Action Container -->
+        <section class="bottom-actions-container">
+            <!-- Mixtory Container -->
+            <section class="mixtory-container">
+                <div class="header-container">
+                    <h3 class="header-name">Mixtory</h3>
+                    <div class="header-description">History of colors</div>
+                </div>
                 <div id="history" class="history"></div>
-            </div>
-            <div class="completed-library-part">
-                <h3 id="completedLibraryHeading">Completed Library (2/140)</h3>
-                <span class="helpText">You can click these to mix</span>
+            </section>
+            <!-- -->
+            <!-- Completed Library Container -->
+            <section class="completed-library-container">
+                <div class="header-container">
+                    <h3 id="completedLibraryHeading" class="header-name">Completed Library (1/140)</h3>
+                    <div class="header-description">You can click these to mix</div>
+                </div>
                 <div id="completedLibrary" class="library"></div>
-            </div>
-            <div class="remaining-library-part">
-                <h3 id="remainingLibraryHeading">Remaining Library (138/140)</h3>
-                <span id="pts" class="helpText"><i>Mix these for points (1 pt remaining)</i></span>
+            </section>
+            <!-- -->
+            <!-- Remaining Library Container -->
+            <section class="remaining-library-container">
+                <div class="header-container">
+                    <h3 id="remainingLibraryHeading" class="header-name">Remaining Library (1/140)</h3>
+                    <div id="pts" class="header-description">Mix these for points (1 pt remaining)</div>
+                </div>
                 <div id="remainingLibrary" class="library"></div>
-            </div>
-        </div>
-        <div id="propertiesBox" class="propertiesBox"></div>
-        <div id="autoEasel" class="autoEasel"></div>
+            </section>
+            <!-- -->
+        </section>
+        <!-- -->
         <script src="config.js"></script>
         <script src="script.js"></script>
         <script src="ui.js"></script>

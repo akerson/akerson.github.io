@@ -1,76 +1,316 @@
-.bottom {
-    padding: 20px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'League Spartan', sans-serif;
 }
 
-.completed-library-part, .remaining-library-part {
-    width: 45%;
-    float: left;
-    padding: 20px;
+body {
+    margin: 0;
+    padding: 0;
 }
 
-.history-part {
-    width: 10%;
-    float: left;
-    padding: 20px;
+.top-actions-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #EFEFEF;
 }
 
-.easle {
-    display:grid;
-    grid-template-columns: repeat(auto-fill,minmax(100px,1fr));
-    grid-gap: 5px;
-    margin: 10px;
-    transform-origin: left top;
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.easelBox, .easelBoxEmpty, .easelBoxBuy {
-    position: relative;
-    border-radius: 10px;
-    background: #CCCCCC;
-    padding: 18px 0px;
-    width: 100px;
-    height: 60px;
+.game-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.5rem;
+    height: 40px;
+}
+
+.game-name {
+    margin: 0;
+}
+
+.action-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    font-weight: bold;
     text-align: center;
-    border: 0.5px solid black;
+    background-color: rgba(0,0,0,0.05);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    appearance: none;
     cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1);
 }
 
-.easelBoxEmpty {
-    background: white;
+.action-button:hover {
+    color: #003ea1;
+    background-color: #cde0ff;
+    border-color: #a7c7ff;
 }
 
-.library {
-    display:grid;
-    grid-template-columns: repeat(auto-fill,140px);
-    grid-gap: 1px;
-    text-align:center;
-    transform-origin: left top;
+.action-button > i {
+    order: 1;
 }
 
-.libraryBox {
-    border: 0.5px solid #000000;
+.action-button .action-text {
+    order: 2;
+}
+
+.action-button .action-text + i {
+    margin-right: 10px;
+}
+
+.pause {
+    color: #008b51;
+    background-color: rgba(0, 255, 98, 0.1); 
+}
+
+.game-paused {
+    color: #910000;
+    background-color: rgba(255,0,0,0.1);
+}
+
+.pause .action-text {
+    order: 2;
+}
+
+@media screen and (max-width: 600px) {
+    .pause .action-text {
+        display: none;
+    }
+
+    .pause .action-text + i {
+        margin-right: 0;
+    }
+}
+
+.header-container {
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(90deg, rgba(55, 128, 255, 0.25), rgba(56,129,255,0) 50%);
+    border-left: 2px solid #3781ff;
+}
+
+.header-name {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.mixer-container, .easel-container, .bottom-actions-container {
+    padding: 0.5rem 1rem;
+}
+
+.mixer-actions-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    margin: -0.5rem 0 0.5rem;
+}
+
+.bottom-actions-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.mixtory-container {
+    flex-basis: 250px;
+    flex-grow: 0;
+}
+
+.completed-library-container {
+    flex-grow: 2;
+}
+
+.remaining-library-container {
+    flex-grow: 3;
+}
+
+.mixers {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mixerAll {
+    flex-shrink: 0;
+    padding: 0.25rem;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.mixerBoxBar, .mixerBuy {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 150px;
+    height: 100%;
+    text-align: center;
+    background-color: rgba(0,0,0,0.05);
     cursor: pointer;
+    overflow: hidden;
 }
 
-.history {
-    display:inline-grid;
+.mixerBoxBar {
+    margin: -0.25rem -0.25rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+
+.mixerBuy {
+    padding: 0.5rem;
+    color: #008b51;
+    font-weight: bold;
+    background-color: rgba(0, 255, 98, 0.1);
+    border: 2px solid rgba(0, 77, 29, 0.5);
+    border-radius: 10px;
+}
+
+.autoEaselHeading {
+    padding: 0.5rem;
+    width: 100%;
+    background-color: #cde0ff;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+
+.pbHolder {
+    width: 100%;
+    height: 10px;
+    background-color: rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(0,0,0,0.15);
+    border-bottom: 1px solid rgba(0,0,0,0.15);
 }
 
 .progressBar {
     width: 10%;
-    height: 5px;
-    background-color: #04AA6D;
-    text-align: left; /* To center it horizontally (if you want) */
-    line-height: 30px; /* To center it vertically */
-    color: white;
-    overflow:hidden;
+    height: 8px;
+    overflow: hidden;
 }
 
-.mixers {
-    display:grid;
-    grid-template-columns: repeat(auto-fill,120px);
-    grid-gap: 5px;
-    margin: 10px;
-    transform-origin: left top;
+.mixerProperties {
+    margin-top: 0.5rem;
+}
+
+.easle {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+@media screen and (max-width: 600px) {
+    .mixers {
+        flex-wrap: nowrap;
+        margin: 0 -1rem;
+        padding: 1rem;
+        overflow-x: scroll;
+    }
+
+    .easle {
+        flex-wrap: nowrap;
+        margin: 0 -1rem;
+        padding: 1rem;
+        overflow-x: scroll;
+    }
+
+    .easelBox, .easelBoxEmpty, .easelBoxBuy {
+        min-width: 150px;
+    }
+}
+
+.easelBox, .easelBoxEmpty, .easelBoxBuy {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 150px;
+    padding: 0.5rem;
+    min-height: 60px;
+    text-align: center;
+    background-color: rgba(0,0,0,0.05);
+    border: 2px solid rgba(0,0,0,0.5);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.easelBoxBuy {
+    color: #008b51;
+    font-weight: bold;
+    background-color: rgba(0, 255, 98, 0.1);
+    border-color: rgba(0, 77, 29, 0.5);
+}
+
+.easelBoxClose {
+    position: absolute;
+    top: -10px;
+    right: -5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    background-color: #8a0000;
+    border: 2px solid #6e0000;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.library {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.libraryBox {
+    border: 2px solid rgba(0,0,0,0.5);
+    border-radius: 10px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.chName {
+    font-weight: bold;
+    filter: hue-rotate(90deg);
+    background-color: rgba(0,0,0,0.1);
+    padding: 0.5rem;
+}
+
+.colorBlock {
+    width: 100%;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.history {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.historyBox {
+    border: 2px solid rgba(0,0,0,0.5);
+    border-radius: 10px;
+    cursor: pointer;
+    overflow: hidden;
 }
 
 .characterFilters {
@@ -86,18 +326,6 @@
     padding: 5px;
 }
 
-.mixerBoxBar, .mixerBuy {
-    width: 120px;
-    border : 0.5px solid black;
-    text-align: center;
-    margin: 5px;
-}
-
-.mixerBuy {
-    padding: 10px;
-    height: 66px;
-}
-
 .propertyBuyText {
     font-style: italic;
 }
@@ -109,6 +337,7 @@
     color: black;
     border: 0.5px solid black;
     width: 300px;
+    z-index: 99;
 }
 
 .autoEasel {
@@ -117,52 +346,11 @@
     background-color: #FFFFFF;
     color: black;
     border: 0.5px solid black;
-}
-
-.buyAutoEasel, .autoEaselView, .mixerBuy {
-    cursor: pointer;
+    z-index: 99;
 }
 
 .highlight {
     background-color: yellow;
-}
-
-.helpText {
-    font-style: italic;
-}
-
-.pause {
-    float: right;
-}
-
-.easelBoxClose {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-}
-
-.mixerProperties {
-    background-color: lightgray;
-    text-align:center;
-    border: 0.5px solid black;
-    border-radius: 5px;
-    width: 120px;
-    height: 25px;
-    margin-left: 5px;
-    margin-top: 3px;
-    cursor: pointer;
-}
-
-.autoEaselHeading {
-    background-color: #333333;
-    color: white;
 }
 
 .mixerPropertyHeading {
@@ -218,33 +406,8 @@
     text-align: center;
 }
 
-.colorBlock {
-    cursor: pointer;
-}
-
-
-body {
-    padding: 5px;
-}
-
-.pause {
-    cursor: pointer;
-}
-
 .propertySlot, .propertyPadding {
     cursor: pointer;
-}
-
-.mixerButton {
-    border: 1px solid black;
-    border-radius: 5px;
-    width: 150px;
-    text-align: center;
-    display:inline-block;
-}
-
-.mixerActionsDiv {
-    height: 25px;
 }
 
 .mixerColorCount {
