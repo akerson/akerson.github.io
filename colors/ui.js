@@ -22,6 +22,7 @@ const UITrigger = {
     mixerProperty : null,
     autoEasel : null,
     colorFlip : [],
+    gameEnd : true,
 }
 
 function updateMixerBars() {
@@ -47,12 +48,20 @@ function updateMixerBars() {
     }
     if (UITrigger.pointsRefresh) {
         UITrigger.pointsRefresh = false;
-        const ptText = gameData.ptsRemaining() === 1 ? `1 pt` : `${gameData.ptsRemaining()} pts`;
-        $("#pts").html(`Mix these for points (${ptText} remaining)`);
+        const ptText = gameData.ptsRemaining() === 1 ? `1 ${pt}` : `${gameData.ptsRemaining()} ${pt}`;
+        $("#pts").html(`Mix these for palette points (${ptText} remaining)`);
     }
     if (UITrigger.autoEasel !== null) {
         autoEasel(UITrigger.autoEasel);
         UITrigger.autoEasel = null;
+    }
+    if (UITrigger.gameEnd) {
+        UITrigger.gameEnd = false;
+        if (!gameData.gameEnd) return;
+        $(".youWin").show();
+        $(".rainbowBG").show();
+        $("#colorsMixed").html(gameData.mixedColors);
+        $("#timeSpent").html(timeSince(gameData.startTime,gameData.gameEnd));
     }
     while (UITrigger.colorFlip.length > 0) {
         const mix = UITrigger.colorFlip.pop();
@@ -70,7 +79,7 @@ function updateMixers() {
         $mixers.append(colorMixerBox(mixer));
     });
     if (gameData.mixers.length < gameData.mixersMax) {
-        $("<div/>").addClass("mixerBuy").html("Buy Mixer<br>1 Pt").appendTo($mixers);
+        $("<div/>").addClass("mixerBuy").html(`Purchase Mixer<br>(1 ${pt})`).appendTo($mixers);
     }
 }
 
@@ -84,7 +93,7 @@ function updateEasles() {
         $("<div/>").addClass("easelBoxEmpty").html("Empty").appendTo($easel);
     }
     if (gameData.easelMax < 25) {
-        $("<div/>").addClass("easelBoxBuy").html("5 Easels - 1pt").appendTo($easel);
+        $("<div/>").addClass("easelBoxBuy").html(`Purchase 5 Easels<br>(1 ${pt})`).appendTo($easel);
     }
 }
 
@@ -115,7 +124,7 @@ function colorBox(color) {
 function colorMixerBox(mixer) {
     const a = $("<div/>").addClass("mixerAll");
     const pb = $("<div/>").addClass("mixerBoxBar").appendTo(a);
-    if (!mixer.autoEasel) $("<div/>").addClass("buyAutoEasel autoEaselHeading").data("mixer",mixer.count).html("AutoEasel - 1pt").appendTo(pb);
+    if (!mixer.autoEasel) $("<div/>").addClass("buyAutoEasel autoEaselHeading").data("mixer",mixer.count).html(`AutoEasel (1 ${pt})`).appendTo(pb);
     else if (mixer.autoEaselOn) $("<div/>").addClass("autoEaselView autoEaselHeading").data("mixer",mixer.count).html(`#${mixer.autoEaselFilter}`).appendTo(pb);
     else $("<div/>").addClass("autoEaselView autoEaselHeading").data("mixer",mixer.count).html(`Auto Off`).appendTo(pb);
     colorBox(mixer.color1).addClass("colorUnslot").data({"position":0,"mixer":mixer.count}).appendTo(pb);
@@ -124,7 +133,9 @@ function colorMixerBox(mixer) {
     else d.css("background-color",`#${mixer.color1}`);
     createProgressBar(mixer).appendTo(d);
     colorBox(mixer.color2).addClass("colorUnslot").data({"position":1,"mixer":mixer.count}).appendTo(pb);
-    $("<div/>").addClass("mixerProperties").data("mixer",mixer.count).html(`Properties (${mixer.maxProperties})`).appendTo(a);
+    const propBtn = $("<div/>").addClass("mixerProperties action-button").data("mixer",mixer.count).appendTo(a);
+        $("<span/>").addClass("action-text").html(`Properties (${mixer.maxProperties})`).appendTo(propBtn);
+        propBtn.append('<i class="fa-solid fa-list-dropdown"></i>');
     return a;
 }
 
@@ -132,7 +143,6 @@ function easelBox(color) {
     const s = $("<div/>").addClass("easelBox").data("color",color).html("#"+color);
     s.css({"background-color":`#${color}`,"color":textColor(color)});
     const x = $("<div/>").addClass("easelBoxClose").data("color",color).html(`<i class="fa-solid fa-xmark"></i>`).appendTo(s);
-    x.css("color",textColor(color));
     return s;
 }
 
@@ -165,7 +175,7 @@ $(document).on("click",".historyBox",e => {
     //add history to easel
     e.preventDefault();
     const color = $(e.currentTarget).data("color");
-    gameData.addEasel(color);;
+    gameData.addEasel(color);
 });
 
 $(document).on("click",".easelBoxClose",e => {
@@ -275,6 +285,11 @@ $(document).on("click","#mixersClear",e=> {
     gameData.clearMixers();
 })
 
+$(document).on("click","#mixersClearColor",e=> {
+    e.preventDefault();
+    gameData.clearMixers(true);
+})
+
 $(document).on("click","#mixersCopy",e=> {
     e.preventDefault();
     gameData.propogateFirst();
@@ -315,7 +330,7 @@ function viewProperties(mixerID) {
     const mixer = gameData.mixers.find(m=>m.count === mixerID);
     $propertiesBox.empty().show();
     $autoEasel.hide();
-    $("<div/>").addClass("mixerColorCount").data("mixer",mixer.count).html(`${mixer.colorCount} Color${mixer.colorCount > 1 ? "s" : ""} Per Fill${mixer.colorCount < mixer.colorCountMax ? " - 1 Pt" : ""}`).appendTo($propertiesBox);
+    $("<div/>").addClass("mixerColorCount").data("mixer",mixer.count).html(`${mixer.colorCount} Color${mixer.colorCount > 1 ? "s" : ""} Per Fill${mixer.colorCount < mixer.colorCountMax ? ` (1 ${pt})` : ""}`).appendTo($propertiesBox);
     $("<div/>").addClass("propertiesBoxClose").html(`<i class="fa-solid fa-xmark"></i>`).appendTo($propertiesBox);
     $("<div/>").addClass("mixerPropertyHeading").html("Mixer Properties").appendTo($propertiesBox);
     //property slots
@@ -326,7 +341,7 @@ function viewProperties(mixerID) {
     for (let i=0;i<mixer.maxProperties-mixer.properties.length;i++) {
         $("<div/>").addClass("propertySlot propertyPadding").data("propertySlotEmpty",i).html("Empty").appendTo(d);
     }
-    if (mixer.maxProperties < 4) $("<div/>").addClass("buyPropertySlot").data("mixer",mixer.count).html("Buy A Property Slot - 1 pt").appendTo(d);
+    if (mixer.maxProperties < 4) $("<div/>").addClass("buyPropertySlot").data("mixer",mixer.count).html(`Buy A Property Slot (1 ${pt})`).appendTo(d);
     //available properties
     const e = $("<div/>").addClass("propertyPurchase").appendTo($propertiesBox);
     $("<div/>").addClass("propertyHeading").html("Properties available:").appendTo(e);
@@ -335,7 +350,7 @@ function viewProperties(mixerID) {
             $("<div/>").addClass("propertyBought propertyPadding").data({"mixer":mixer.count,"property":property}).html(property).appendTo(e);
         }
         else {
-            $("<div/>").addClass("propertyNotBought propertyPadding").data({"mixer":mixer.count,"property":property}).html(`${property} - 6pts`).appendTo(e);
+            $("<div/>").addClass("propertyNotBought propertyPadding").data({"mixer":mixer.count,"property":property}).html(`${property} (6 ${pt})`).appendTo(e);
         }
     });
     $("<div/>").addClass("propertyBuyText").html("Buying properties buys them for all mixers").appendTo($propertiesBox);
@@ -378,6 +393,7 @@ $(document).on("click",".autoEaselEnable",e => {
 // Make the DIV element draggable:
 dragElement(document.getElementById("propertiesBox"));
 dragElement(document.getElementById("autoEasel"));
+dragElement(document.getElementById("helpBox"));
 
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -421,12 +437,34 @@ function dragElement(elmnt) {
 }
 
 function gamePause() {
+    const pauseButton = $("#pause");
+    pauseButton.empty();
     gameData.paused = !gameData.paused;
-    if (gameData.paused) $("#pause").html(`<i class="fa-solid fa-pause"></i> Game Paused`);
-    else $("#pause").html(`<i class="fa-solid fa-play"></i> Game Running`);
+    if (gameData.paused) {
+        $("<span/>").addClass("action-text").html("Game Paused").appendTo(pauseButton);
+        pauseButton.addClass("game-paused").append('<i class="fa-solid fa-pause"></i>')
+    } else {
+        $("<span/>").addClass("action-text").html("Game Running").appendTo(pauseButton);
+        pauseButton.removeClass("game-paused").append('<i class="fa-solid fa-play"></i>')
+    }
 }
 
 document.addEventListener('keydown', (event) => {
-    event.preventDefault();
-    if (event.code === "Space") gamePause();
+    if (event.code === "Space") {
+        event.preventDefault();
+        gamePause();
+    }
   }, false);
+
+$(document).on("click",".helpOpen",e=>{
+    e.preventDefault();
+    $("#clearSave").html("Clear Save");
+    $("#helpBox").show();
+})
+
+
+$(document).on("click","#helpClose",e=> {
+    e.preventDefault();
+    $("#clearSave").html("Clear Save");
+    $("#helpBox").hide();
+})

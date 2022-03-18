@@ -1,45 +1,149 @@
 <!DOCTYPE html>
 <html lang="us">
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://kit.fontawesome.com/968e41c805.js" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/1cacaa9eda.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=League+Spartan&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+        <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/> -->
     </head>
     <body>
-        <div id="pause" class="pause"><i class="fa-solid fa-play"></i> Game Running</div>
-        <h1>RGBlender</h1>
-        <h3>Mixers</h3>
-        <span class="helpText">Mix two colors to make new ones (sometimes they mutate)</span>
-        <div class="mixerActionsDiv">
-            <div id="mixersClear" class="mixerButton">Clear All Mixers</div>
-            <div id="mixersCopy" class="mixerButton">Propagate First Mixer</div>
+        <div class="helpBox" id="helpBox">
+            <div id="helpClose" class="helpClose"><i class="fa-solid fa-xmark"></i></div>
+            <h2>RGBlender Help</h2>
+            <h3>How to Play</h3>
+            <span class="subText">
+                Blenders blend two colors together to make a new one. Colors are reprented by their hex RGB codes. 
+                When blending, each digit of the resulting color has a 45% to match either of the parent digits, plus a 5% chance of a random
+                value. Blenders can be upgraded to output a max of 3 colors per blend. When you blend a color from the color library that you
+                haven't seen, you gain a pallete point and unlock the ability to forever reference that color for blending. Match all the colors
+                to beat the game!
+            </span>
+            <h3>AutoEasel</h3>
+            <span class="subText">
+                AutoEasel allows colors to be automatically
+                added to the easel. The "x" character is a wildcard. So, for example, if a blender AutoEasel is set to #FxF0FF, it will add
+                colors such as #FAF0FF and #F5F0FF to the easel, but not #0AF0FF. They also have 
+            </span>
+            <h3>Easel</h3>
+            <span class="subText">
+                Easels provide a way to hold colors that aren't Library colors, but may be useful on your journey to blending them. Colors in
+                your easel can be added to the blender, and clicking on colors in Mixtory or having them be added via AutoEasel will populate
+                the easel.
+            </span>
+            <h3>Library</h3>
+            <span class="subText">
+                The library denotes 154 web-color codes for you to collect. Each completed color in the library will add 1
+                <i class="fa-solid fa-palette"></i> which can be spent on a variety of upgrades. Completed Library colors can be clicked on to
+                add them to a blender. Blend all the Remaining Library colors to complete the game.
+            </span>
+            <h3>Properties</h3>
+            <span class="subText">
+                <p>Properties allow you to change the default behavior of a blender. Blenders can have up to 4 properties equipped, although you
+                must purchase these property slots. There's three basic properties:</p>
+                <p><i><b>"Force" Properties</b></i></br>
+                Force Properties will force the blend outcome to always have the digit present in the resulting color. For example, if your top
+                blender color is #A0F5D1, the "Force Top Digit 2" will force the output color to always be some form of #x0xxxx. You can force up
+                to four blender color digits at once, with all four blender slots.</p>
+                <p><b><i>Fast Blending</i></b></br>
+                Fast blending will double the speed of the blender.</p>
+                <p><b><i>Mutate</i></b></br>
+                No Mutate will remove the random variation from blending. High Mutate will double the mutation chance to 10% per digit.</p>
+            </span>
+            <div class="helpButtons">
+                <div class="helpButton" id="importSave">Import Save</div>
+                <div class="helpButton" id="exportSave">Export Save</div>
+                <div class="helpButton" id="clearSave">Clear Save</div>
+            </div>
+
         </div>
-        <div id="mixers" class="mixers"></div>
-        <h3>Easel</h3>
-        <span class="helpText">Hold useful colors here</span>
-        <div id="easel" class="easle"></div>
-        <div class="bottom">
-            <div class="history-part">
-                <h3>Mixtory</h3>
+        <div class="rainbowBG"></div>
+        <div class="youWin">
+            <h1>YOU WIN!</h1>
+            <h2>Colors Mixed:</h2>
+            <span id="colorsMixed">some amt</span>
+            <h2>Time Spent:</h2>
+            <span id="timeSpent">some amt</span>
+            <div>Thank you for Playing!</div>
+        </div>
+        <!-- Top Actions -->
+        <section class="top-actions-container">
+            <div class="logo-container">
+                <img src="./logo.svg" class="game-logo" />
+                <h1 class="game-name">RGBlender</h1>
+                <div class="helpOpen"><i class="fa-solid fa-circle-question"></i></div>
+            </div>
+            <button id="pause" class="pause action-button">
+                <span class="action-text">Game Running</span>
+                <i class="fa-solid fa-play"></i>
+            </button>
+        </section>
+        <!-- -->
+        <!-- Mixers Container -->
+        <section class="mixer-container">
+            <div class="header-container">
+                <h3 class="header-name">Blenders</h3>
+                <div class="header-description">Blend two colors to make new ones (sometimes they mutate)</div>
+            </div>
+            <div class="mixer-actions-container">
+                <div id="mixersClear" class="action-button">Clear All Blenders</div>
+                <div id="mixersCopy" class="action-button">Propagate First Blender</div>
+                <div id="mixersClearColor" class="action-button">Clear All Blender Colors</div>
+            </div>
+            <div id="mixers" class="mixers"></div>
+            <div id="propertiesBox" class="propertiesBox"></div>
+            <div id="autoEasel" class="autoEasel"></div>
+        </section>
+        <!-- -->
+        <!-- Easel Container -->
+        <section class="easel-container">
+            <div class="header-container">
+                <h3 class="header-name">Easel</h3>
+                <div class="header-description">Hold useful colors here</div>
+            </div>
+            <div id="easel" class="easle"></div>
+        </section>
+        <!-- -->
+
+        <!-- Bottom Action Container -->
+        <section class="bottom-actions-container">
+            <!-- Mixtory Container -->
+            <section class="mixtory-container">
+                <div class="header-container">
+                    <h3 class="header-name">Mixtory</h3>
+                    <div class="header-description">History of colors</div>
+                </div>
                 <div id="history" class="history"></div>
-            </div>
-            <div class="completed-library-part">
-                <h3 id="completedLibraryHeading">Completed Library (2/140)</h3>
-                <span class="helpText">You can click these to mix</span>
+            </section>
+            <!-- -->
+            <!-- Completed Library Container -->
+            <section class="completed-library-container">
+                <div class="header-container">
+                    <h3 id="completedLibraryHeading" class="header-name">Completed Library (1/140)</h3>
+                    <div class="header-description">You can add these to blenders</div>
+                </div>
                 <div id="completedLibrary" class="library"></div>
-            </div>
-            <div class="remaining-library-part">
-                <h3 id="remainingLibraryHeading">Remaining Library (138/140)</h3>
-                <span id="pts" class="helpText"><i>Mix these for points (1 pt remaining)</i></span>
+            </section>
+            <!-- -->
+            <!-- Remaining Library Container -->
+            <section class="remaining-library-container">
+                <div class="header-container">
+                    <h3 id="remainingLibraryHeading" class="header-name">Remaining Library (1/140)</h3>
+                    <div id="pts" class="header-description">Make these for palette points (1 pt remaining)</div>
+                </div>
                 <div id="remainingLibrary" class="library"></div>
-            </div>
-        </div>
-        <div id="propertiesBox" class="propertiesBox"></div>
-        <div id="autoEasel" class="autoEasel"></div>
+            </section>
+            <!-- -->
+        </section>
+        <!-- -->
         <script src="config.js"></script>
         <script src="script.js"></script>
         <script src="ui.js"></script>
         <script src="main.js"></script>
+        <script src="FileSaver.min.js"></script>
     </body>
 </html>
