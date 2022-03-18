@@ -12,11 +12,70 @@
         <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/> -->
     </head>
     <body>
+        <div class="helpBox" id="helpBox">
+            <div id="helpClose" class="helpClose"><i class="fa-solid fa-xmark"></i></div>
+            <h2>RGBlender Help</h2>
+            <h3>How to Play</h3>
+            <span class="subText">
+                Blenders blend two colors together to make a new one. Colors are reprented by their hex RGB codes. 
+                When blending, each digit of the resulting color has a 45% to match either of the parent digits, plus a 5% chance of a random
+                value. Blenders can be upgraded to output a max of 3 colors per blend. When you blend a color from the color library that you
+                haven't seen, you gain a pallete point and unlock the ability to forever reference that color for blending. Match all the colors
+                to beat the game!
+            </span>
+            <h3>AutoEasel</h3>
+            <span class="subText">
+                AutoEasel allows colors to be automatically
+                added to the easel. The "x" character is a wildcard. So, for example, if a blender AutoEasel is set to #FxF0FF, it will add
+                colors such as #FAF0FF and #F5F0FF to the easel, but not #0AF0FF. They also have 
+            </span>
+            <h3>Easel</h3>
+            <span class="subText">
+                Easels provide a way to hold colors that aren't Library colors, but may be useful on your journey to blending them. Colors in
+                your easel can be added to the blender, and clicking on colors in Mixtory or having them be added via AutoEasel will populate
+                the easel.
+            </span>
+            <h3>Library</h3>
+            <span class="subText">
+                The library denotes 154 web-color codes for you to collect. Each completed color in the library will add 1
+                <i class="fa-solid fa-palette"></i> which can be spent on a variety of upgrades. Completed Library colors can be clicked on to
+                add them to a blender. Blend all the Remaining Library colors to complete the game.
+            </span>
+            <h3>Properties</h3>
+            <span class="subText">
+                <p>Properties allow you to change the default behavior of a blender. Blenders can have up to 4 properties equipped, although you
+                must purchase these property slots. There's three basic properties:</p>
+                <p><i><b>"Force" Properties</b></i></br>
+                Force Properties will force the blend outcome to always have the digit present in the resulting color. For example, if your top
+                blender color is #A0F5D1, the "Force Top Digit 2" will force the output color to always be some form of #x0xxxx. You can force up
+                to four blender color digits at once, with all four blender slots.</p>
+                <p><b><i>Fast Blending</i></b></br>
+                Fast blending will double the speed of the blender.</p>
+                <p><b><i>Mutate</i></b></br>
+                No Mutate will remove the random variation from blending. High Mutate will double the mutation chance to 10% per digit.</p>
+            </span>
+            <div class="helpButtons">
+                <div class="helpButton" id="importSave">Import Save</div>
+                <div class="helpButton" id="exportSave">Export Save</div>
+                <div class="helpButton" id="clearSave">Clear Save</div>
+            </div>
+
+        </div>
+        <div class="rainbowBG"></div>
+        <div class="youWin">
+            <h1>YOU WIN!</h1>
+            <h2>Colors Mixed:</h2>
+            <span id="colorsMixed">some amt</span>
+            <h2>Time Spent:</h2>
+            <span id="timeSpent">some amt</span>
+            <div>Thank you for Playing!</div>
+        </div>
         <!-- Top Actions -->
         <section class="top-actions-container">
             <div class="logo-container">
                 <img src="./logo.svg" class="game-logo" />
                 <h1 class="game-name">RGBlender</h1>
+                <div class="helpOpen"><i class="fa-solid fa-circle-question"></i></div>
             </div>
             <button id="pause" class="pause action-button">
                 <span class="action-text">Game Running</span>
@@ -27,12 +86,13 @@
         <!-- Mixers Container -->
         <section class="mixer-container">
             <div class="header-container">
-                <h3 class="header-name">Mixers</h3>
-                <div class="header-description">Mix two colors to make new ones (sometimes they mutate)</div>
+                <h3 class="header-name">Blenders</h3>
+                <div class="header-description">Blend two colors to make new ones (sometimes they mutate)</div>
             </div>
             <div class="mixer-actions-container">
-                <div id="mixersClear" class="action-button">Clear All Mixers</div>
-                <div id="mixersCopy" class="action-button">Propagate First Mixer</div>
+                <div id="mixersClear" class="action-button">Clear All Blenders</div>
+                <div id="mixersCopy" class="action-button">Propagate First Blender</div>
+                <div id="mixersClearColor" class="action-button">Clear All Blender Colors</div>
             </div>
             <div id="mixers" class="mixers"></div>
             <div id="propertiesBox" class="propertiesBox"></div>
@@ -64,7 +124,7 @@
             <section class="completed-library-container">
                 <div class="header-container">
                     <h3 id="completedLibraryHeading" class="header-name">Completed Library (1/140)</h3>
-                    <div class="header-description">You can click these to mix</div>
+                    <div class="header-description">You can add these to blenders</div>
                 </div>
                 <div id="completedLibrary" class="library"></div>
             </section>
@@ -73,7 +133,7 @@
             <section class="remaining-library-container">
                 <div class="header-container">
                     <h3 id="remainingLibraryHeading" class="header-name">Remaining Library (1/140)</h3>
-                    <div id="pts" class="header-description">Mix these for points (1 pt remaining)</div>
+                    <div id="pts" class="header-description">Make these for palette points (1 pt remaining)</div>
                 </div>
                 <div id="remainingLibrary" class="library"></div>
             </section>
@@ -84,5 +144,6 @@
         <script src="script.js"></script>
         <script src="ui.js"></script>
         <script src="main.js"></script>
+        <script src="FileSaver.min.js"></script>
     </body>
 </html>

@@ -1,22 +1,24 @@
 const hexletters = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
 
 const mixerProperties = [
-    "Hold 1 Left",
-    "Hold 2 Left",
-    "Hold 3 Left",
-    "Hold 4 Left",
-    "Hold 5 Left",
-    "Hold 6 Left",
-    "Hold 1 Right",
-    "Hold 2 Right",
-    "Hold 3 Right",
-    "Hold 4 Right",
-    "Hold 5 Right",
-    "Hold 6 Right",
-    "Fast",
-    "Low Mutate", 
-    "High Mutate",
+    "Force Top Digit 1",
+    "Force Top Digit 2",
+    "Force Top Digit 3",
+    "Force Top Digit 4",
+    "Force Top Digit 5",
+    "Force Top Digit 6",
+    "Force Bottom Digit 1",
+    "Force Bottom Digit 2",
+    "Force Bottom Digit 3",
+    "Force Bottom Digit 4",
+    "Force Bottom Digit 5",
+    "Force Bottom Digit 6",
+    "Fast Blending",
+    "No Mutate Chance", 
+    "High Mutate Chance",
 ];
+
+const pt = `<i class="fa-solid fa-palette"></i>`;
 
 const fixedColors = new Map([
     ["000000","Black"],

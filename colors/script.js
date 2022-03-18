@@ -27,7 +27,7 @@ class Mixer {
         this.maxProperties = 0;
         this.count = counter;
         this.autoEasel = false;
-        this.autoEaselFilter = "******";
+        this.autoEaselFilter = "xxxxxx";
         this.autoEaselOn = true;
         this.colorFlip = false;
         this.colorCount = 1;
@@ -45,7 +45,6 @@ class Mixer {
         save.autoEaselFilter = this.autoEaselFilter;
         save.autoEaselOn = this.autoEaselOn;
         save.mixedColors = this.mixedColors;
-        save.startTime = this.startTime;
         save.colorCount = this.colorCount;
         return save;
     }
@@ -53,13 +52,12 @@ class Mixer {
         this.time = save.time;
         this.color1 = save.color1;
         this.color2 = save.color2;
-        this.properties = save.properties;
+        this.properties = save.properties.filter(p=>mixerProperties.includes(p));
         this.maxProperties = save.maxProperties;
         if (save.autoEasel) this.autoEasel = save.autoEasel;
         if (save.autoEaselFilter) this.autoEaselFilter = save.autoEaselFilter;
         if (save.autoEaselOn) this.autoEaselOn = save.autoEaselOn;
         if (save.mixedColors) this.mixedColors = save.mixedColors;
-        if (save.startTime) this.startTime = save.startTime;
         if (save.colorCount) this.colorCount = save.colorCount;
     }
     addTime(ms) {
@@ -92,14 +90,14 @@ class Mixer {
         for (let i=0;i<this.colorCount;i++) {
             let result = "";
             let mutateChance = 0.05;
-            if (this.properties.includes("Low Mutate")) mutateChance = 0.025;
+            if (this.properties.includes("No Mutate Chance")) mutateChance = 0;
             if (this.properties.includes("High Mutate")) mutateChance = 0.2;
             for (let i=0;i<6;i++) {
-                if (this.properties.includes(`Hold ${i+1} Top`)) {
+                if (this.properties.includes(`Force Top Digit ${i+1}`)) {
                     result += this.color1[i];
                     continue;
                 }
-                if (this.properties.includes(`Hold ${i+1} Bottom`)) {
+                if (this.properties.includes(`Force Bottom Digit ${i+1}`)) {
                     result += this.color2[i];
                     continue;
                 }
@@ -112,7 +110,7 @@ class Mixer {
             if (this.autoEasel && this.autoEaselOn) {
                 let res = 0;
                 for (let i=0;i<6;i++) {
-                    if (this.autoEaselFilter[i] === "*" || this.autoEaselFilter[i] === result[i]) res++
+                    if (this.autoEaselFilter[i] === "x" || this.autoEaselFilter[i] === result[i]) res++
                 }
                 if (res === 6) gameData.addEasel(result);
             }
@@ -155,11 +153,12 @@ class Mixer {
         UITrigger.mixerChange = true;
         UITrigger.autoEasel = this.count;
     }
-    clearMixer() {
+    clearMixer(onlyColor) {
         this.color1 = null;
         this.color2 = null;
+        if (onlyColor) return;
         this.properties = [];
-        this.autoEaselFilter = "******";
+        this.autoEaselFilter = "xxxxxx"
         this.autoEaselOn = false;
     }
     applySettings(color1,color2,properties,autofilter,filteron) {
@@ -193,6 +192,7 @@ const gameData = {
     boughtProperties : [],
     startTime : Date.now(),
     mixedColors : 0,
+    gameEnd : null,
     createSave() {
         const save = {};
         save.mixers = this.mixers.map(m=>m.createSave());
@@ -200,8 +200,9 @@ const gameData = {
         save.easel = this.easel;
         save.easelMax = this.easelMax;
         save.boughtProperties = this.boughtProperties;
-        save.starTime = this.startTime;
+        save.startTime = this.startTime;
         save.mixedColors = this.mixedColors;
+        save.gameEnd = this.gameEnd;
         return save;
     },
     loadSave(save) {
@@ -217,9 +218,10 @@ const gameData = {
         });
         this.easel = save.easel;
         if (save.easelMax) this.easelMax = save.easelMax;
-        if (save.boughtProperties) this.boughtProperties = save.boughtProperties;
+        if (save.boughtProperties) this.boughtProperties = save.boughtProperties.filter(p=>mixerProperties.includes(p));
         if (save.startTime) this.startTime = save.startTime;
         if (save.mixedColors) this.mixedColors = save.mixedColors;
+        if (save.gameEnd) this.gameEnd = save.gameEnd;
     },
     findColor(id) {
         return this.colorLibrary.find(c=>c.id === id);
@@ -227,6 +229,11 @@ const gameData = {
     addTime(ms) {
         if (this.paused) return;
         this.mixers.forEach(mixer => mixer.addTime(ms));
+        //WIN THE GAME!
+        if (!this.gameEnd && this.colorLibrary.filter(a=>a.found).length === this.colorLibrary.length) {
+            this.gameEnd = Date.now();
+            UITrigger.gameEnd;
+        }
     },
     mixedColor(color) {
         //unlock a color
@@ -316,8 +323,8 @@ const gameData = {
         const mix = this.mixers.find(m=>m.count === mixerid);
         mix.autoEaselEnable(); 
     },
-    clearMixers() {
-        this.mixers.forEach(m=>m.clearMixer());
+    clearMixers(onlyColor=false) {
+        this.mixers.forEach(m=>m.clearMixer(onlyColor));
         UITrigger.mixerChange = true;
     },
     propogateFirst() {
@@ -333,11 +340,35 @@ const gameData = {
 
 function cheat() {
     gameData.colorLibrary.forEach(c=>c.found=true);
+    gameData.colorLibrary[1].found = false;
+    gameData.easel = ["000080"];
     UITrigger.libraryChange = true;
     UITrigger.pointsRefresh = true;
+    UITrigger.easleChange = true;
 }
 
 function setCharAt(str,index,chr) {
     if(index > str.length-1) return str;
     return str.substring(0,index) + chr + str.substring(index+1);
+}
+
+function timeSince(startTime,endTime) {
+    endTime = endTime || Date.now()
+    let s = "";
+    let diff = Math.round((endTime-startTime)/1000);
+    const d = Math.floor(diff/(24*60*60))
+    diff = diff-d*24*60*60
+    if (d === 1) s += d + " day, ";
+    else s += d + " days, ";
+    const h = Math.floor(diff/(60*60));
+    diff = diff-h*60*60;
+    if (h === 1) s += h + " hour, ";
+    else s += h + " hours, ";
+    const m = Math.floor(diff/60);
+    diff = diff-m*60;
+    if (m === 1) s += m + " minute, ";
+    else s += m + " minutes, ";
+    if (diff === 1) s += diff + " second, ";
+    else s += diff + " seconds, ";
+    return s.slice(0, -2);
 }
