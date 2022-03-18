@@ -98,7 +98,7 @@ class Mixer {
             let result = "";
             let mutateChance = 0.05;
             if (this.properties.includes("No Mutate Chance")) mutateChance = 0;
-            if (this.properties.includes("High Mutate")) mutateChance = 0.2;
+            if (this.properties.includes("High Mutate Chance")) mutateChance = 0.1;
             for (let i=0;i<6;i++) {
                 if (this.properties.includes(`Force Top Digit ${i+1}`)) {
                     result += this.color1[i];
