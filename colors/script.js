@@ -179,10 +179,23 @@ class Mixer {
         }
     }
     addColorCount() {
-        if (gameData.ptsRemaining() < 1) return;
+        if (gameData.ptsRemaining() < this.colorCost()) return;
         this.colorCount++;
         this.colorCount = Math.min(this.colorCount,this.colorCountMax);
         UITrigger.mixerProperty = this.count;
+        UITrigger.pointsRefresh = true;
+    }
+    ptSpent() {
+        let res = 0;
+        if (this.colorCount >= 1) res += 1;
+        if (this.colorCount >= 2) res += 2; //2+1
+        if (this.colorCount >= 3) res += 3; //3+2+1;
+        if (this.autoEasel) res += 1;
+        res += this.maxProperties;
+        return res;
+    }
+    colorCost() {
+        return this.colorCount + 1;
     }
 }
 
@@ -190,9 +203,9 @@ const gameData = {
     history : [],
     historyMax : 50,
     easel : [],
-    easelMax : 5,
+    easelMax : 3,
     mixers : [],
-    mixersMax : 3,
+    mixersMax : 5,
     colorLibrary : [],
     paused : false,
     lastTime : Date.now(),
@@ -224,7 +237,7 @@ const gameData = {
             if (ch) ch.loadSave(chSave);
         });
         this.easel = save.easel;
-        if (save.easelMax) this.easelMax = save.easelMax;
+        if (save.easelMax) this.easelMax = Math.floor(save.easelMax/3)*3;
         if (save.boughtProperties) this.boughtProperties = save.boughtProperties.filter(p=>mixerProperties.includes(p));
         if (save.startTime) this.startTime = save.startTime;
         if (save.mixedColors) this.mixedColors = save.mixedColors;
@@ -239,7 +252,7 @@ const gameData = {
         //WIN THE GAME!
         if (!this.gameEnd && this.colorLibrary.filter(a=>a.found).length === this.colorLibrary.length) {
             this.gameEnd = Date.now();
-            UITrigger.gameEnd;
+            UITrigger.gameEnd = true;
         }
     },
     mixedColor(color) {
@@ -277,7 +290,7 @@ const gameData = {
         this.easel = this.easel.filter(c=>c !== color);
     },
     ptsSpent() {
-        return this.mixers.length+this.boughtProperties.length*6+this.mixers.map(m=>m.maxProperties).reduce((a,b)=>a+b)+Math.floor(this.easelMax/5)+this.mixers.filter(m=>m.autoEasel).length;
+        return this.boughtProperties.length*6+Math.floor(this.easelMax/3)+this.mixers.map(m=>m.ptSpent()).reduce((a,b)=>a+b);
     },
     ptsRemaining() {
         return this.colorLibrary.filter(c=>c.found).length - this.ptsSpent();
@@ -313,8 +326,8 @@ const gameData = {
     },
     buyEasel() {
         if (this.ptsRemaining() <= 0) return;
-        if (this.easelMax >= 25) return;
-        this.easelMax += 5;
+        if (this.easelMax >= 30) return;
+        this.easelMax += 3;
         UITrigger.easleChange = true;
         UITrigger.pointsRefresh = true;
     },

@@ -92,8 +92,8 @@ function updateEasles() {
     for (let i=0;i<gameData.easelMax-gameData.easel.length;i++) {
         $("<div/>").addClass("easelBoxEmpty").html("Empty").appendTo($easel);
     }
-    if (gameData.easelMax < 25) {
-        $("<div/>").addClass("easelBoxBuy").html(`Purchase 5 Easels<br>(1 ${pt})`).appendTo($easel);
+    if (gameData.easelMax < 30) {
+        $("<div/>").addClass("easelBoxBuy").html(`Purchase 3 Easels<br>(1 ${pt})`).appendTo($easel);
     }
 }
 
@@ -330,7 +330,7 @@ function viewProperties(mixerID) {
     const mixer = gameData.mixers.find(m=>m.count === mixerID);
     $propertiesBox.empty().show();
     $autoEasel.hide();
-    $("<div/>").addClass("mixerColorCount").data("mixer",mixer.count).html(`${mixer.colorCount} Color${mixer.colorCount > 1 ? "s" : ""} Per Fill${mixer.colorCount < mixer.colorCountMax ? ` (1 ${pt})` : ""}`).appendTo($propertiesBox);
+    $("<div/>").addClass("mixerColorCount").data("mixer",mixer.count).html(`${mixer.colorCount} Color${mixer.colorCount > 1 ? "s" : ""} Per Fill${mixer.colorCount < mixer.colorCountMax ? ` (${mixer.colorCost()} ${pt})` : ""}`).appendTo($propertiesBox);
     $("<div/>").addClass("propertiesBoxClose").html(`<i class="fa-solid fa-xmark"></i>`).appendTo($propertiesBox);
     $("<div/>").addClass("mixerPropertyHeading").html("Mixer Properties").appendTo($propertiesBox);
     //property slots
