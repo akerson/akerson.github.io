@@ -344,7 +344,7 @@ function viewProperties(mixerID) {
     if (mixer.maxProperties < 4) $("<div/>").addClass("buyPropertySlot").data("mixer",mixer.count).html(`Buy A Property Slot (1 ${pt})`).appendTo(d);
     //available properties
     const e = $("<div/>").addClass("propertyPurchase").appendTo($propertiesBox);
-    $("<div/>").addClass("propertyHeading").html("Properties available:").appendTo(e);
+    $("<div/>").addClass("propertyHeading").html("Properties available").appendTo(e);
     mixerProperties.forEach(property => {
         if (gameData.boughtProperties.includes(property)) {
             $("<div/>").addClass("propertyBought propertyPadding").data({"mixer":mixer.count,"property":property}).html(property).appendTo(e);
@@ -393,7 +393,7 @@ $(document).on("click",".autoEaselEnable",e => {
 // Make the DIV element draggable:
 dragElement(document.getElementById("propertiesBox"));
 dragElement(document.getElementById("autoEasel"));
-dragElement(document.getElementById("helpBox"));
+// dragElement(document.getElementById("helpBox"));
 
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;

@@ -112,7 +112,6 @@ body {
 .mixer-actions-container {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
     gap: 0.5rem;
     margin: -0.5rem 0 0.5rem;
 }
@@ -170,7 +169,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-basis: 150px;
+    min-width: 150px;
     height: 100%;
     text-align: center;
     background-color: rgba(0,0,0,0.05);
@@ -217,7 +216,7 @@ body {
     margin-top: 0.5rem;
 }
 
-.easle, .helpButtons {
+.easle {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -225,27 +224,7 @@ body {
     gap: 0.5rem;
 }
 
-@media screen and (max-width: 600px) {
-    .mixers {
-        flex-wrap: nowrap;
-        margin: 0 -1rem;
-        padding: 1rem;
-        overflow-x: scroll;
-    }
-
-    .easle {
-        flex-wrap: nowrap;
-        margin: 0 -1rem;
-        padding: 1rem;
-        overflow-x: scroll;
-    }
-
-    .easelBox, .easelBoxEmpty, .easelBoxBuy {
-        min-width: 150px;
-    }
-}
-
-.easelBox, .easelBoxEmpty, .helpButton {
+.easelBox, .easelBoxEmpty {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -283,7 +262,7 @@ body {
     border-color: rgba(0, 77, 29, 0.5);
 }
 
-.easelBoxClose {
+.easelBoxClose, .propertiesBoxClose {
     position: absolute;
     top: -10px;
     right: -5px;
@@ -354,20 +333,6 @@ body {
     padding: 5px;
 }
 
-.propertyBuyText {
-    font-style: italic;
-}
-
-.propertiesBox {
-    display: none;
-    position: absolute;
-    background-color: #FFFFFF;
-    color: black;
-    border: 0.5px solid black;
-    width: 300px;
-    z-index: 99;
-}
-
 .autoEasel {
     display: none;
     position: absolute;
@@ -377,52 +342,8 @@ body {
     z-index: 99;
 }
 
-.helpBox {
-    display: none;
-    position: absolute;
-    background-color: #FFFFFF;
-    color: black;
-    border: 0.5px solid black;
-    width: 600px;
-    z-index: 99;
-}
-
 .highlight {
     background-color: yellow;
-}
-
-.mixerPropertyHeading {
-    text-align: center;
-    font-weight:bold;
-}
-
-.propertiesBoxClose, .autoEaselClose, .helpClose {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-}
-
-.youWin {
-    display:none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -200px;
-    padding-top: 30px;
-    background: rgba(255,255,255,1);
-    width: 400px;
-    height: 200px;
-    border: 0.5px solid black;
-    text-align: center;
-    z-index: 1;
 }
 
 .autoEaselEnable {
@@ -438,44 +359,115 @@ body {
     cursor: pointer;
 }
 
-.propertyPurchase {
-    background-color: lightgray;
-}
-
-.propertyHeading {
-    text-align: center;
-    font-weight:bold;
-}
-
-.propertyPadding {
-    padding-left: 5px;
-}
-
-.propertySlot, .buyPropertySlot {
-    text-align: center;
-}
-
 .propertyBuyText {
-    background-color: lightgray;
+    margin-top: 10px;
+    font-style: italic;
     text-align: center;
 }
 
-.propertySlot, .propertyPadding {
+.propertiesBox {
+    display: none;
+    position: absolute;
+    background-color: #FFFFFF;
+    color: black;
+    padding: 1rem;
+    border: 2px solid rgba(0,0,0,0.5);
+    border-radius: 10px;
+    width: 300px;
+    z-index: 99;
+}
+
+.mixerPropertyHeading, .propertyHeading {
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: rgba(55, 128, 255, 0.25);
+    border-left: 2px solid #3781ff;
+    border-right: 2px solid #3781ff;
+}
+
+.propertySlot {
+    background-color: rgba(0,0,0,0.05);
     cursor: pointer;
 }
 
-.mixerColorCount {
+.mixerColorCount, .buyPropertySlot, .propertySlot, .propertyPadding {
+    padding: 0.25rem;
+    font-weight: bold;
     text-align: center;
+    border-radius: 5px;
+    border: 2px solid transparent;
     cursor: pointer;
+}
+
+.mixerColorCount:hover, .buyPropertySlot:hover, .propertyNotBought:hover {
+    color: #008b51;
+    background-color: rgba(0, 255, 98, 0.1);
+    border-color: rgba(0, 77, 29, 0.5);
+}
+
+.youWin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
 }
 
 .rainbowBG {
-    display:none;
-    background-color: #FF0000;
-    animation: bgColor 5s infinite linear;
-    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;
+    display: none;
+    background: linear-gradient(0deg, #ff0000 0%, #0000ff 50%, #00ff00 100%);
+    animation: rotate 10s infinite ease-in-out;
+    width: 100vw;
     height: 100vh;
 }
+
+.winContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 1rem;
+    color: #fff;
+    background-color: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.25);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.winContainer h1 {
+    margin: 1rem 0;
+}
+
+.winContainer span {
+    margin: 1rem 0;
+}
+
+.winContainer #clearSave {
+    margin-top: 1rem;
+}
+
+@keyframes rotate {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
 @keyframes bgColor {
     12.5% {
       background-color: #FF0000;
@@ -503,8 +495,107 @@ body {
     }
 }
 
+.helpBox {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.helpBoxContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    padding: 1rem;
+    background-color: #fff;
+    border-right: 2px solid black;
+    overflow: auto;
+}
+
+.helpBox h2 {
+    margin-bottom: 0.5rem;
+}
+
+.helpBox h3 {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(90deg, rgba(55, 128, 255, 0.25), rgba(56,129,255,0) 50%);
+    border-left: 2px solid #3781ff;
+}
+
+.helpBox b i {
+    display: block;
+    margin: 0.25rem 0;
+}
+
+.subText {
+    padding: 0.5rem 0;
+}
+
+.helpButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding: 0.5rem 0 2rem;
+    border-top: 2px solid rgba(0,0,0,0.1);
+}
 
 .helpOpen {
+    margin-left: 5px;
     cursor: pointer;
 }
-  
+
+.helpClose {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 5px;
+    right: 5px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    color: #fff;
+    background-color: #8a0000;
+    border: 2px solid #6e0000;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+    .mixers {
+        flex-wrap: nowrap;
+        margin: 0 -1rem;
+        padding: 1rem;
+        overflow-x: scroll;
+    }
+
+    .easle {
+        flex-wrap: nowrap;
+        margin: 0 -1rem;
+        padding: 1rem;
+        overflow-x: scroll;
+    }
+
+    .easelBox, .easelBoxEmpty, .easelBoxBuy {
+        min-width: 150px;
+    }
+
+    .mixtory-container {
+        flex-basis: 100%;
+        flex-grow: 1;
+        width: 100%;
+    }
+
+    .history {
+        grid-template-columns: 1fr;
+    }
+}
