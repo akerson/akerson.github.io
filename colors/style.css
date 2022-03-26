@@ -262,7 +262,7 @@ body {
     border-color: rgba(0, 77, 29, 0.5);
 }
 
-.easelBoxClose, .propertiesBoxClose {
+.easelBoxClose, .propertiesBoxClose, .autoEaselClose {
     position: absolute;
     top: -10px;
     right: -5px;
@@ -320,39 +320,56 @@ body {
     overflow: hidden;
 }
 
-.characterFilters {
-    display:grid;
-    grid-template-columns: repeat(6,20px);
-    grid-gap: 10px;
-    margin: 10px;
-    transform-origin: left top;
-}
-
-.autoEaselFilterCharacter {
-    text-align: center;
-    padding: 5px;
-}
-
 .autoEasel {
     display: none;
     position: absolute;
     background-color: #FFFFFF;
     color: black;
-    border: 0.5px solid black;
+    padding: 1rem;
+    border: 2px solid rgba(0,0,0,0.5);
+    border-radius: 10px;
     z-index: 99;
 }
 
+.characterFilters {
+    display:grid;
+    grid-template-columns: repeat(6, 30px);
+    grid-gap: 10px;
+    margin-top: 5px;
+}
+
+.autoEaselFilterCharacter {
+    padding: 5px;
+    text-align: center;
+    border: 2px solid transparent;
+    border-radius: 5px;
+}
+
+.autoEaselFilterCharacter:not(.highlight):hover {
+    color: #003ea1;
+    background-color: #cde0ff;
+    border-color: #a7c7ff;
+}
+
 .highlight {
-    background-color: yellow;
+    color: #5a4603;
+    background-color: #fff3cd;
+    border-color: #9e8e32;
 }
 
 .autoEaselEnable {
+    padding: 0.5rem;
+    font-weight: bold;
     text-align: center;
+    border: 2px solid transparent;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-.autoEasel {
-    background-color: #EEEEEE;
+.autoEaselEnable:hover {
+    color: #003ea1;
+    background-color: #cde0ff;
+    border-color: #a7c7ff;
 }
 
 .autoEaselFilterCharacter {
@@ -408,7 +425,7 @@ body {
 }
 
 .youWin {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -455,7 +472,7 @@ body {
     margin: 1rem 0;
 }
 
-.winContainer #clearSave {
+#clearSaveYouWin {
     margin-top: 1rem;
 }
 

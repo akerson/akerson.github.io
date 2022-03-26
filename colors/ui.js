@@ -58,7 +58,7 @@ function updateMixerBars() {
     if (UITrigger.gameEnd) {
         UITrigger.gameEnd = false;
         if (!gameData.gameEnd) return;
-        $(".youWin").show();
+        $(".youWin").css({display: "flex"});
         $(".rainbowBG").show();
         $("#colorsMixed").html(gameData.mixedColors);
         $("#timeSpent").html(timeSince(gameData.startTime,gameData.gameEnd));
@@ -461,7 +461,6 @@ $(document).on("click",".helpOpen",e=>{
     $("#clearSave").html("Clear Save");
     $("#helpBox").show();
 })
-
 
 $(document).on("click","#helpClose",e=> {
     e.preventDefault();

@@ -75,3 +75,12 @@ $("#clearSave").on('click',e=>{
     e.preventDefault();
     clearSave();
 })
+
+$("#clearSaveYouWin").on('click',e=>{
+    if ($("#clearSaveYouWin").html() === "Clear Save") {
+        $("#clearSaveYouWin").html("Are you sure?");
+        return;
+    }
+    e.preventDefault();
+    clearSave();
+})
