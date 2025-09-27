@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HvH Wheel Chance</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <style>
+        .stats {
+            border-color: #dcdcdc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .stats h3 {
+            margin-top: 0;
+            color: #dcdcdc;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffb300;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 HvH Wheel Chance</h1>
+        
+        <div class="config-section">
+            <h3 style="color: #3498db; margin-bottom: 15px;">📊 Simulation Mode</h3>
+            <div class="mode-selector" style="margin-bottom: 20px;">
+                <label style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <input type="radio" name="simulationMode" value="earnings" checked 
+                           onchange="toggleSimulationMode()" style="margin-right: 10px;">
+                    <strong>Earnings Analysis</strong> - Spend tickets and analyze total tokens
+                </label>
+                <!--<label style="display: flex; align-items: center;">
+                    <input type="radio" name="simulationMode" value="goal" 
+                           onchange="toggleSimulationMode()" style="margin-right: 10px;">
+                    <strong>Goal Achievement</strong> - Find how many tickets needed to reach target tokens
+                </label>
+                <p> </p>
+                <div class="input-group">
+                    <label for="targetTokens">Target 🎁 Tokens:</label>
+                    <input type="number" id="targetTokens" value="0" min="0" max="100000">
+                    <span style="color: #7f8c8d;">Number of 🎁 Tokens you'd like to achieve</span>
+                </div>-->
+                <div class="input-group">
+                    <input type="number" id="numSimulations" value="5000" min="1" max="1000000">
+                    <span style="color: #7f8c8d;">Simulation runs for statistical accuracy</span>
+                </div>
+            </div>
+            
+            <div id="earningsMode" class="mode-config">
+                <h3 style="color: #3498db; margin-bottom: 15px;">📊 Simulation Parameters</h3>
+                <div class="input-group">
+                    <input type="number" id="numTickets" value="0" min="0" max="100000" style="text-align: right; width: 100px;">
+                    <span style="color: #7f8c8d;">Total 🎟️Tickets you spent to date</span>
+                </div>
+
+                <div class="input-group">
+                    <input type="number" id="ticketsToRun" value="1" min="0" max="100" style="text-align: right; width: 100px;">
+                    <span style="color: #7f8c8d;">🎟️Tickets you spend</span>
+                </div>
+            
+                <div class="input-group">
+                    <input type="number" id="currentTokens" value="200" min="1" max="1000" style="text-align: right; width: 100px;">
+                    <span style="color: #7f8c8d;">💰Tokens you currently have</span>
+                </div>
+
+                <!--<div class="input-group">
+                    <input type="number" id="gemCost" value="200" min="1" max="1000" style="text-align: right; width: 100px;">
+                    <span style="color: #7f8c8d;">Total 💎Gem cost per 🎟️Ticket</span>
+                </div>-->
+
+            </div>
+            
+            <div id="goalMode" class="mode-config" style="display: none;">
+                <h3 style="color: #e67e22; margin-bottom: 15px;">🎯 Goal Achievement Parameters</h3>
+                <div class="input-group">
+                    <input type="number" id="targetValue" value="5000" min="1" step="0.01">
+                    <span style="color: #7f8c8d;">Total value you want to reach</span>
+                </div>
+                
+                <div class="input-group">
+                    <input type="number" id="maxTickets" value="10000" min="1" max="1000000">
+                    <span style="color: #7f8c8d;">Stop simulation if this many tickets used</span>
+                </div>
+                
+                <div class="input-group">
+                    <input type="number" id="goalSimulations" value="1000" min="1" max="10000">
+                    <span style="color: #7f8c8d;">Simulation runs for statistical accuracy</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="config-section">
+            <h2>Reward Configuration</h2>
+            <div id="rewardsContainer">
+                <!-- Rewards will be added here dynamically -->
+            </div>
+            <div id="remaining" class="probability-check">
+                <input type="number" value="0" disabled style="text-align: right; width: 120px;"> <span>💰Tokens</span>
+                <input type="number" value="100" disabled style="text-align: right; width: 90px;" id="probablityNull"> <span>%</span>
+            </div>
+            <div style="font-style: italic;">Average <span id="oddsNumber">0</span> 💰Tokens per Spin</div>
+            <button class="add-btn" onclick="addRewardRow()">+ Add New 🎟️Ticket Chance</button>
+        </div>
+
+        <div class="config-section">
+            <h2>Pity Rewards</h2>
+            <div id="pityContainer">
+                <!-- Pity Rewards will be added here dynamically -->
+            </div>
+            <button class="add-btn" onclick="addPityRow()">+ Add New Pity Reward</button>
+        </div>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="run-simulation" onclick="runSimulation()" id="runButton">
+                🚀 Run Earnings Analysis
+            </button>
+            <button onclick="defaultWheels()" id="runButton">
+                🚫 Reset Defaults
+            </button>
+        </div>
+        
+        <div class="loading" id="loading" style="display: none;">
+            <p>Running simulation... Please wait...</p>
+        </div>
+        
+        <div id="results" class="results" style="display: none;">
+            <h2>Simulation Results</h2>
+            <div id="statisticsGrid" class="stats-grid"></div>
+            
+            <!-- Charts Section -->
+            <div class="charts-section" style="margin-top: 30px;">
+                <h3>📈 Visual Analysis</h3>
+                <div class="chart-container">
+                    <canvas id="histogramChart"></canvas>
+                </div>
+                
+                <div class="stats">
+                    <h3>Data Statistics</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="count">-</div>
+                            <div class="stat-label">Count</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="mean">-</div>
+                            <div class="stat-label">Mean</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="median">-</div>
+                            <div class="stat-label">Median</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="min">-</div>
+                            <div class="stat-label">Min</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="max">-</div>
+                            <div class="stat-label">Max</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stdDev">-</div>
+                            <div class="stat-label">Std Dev</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="rewardResults"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="javascript.js"></script>
+</body>
+</html>
