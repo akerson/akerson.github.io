@@ -90,8 +90,9 @@ function defaultWheels() {
     addRewardRow(400,3);
     addRewardRow(1000,1);
     addRewardRow(1000,1);
-    document.getElementById('numTickets').value = 5000;
-    document.getElementById('ticketsToRun').value = 1;
+    document.getElementById('numSimulations').value = 5000;
+    document.getElementById('numTickets').value = 0;
+    document.getElementById('ticketsToRun').value = 56;
     document.getElementById('currentTokens').value = 0;
 }
 
