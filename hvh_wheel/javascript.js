@@ -219,7 +219,7 @@ async function runGoalsSimulation() {
             else {
                 totalValue += result;
             }
-            if (remainingPity.length > 0 && remainingPity[0][1] <= numRuns) {
+            if (remainingPity.length > 0 && remainingPity[0][1] <= numRuns+numTickets) {
                 const pitypoints = remainingPity.shift();
                 totalValue += pitypoints[0];
             }
@@ -227,7 +227,7 @@ async function runGoalsSimulation() {
                 break; //this is to prevent a crash out
             }
         }
-        console.log(`Simulation Finished: ${totalValue}, Total Runs: ${numRuns}`);
+
         //we know runs needed so just report it out
         simulationRunsNeeded.push(numRuns)
         //calculate how many runs we were allowed based off gems and free runs to see if we actually passed
@@ -541,8 +541,11 @@ function loadMiscValues(miscValues) {
     document.getElementById('numTickets').value = miscValues[0];
     document.getElementById('ticketsToRun').value = miscValues[1];
     document.getElementById('currentTokens').value = miscValues[2];
-    if (miscValues.legnth <= 3) return;
+    if (miscValues.length <= 3) return;
     document.querySelector('input[name="simulationMode"][value="earnings"]').checked = miscValues[3];
+    document.querySelector('input[name="simulationMode"][value="goals"]').checked = !miscValues[3];
+    if (miscValues[3]) toggleType = "earnings";
+    else toggleType = "goals";
     document.getElementById('numSimulations').value = miscValues[4];
     document.getElementById('currentGems').value = miscValues[5];
     document.getElementById('gemsPerTicket').value = miscValues[6];
