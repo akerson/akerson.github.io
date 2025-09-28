@@ -184,7 +184,7 @@ async function runGoalsSimulation() {
     });
 
     //nothing useful
-    if (ticketsToRun <= 0 || numSimulations <= 0) {
+    if (numSimulations <= 0) {
         alert('Number of tickets and simulations must be positive.');
         return;
     }
