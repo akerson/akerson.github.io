@@ -1,6 +1,7 @@
 // Global variables to store simulation data
 let rewardIdCounter = 0;
 let pityIdCounter = 0;
+let toggleType = "earnings";
 let charts = {}; // Store chart instances for cleanup
 
 function addRewardRow(tokens=10,probability=10) {
@@ -37,6 +38,11 @@ function updateSummary() {
         const probability = parseFloat(probabilityInput.value) || 0;
         totalProbability += probability;
     });
+    if (toggleType === "goals") {
+        const freeReward = parseFloat(document.getElementById('freeGoal').value);
+        document.getElementById('freeReward').value = freeReward;
+        totalProbability +=  freeReward
+    }
     totalProbability = 100-totalProbability;
     document.getElementById("probablityNull").value = totalProbability;
     document.getElementById("oddsNumber").innerHTML = averageSpin();
@@ -66,13 +72,14 @@ function removePityRow(rowId) {
 }
 
 async function runSimulation() {
-    await runEarningsSimulation();
+    if (toggleType === "earnings") await runEarningsSimulation();
+    else await runGoalsSimulation();
 }
 
 class rewardChance {
     constructor(reward, probability) {
         this.reward = reward;
-        this.probability = probability*10;
+        this.probability = Math.floor(probability*10);
     }
 }
 
@@ -94,12 +101,21 @@ function defaultWheels() {
     document.getElementById('numTickets').value = 0;
     document.getElementById('ticketsToRun').value = 56;
     document.getElementById('currentTokens').value = 0;
+    document.getElementById('currentGems').value = 0;
+    document.getElementById('gemsPerTicket').value = 200;
+    document.getElementById('goalCost').value = 12500;
+    document.getElementById('freeGoal').value = 0.1;
 }
 
 function getRewards(flat) {
     const rewards = [];
     let probabilityLeft = 100;
     const rewardRows = document.querySelectorAll('.reward-row');
+    if (toggleType === "goals") {
+        const probability2 = parseFloat(document.getElementById('freeGoal').value);
+        probabilityLeft -= probability2;
+        rewards.push(new rewardChance("FREE",probability2));
+    }
     rewardRows.forEach((row, index) => {
         const reward = parseInt(row.querySelector('input[type="number"]:first-of-type').value);
         const probability = parseFloat(row.querySelector('input[type="number"]:last-of-type').value);
@@ -110,7 +126,8 @@ function getRewards(flat) {
     if (flat) {
         const formatted = [];
         rewards.forEach(row => {
-            if (row.reward > 0) formatted.push([row.reward,row.probability]);
+            if (row.reward === "FREE" || row.reward === 0) return;
+            formatted.push([row.reward,row.probability]);
         })
         return formatted;
     }
@@ -140,6 +157,94 @@ function getPity() {
         });
     });
     return pityList;
+}
+
+async function runGoalsSimulation() {
+    const numTickets = parseInt(document.getElementById('numTickets').value);
+    const ticketsToRun = parseInt(document.getElementById('ticketsToRun').value);
+    const currentTokens = parseInt(document.getElementById('currentTokens').value);
+    const numSimulations = parseInt(document.getElementById('numSimulations').value);
+    const currentGems = parseInt(document.getElementById('currentGems').value);
+    const gemsPerTicket = parseInt(document.getElementById('gemsPerTicket').value);
+    const goalCost = parseInt(document.getElementById('goalCost').value);
+    const rewards = getRewards();
+
+    //no rewards
+    if (rewards.length === 1) {
+        alert('Please add at least one reward type.');
+        return;
+    }
+    
+    //wrong probabilities
+    rewards.forEach(reward => {
+        if (reward.probability < 0) {
+            alert('Probabilities must sum to 1.0 before running simulation.');
+            return;
+        }
+    });
+
+    //nothing useful
+    if (ticketsToRun <= 0 || numSimulations <= 0) {
+        alert('Number of tickets and simulations must be positive.');
+        return;
+    }
+
+    // Show loading
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('results').style.display = 'none';
+    
+    // Allow UI to update
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Run simulations
+    const simulationRunsNeeded = [];
+    const simulationResultsPassFail = [];
+    const simulationGemsRequired = [];
+
+    for (let sim = 0; sim < numSimulations; sim++) {
+        let totalValue = currentTokens;
+        let reachedGoal = false;
+        let numRuns = 0;
+
+        //find remaining prizes
+        const remainingPity = getPity().filter((pityPrize) => pityPrize[1] > numTickets);
+
+        while(!reachedGoal && totalValue < goalCost) {
+            numRuns++;
+            //we run until we reach, we report the number of runs it took, and if we made it or not. Additionally, we capture gems required to meet it
+            const result = simulateTicket(rewards);
+            if (result === "FREE") {
+                reachedGoal = true;
+            }
+            else {
+                totalValue += result;
+            }
+            if (remainingPity.length > 0 && remainingPity[0][1] <= numRuns) {
+                const pitypoints = remainingPity.shift();
+                totalValue += pitypoints[0];
+            }
+            if (numRuns >= 10000) {
+                break; //this is to prevent a crash out
+            }
+        }
+        console.log(`Simulation Finished: ${totalValue}, Total Runs: ${numRuns}`);
+        //we know runs needed so just report it out
+        simulationRunsNeeded.push(numRuns)
+        //calculate how many runs we were allowed based off gems and free runs to see if we actually passed
+        const runsAllowed = ticketsToRun + Math.floor(currentGems/gemsPerTicket);
+        simulationResultsPassFail.push(runsAllowed >= numRuns);
+        //gems required is similar calculation, take the actual runs and figure out how many were out of pocket
+        const gemsRequired = Math.max(0,(numRuns-ticketsToRun)*gemsPerTicket);
+        simulationGemsRequired.push(gemsRequired);
+    }
+
+    // Display results
+    updateChart(simulationRunsNeeded,simulationResultsPassFail,simulationGemsRequired);
+    
+    // Hide loading
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+
 }
 
 async function runEarningsSimulation() {
@@ -214,23 +319,20 @@ async function runEarningsSimulation() {
     document.getElementById('results').style.display = 'block';
 }
 
-
 // Run a single ticket simulation - returns result with value
 function simulateTicket(rewards) {
-    const random = Math.floor(Math.random()*1000)
+    const random = Math.floor(Math.random()*1000)+1;
     let cumulativeProbability = 0;
     
     for (const reward of rewards) {
-        cumulativeProbability += reward.probability;
-        if (random <= cumulativeProbability) {
+        if (random <= cumulativeProbability+reward.probability) {
             return reward.reward;
         }
+        cumulativeProbability += reward.probability;
     }
-
     // Fallback (shouldn't happen if probabilities sum to 1)
     return 0;
 }
-
 
 //CHART STUFF!
 
@@ -269,9 +371,9 @@ function calculateStats(data) {
     if (data.length === 0) return {};
     
     const sorted = [...data].sort((a, b) => a - b);
-    const count = data.length;
-    const sum = data.reduce((a, b) => a + b, 0);
-    const mean = sum / count;
+    const count = (data.length);
+    const sum = (data.reduce((a, b) => a + b, 0));
+    const mean = (sum / count);
     const median = count % 2 === 0 
         ? (sorted[count/2 - 1] + sorted[count/2]) / 2 
         : sorted[Math.floor(count/2)];
@@ -280,20 +382,51 @@ function calculateStats(data) {
     const variance = data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / count;
     const stdDev = Math.sqrt(variance);
     
-    return { count, mean, median, min, max, stdDev };
+    return {count, mean, median, min, max, stdDev};
 }
 
-function updateStats(data) {
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function updateStatsEarned(data) {
+    document.getElementById('statsEarned').style.display = 'block';
+    document.getElementById('statsGoals').style.display = 'none';
     const stats = calculateStats(data);
-    document.getElementById('count').textContent = stats.count || '-';
-    document.getElementById('mean').textContent = stats.mean ? stats.mean.toFixed(2) : '-';
-    document.getElementById('median').textContent = stats.median ? stats.median.toFixed(2) : '-';
-    document.getElementById('min').textContent = stats.min !== undefined ? stats.min.toFixed(2) : '-';
-    document.getElementById('max').textContent = stats.max !== undefined ? stats.max.toFixed(2) : '-';
-    document.getElementById('stdDev').textContent = stats.stdDev ? stats.stdDev.toFixed(2) : '-';
+    document.getElementById('mean').textContent = numberWithCommas(stats.mean.toFixed(2));
+    document.getElementById('median').textContent = numberWithCommas(stats.median);
+    document.getElementById('min').textContent = numberWithCommas(stats.min);
+    document.getElementById('max').textContent = numberWithCommas(stats.max);
+    document.getElementById('stdDev').textContent = numberWithCommas(stats.stdDev.toFixed(2));
 }
 
-function updateChart(data) {
+function updateStatsGoals(runs,passfail,gemsreq) {
+    document.getElementById('statsEarned').style.display = 'none';
+    document.getElementById('statsGoals').style.display = 'block';
+    //runs
+    const stats1 = calculateStats(runs);
+    document.getElementById('meanR').textContent = numberWithCommas(stats1.mean.toFixed(2));
+    document.getElementById('medianR').textContent = numberWithCommas(stats1.median);
+    document.getElementById('minR').textContent = numberWithCommas(stats1.min);
+    document.getElementById('maxR').textContent = numberWithCommas(stats1.max);
+    document.getElementById('stdDevR').textContent = numberWithCommas(stats1.stdDev.toFixed(2));
+    //pass or fail
+    const passes = passfail.filter(value => value === true).length;
+    const fails = passfail.filter(value => value === false).length;
+    const passPercent = passes/fails;
+    document.getElementById('pass').textContent = numberWithCommas(passes);
+    document.getElementById('fail').textContent = numberWithCommas(fails);
+    document.getElementById('passPercent').textContent = (passPercent*100).toFixed(2)+"%";
+    //gems required
+    const stats2 = calculateStats(gemsreq);
+    document.getElementById('meanG').textContent = numberWithCommas(stats2.mean.toFixed(2));
+    document.getElementById('medianG').textContent = numberWithCommas(stats2.median);
+    document.getElementById('minG').textContent = numberWithCommas(stats2.min);
+    document.getElementById('maxG').textContent = numberWithCommas(stats2.max);
+    document.getElementById('stdDevG').textContent = numberWithCommas(stats2.stdDev.toFixed(2));
+}
+
+function updateChart(data,passfail,gemsreq) {
     const numBins = Math.floor(Math.log2(data.length))+1;
     const chartType = "bar";
     const color = "#ffb300";
@@ -304,7 +437,8 @@ function updateChart(data) {
     }
 
     const { bins, counts } = createBins(data, numBins);
-    updateStats(data);
+    if (toggleType === "earnings") updateStatsEarned(data);
+    if (toggleType === "goals") updateStatsGoals(data,passfail,gemsreq);
 
     const ctx = document.getElementById('histogramChart').getContext('2d');
     
@@ -359,6 +493,23 @@ function updateChart(data) {
     });
 }
 
+function toggleSimulationMode() {
+    const earningsMode = document.querySelector('input[name="simulationMode"][value="earnings"]').checked;
+    const displayType = earningsMode ? 'None' : 'Block';
+    const extraParams = document.getElementsByClassName('goal-focus');
+    for (let i = 0; i < extraParams.length; i++) {
+        extraParams[i].style.display = displayType;
+    }
+    document.getElementById('freeHero').style.display = displayType;
+    if (earningsMode) {
+        toggleType = "earnings";
+    }
+    else {
+        toggleType = "goals";
+    }
+    updateSummary();
+}
+
 // Auto-save current state periodically
 function enableAutoSave() {
     setInterval(() => {
@@ -377,6 +528,12 @@ function saveMiscValue() {
     miscValues.push(document.getElementById('numTickets').value);
     miscValues.push(document.getElementById('ticketsToRun').value);
     miscValues.push(document.getElementById('currentTokens').value);
+    miscValues.push(document.querySelector('input[name="simulationMode"][value="earnings"]').checked);
+    miscValues.push(document.getElementById('numSimulations').value);
+    miscValues.push(document.getElementById('currentGems').value);
+    miscValues.push(document.getElementById('gemsPerTicket').value);
+    miscValues.push(document.getElementById('goalCost').value);
+    miscValues.push(document.getElementById('freeGoal').value);
     return miscValues;
 }
 
@@ -384,6 +541,13 @@ function loadMiscValues(miscValues) {
     document.getElementById('numTickets').value = miscValues[0];
     document.getElementById('ticketsToRun').value = miscValues[1];
     document.getElementById('currentTokens').value = miscValues[2];
+    if (miscValues.legnth <= 3) return;
+    document.querySelector('input[name="simulationMode"][value="earnings"]').checked = miscValues[3];
+    document.getElementById('numSimulations').value = miscValues[4];
+    document.getElementById('currentGems').value = miscValues[5];
+    document.getElementById('gemsPerTicket').value = miscValues[6];
+    document.getElementById('goalCost').value = miscValues[7];
+    document.getElementById('freeGoal').value = miscValues[8];
 }
 
 function saveConfig() {
@@ -412,5 +576,6 @@ function loadConfig() {
 }
 
 //autorun
+toggleSimulationMode();
 enableAutoSave();
 loadConfig();

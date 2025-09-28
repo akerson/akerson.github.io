@@ -46,12 +46,17 @@
         <h1>🎲 HvH Wheel Chance</h1>
         
         <div class="config-section">
-            <h3 style="color: #3498db; margin-bottom: 15px;">📊 Simulation Mode</h3>
+            <h3 style="color: #3498db; margin-bottom: 15px;">📊 Simulation Type</h3>
             <div class="mode-selector" style="margin-bottom: 20px;">
                 <label style="display: flex; align-items: center; margin-bottom: 10px;">
                     <input type="radio" name="simulationMode" value="earnings" checked 
                            onchange="toggleSimulationMode()" style="margin-right: 10px;">
-                    <strong>Earnings Analysis</strong> - Spend tickets and analyze total tokens
+                    <strong>Ticket Spend</strong>: Spend 🎟️Tickets and see what you might earn
+                </label>
+                <label style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <input type="radio" name="simulationMode" value="goals" unchecked 
+                           onchange="toggleSimulationMode()" style="margin-right: 10px;">
+                    <strong>Earn a Reward</strong>: See how many 💎Gems you'll need to earn your reward
                 </label>
                 <!--<label style="display: flex; align-items: center;">
                     <input type="radio" name="simulationMode" value="goal" 
@@ -87,10 +92,25 @@
                     <span style="color: #7f8c8d;">💰Tokens you currently have</span>
                 </div>
 
-                <!--<div class="input-group">
-                    <input type="number" id="gemCost" value="200" min="1" max="1000" style="text-align: right; width: 100px;">
-                    <span style="color: #7f8c8d;">Total 💎Gem cost per 🎟️Ticket</span>
-                </div>-->
+                <div class="input-group goal-focus">
+                    <input type="number" id="currentGems" value="0" min="0" max="100000000" style="text-align: right; width: 100px;">
+                    <span style="color: #7f8c8d;">💎Gems you're willing to spend</span>
+                </div>
+
+                <div class="input-group goal-focus">
+                    <input type="number" id="gemsPerTicket" value="200" min="0" max="1000" style="text-align: right; width: 100px;">
+                    <span style="color: #7f8c8d;">💎Gems per 🎟️Ticket</span>
+                </div>    
+
+                <div class="input-group goal-focus">
+                    <input type="number" id="goalCost" value="12500" min="1" max="1000000" style="text-align: right; width: 100px;">
+                    <span style="color: #7f8c8d;">💰Tokens to reach your goal</span>
+                </div>    
+
+                <div class="input-group goal-focus">
+                    <input type="number" id="freeGoal" value="0.1" min="0" max="100" style="text-align: right; width: 100px;">
+                    <span style="color: #7f8c8d;">% Chance to auto achieve your goal</span>
+                </div>    
 
             </div>
             
@@ -114,12 +134,16 @@
         </div>
         
         <div class="config-section">
-            <h2>Reward Configuration</h2>
+            <h3 style="color: #3498db; margin-bottom: 15px;">Reward Configuration</h3>
             <div id="rewardsContainer">
                 <!-- Rewards will be added here dynamically -->
             </div>
+            <div id="freeHero" class="probability-check">
+                <span style="text-align: right; display: inline-block; width: 208px;">Free Reward</span>
+                <input type="number" value="100" disabled style="text-align: right; width: 90px;" id="freeReward"> <span>%</span>
+            </div>
             <div id="remaining" class="probability-check">
-                <input type="number" value="0" disabled style="text-align: right; width: 120px;"> <span>💰Tokens</span>
+                <input type="number" value="0" disabled style="text-align: right; width: 120px;"> <span style="display: inline-block; width: 82px;">💰Tokens</span>
                 <input type="number" value="100" disabled style="text-align: right; width: 90px;" id="probablityNull"> <span>%</span>
             </div>
             <div style="font-style: italic;">Average <span id="oddsNumber">0</span> 💰Tokens per Spin</div>
@@ -127,7 +151,7 @@
         </div>
 
         <div class="config-section">
-            <h2>Pity Rewards</h2>
+            <h3 style="color: #3498db; margin-bottom: 15px;">Pity Rewards</h3>
             <div id="pityContainer">
                 <!-- Pity Rewards will be added here dynamically -->
             </div>
@@ -158,13 +182,9 @@
                     <canvas id="histogramChart"></canvas>
                 </div>
                 
-                <div class="stats">
-                    <h3>Data Statistics</h3>
+                <div class="statsEarned" id="statsEarned">
+                    <h3>Tickets Earned Statistics</h3>
                     <div class="stat-grid">
-                        <div class="stat-item">
-                            <div class="stat-value" id="count">-</div>
-                            <div class="stat-label">Count</div>
-                        </div>
                         <div class="stat-item">
                             <div class="stat-value" id="mean">-</div>
                             <div class="stat-label">Mean</div>
@@ -183,6 +203,71 @@
                         </div>
                         <div class="stat-item">
                             <div class="stat-value" id="stdDev">-</div>
+                            <div class="stat-label">Std Dev</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="statsPF" id="statsGoals">
+                    <h3>🎟️Tickets Required</h3>
+                    <h4 style="font-style: italic;">(includes unspent, does not include spent)</h4>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="meanR">-</div>
+                            <div class="stat-label">Mean</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="medianR">-</div>
+                            <div class="stat-label">Median</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="minR">-</div>
+                            <div class="stat-label">Min</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="maxR">-</div>
+                            <div class="stat-label">Max</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stdDevR">-</div>
+                            <div class="stat-label">Std Dev</div>
+                        </div>
+                    </div>
+                    <h3>Pass/Fail Analysis</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="pass">-</div>
+                            <div class="stat-label">Passes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="fail">-</div>
+                            <div class="stat-label">Fails</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="passPercent">-</div>
+                            <div class="stat-label">% Pass</div>
+                        </div>
+                    </div>
+                    <h3>💎Gems Required</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="meanG">-</div>
+                            <div class="stat-label">Mean</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="medianG">-</div>
+                            <div class="stat-label">Median</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="minG">-</div>
+                            <div class="stat-label">Min</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="maxG">-</div>
+                            <div class="stat-label">Max</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stdDevG">-</div>
                             <div class="stat-label">Std Dev</div>
                         </div>
                     </div>
