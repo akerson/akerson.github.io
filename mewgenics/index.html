@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mewgenics Save Explorer</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/sql-wasm.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --bg:    #0b0b10;  --panel: #12121a;  --p2: #1a1a26;
+  --bdr:   #252535;  --bdr2: #32324a;
+  --acc:   #ff6b35;  --a2: #c45cf5;  --a3: #3af0c4;  --a4: #ffd93d;
+  --txt:   #dddcf0;  --mut: #6a698a;
+  --fem:   #e85d8a;  --mal: #4a9eff;  --neu: #a29bfe;
+  --house: #ffd93d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'Space Mono',monospace;font-size:13px;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px)}
+
+header{display:flex;align-items:center;gap:18px;padding:14px 26px;border-bottom:1px solid var(--bdr);background:linear-gradient(180deg,#160f22,var(--bg));position:sticky;top:0;z-index:100}
+.logo{font-family:'Silkscreen',monospace;font-size:17px;color:var(--acc);text-shadow:0 0 16px rgba(255,107,53,.5);white-space:nowrap}
+.logo em{color:var(--a2);font-style:normal;text-shadow:0 0 16px rgba(196,92,245,.5)}
+.hstats{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+.hp{background:var(--panel);border:1px solid var(--bdr);padding:4px 10px;font-size:11px;color:var(--mut);display:flex;gap:5px;align-items:center}
+.hp strong{color:var(--a3)}.hp.hh strong{color:var(--house)}
+.rld{background:none;border:1px solid var(--bdr);color:var(--mut);padding:5px 11px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;transition:border-color .15s,color .15s}
+.rld:hover{border-color:var(--acc);color:var(--acc)}
+
+#dropz{margin:48px auto;max-width:520px;border:2px dashed var(--bdr2);padding:52px 32px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative}
+#dropz:hover,#dropz.dov{border-color:var(--acc);background:rgba(255,107,53,.04)}
+#dropz .di{font-size:50px;display:block;margin-bottom:16px}
+#dropz p{color:var(--mut);line-height:2}
+#dropz strong{color:var(--txt)}
+#dropz input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+#loading{display:none;text-align:center;padding:80px}
+.spin{font-family:'Silkscreen',monospace;font-size:13px;animation:pulse 1s ease infinite alternate}
+@keyframes pulse{from{opacity:.3}to{opacity:1}}
+.pbar{width:200px;height:2px;background:var(--bdr);margin:16px auto 0;overflow:hidden}
+.pfill{height:100%;background:var(--acc);animation:slide 1.1s ease infinite}
+@keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(400%)}}
+
+#app{display:none}
+.layout{display:grid;grid-template-columns:208px 1fr;min-height:calc(100vh - 55px)}
+
+nav{border-right:1px solid var(--bdr);padding:14px 0;position:sticky;top:55px;height:calc(100vh - 55px);overflow-y:auto}
+.ns{padding:7px 16px 2px;font-family:'Silkscreen',monospace;font-size:9px;color:var(--mut);letter-spacing:.1em;margin-top:9px}
+nav button{display:flex;align-items:center;gap:8px;width:100%;padding:8px 16px;background:none;border:none;color:var(--mut);cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;text-align:left;transition:color .13s,background .13s}
+nav button:hover{color:var(--txt);background:rgba(255,255,255,.025)}
+nav button.on{color:var(--acc);background:rgba(255,107,53,.06);border-left:2px solid var(--acc)}
+nav button.hbtn{color:var(--house) !important;opacity:.85}
+nav button.hbtn:hover{opacity:1;background:rgba(255,217,61,.05)}
+nav button.hbtn.on{color:var(--house);background:rgba(255,217,61,.08);border-left:2px solid var(--house)}
+.ni{font-size:14px;min-width:16px}
+.nbadge{margin-left:auto;font-size:9px;padding:2px 6px;background:rgba(255,217,61,.15);color:var(--house);border:1px solid rgba(255,217,61,.3)}
+
+main{padding:22px 26px;overflow-y:auto;max-height:calc(100vh - 55px)}
+.page{display:none}.page.act{display:block}
+h2{font-family:'Silkscreen',monospace;font-size:13px;color:var(--acc);margin-bottom:16px;letter-spacing:.05em}
+h2.hh{color:var(--house)}
+h3{font-family:'Silkscreen',monospace;font-size:9px;color:var(--mut);letter-spacing:.1em;margin-bottom:10px}
+
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:9px;margin-bottom:26px}
+.sc{background:var(--panel);border:1px solid var(--bdr);padding:14px 16px;position:relative;overflow:hidden}
+.sc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--acc)}
+.sc.c2::after{background:var(--a2)}.sc.c3::after{background:var(--a3)}.sc.c4::after{background:var(--a4)}.sc.c5::after{background:var(--fem)}.sc.ch::after{background:var(--house)}
+.sc .lb{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.sc .vl{font-family:'Silkscreen',monospace;font-size:22px;line-height:1}
+
+.cr{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px}
+.cb{background:var(--panel);border:1px solid var(--bdr);padding:16px 18px}
+.bc{display:flex;flex-direction:column;gap:5px;margin-top:10px}
+.br{display:flex;align-items:center;gap:8px;font-size:11px}
+.bl{width:100px;color:var(--mut);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;text-align:right;flex-shrink:0}
+.bt{flex:1;height:11px;background:var(--p2);border:1px solid var(--bdr);position:relative}
+.bf{height:100%;transition:width .4s ease;position:relative}
+.bf::after{content:attr(data-v);position:absolute;right:4px;top:50%;transform:translateY(-50%);font-size:9px;color:rgba(255,255,255,.55)}
+.br.fem .bf{background:var(--fem)}.br.mal .bf{background:var(--mal)}.br.neu .bf{background:var(--neu)}
+
+/* sex colours */
+.s-male{color:var(--mal)}.s-female{color:var(--fem)}.s-neutral{color:var(--neu)}
+
+.tb{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.sr{flex:1;min-width:170px;background:var(--panel);border:1px solid var(--bdr);color:var(--txt);padding:7px 11px;font-family:'Space Mono',monospace;font-size:12px;outline:none;transition:border-color .18s}
+.sr:focus{border-color:var(--acc)}.sr::placeholder{color:var(--mut)}
+select{background:var(--panel);border:1px solid var(--bdr);color:var(--txt);padding:7px 9px;font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;outline:none}
+select:focus{border-color:var(--acc)}
+.cb2{color:var(--mut);font-size:11px;padding:4px 0}
+
+.fps{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.fp{padding:3px 9px;font-size:10px;background:var(--panel);border:1px solid var(--bdr);cursor:pointer;color:var(--mut);transition:all .12s}
+.fp:hover{color:var(--txt);border-color:var(--bdr2)}
+.fp.on{background:rgba(255,107,53,.09);border-color:var(--acc);color:var(--acc)}
+.fp.fh.on{background:rgba(255,217,61,.09);border-color:var(--house);color:var(--house)}
+
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:8px}
+.cc{background:var(--panel);border:1px solid var(--bdr);padding:11px 13px;cursor:pointer;transition:border-color .12s,transform .1s;position:relative}
+.cc:hover{border-color:var(--acc);transform:translateY(-1px)}
+.cc.inh{border-color:rgba(255,217,61,.25)}
+.cc.inh:hover{border-color:var(--house)}
+.cc.inh::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--house)}
+.ct{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.cn{font-family:'Silkscreen',monospace;font-size:12px}
+.ci{font-size:9px;color:var(--mut)}
+.cm{display:flex;gap:5px;margin-bottom:7px;align-items:center;flex-wrap:wrap}
+.sb{font-size:9px;padding:2px 5px;border:1px solid}
+.sb.female{color:var(--fem);border-color:var(--fem)}.sb.male{color:var(--mal);border-color:var(--mal)}.sb.neutral{color:var(--neu);border-color:var(--neu)}
+.ab{font-size:9px;color:var(--mut);padding:2px 5px;border:1px solid var(--bdr)}
+.htag{font-size:9px;padding:2px 6px;background:rgba(255,217,61,.12);border:1px solid rgba(255,217,61,.4);color:var(--house)}
+.tgs{display:flex;flex-wrap:wrap;gap:3px}
+.tg{font-size:9px;padding:2px 5px;background:var(--p2);border:1px solid var(--bdr);color:var(--mut);white-space:nowrap}
+.tg.mut{border-color:rgba(196,92,245,.4);color:var(--a2)}
+.tg.vmut{border-color:rgba(255,107,53,.4);color:var(--acc)}
+.tg.pass{border-color:rgba(58,240,196,.4);color:var(--a3)}
+.tg.mv{border-color:rgba(74,158,255,.3);color:var(--mal)}
+
+.pg{display:flex;gap:5px;margin-top:16px;align-items:center;flex-wrap:wrap}
+.pb{background:var(--panel);border:1px solid var(--bdr);color:var(--mut);padding:5px 9px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;transition:all .12s}
+.pb:hover,.pb.on{border-color:var(--acc);color:var(--acc)}.pb:disabled{opacity:.3;cursor:default}
+
+/* stat bars in modal */
+.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:11px}
+.stat-name{width:32px;color:var(--mut);text-transform:uppercase;font-size:10px}
+.stat-bar{flex:1;height:8px;background:var(--p2);border:1px solid var(--bdr)}
+.stat-fill{height:100%;background:var(--a3)}
+.stat-val{width:14px;text-align:right;font-size:11px;color:var(--txt)}
+
+#mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:1000;align-items:center;justify-content:center;padding:20px}
+#mov.open{display:flex}
+#mod{background:var(--panel);border:1px solid var(--bdr2);max-width:540px;width:100%;max-height:88vh;overflow-y:auto}
+.mh{padding:17px 20px 13px;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.mh.reg{background:linear-gradient(90deg,rgba(255,107,53,.06),transparent)}
+.mh.inh{background:linear-gradient(90deg,rgba(255,217,61,.08),transparent)}
+.mn{font-family:'Silkscreen',monospace;font-size:18px;color:var(--acc)}
+.mh.inh .mn{color:var(--house)}
+.mx{background:none;border:none;color:var(--mut);font-size:18px;cursor:pointer;padding:3px;line-height:1}
+.mx:hover{color:var(--txt)}
+.mb{padding:17px 20px}
+.mr{display:flex;gap:18px;margin-bottom:13px}
+.mf{flex:1}.mf .lb{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.mf .vl{font-size:14px}
+.ms{margin-bottom:18px}
+.apill{padding:5px 10px;font-size:11px;border:1px solid var(--bdr);background:var(--p2);color:var(--mut)}
+.apill.mut{border-color:rgba(196,92,245,.4);color:var(--a2)}
+.apill.pass{border-color:rgba(58,240,196,.4);color:var(--a3)}
+.apill.mv{border-color:rgba(74,158,255,.3);color:var(--mal)}
+.apill.vmut{border-color:rgba(255,107,53,.4);color:var(--acc)}
+
+.pt{width:100%;border-collapse:collapse;font-size:12px}
+.pt tr{border-bottom:1px solid var(--bdr)}.pt tr:hover td{background:rgba(255,255,255,.018)}
+.pt td{padding:6px 9px;vertical-align:top}.pt td:first-child{color:var(--a3);width:55%;font-size:11px}
+
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:7px}
+.fc{background:var(--panel);border:1px solid var(--bdr);padding:10px 12px}
+.fn{font-size:12px;color:var(--txt);margin-bottom:3px}.fl{font-size:10px;color:var(--mut)}
+
+.mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:5px}
+.mi{display:flex;align-items:center;gap:7px;padding:7px 10px;background:var(--panel);border:1px solid var(--bdr);font-size:11px}
+.md{width:7px;height:7px;border-radius:50%;background:var(--a3);flex-shrink:0;box-shadow:0 0 6px var(--a3)}
+
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bdr)}::-webkit-scrollbar-thumb:hover{background:var(--mut)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MEW<em>GENICS</em> SAVE EXPLORER</div>
+  <div class="hstats" id="hs"></div>
+  <button class="rld" id="rldb" style="display:none" onclick="reloadUI()">↺ New File</button>
+</header>
+
+<div id="dropz">
+  <span class="di">🐱</span>
+  <p><strong>Drop your Mewgenics save file here</strong></p>
+  <p>or click to browse</p>
+  <p style="margin-top:10px;font-size:11px">Accepts <code style="color:var(--a3)">.sav</code> files · processed locally, nothing uploaded</p>
+  <input type="file" id="fi" accept=".sav,.db,.sqlite">
+</div>
+
+<div id="loading"><div class="spin">PARSING SAVE FILE...</div><div class="pbar"><div class="pfill"></div></div></div>
+
+<div id="app">
+  <div class="layout">
+    <nav>
+      <div class="ns">Overview</div>
+      <button class="on" onclick="go('sum')" data-p="sum"><span class="ni">📊</span>Summary</button>
+      <div class="ns">Cats</div>
+      <button onclick="go('cats')" data-p="cats"><span class="ni">🐈</span>All Cats<span class="nbadge" id="nbadge-all">—</span></button>
+      <button class="hbtn" id="nav-house" onclick="navFilter('house')"><span class="ni">🏠</span>In House<span class="nbadge" id="nbadge-house">—</span></button>
+      <button id="nav-vet" onclick="navFilter('vet')"><span class="ni">⚔</span>Veterans<span class="nbadge" id="nbadge-vet">—</span></button>
+
+      <div class="ns">Data</div>
+      <button onclick="go('prop')" data-p="prop"><span class="ni">⚙️</span>Properties</button>
+    </nav>
+    <main>
+
+      <div id="p-sum" class="page act">
+        <h2>CAMPAIGN SUMMARY</h2>
+        <div class="sg" id="sg"></div>
+        <h2>⚔ VETERANS</h2>
+        <div class="cr" id="vet-summary-row">
+          <div class="cb"><h3>COLLAR BREAKDOWN</h3><div class="bc" id="cls-chart"></div></div>
+        </div>
+        <div class="cr">
+          <div class="cb"><h3>SEX DISTRIBUTION</h3><div class="bc" id="sx-chart"></div>
+            <div style="margin-top:18px"><h3>TOP SKILLS</h3></div><div class="bc" id="sk-chart"></div>
+          </div>
+          <div class="cb"><h3>TOP MUTATIONS</h3><div class="bc" id="mu-chart"></div>
+            <div style="margin-top:18px"><h3>STAT AVERAGES (in-house)</h3></div><div class="bc" id="st-chart"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="p-cats" class="page">
+        <h2>CATS</h2>
+        <div class="tb">
+          <input class="sr" id="s-cats" placeholder="Search name, skill, mutation…" oninput="rdrCats()">
+          <select onchange="rdrCats()" id="so-cats">
+            <option value="id-d">Sort: Newest first</option>
+            <option value="id-a">Sort: Oldest first</option>
+            <option value="name">Sort: Name A–Z</option>
+            <option value="age-d">Sort: Age ↓</option>
+            <option value="age-a">Sort: Age ↑</option>
+            <option value="lvl-d">Sort: Level ↓</option>
+          </select>
+          <span class="cb2" id="cnt-cats"></span>
+        </div>
+        <div class="fps" id="fp-cats"></div>
+        <div class="cg" id="cg-cats"></div>
+        <div class="pg" id="pg-cats"></div>
+      </div>
+
+      <div id="p-fem" class="page" style="display:none"></div>
+      <div id="p-mal" class="page" style="display:none"></div>
+
+
+
+      <div id="p-prop" class="page">
+        <h2>GAME PROPERTIES</h2>
+        <div class="tb"><input class="sr" id="s-pr" placeholder="Filter…" oninput="rPr()"><span class="cb2" id="pcnt"></span></div>
+        <table class="pt" id="pt"></table>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div id="mov" onclick="cMod(event)">
+  <div id="mod">
+    <div class="mh" id="mhdr"><span class="mn" id="mn"></span><button class="mx" onclick="document.getElementById('mov').classList.remove('open')">✕</button></div>
+    <div class="mb" id="mb"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// LZ4 Block Decompression
+// ═══════════════════════════════════════════
+function lz4Decompress(src) {
+  const out = [];
+  let i = 0;
+  while (i < src.length) {
+    const token = src[i++];
+    let litLen = (token >> 4) & 0xF;
+    if (litLen === 15) { let x; do { x = src[i++]; litLen += x; } while (x === 255); }
+    for (let k = 0; k < litLen; k++) out.push(src[i++]);
+    if (i >= src.length) break;
+    const offset = src[i] | (src[i+1] << 8); i += 2;
+    let matchLen = (token & 0xF) + 4;
+    if ((token & 0xF) === 15) { let x; do { x = src[i++]; matchLen += x; } while (x === 255); }
+    let mp = out.length - offset;
+    for (let k = 0; k < matchLen; k++) { out.push(out[mp]); mp++; }
+  }
+  return new Uint8Array(out);
+}
+
+// ═══════════════════════════════════════════
+// Binary Reading Helpers
+// ═══════════════════════════════════════════
+function rdU32(b, o) { return b[o]|(b[o+1]<<8)|(b[o+2]<<16)|(b[o+3]<<24)>>>0; }
+function rdI32(b, o) { return b[o]|(b[o+1]<<8)|(b[o+2]<<16)|(b[o+3]<<24); }
+function rdU64(b, o) {
+  // JS can't represent full uint64 but cat IDs and string lengths are small
+  const lo = rdU32(b, o), hi = rdU32(b, o+4);
+  return hi * 0x100000000 + lo;
+}
+function rdI64(b, o) {
+  const lo = rdU32(b, o), hi = rdI32(b, o+4);
+  return hi * 0x100000000 + lo;
+}
+function rdF64(b, o) {
+  return new DataView(b.buffer, b.byteOffset).getFloat64(o, true); // little-endian, no alignment required
+}
+function rdStr(b, o) {
+  const len = rdU64(b, o);
+  const bytes = b.slice(o+8, o+8+len);
+  return [new TextDecoder().decode(bytes), o+8+len];
+}
+function rdStrs(b, o, count, withInt) {
+  const res = [];
+  for (let i = 0; i < count; i++) {
+    const [s, no] = rdStr(b, o); o = no;
+    if (withInt) { res.push([s, rdI32(b, o)]); o += 4; }
+    else res.push(s);
+  }
+  return [res, o];
+}
+function skipEquip(b, o) {
+  o += 4; // version
+  const hasEq = b[o]; o++;
+  if (hasEq) {
+    [,o] = rdStr(b, o); // name
+    [,o] = rdStr(b, o); // unknown_0
+    o += 18;
+  }
+  return o;
+}
+
+const GON_TABLES = {
+  body:{300:"Rock Bod",301:"Cactus Bod",302:"Turtle Bod",303:"Snail Bod",304:"Robot Body",305:"Conjoined Bod",306:"Skin & Bones",307:"Udders",308:"Beach Bod",309:"Maggot Bod",310:"Puffball Bod",311:"Square Bod",312:"Money Bag Bod",313:"Spike Bod",314:"Porcupine",315:"Carapace",316:"Pangolin",317:"Camel Hump",318:"Egg Sack Back",319:"Fractured Bod",320:"Brick Bod",321:"Kitten Bod",322:"Backpack",323:"Fatty",324:"Eyeball",700:"Gastroschisis",701:"Deformed Ribcage",702:"Malnurished",750:"spike body",753:"mermaid body",758:"human head body",900:"slender"},
+  head:{300:"Square head",301:"Sloth head",302:"Big brain",303:"Spioke head",304:"Sludge head",305:"Strong Chin",306:"Alien head",307:"Bump-on-the-head Head",308:"Frog Head",309:"half moon",310:"rock head",311:"Money Bag head",312:"Magnet Head",313:"Poop Head",314:"Pyramid Head",315:"Upside Down Head",316:"Fractured Head",317:"Sideways Head",318:"Long Neck",319:"Exposed Brain",320:"Bubble Head",321:"Button Head",700:"microcephaly",701:"macrocephaly",750:"spiked head",753:"tyler head",757:"grey head",759:"Human Head",900:"slender"},
+  tail:{300:"Extra Paw",301:"Turtle Head",302:"Scorpion Tail",303:"Rock Tail",304:"Monkey Tail",305:"Cacuts Tail",306:"Big Lump Tail",307:"Antenna Tail",308:"Baby Tail",309:"Baboon's' Ass",310:"Hand Tail",311:"Thorn Tail",312:"Holy Tail",313:"Hose Tail",314:"Bone Tail",315:"Maggot Tail",316:"Grass Tail",317:"Skunk Tail",318:"Rattle",319:"Snake Tail",320:"Glass Tail",321:"Extra Head",322:"Exhaust Pipe",323:"Jetpack Tail",324:"Wing Tail",325:"Spring Tail",326:"Eyeball Tail",327:"Tree Branch Tail",329:"Mr. Worm",331:"Dice Tail",332:"Tennis Racket",334:"Fire Flower Tail",336:"Horn Tail",337:"Tail Feather",338:"Flame Tail",339:"Light Bulb",341:"Tongue Tail",342:"Kitten Tail",700:"kinked tail",701:"lipoma",900:"slender",1500:"rat tail"},
+  legs:{300:"Frog legs",301:"Hooves",302:"Tentacles",303:"Lobster Claws",304:"Muscular Legs",305:"Tar Legs",306:"Bug Legs",307:"Tires",308:"Human Legs",309:"Knife Legs",310:"Spring Legs",311:"Square Legs",312:"Balloon Legs",313:"Snake Legs",314:"Weapon Legs",315:"Socks",317:"Raptor Claws",318:"Stigmata",319:"High Tops",320:"Talons",321:"Flippers",322:"Bear Claws",323:"Beetle Feet",324:"Branches",325:"Extra Head",326:"Needle Feet",327:"Mushroom Legs",328:"Glass Bottle",329:"Water Bottle",330:"Sausage Legs",331:"Jet Legs",332:"Peg Legs",333:"Wing Legs",334:"Ape Legs",335:"Glass Legs",336:"Crow Legs",337:"Floating Legs",339:"Wing Legs 2",340:"Lucky Toe",341:"Whip Legs",343:"Kitten Legs",700:"lobster claw",701:"extra finger",702:"club foot",703:"syndactyly",754:"Wing Hoof Legs",756:"Sonichu Legs",757:"bigfoot Legs",758:"nessie Legs",759:"nessie Legs",761:"mothman Legs",762:"slender",763:"slender",900:"slender"},
+  ears:{300:"horn",301:"antenna",302:"fishy",303:"bullhorn",304:"pigtails",305:"boil",306:"bunny ear",307:"brains",308:"shrek",309:"antlers",310:"human",313:"Ram horns",314:"Deer horns",315:"Fly Ears",316:"Bat Ears",317:"Bone Ears",318:"Frog Eyes",319:"Pierced Ears",320:"Alien Ears",321:"Spring Ears",322:"Lamb Ears",323:"Vamp Ears",325:"Tree Branch",326:"Worm Ear",327:"Ant Antenna",328:"Snake Ears",329:"External Gills",330:"Hook Ears",331:"Mace Ears",332:"Blubber Lobes",333:"Metal Plate",334:"Metal Detector",335:"Docked Ears",336:"Large Leaves",337:"Burning ears",338:"Frozen ears",339:"Lightning Rods",340:"Aura Ears",341:"Large Ears",342:"Infested Ears",343:"Long Antlers",344:"Kitten",345:"Mouse Ears",700:"anotia",701:"turner syndrome",750:"Jackrabbit Ears",751:"Folded Ears",752:"Fin Ears",753:"Goat Horns",754:"Electric Ears",755:"Head Ferns",900:"slender",1500:"rat ears"},
+  eyes:{300:"Button Eyes",301:"Demon Eyes",302:"Pop Eyes",303:"Gem Eyes",304:"Holes",305:"Zen Eyes",306:"Confusing Eyes",307:"Half Moon Eyes",308:"Spider Eyes",309:"Doll Eyes",310:"Octo Eyes",311:"gecko eye",312:"Metal Eyes",313:"Issac's Eyes",314:"Dead Eyes",315:"Kinetic eyes",316:"Lightning eyes",317:"Dice Eyes",318:"Goat Eyes",319:"Horn Eyes",324:"Treasure Eyes",325:"Nail Eyes",326:"4 Eyes",327:"Baby Blue Eyes",328:"Bull's Eye'",329:"Spinning Eyes",331:"Glassy Eyes",332:"Bleeding Eyes",333:"Huge Eyes",334:"Infested Eyes",335:"Fake Eyelashes",336:"Bolt Eyes",337:"Ice Eyes",338:"Fire Eyes",339:"Water Eyes",340:"Leech Eyes",341:"Flower Eyes",342:"Poison Eyes",343:"Clown Eyes",344:"Sun Eyes",345:"Evil Eyes",346:"Rock Eyes",347:"Hypno Eyes",348:"Pop Eyes",349:"8 Eyes",351:"Chaos Eyes",352:"Runny Mascara",353:"Chameleon Eyes",700:"graves disease",701:"anophthalmia",704:"lazy eye",705:"cataracts",706:"crossed eyes",750:"glasses",754:"alien eyes",755:"mothman eyes",900:"slender",1029:"spider eye"},
+  eyebrows:{300:"Bolt Brows",301:"Confusing Brows",302:"Metal Brows",303:"Fancy Makeup",304:"Wolfy Brows",305:"Dotty Brows",306:"Clown Makeup",307:"Antennae",308:"Long Lashes",309:"Spiny Brows",310:"Extra Eye",311:"Stacked Brows",313:"Square Glasses",314:"Holy Brows",315:"Triangle Eyes",700:"bushy",900:"slender"},
+  mouth:{300:"Sabertoothed",301:"Hippo Teeth",302:"Flesh Kid",303:"Delerious",304:"Spider",305:"Ash",306:"Famine",307:"Alien Chomp",308:"Licky",309:"Jacko",310:"Lip Fillers",311:"Leech Mouth",312:"Bear Trap Mouth",313:"Full Mouth",314:"Gold Tooth",315:"Double Mouth",316:"Horse Face",317:"Glass Teeth",318:"mole mouth",319:"Catfish Mouth",321:"Zipper Mouth",322:"Shark Mouth",323:"Gills",324:"Eyeball",326:"Double Mouth 2",327:"Clown Lips",328:"Bandage Mouth",700:"cleft pallet",701:"anodontia",705:"Fetus Mouth",750:"beaver teeth",751:"pig snout",752:"Dog tongue",754:"Isaacs mouth",755:"Edmund beard",756:"Tylers beard",757:"Mermaid mouth",760:"bigfoot mouth",900:"Slender",1026:"spider mouth",1500:"rat mouth"},
+  texture:{300:"Stitches",301:"Fish Scales",302:"Conjoined",303:"Patches",304:"Confusing Hide",305:"Robot Hide",306:"Veiny",307:"Eyeballs",308:"Heart Tattoo",309:"Tatted Up",310:"Cash Hide",700:"neurofibromatosis",701:"melanocytic nevus",750:"skunk Hide"},
+};
+
+const GON_STAT_MODS = {
+  body:{300:{"con": 1},302:{"spd": -1},303:{"spd": -2},304:{"int": 1, "spd": 1},305:{"lck": 1},306:{"con": -3},307:{"cha": 1},308:{"str": 1, "con": 1, "int": -1},310:{"cha": 1},311:{"con": 1},314:{"cha": -1},317:{"con": 1},323:{"spd": -3},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},442:{"cha": -1},700:{"con": -2},701:{"spd": -2},702:{"con": -1},758:{"con": 1},900:{"con": -2, "spd": 1}},
+  head:{300:{"con": 1},301:{"str": 1, "con": 1, "int": -1},302:{"con": -1, "int": 2},304:{"cha": -2},305:{"cha": 1},306:{"int": 1},309:{"lck": 2},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"int": -2},701:{"int": -2},757:{"int": 2},900:{"cha": -1}},
+  tail:{300:{"str": 1},304:{"dex": 1},306:{"con": 1},307:{"spd": 1},308:{"lck": 1},309:{"cha": 1},321:{"int": 1},324:{"spd": 2},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"lck": -2},701:{"spd": -1, "cha": -1},900:{"spd": 1},1500:{"dex": 1}},
+  legs:{301:{"spd": 1},304:{"str": 1},306:{"dex": 1},307:{"spd": 1},308:{"lck": 1},311:{"con": 1},322:{"str": 1, "con": 1},323:{"spd": 2},324:{"con": 1},325:{"spd": -2},332:{"spd": -1},334:{"str": 1},339:{"spd": 2},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"str": -2},701:{"dex": -2},702:{"spd": -2},703:{"spd": -2},756:{"spd": 2}},
+  ears:{300:{"str": 1},301:{"int": 1},303:{"str": 1},304:{"cha": 1},306:{"spd": 1},307:{"int": 1},308:{"str": 1, "cha": -1},310:{"int": 1},322:{"cha": 1},342:{"con": -1},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"lck": -2},701:{"int": -2},754:{"spd": 1}},
+  eyes:{301:{"dex": 1},303:{"int": 1, "cha": 1},305:{"str": -1, "dex": -1, "int": 3},327:{"cha": 2},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"cha": -2},701:{"lck": -2},702:{"con": -2, "int": 1, "cha": 1},750:{"int": 1}},
+  eyebrows:{300:{"spd": 1},303:{"cha": 1},304:{"dex": 1},305:{"lck": 1},308:{"cha": 1},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"lck": -1}},
+  mouth:{300:{"str": 1},303:{"int": 1},310:{"cha": 1},312:{"str": 1},316:{"cha": -1},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"cha": -2},701:{"str": -1, "dex": -1},751:{"con": 2},756:{"int": 1}},
+  texture:{300:{"cha": -1},302:{"lck": 1},305:{"int": 1},306:{"str": 1},308:{"cha": 1},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"cha": -2},701:{"cha": -2}},
+};
+
+// Map body part slot names to their gon table
+const PART_TO_GON = {
+  body:'body', head:'head', tail:'tail',
+  leg1:'legs', leg2:'legs', arm1:'legs', arm2:'legs',
+  lefteye:'eyes', righteye:'eyes',
+  lefteyebrow:'eyebrows', righteyebrow:'eyebrows',
+  leftear:'ears', rightear:'ears',
+  mouth:'mouth'
+};
+
+// Extract named visual mutations from a cat's body parts
+// Returns {slot: name} for each mutated part, plus 'fur' if texture is mutated
+function getVisualMuts(cat) {
+  const muts = {};
+  const tex = cat.bodyParts && cat.bodyParts.textureSpriteIdx;
+  if (tex != null) {
+    const furName = GON_TABLES.texture[tex];
+    if (furName) muts['Fur'] = furName;
+  }
+  if (!cat.bodyParts || !cat.bodyParts.parts) return muts;
+  const seen = new Set();
+  const SLOT_LABELS = {
+    body:'Body', head:'Head', tail:'Tail',
+    leg1:'Legs', arm1:'Arms',
+    lefteye:'Eyes', lefteyebrow:'Eyebrows',
+    leftear:'Ears', mouth:'Mouth'
+  };
+  for (const [pname, spriteIdx] of cat.bodyParts.parts) {
+    const gon = PART_TO_GON[pname];
+    if (!gon || seen.has(gon+spriteIdx)) continue;
+    seen.add(gon+spriteIdx);
+    const mutName = GON_TABLES[gon]?.[spriteIdx];
+    const label = SLOT_LABELS[pname];
+    if (mutName && label) muts[label] = mutName;
+  }
+  return muts;
+}
+
+// Compute stat modifiers from visual mutations (body parts + texture)
+function getVisualStatMods(cat) {
+  const mods = {str:0,dex:0,con:0,int:0,spd:0,cha:0,lck:0};
+  if (!cat.bodyParts) return mods;
+  // texture
+  const tex = cat.bodyParts.textureSpriteIdx;
+  if (tex != null) {
+    const tm = GON_STAT_MODS.texture?.[tex];
+    if (tm) for (const [s,v] of Object.entries(tm)) mods[s] = (mods[s]||0) + v;
+  }
+  // body parts - count each unique (gon, spriteIdx) once
+  const seen = new Set();
+  for (const [pname, spriteIdx] of (cat.bodyParts.parts||[])) {
+    const gon = PART_TO_GON[pname];
+    if (!gon) continue;
+    const key = gon+':'+spriteIdx;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const sm = GON_STAT_MODS[gon]?.[spriteIdx];
+    if (sm) for (const [s,v] of Object.entries(sm)) mods[s] = (mods[s]||0) + v;
+  }
+  return mods;
+}
+
+// ═══════════════════════════════════════════
+// Cat Parser (based on p0lymeric/mewgenics_analysis)
+// cats table blobs are LZ4-compressed with 4-byte decompressed-size prefix
+// ═══════════════════════════════════════════
+function parseCat(key, rawBlob) {
+  // Decompress
+  const raw = rawBlob instanceof Uint8Array ? rawBlob : new Uint8Array(rawBlob);
+  const decompSize = rdU32(raw, 0);
+  const blob = lz4Decompress(raw.slice(4));
+
+  // Version must be 19
+  if (rdU32(blob, 0) !== 19) throw new Error('Unknown cat version');
+
+  // Name: uint64 char count at offset 12, UTF-16LE at offset 20
+  const nameCharCount = rdU64(blob, 12);
+  const nameBytes = blob.slice(20, 20 + nameCharCount * 2);
+  const name = new TextDecoder('utf-16le').decode(nameBytes);
+  const nop = 20 + nameCharCount * 2; // name_offset_past
+
+  // Nameplate symbol: uint64 byte len then UTF-8
+  const nsl = rdU64(blob, nop);
+  const nsop = nop + 8 + nsl; // nameplate_symbol_offset_past
+
+  // Sex: int32 (0=male, 1=female, 2=neutral)
+  const sex = ['male', 'female', 'neutral'][rdI32(blob, nsop)] || 'neutral';
+
+  // Status flags: uint64 at nsop+8
+  // bit 0x2 = retired/left house, bit 0x8000 = on adventure
+  const statusFlags = rdU64(blob, nsop + 8);
+
+  // unknown_2 string (always 'None') at nsop+16
+  const u2l = rdU64(blob, nsop + 16);
+  const u2op = nsop + 24 + u2l; // unknown_2_offset_past
+
+  // Body parts at u2op+68: textureSpriteIdx(i32), heritable_palette_idx(i32), collar_palette_idx(i32)
+  // then 14 BodyPartDescriptors each 5*i32 (20 bytes each)
+  const bpBase = u2op + 68;
+  const textureSpriteIdx = rdI32(blob, bpBase);
+  const BPART_NAMES = ['body','head','tail','leg1','leg2','arm1','arm2',
+    'lefteye','righteye','lefteyebrow','righteyebrow','leftear','rightear','mouth'];
+  const bodyPartList = [];
+  for (let i = 0; i < 14; i++) {
+    bodyPartList.push([BPART_NAMES[i], rdI32(blob, bpBase + 12 + i * 20)]);
+  }
+  const bodyParts = { textureSpriteIdx, parts: bodyPartList };
+
+  // Personality doubles
+  const libido     = rdF64(blob, u2op + 4);
+  const sexuality  = rdF64(blob, u2op + 12);
+  const loverKey   = rdI64(blob, u2op + 20);
+  const aggression = rdF64(blob, u2op + 36);
+  const haterKey   = rdI64(blob, u2op + 44);
+
+  // Body parts: 3 ints + 14*(5 ints) + 2 ints = 12 + 280 + 8 = 300 bytes, then voice string
+  const bop = u2op + 68 + 300;
+  const voiceLen = rdU64(blob, bop);
+  const vop = bop + 8 + voiceLen; // voice_offset_past
+
+  // pitch (double right after voice)
+  // Stats at vop+8: heritable, delta_levelling, delta_injuries (7 int32s each)
+  const soff = vop + 8;
+  const SN = ['str','dex','con','int','spd','cha','lck'];
+  const statsH = {}; const statsL = {}; const statsI = {};
+  for (let i = 0; i < 7; i++) {
+    statsH[SN[i]] = rdI32(blob, soff + i*4);
+    statsL[SN[i]] = rdI32(blob, soff + 28 + i*4);
+    statsI[SN[i]] = rdI32(blob, soff + 56 + i*4);
+  }
+
+  // last_injury_debuffed_stat (string)
+  let [,liop] = rdStr(blob, soff + 84);
+
+  // campaign_stats: i??iI = 4+1+1+4+4 = 14 bytes
+  // unknown_0, alive(bool), unk1(bool), unk2(int), array_size(uint)
+  let off = liop + 14;
+  const arrSz = rdU32(blob, liop + 10);
+  // skip event_stat_modifiers (string + int32 each)
+  for (let i = 0; i < arrSz; i++) {
+    const [,no] = rdStr(blob, off); off = no + 4;
+  }
+
+  // Ability arrays
+  let basics, accessible, inherited, passives, mutations;
+  [basics, off]     = rdStrs(blob, off, 2, false);
+  [accessible, off] = rdStrs(blob, off, 4, false);
+  [inherited, off]  = rdStrs(blob, off, 4, false);
+  [passives, off]   = rdStrs(blob, off, 2, true);
+  [mutations, off]  = rdStrs(blob, off, 2, true);
+
+  // Equipment (5 slots)
+  for (let i = 0; i < 5; i++) off = skipEquip(blob, off);
+
+  // Collar string, then level(i32), COI(f64), birthday(u64)
+  let collar;
+  [collar, off] = rdStr(blob, off);
+  const level    = rdI32(blob, off);
+  const coi      = rdF64(blob, off + 4);
+  const birthday = rdU64(blob, off + 12);
+
+  // Clean abilities
+  const SKIP = new Set(['DefaultMove', 'None', 'none', '']);
+  const move = basics[1] && !SKIP.has(basics[1]) ? basics[1] : '';
+  const seen = new Set(SKIP); const skills = [];
+  for (const a of [...accessible, ...inherited]) {
+    if (!seen.has(a)) { seen.add(a); skills.push(a); }
+  }
+  const passiveNames  = passives.map(p=>p[0]).filter(s=>!SKIP.has(s));
+  const mutationNames = mutations.map(m=>m[0]).filter(s=>!SKIP.has(s));
+
+  return {
+    id: key, name, sex, statusFlags, birthday, level, bodyParts,
+    coi: Math.round(coi * 10000) / 10000,
+    libido: Math.round(libido * 1000) / 1000,
+    sexuality: Math.round(sexuality * 1000) / 1000,
+    aggression: Math.round(aggression * 1000) / 1000,
+    loverKey: loverKey < 0 ? null : loverKey,
+    haterKey: haterKey < 0 ? null : haterKey,
+    stats: statsH, statsLvl: statsL, statsInj: statsI,
+    move, skills, passives: passiveNames, mutations: mutationNames,
+    collar,
+  };
+}
+
+// ═══════════════════════════════════════════
+// Pedigree hashmap parser (accessible cats set)
+// ═══════════════════════════════════════════
+function scrapeHashTable(buf, offset, entrySize) {
+  // s_version, size, capacity (3 x uint64 = 24 bytes)
+  const capacity = rdU64(buf, offset + 16);
+  const htSize = capacity + 1 + 16;
+  const hashTable = buf.slice(offset + 24, offset + 24 + capacity);
+  const dataStart = offset + 24 + htSize;
+  const ids = new Set();
+  for (let i = 0; i < capacity; i++) {
+    if (hashTable[i] <= 0x7F) {
+      // first 8 bytes of each entry is the int64 cat ID
+      const id = rdI64(buf, dataStart + i * entrySize);
+      if (id > 0) ids.add(id);
+    }
+  }
+  const nextOffset = dataStart + capacity * entrySize + 8; // +8 for growth_left
+  return [ids, nextOffset];
+}
+
+function parseAccessibleCats(pedBlob) {
+  const buf = pedBlob instanceof Uint8Array ? pedBlob : new Uint8Array(pedBlob);
+  // Three sequential hashmaps: pedigree (32 bytes/entry), COI memo (24), accessible cats (8)
+  let off = 0;
+  [, off] = scrapeHashTable(buf, off, 32); // pedigree
+  [, off] = scrapeHashTable(buf, off, 24); // COI memo
+  const [ids] = scrapeHashTable(buf, off, 8); // accessible cats
+  return ids;
+}
+
+// ═══════════════════════════════════════════
+// Global State
+// ═══════════════════════════════════════════
+let CATS=[], FURN=[], PROPS=[], HOUSE_IDS=new Set(), CURRENT_DAY=0, ROOM_MAP=new Map();
+let catPage=1;
+let activeFilters=new Set(); // set of active filter keys
+let catSearch='';
+const PER=48;
+
+// ═══════════════════════════════════════════
+// Load
+// ═══════════════════════════════════════════
+async function loadFile(buf) {
+  document.getElementById('dropz').style.display='none';
+  document.getElementById('loading').style.display='block';
+  await new Promise(r=>setTimeout(r,40));
+
+  const SQL = await initSqlJs({locateFile:f=>`https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/${f}`});
+  const db = new SQL.Database(new Uint8Array(buf));
+
+  CATS=[];FURN=[];PROPS=[];HOUSE_IDS=new Set();
+
+  // Properties first (need current_day)
+  const pr = db.exec('SELECT key,data FROM properties ORDER BY key')[0];
+  if (pr) for (const [k,v] of pr.values) PROPS.push({key:k, val:v!=null?String(v):''});
+  CURRENT_DAY = parseInt(PROPS.find(p=>p.key==='current_day')?.val||'0');
+
+  // Parse cats (blobs are LZ4-compressed - must .slice() to get independent copy)
+  const cr = db.exec('SELECT key,data FROM cats ORDER BY key')[0];
+  if (cr) for (const [k,d] of cr.values) {
+    try { CATS.push(parseCat(k, d.slice())); }
+    catch(e) { console.warn('cat',k,'failed:',e.message); }
+  }
+
+  // In-house cats = accessible (from pedigree hashmap) AND status_flags has neither
+  // bit 0x2 (retired/left) nor bit 0x8000 (on adventure) set.
+  const pedRow = db.exec("SELECT data FROM files WHERE key='pedigree'")[0];
+  if (pedRow && pedRow.values[0]) {
+    try {
+      const accessibleIds = parseAccessibleCats(pedRow.values[0][0].slice());
+      HOUSE_IDS = new Set(CATS.filter(c => accessibleIds.has(c.id) && !(c.statusFlags & 0x2) && !(c.statusFlags & 0x8000)).map(c=>c.id));
+    }
+    catch(e) { console.warn('pedigree parse failed:', e); }
+  }
+  // Fallback: use top N by ID based on storage upgrades formula
+  if (HOUSE_IDS.size === 0) {
+    const upg = parseInt(PROPS.find(p=>p.key==='house_storage_upgrades')?.val||'0');
+    const popSize = 11 + upg * 18;
+    const sorted = CATS.map(c=>c.id).sort((a,b)=>a-b);
+    const cutoff = sorted.length > popSize ? sorted[sorted.length-popSize] : 0;
+    HOUSE_IDS = new Set(CATS.filter(c=>c.id>=cutoff).map(c=>c.id));
+  }
+
+  // Room assignments from house_state
+  const hsRow = db.exec("SELECT data FROM files WHERE key='house_state'")[0];
+  if (hsRow && hsRow.values[0]) {
+    const hs = hsRow.values[0][0] instanceof Uint8Array ? hsRow.values[0][0] : new Uint8Array(hsRow.values[0][0]);
+    let pos = 0;
+    while (pos < hs.length - 16) {
+      const catId = rdI32(hs, pos);
+      if (catId >= 100 && catId <= 99999) {
+        const pad  = rdI32(hs, pos+4);
+        const nlen = rdI32(hs, pos+8);
+        const pad2 = rdI32(hs, pos+12);
+        if (pad === 0 && nlen >= 4 && nlen <= 30 && pad2 === 0) {
+          try {
+            const room = new TextDecoder().decode(hs.slice(pos+16, pos+16+nlen));
+            if (/^[A-Za-z0-9_]+$/.test(room)) {
+              ROOM_MAP.set(catId, room);
+              pos += 16 + nlen; continue;
+            }
+          } catch(e) {}
+        }
+      }
+      pos += 4;
+    }
+  }
+
+  // Furniture
+  const fr = db.exec('SELECT key,data FROM furniture')[0];
+  if (fr) for (const [k,d] of fr.values) {
+    const dd = d.slice(); let r='', out=[];
+    for (let i=0;i<dd.length;i++){const c=dd[i];if(c>=0x20&&c<=0x7e)r+=String.fromCharCode(c);else{if(r.length>=4)out.push(r);r='';}}
+    if(r.length>=4)out.push(r);
+    FURN.push({id:k, name:out[0]||`Item #${k}`, loc:out[1]||''});
+  }
+
+  document.getElementById('loading').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('rldb').style.display='block';
+  document.getElementById('nbadge-all').textContent=CATS.length;
+  document.getElementById('nbadge-house').textContent=HOUSE_IDS.size;
+  document.getElementById('nbadge-vet').textContent=CATS.filter(isVeteran).length;
+
+  rSum(); bFPs();
+  rdrCats();
+  updateNavFilterButtons();
+}
+
+function reloadUI(){
+  CATS=[];FURN=[];PROPS=[];HOUSE_IDS=new Set();
+  document.getElementById('app').style.display='none';
+  document.getElementById('rldb').style.display='none';
+  document.getElementById('dropz').style.display='block';
+  document.getElementById('hs').innerHTML='';
+}
+
+// ═══════════════════════════════════════════
+// Helpers
+// ═══════════════════════════════════════════
+const gp = k => PROPS.find(p=>p.key===k)?.val||'0';
+const catAge = c => CURRENT_DAY - c.birthday;
+const onAdventure = c => !!(c.statusFlags & 0x8000);
+const isVeteran   = c => c.level > 0;
+const inHouse = c => HOUSE_IDS.has(c.id);
+const catRoom = c => ROOM_MAP.get(c.id) || null;
+// Room name lookup and display order
+const ROOM_NAMES = {
+  'Attic':        'Attic',
+  'Floor2_Large': 'Floor 2 Left',
+  'Floor2_Small': 'Floor 2 Right',
+  'Floor1_Large': 'Floor 1 Left',
+  'Floor1_Small': 'Floor 1 Right',
+};
+const ROOM_ORDER = ['Attic','Floor2_Large','Floor2_Small','Floor1_Large','Floor1_Small'];
+const roomLabel = r => ROOM_NAMES[r] || r;
+// Get unique room names for in-house cats in defined order
+const getRooms = () => ROOM_ORDER.filter(r => CATS.some(c => inHouse(c) && ROOM_MAP.get(c.id)===r));
+const statTotal = c => Object.values(c.stats).reduce((a,b)=>a+b,0);
+
+// ═══════════════════════════════════════════
+// Summary
+// ═══════════════════════════════════════════
+function rSum(){
+  const hCats = CATS.filter(inHouse);
+  const f = hCats.filter(c=>c.sex==='female').length;
+  const m = hCats.filter(c=>c.sex==='male').length;
+  const n = hCats.filter(c=>c.sex==='neutral').length;
+  document.getElementById('hs').innerHTML=
+    `<div class="hp hh">🏠 <strong>${HOUSE_IDS.size}</strong></div>`+
+    `<div class="hp">Day <strong>${gp('current_day')}</strong></div>`+
+    `<div class="hp">Gold <strong>${gp('house_gold')}</strong></div>`+
+    `<div class="hp">Food <strong>${gp('house_food')}</strong></div>`+
+    `<div class="hp">Save <strong>${gp('save_file_percent')}%</strong></div>`;
+
+  document.getElementById('sg').innerHTML=[
+    {l:'In House',    v:HOUSE_IDS.size, c:'ch'},
+    {l:'Current Day', v:gp('current_day'), c:''},
+    {l:'House Gold',  v:gp('house_gold'), c:'c2'},
+    {l:'House Food',  v:gp('house_food'), c:'c3'},
+    {l:'Save %',      v:gp('save_file_percent')+'%', c:'c4'},
+    {l:'Total DB',    v:CATS.length, c:''},
+    {l:'Female',      v:f, c:'c5'},
+    {l:'Male',        v:m, c:'c2'},
+    {l:'Neutral',     v:n, c:'c3'},
+  ].map(c=>`<div class="sc ${c.c}"><div class="lb">${c.l}</div><div class="vl">${c.v}</div></div>`).join('');
+
+  // Veterans class breakdown
+  const vets = CATS.filter(c => c.level > 0);
+  const clsCounts = {};
+  for (const c of vets) {
+    const cls = c.collar || 'Colorless';
+    clsCounts[cls] = (clsCounts[cls] || 0) + 1;
+  }
+  const sortedCls = Object.entries(clsCounts).sort((a,b) => b[1]-a[1]);
+  const mxCls = sortedCls[0]?.[1] || 1;
+  // Assign a colour per class for visual variety
+  const CLS_COLORS = {
+    Fighter:'#ff6b35',Hunter:'#3af0c4',Medic:'#e85d8a',Tank:'#4a9eff',
+    Mage:'#c45cf5',Necromancer:'#a29bfe',Druid:'#ffd93d',Psychic:'#fd79a8',
+    Thief:'#00cec9',Butcher:'#e17055',Monk:'#55efc4',Tinkerer:'#74b9ff',
+    Jester:'#fdcb6e',Colorless:'#6a698a'
+  };
+  document.getElementById('cls-chart').innerHTML = sortedCls.map(([cls, n]) => {
+    const col = CLS_COLORS[cls] || '#6a698a';
+    return '<div class="br"><div class="bl">'+cls+'</div>'
+      +'<div class="bt"><div class="bf" style="width:'+(n/mxCls*100).toFixed(1)+'%;background:'+col+'"></div></div>'
+      +'<div style="font-size:10px;color:var(--mut);min-width:20px;text-align:right">'+n+'</div>'
+      +'</div>';
+  }).join('');
+
+  // Sex chart
+  const tot = hCats.length||1;
+  document.getElementById('sx-chart').innerHTML=`
+    <div class="br fem"><div class="bl">Female</div><div class="bt"><div class="bf" style="width:${(f/tot*100).toFixed(1)}%" data-v="${f}"></div></div></div>
+    <div class="br mal"><div class="bl">Male</div><div class="bt"><div class="bf" style="width:${(m/tot*100).toFixed(1)}%" data-v="${m}"></div></div></div>
+    <div class="br neu"><div class="bl">Neutral</div><div class="bt"><div class="bf" style="background:var(--neu);width:${(n/tot*100).toFixed(1)}%" data-v="${n}"></div></div></div>
+  `;
+
+  // Top skills (in-house cats only)
+  const sk={}, mu={};
+  for (const c of hCats) {
+    for (const s of c.skills) sk[s]=(sk[s]||0)+1;
+    for (const m of c.mutations) mu[m]=(mu[m]||0)+1;
+  }
+  const topSk = Object.entries(sk).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const topMu = Object.entries(mu).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const mxSk = topSk[0]?.[1]||1, mxMu = topMu[0]?.[1]||1;
+  document.getElementById('sk-chart').innerHTML=topSk.map(([s,n])=>
+    `<div class="br"><div class="bl">${s}</div><div class="bt"><div class="bf" style="width:${(n/mxSk*100).toFixed(1)}%;background:var(--mal)" data-v="${n}"></div></div></div>`
+  ).join('');
+  document.getElementById('mu-chart').innerHTML=topMu.map(([m,n])=>
+    `<div class="br"><div class="bl">${m}</div><div class="bt"><div class="bf" style="width:${(n/mxMu*100).toFixed(1)}%;background:var(--a2)" data-v="${n}"></div></div></div>`
+  ).join('');
+
+  // Avg stats for in-house cats
+  const SN=['str','dex','con','int','spd','cha','lck'];
+  const avgs={};
+  for(const s of SN) avgs[s]=hCats.length ? hCats.reduce((a,c)=>a+c.stats[s]+c.statsLvl[s]+c.statsInj[s],0)/hCats.length : 0;
+  const mx = Math.max(...Object.values(avgs))||1;
+  document.getElementById('st-chart').innerHTML=SN.map(s=>
+    `<div class="br"><div class="bl">${s.toUpperCase()}</div><div class="bt"><div class="bf" style="width:${(avgs[s]/mx*100).toFixed(1)}%;background:var(--a3)" data-v="${avgs[s].toFixed(1)}"></div></div></div>`
+  ).join('');
+
+
+}
+
+// ═══════════════════════════════════════════
+// Cat Pages
+// ═══════════════════════════════════════════
+function navFilter(key) {
+  // Navigate to cats page if not already there
+  if (!document.getElementById('p-cats').classList.contains('act')) go('cats');
+  // Clear all filters, then set just this one (unless it was already the only one)
+  const wasOnly = activeFilters.has(key) && activeFilters.size === 1;
+  activeFilters.clear();
+  document.querySelectorAll('#fp-cats .fp').forEach(p => p.classList.remove('on'));
+  if (!wasOnly) {
+    activeFilters.add(key);
+    const pill = document.querySelector(`#fp-cats [data-flt="${key}"]`);
+    if (pill) pill.classList.add('on');
+  }
+  catPage = 1;
+  rdrCats();
+  updateNavFilterButtons();
+}
+
+function updateNavFilterButtons() {
+  // In House / Veterans: highlight only when that filter is the sole active filter
+  document.getElementById('nav-house').classList.toggle('on', activeFilters.has('house') && activeFilters.size === 1);
+  document.getElementById('nav-vet').classList.toggle('on',   activeFilters.has('vet')   && activeFilters.size === 1);
+  // All Cats: highlight when NO filters are active, or when any filter OTHER than house/vet is active
+  const onlySimple = activeFilters.size === 0 || [...activeFilters].some(k => k !== 'house' && k !== 'vet');
+  document.querySelector('[data-p="cats"]').classList.toggle('on', onlySimple);
+}
+
+function bFPs(){
+  const rooms = getRooms();
+  const el = document.getElementById('fp-cats');
+  if (!el) return;
+  const pills = [
+    {key:'house',  label:'🏠 In House'},
+    {key:'vet',    label:'⚔ Veterans'},
+    {key:'mut',    label:'Has Mutations'},
+    {key:'pass',   label:'Has Passives'},
+    ...rooms.map(r => ({key:'room:'+r, label:roomLabel(r)}))
+  ];
+  el.innerHTML = pills.map(p =>
+    `<span class="fp${p.key==='house'?' fh':''}" data-flt="${p.key}" onclick="toggleFlt('${p.key}',this)">${p.label}</span>`
+  ).join('');
+}
+
+function toggleFlt(key, el) {
+  if (activeFilters.has(key)) { activeFilters.delete(key); el.classList.remove('on'); }
+  else { activeFilters.add(key); el.classList.add('on'); }
+  catPage = 1;
+  rdrCats();
+  updateNavFilterButtons();
+}
+
+function rdrCats() {
+  const q = (document.getElementById('s-cats')?.value||'').toLowerCase();
+  const srt = document.getElementById('so-cats')?.value||'id-d';
+
+  // Active room filters
+  const roomFilters = [...activeFilters].filter(k=>k.startsWith('room:')).map(k=>k.slice(5));
+
+  let list = CATS.filter(c => {
+    if (activeFilters.has('house') && !inHouse(c)) return false;
+    if (activeFilters.has('vet')   && !isVeteran(c)) return false;
+    if (activeFilters.has('mut')   && c.mutations.length===0) return false;
+    if (activeFilters.has('pass')  && c.passives.length===0) return false;
+    if (roomFilters.length && !roomFilters.includes(ROOM_MAP.get(c.id))) return false;
+    if (!q) return true;
+    return c.name.toLowerCase().includes(q)
+      || c.skills.some(s=>s.toLowerCase().includes(q))
+      || c.mutations.some(m=>m.toLowerCase().includes(q))
+      || c.passives.some(p=>p.toLowerCase().includes(q))
+      || c.move.toLowerCase().includes(q);
+  });
+
+  if (srt==='id-d')    list=[...list].sort((a,b)=>b.id-a.id);
+  else if(srt==='id-a')list=[...list].sort((a,b)=>a.id-b.id);
+  else if(srt==='name')list=[...list].sort((a,b)=>a.name.localeCompare(b.name));
+  else if(srt==='age-d')list=[...list].sort((a,b)=>catAge(b)-catAge(a));
+  else if(srt==='age-a')list=[...list].sort((a,b)=>catAge(a)-catAge(b));
+  else if(srt==='lvl-d')list=[...list].sort((a,b)=>b.level-a.level);
+
+  const tot=list.length, np=Math.ceil(tot/PER);
+  const sl=list.slice((catPage-1)*PER, catPage*PER);
+
+  const ce=document.getElementById('cnt-cats'); if(ce) ce.textContent=tot+' cats';
+  document.getElementById('cg-cats').innerHTML=sl.map(cHTML).join('');
+
+  const pe=document.getElementById('pg-cats');
+  if(pe&&np>1){
+    let h=`<button class="pb" onclick="gPg(${catPage-1})" ${catPage<=1?'disabled':''}>‹</button>`;
+    const s=Math.max(1,catPage-2),e=Math.min(np,catPage+2);
+    for(let p=s;p<=e;p++) h+=`<button class="pb ${p===catPage?'on':''}" onclick="gPg(${p})">${p}</button>`;
+    h+=`<button class="pb" onclick="gPg(${catPage+1})" ${catPage>=np?'disabled':''}>›</button>`;
+    h+=`<span class="cb2"> ${catPage}/${np}</span>`;
+    pe.innerHTML=h;
+  } else if(pe) pe.innerHTML='';
+}
+
+function gPg(p){catPage=p;rdrCats();}
+
+function cHTML(c){
+  const isH=inHouse(c);
+  const age=catAge(c);
+  const tags=[
+    ...Object.entries(getVisualMuts(c)).map(([slot,name])=>`<span class="tg vmut" title="${slot}">${name}</span>`),
+    ...c.mutations.map(m=>`<span class="tg mut">${m}</span>`),
+    ...c.passives.map(p=>`<span class="tg pass">${p}</span>`),
+    ...c.skills.slice(0,3).map(s=>`<span class="tg">${s}</span>`),
+  ].join('');
+  return`<div class="cc ${isH?'inh':''}" onclick="oCat(${c.id})">
+    <div class="ct"><span class="cn">${c.name}</span><span class="ci">#${c.id}</span></div>
+    <div class="cm">
+      <span class="sb ${c.sex}">${c.sex==='female'?'♀':c.sex==='male'?'♂':'?'}</span>
+      <span class="ab">day ${age}</span>
+      <span class="ab">${c.move.replace('Basic','').replace('_',' ').replace(/([A-Z])/g,' $1').trim().split(' ')[0]||'—'}</span>
+      ${isH&&catRoom(c)?'<span class="htag" style="background:rgba(162,155,254,.12);border-color:rgba(162,155,254,.4);color:var(--neu)">'+roomLabel(catRoom(c))+'</span>':''}
+      ${isVeteran(c)?'<span class="htag" style="background:rgba(255,217,61,.1);border-color:rgba(255,217,61,.5);color:var(--a4)">⚔ Lv'+c.level+'</span>':''}
+      ${isH?'<span class="htag">🏠</span>':''}${onAdventure(c)?'<span class="htag" style="background:rgba(58,240,196,.12);border-color:rgba(58,240,196,.4);color:var(--a3)">⚔️</span>':''}
+    </div>
+    <div class="tgs">${tags}</div>
+  </div>`;
+}
+
+function oCat(id){
+  const c=CATS.find(x=>x.id===id);if(!c)return;
+  const isH=inHouse(c);
+  const age=catAge(c);
+  document.getElementById('mhdr').className='mh '+(isH?'inh':'reg');
+  document.getElementById('mn').textContent=c.name+(isH?' 🏠':'');
+  document.getElementById('mn').style.color=isH?'var(--house)':'var(--acc)';
+
+  const SN=['str','dex','con','int','spd','cha','lck'];
+  const vmods = getVisualStatMods(c);
+  const MAX_STAT = 25;
+  const statRows=SN.map(s=>{
+    const base=c.stats[s];
+    const lvl=c.statsLvl[s]||0;
+    const inj=c.statsInj[s]||0;
+    const vmut=vmods[s]||0;
+    const total=base+lvl+inj+vmut;
+
+    const gains  = Math.max(0,lvl)  + Math.max(0,vmut);
+    const losses = Math.abs(Math.min(0,inj)) + Math.abs(Math.min(0,vmut));
+    const effBase   = Math.max(0, base - losses);
+    const basePct   = Math.min(effBase   / MAX_STAT * 100, 100).toFixed(1);
+    const lossPct   = Math.min(losses    / MAX_STAT * 100, 100).toFixed(1);
+    const gainLeft  = (base / MAX_STAT * 100).toFixed(1);
+    const gainPct   = Math.min(gains     / MAX_STAT * 100, 100).toFixed(1);
+    const lossLeft  = (effBase / MAX_STAT * 100).toFixed(1);
+
+    // Build bar HTML using string concat to avoid nested template issues
+    let barHtml = '';
+    if (total <= 0) {
+      barHtml = '<div style="position:absolute;inset:0;background:var(--fem);opacity:.7"></div>';
+    } else {
+      barHtml  = '<div style="position:absolute;left:0;top:0;bottom:0;width:'+basePct+'%;background:var(--a3);opacity:.55"></div>';
+      if (losses) barHtml += '<div style="position:absolute;left:'+lossLeft+'%;top:0;bottom:0;width:'+lossPct+'%;background:var(--fem);opacity:.8"></div>';
+      if (gains)  barHtml += '<div style="position:absolute;left:'+gainLeft+'%;top:0;bottom:0;width:'+gainPct+'%;background:var(--a3);opacity:.9"></div>';
+    }
+
+    // Breakdown label
+    const mods = [];
+    if (lvl)  mods.push('<span style="color:var(--a3)">'+(lvl>0?'+':'')+lvl+'</span>');
+    if (inj)  mods.push('<span style="color:var(--fem)">'+inj+'</span>');
+    if (vmut) mods.push('<span style="color:var(--acc)">'+(vmut>0?'+':'')+vmut+'</span>');
+    const breakdown = mods.length ? '<span style="color:var(--mut)">('+base+mods.join('')+')</span>' : '';
+
+    const totalColor = total<base ? 'var(--fem)' : total>base ? 'var(--a3)' : 'var(--txt)';
+
+    return '<div class="stat-row">'
+      + '<div class="stat-name">'+s.toUpperCase()+'</div>'
+      + '<div class="stat-bar" style="position:relative;overflow:visible">'+barHtml+'</div>'
+      + '<div class="stat-val" style="color:'+totalColor+'">'+total+'</div>'
+      + '<div style="font-size:10px;min-width:60px">'+breakdown+'</div>'
+      + '</div>';
+  }).join('');
+
+  document.getElementById('mb').innerHTML=`
+    <div class="mr">
+      <div class="mf"><div class="lb">Sex</div><div class="vl s-${c.sex}">${c.sex}</div></div>
+      <div class="mf"><div class="lb">Age</div><div class="vl">Day ${age}</div></div>
+      <div class="mf"><div class="lb">Level</div><div class="vl" style="color:${isVeteran(c)?'var(--a4)':'var(--txt)'}">${c.level}${isVeteran(c)?' ⚔':''}</div></div>
+      <div class="mf"><div class="lb">Inbredness</div><div class="vl">${(c.coi*100).toFixed(2)}%</div></div>
+    </div>
+    <div class="mr">
+      <div class="mf"><div class="lb">Move</div><div class="vl" style="color:var(--mal);font-size:12px">${c.move||'—'}</div></div>
+      ${catRoom(c)?`<div class="mf"><div class="lb">Room</div><div class="vl" style="color:var(--neu);font-size:12px">${roomLabel(catRoom(c))}</div></div>`:''}
+      ${c.collar?`<div class="mf"><div class="lb">Collar</div><div class="vl" style="font-size:12px">${c.collar}</div></div>`:''}
+    </div>
+    <div class="ms"><h3>STATS</h3>${statRows}</div>
+    ${(()=>{const vm=getVisualMuts(c);const entries=Object.entries(vm);return entries.length?`<div class="ms"><h3>VISUAL MUTATIONS</h3><div style="display:flex;flex-wrap:wrap;gap:6px">${entries.map(([slot,name])=>`<span class="apill vmut"><span style="opacity:.6;font-size:10px">${slot}: </span>${name}</span>`).join('')}</div></div>`:''})()}
+    ${c.skills.length?`<div class="ms"><h3>SKILLS</h3><div style="display:flex;flex-wrap:wrap;gap:6px">${c.skills.map(s=>`<span class="apill mv">${s}</span>`).join('')}</div></div>`:''}
+    ${c.mutations.length?`<div class="ms"><h3>MUTATIONS</h3><div style="display:flex;flex-wrap:wrap;gap:6px">${c.mutations.map(m=>`<span class="apill mut">${m}</span>`).join('')}</div></div>`:''}
+    ${c.passives.length?`<div class="ms"><h3>PASSIVES</h3><div style="display:flex;flex-wrap:wrap;gap:6px">${c.passives.map(p=>`<span class="apill pass">${p}</span>`).join('')}</div></div>`:''}
+    <div class="ms"><h3>PERSONALITY</h3>
+      <div class="mr">
+        <div class="mf"><div class="lb">Libido</div><div class="vl">${c.libido}</div></div>
+        <div class="mf"><div class="lb">Sexuality</div><div class="vl">${c.sexuality}</div></div>
+        <div class="mf"><div class="lb">Aggression</div><div class="vl">${c.aggression}</div></div>
+      </div>
+      ${c.loverKey?`<div class="mr"><div class="mf"><div class="lb">Lover</div><div class="vl" style="cursor:pointer;color:var(--fem)" onclick="document.getElementById('mov').classList.remove('open');oCat(${c.loverKey})">#${c.loverKey} — ${CATS.find(x=>x.id===c.loverKey)?.name||'?'}</div></div></div>`:''}
+      ${c.haterKey?`<div class="mr"><div class="mf"><div class="lb">Rival</div><div class="vl" style="cursor:pointer;color:var(--acc)" onclick="document.getElementById('mov').classList.remove('open');oCat(${c.haterKey})">#${c.haterKey} — ${CATS.find(x=>x.id===c.haterKey)?.name||'?'}</div></div></div>`:''}
+    </div>
+  `;
+  document.getElementById('mov').classList.add('open');
+}
+function cMod(e){if(e.target===document.getElementById('mov'))document.getElementById('mov').classList.remove('open');}
+
+// ═══════════════════════════════════════════
+// Other pages
+// ═══════════════════════════════════════════
+
+function rPr(){
+  const q=(document.getElementById('s-pr')?.value||'').toLowerCase();
+  const fl=PROPS.filter(p=>!q||p.key.toLowerCase().includes(q)||p.val.toLowerCase().includes(q));
+  document.getElementById('pcnt').textContent=fl.length+' / '+PROPS.length;
+  document.getElementById('pt').innerHTML=fl.map(p=>`<tr><td>${p.key}</td><td>${p.val}</td></tr>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// Navigation
+// ═══════════════════════════════════════════
+const lazyPages={cats:rdrCats, prop:rPr};
+function go(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('act'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('on'));
+  document.getElementById('p-'+n).classList.add('act');
+  document.querySelector('[data-p="'+n+'"]').classList.add('on');
+  if(lazyPages[n])lazyPages[n]();
+}
+
+// ═══════════════════════════════════════════
+// File Input
+// ═══════════════════════════════════════════
+function hFile(f){if(!f)return;const r=new FileReader();r.onload=e=>loadFile(e.target.result);r.readAsArrayBuffer(f);}
+document.getElementById('fi').addEventListener('change',e=>hFile(e.target.files[0]));
+const dz=document.getElementById('dropz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dov')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('dov'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dov');hFile(e.dataTransfer.files[0]);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('mov').classList.remove('open')});
+</script>
+</body>
+</html>
