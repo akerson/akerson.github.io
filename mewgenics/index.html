@@ -54,6 +54,12 @@ nav button.on{color:var(--acc);background:rgba(255,107,53,.06);border-left:2px s
 nav button.hbtn{color:var(--house) !important;opacity:.85}
 nav button.hbtn:hover{opacity:1;background:rgba(255,217,61,.05)}
 nav button.hbtn.on{color:var(--house);background:rgba(255,217,61,.08);border-left:2px solid var(--house)}
+nav button.abtn{color:var(--acc);opacity:.8}
+nav button.abtn:hover{opacity:1;background:rgba(255,107,53,.06)}
+nav button.abtn.on{color:var(--acc);background:rgba(255,107,53,.06);border-left:2px solid var(--acc)}
+nav button.vbtn{color:var(--a4);opacity:.8}
+nav button.vbtn:hover{opacity:1;background:rgba(255,217,61,.05)}
+nav button.vbtn.on{color:var(--a4);background:rgba(255,217,61,.08);border-left:2px solid var(--a4)}
 .ni{font-size:14px;min-width:16px}
 .nbadge{margin-left:auto;font-size:9px;padding:2px 6px;background:rgba(255,217,61,.15);color:var(--house);border:1px solid rgba(255,217,61,.3)}
 
@@ -99,9 +105,9 @@ select:focus{border-color:var(--acc)}
 .cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:8px}
 .cc{background:var(--panel);border:1px solid var(--bdr);padding:11px 13px;cursor:pointer;transition:border-color .12s,transform .1s;position:relative}
 .cc:hover{border-color:var(--acc);transform:translateY(-1px)}
-.cc.inh{border-color:rgba(255,217,61,.25)}
+.cc.inh{border-color:rgba(255,217,61,.35);background:rgba(255,217,61,.03)}
 .cc.inh:hover{border-color:var(--house)}
-.cc.inh::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--house)}
+.cc.inh::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--house)}
 .ct{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
 .cn{font-family:'Silkscreen',monospace;font-size:12px}
 .ci{font-size:9px;color:var(--mut)}
@@ -197,9 +203,9 @@ select:focus{border-color:var(--acc)}
       <div class="ns">Overview</div>
       <button class="on" onclick="go('sum')" data-p="sum"><span class="ni">📊</span>Summary</button>
       <div class="ns">Cats</div>
-      <button onclick="go('cats')" data-p="cats"><span class="ni">🐈</span>All Cats<span class="nbadge" id="nbadge-all">—</span></button>
+      <button class="abtn" onclick="activeFilters.clear();catSearch='';catPage=1;document.querySelectorAll('#fp-cats .fp').forEach(p=>p.classList.remove('on'));updateNavFilterButtons();go('cats')" data-p="cats"><span class="ni">🐈</span>All Cats<span class="nbadge" id="nbadge-all">—</span></button>
       <button class="hbtn" id="nav-house" onclick="navFilter('house')"><span class="ni">🏠</span>In House<span class="nbadge" id="nbadge-house">—</span></button>
-      <button id="nav-vet" onclick="navFilter('vet')"><span class="ni">⚔</span>Veterans<span class="nbadge" id="nbadge-vet">—</span></button>
+      <button class="vbtn" id="nav-vet" onclick="navFilter('vet')"><span class="ni">⚔️</span>Veterans<span class="nbadge" id="nbadge-vet">—</span></button>
 
       <div class="ns">Data</div>
       <button onclick="go('prop')" data-p="prop"><span class="ni">⚙️</span>Properties</button>
@@ -212,13 +218,17 @@ select:focus{border-color:var(--acc)}
         <h2>⚔ VETERANS</h2>
         <div class="cr" id="vet-summary-row">
           <div class="cb"><h3>COLLAR BREAKDOWN</h3><div class="bc" id="cls-chart"></div></div>
-        </div>
-        <div class="cr">
-          <div class="cb"><h3>SEX DISTRIBUTION</h3><div class="bc" id="sx-chart"></div>
-            <div style="margin-top:18px"><h3>TOP SKILLS</h3></div><div class="bc" id="sk-chart"></div>
+          <div class="cb"><h3>TOP 5 ABILITIES</h3><div class="bc" id="vet-sk-chart"></div>
+            <div style="margin-top:18px"><h3>TOP 5 PASSIVES</h3></div><div class="bc" id="vet-pass-chart"></div>
           </div>
-          <div class="cb"><h3>TOP MUTATIONS</h3><div class="bc" id="mu-chart"></div>
-            <div style="margin-top:18px"><h3>STAT AVERAGES (in-house)</h3></div><div class="bc" id="st-chart"></div>
+        </div>
+        <h2>🏠 HOUSE CATS</h2>
+        <div class="cr">
+          <div class="cb"><h3>MUTATION DISTRIBUTION</h3><div id="mu-dist"></div>
+          </div>
+          <div class="cb"><h3>SEX DISTRIBUTION</h3><div class="bc" id="sx-chart"></div>
+            <div style="margin-top:18px"><h3>TOP 5 ABILITIES</h3></div><div class="bc" id="sk-chart"></div>
+            <div style="margin-top:18px"><h3>TOP 5 PASSIVES</h3></div><div class="bc" id="hpass-chart"></div>
           </div>
         </div>
 
@@ -471,13 +481,38 @@ function passiveDesc(key) {
 
 // Ability lookup helpers
 // Save stores "SlipThrough", CSV key is "ABILITY_SLIPTHROUGH"
+// Internal save keys that differ from their CSV ability names
+const ABILITY_ALIASES = {
+  'FORCEBLAST': 'GRAVITYBLAST',
+  'FORCECONE':  'GRAVITYWAVE',
+};
+
 function abilityName(key) {
-  const n = ABILITY_NAMES['ABILITY_' + key.toUpperCase()] || key;
-  return toTitleCase(n);
+  const resolvedKey = ABILITY_ALIASES[key.toUpperCase()] || key.toUpperCase();
+  // Check for exact match first
+  const exact = ABILITY_NAMES['ABILITY_' + resolvedKey];
+  if (exact) return toTitleCase(exact);
+  // Upgraded abilities end in a number (e.g. Telekinesis2) -> base name + "+"
+  const upgraded = key.match(/^(.+?)(\d+)$/);
+  if (upgraded) {
+    const baseKey = ABILITY_ALIASES[upgraded[1].toUpperCase()] || upgraded[1].toUpperCase();
+    const base = ABILITY_NAMES['ABILITY_' + baseKey];
+    if (base) return toTitleCase(base) + '+';
+  }
+  // Fall back: split camelCase into words and title-case
+  return toTitleCase(key.replace(/([A-Z])/g, ' $1').trim());
 }
 function abilityDesc(key) {
-  const raw = ABILITY_DESCS['ABILITY_' + key.toUpperCase()] || '';
-  // Strip [s:N] scale tags and [/s] closing tags, keep the inner text
+  const resolvedKey = ABILITY_ALIASES[key.toUpperCase()] || key.toUpperCase();
+  // Also handle upgraded (e.g. Telekinesis2 -> TELEKINESIS base desc)
+  let raw = ABILITY_DESCS['ABILITY_' + resolvedKey] || '';
+  if (!raw) {
+    const upgraded = key.match(/^(.+?)(\d+)$/);
+    if (upgraded) {
+      const baseKey = ABILITY_ALIASES[upgraded[1].toUpperCase()] || upgraded[1].toUpperCase();
+      raw = ABILITY_DESCS['ABILITY_' + baseKey] || '';
+    }
+  }
   return raw.replace(/\[s:[^\]]+\]/g, '').replace(/\[\/s\]/g, '').trim();
 }
 
@@ -753,7 +788,7 @@ function reloadUI(){
 const gp = k => PROPS.find(p=>p.key===k)?.val||'0';
 const catAge = c => CURRENT_DAY - c.birthday;
 const onAdventure = c => !!(c.statusFlags & 0x8000);
-const isVeteran   = c => c.level > 0;
+const isVeteran   = c => !!(c.statusFlags & 0x2);
 const inHouse = c => HOUSE_IDS.has(c.id);
 const catRoom = c => ROOM_MAP.get(c.id) || null;
 // Room name lookup and display order
@@ -779,14 +814,14 @@ function rSum(){
   const m = hCats.filter(c=>c.sex==='male').length;
   const n = hCats.filter(c=>c.sex==='neutral').length;
   document.getElementById('hs').innerHTML=
-    `<div class="hp hh">🏠 <strong>${HOUSE_IDS.size}</strong></div>`+
+    `<div class="hp hh">🐱 <strong>${HOUSE_IDS.size}</strong></div>`+
     `<div class="hp">Day <strong>${gp('current_day')}</strong></div>`+
     `<div class="hp">Gold <strong>${gp('house_gold')}</strong></div>`+
     `<div class="hp">Food <strong>${gp('house_food')}</strong></div>`+
     `<div class="hp">Save <strong>${gp('save_file_percent')}%</strong></div>`;
 
   document.getElementById('sg').innerHTML=[
-    {l:'In House',    v:HOUSE_IDS.size, c:'ch'},
+    {l:'Cats in House', v:HOUSE_IDS.size, c:'ch'},
     {l:'Current Day', v:gp('current_day'), c:''},
     {l:'House Gold',  v:gp('house_gold'), c:'c2'},
     {l:'House Food',  v:gp('house_food'), c:'c3'},
@@ -798,7 +833,7 @@ function rSum(){
   ].map(c=>`<div class="sc ${c.c}"><div class="lb">${c.l}</div><div class="vl">${c.v}</div></div>`).join('');
 
   // Veterans class breakdown
-  const vets = CATS.filter(c => c.level > 0);
+  const vets = CATS.filter(isVeteran);
   const clsCounts = {};
   for (const c of vets) {
     const cls = c.collar || 'Colorless';
@@ -821,12 +856,33 @@ function rSum(){
       +'</div>';
   }).join('');
 
+  // Top 5 abilities and passives for veterans
+  const vetSk = {}, vetPass = {};
+  for (const c of vets) {
+    for (const s of c.skills) vetSk[s] = (vetSk[s]||0)+1;
+    for (const p of c.passives) vetPass[p] = (vetPass[p]||0)+1;
+  }
+  const topVetSk   = Object.entries(vetSk).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const topVetPass = Object.entries(vetPass).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const mxVetSk   = topVetSk[0]?.[1]  || 1;
+  const mxVetPass = topVetPass[0]?.[1] || 1;
+  document.getElementById('vet-sk-chart').innerHTML = topVetSk.map(([s,n]) =>
+    '<div class="br"><div class="bl" title="'+abilityName(s)+'">'+abilityName(s)+'</div>'
+    +'<div class="bt"><div class="bf" style="width:'+(n/mxVetSk*100).toFixed(1)+'%;background:var(--mal)"></div></div>'
+    +'<div style="font-size:10px;color:var(--mut);min-width:20px;text-align:right">'+n+'</div></div>'
+  ).join('') || '<div style="opacity:.4;font-size:12px">No data</div>';
+  document.getElementById('vet-pass-chart').innerHTML = topVetPass.map(([p,n]) =>
+    '<div class="br"><div class="bl" title="'+passiveName(p)+'">'+passiveName(p)+'</div>'
+    +'<div class="bt"><div class="bf" style="width:'+(n/mxVetPass*100).toFixed(1)+'%;background:var(--a3)"></div></div>'
+    +'<div style="font-size:10px;color:var(--mut);min-width:20px;text-align:right">'+n+'</div></div>'
+  ).join('') || '<div style="opacity:.4;font-size:12px">No data</div>';
+
   // Sex chart
   const tot = hCats.length||1;
   document.getElementById('sx-chart').innerHTML=`
-    <div class="br fem"><div class="bl">Female</div><div class="bt"><div class="bf" style="width:${(f/tot*100).toFixed(1)}%" data-v="${f}"></div></div></div>
-    <div class="br mal"><div class="bl">Male</div><div class="bt"><div class="bf" style="width:${(m/tot*100).toFixed(1)}%" data-v="${m}"></div></div></div>
-    <div class="br neu"><div class="bl">Neutral</div><div class="bt"><div class="bf" style="background:var(--neu);width:${(n/tot*100).toFixed(1)}%" data-v="${n}"></div></div></div>
+    <div class="br fem"><div class="bl">Female</div><div class="bt"><div class="bf" style="width:${(f/tot*100).toFixed(1)}%"></div></div><div style="font-size:10px;color:var(--mut);min-width:20px;text-align:right">${f}</div></div>
+    <div class="br mal"><div class="bl">Male</div><div class="bt"><div class="bf" style="width:${(m/tot*100).toFixed(1)}%"></div></div><div style="font-size:10px;color:var(--mut);min-width:20px;text-align:right">${m}</div></div>
+    <div class="br neu"><div class="bl">Neutral</div><div class="bt"><div class="bf" style="background:var(--neu);width:${(n/tot*100).toFixed(1)}%"></div></div><div style="font-size:10px;color:var(--mut);min-width:20px;text-align:right">${n}</div></div>
   `;
 
   // Top skills (in-house cats only)
@@ -835,24 +891,53 @@ function rSum(){
     for (const s of c.skills) sk[s]=(sk[s]||0)+1;
     for (const m of c.mutations) mu[m]=(mu[m]||0)+1;
   }
-  const topSk = Object.entries(sk).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  const topMu = Object.entries(mu).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  const mxSk = topSk[0]?.[1]||1, mxMu = topMu[0]?.[1]||1;
+  const topSk = Object.entries(sk).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const mxSk = topSk[0]?.[1]||1;
   document.getElementById('sk-chart').innerHTML=topSk.map(([s,n])=>
-    `<div class="br"><div class="bl">${s}</div><div class="bt"><div class="bf" style="width:${(n/mxSk*100).toFixed(1)}%;background:var(--mal)" data-v="${n}"></div></div></div>`
-  ).join('');
-  document.getElementById('mu-chart').innerHTML=topMu.map(([m,n])=>
-    `<div class="br"><div class="bl">${m}</div><div class="bt"><div class="bf" style="width:${(n/mxMu*100).toFixed(1)}%;background:var(--a2)" data-v="${n}"></div></div></div>`
+    '<div class="br"><div class="bl" title="'+abilityName(s)+'">'+abilityName(s)+'</div><div class="bt"><div class="bf" style="width:'+(n/mxSk*100).toFixed(1)+'%;background:var(--mal)"></div></div><div style="font-size:10px;color:var(--mut);min-width:20px;text-align:right">'+n+'</div></div>'
   ).join('');
 
-  // Avg stats for in-house cats
-  const SN=['str','dex','con','int','spd','cha','lck'];
-  const avgs={};
-  for(const s of SN) avgs[s]=hCats.length ? hCats.reduce((a,c)=>a+c.stats[s]+c.statsLvl[s]+c.statsInj[s],0)/hCats.length : 0;
-  const mx = Math.max(...Object.values(avgs))||1;
-  document.getElementById('st-chart').innerHTML=SN.map(s=>
-    '<div class="br"><div class="bl">'+s.toUpperCase()+'</div><div class="bt"><div class="bf" style="width:'+(avgs[s]/mx*100).toFixed(1)+'%;background:var(--a3)" data-v="'+avgs[s].toFixed(1)+'"></div></div><div style="font-size:10px;color:var(--mut);min-width:28px">'+avgs[s].toFixed(1)+'</div></div>'
-  ).join('');
+  // Top 5 passives for in-house cats
+  const hPass = {};
+  for (const c of hCats) {
+    for (const p of c.passives) hPass[p] = (hPass[p]||0)+1;
+  }
+  const topHPass = Object.entries(hPass).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const mxHPass = topHPass[0]?.[1]||1;
+  document.getElementById('hpass-chart').innerHTML=topHPass.map(([p,n])=>
+    '<div class="br"><div class="bl" title="'+passiveName(p)+'">'+passiveName(p)+'</div><div class="bt"><div class="bf" style="width:'+(n/mxHPass*100).toFixed(1)+'%;background:var(--a3)"></div></div><div style="font-size:10px;color:var(--mut);min-width:20px;text-align:right">'+n+'</div></div>'
+  ).join('') || '<div style="opacity:.4;font-size:12px">No data</div>';
+
+  // Mutation distribution by body part
+  // getVisualMuts returns keys like 'Fur','Body','Head' etc - use those directly
+  const DIST_SLOTS = ['Fur','Body','Head','Tail','Legs','Arms','Eyes','Eyebrows','Ears','Mouth'];
+  const slotCounts = {};
+  for (const c of hCats) {
+    const vm = getVisualMuts(c);
+    for (const [slot, {name, isBD}] of Object.entries(vm)) {
+      if (!slotCounts[slot]) slotCounts[slot] = {};
+      slotCounts[slot][name] = (slotCounts[slot][name] || 0) + 1;
+      // store isBD per name for colouring
+      if (!slotCounts[slot].__bd) slotCounts[slot].__bd = {};
+      slotCounts[slot].__bd[name] = isBD;
+    }
+  }
+  const muDistHtml = DIST_SLOTS.map(slot => {
+    const counts = slotCounts[slot];
+    if (!counts) return '';
+    const sorted = Object.entries(counts).filter(([k])=>k!=='__bd').sort((a,b)=>b[1]-a[1]);
+    if (!sorted.length) return '';
+    const mx = sorted[0][1];
+    const bars = sorted.map(([name, n]) => {
+      const col = counts.__bd?.[name] ? 'var(--fem)' : 'var(--acc)';
+      return '<div class="br"><div class="bl" style="font-size:11px" title="'+name+'">'+name+'</div>'
+        +'<div class="bt"><div class="bf" style="width:'+(n/mx*100).toFixed(1)+'%;background:'+col+'"></div></div>'
+        +'<div style="font-size:10px;color:var(--mut);min-width:20px;text-align:right">'+n+'</div></div>';
+    }).join('');
+    return '<div style="margin-bottom:14px"><div style="font-size:10px;font-weight:600;color:var(--txt);opacity:.5;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">'+slot+'</div>'
+      +'<div class="bc">'+bars+'</div></div>';
+  }).join('');
+  document.getElementById('mu-dist').innerHTML = muDistHtml || '<div style="opacity:.4;font-size:12px">No mutations in house</div>';
 
 
 }
@@ -892,9 +977,8 @@ function bFPs(){
   if (!el) return;
   const pills = [
     {key:'house',  label:'🏠 In House'},
-    {key:'vet',    label:'⚔ Veterans'},
-    {key:'mut',    label:'Has Mutations'},
-    {key:'pass',   label:'Has Passives'},
+    {key:'vet',    label:'⚔️ Veterans'},
+    {key:'bd',     label:'Birth Defects'},
     ...rooms.map(r => ({key:'room:'+r, label:roomLabel(r)}))
   ];
   el.innerHTML = pills.map(p =>
@@ -920,8 +1004,7 @@ function rdrCats() {
   let list = CATS.filter(c => {
     if (activeFilters.has('house') && !inHouse(c)) return false;
     if (activeFilters.has('vet')   && !isVeteran(c)) return false;
-    if (activeFilters.has('mut')   && c.mutations.length===0) return false;
-    if (activeFilters.has('pass')  && c.passives.length===0) return false;
+    if (activeFilters.has('bd') && !Object.values(getVisualMuts(c)).some(m=>m.isBD)) return false;
     if (roomFilters.length && !roomFilters.includes(ROOM_MAP.get(c.id))) return false;
     if (!q) return true;
     return c.name.toLowerCase().includes(q)
@@ -959,22 +1042,24 @@ function gPg(p){catPage=p;rdrCats();}
 
 function cHTML(c){
   const isH=inHouse(c);
+  const isAccessible=HOUSE_IDS.has(c.id);
   const age=catAge(c);
+  const sexSym = c.sex==='female'?'♀':c.sex==='male'?'♂':'?';
   const tags=[
     ...Object.entries(getVisualMuts(c)).map(([slot,{name,tip,isBD}])=>'<span class="tg '+(isBD?'bdef':'vmut')+(tip?' tt':'')+'"'+(tip?' data-tip="'+tip.replace(/"/g,"'")+'"':'')+'>'+name+'</span>'),
     ...c.mutations.map(m=>'<span class="tg mut'+(passiveDesc(m)?' tt':'')+'"'+(passiveDesc(m)?' data-tip="'+passiveDesc(m).replace(/"/g,"'")+ '"':'')+'>'+passiveName(m)+'</span>'),
-    ...c.passives.map(p=>`<span class="tg pass">${p}</span>`),
+    ...c.passives.map(p=>'<span class="tg pass">'+passiveName(p)+'</span>'),
     ...c.skills.slice(0,3).map(s=>'<span class="tg mv'+(abilityDesc(s)?' tt':'')+'"'+(abilityDesc(s)?' data-tip="'+abilityDesc(s).replace(/"/g,"'")+'"':'')+'>'+abilityName(s)+'</span>'),
   ].join('');
-  return`<div class="cc ${isH?'inh':''}" onclick="oCat(${c.id})">
-    <div class="ct"><span class="cn">${c.name}</span><span class="ci">#${c.id}</span></div>
+  return`<div class="cc ${isAccessible?'inh':''}" onclick="oCat(${c.id})">
+    <div class="ct">
+      <span class="cn"><span class="s-${c.sex}" style="font-size:11px;margin-right:5px">${sexSym}</span>${c.name}${isVeteran(c)?'<span style="font-size:10px;margin-left:5px;opacity:.75;color:var(--a4)">⚔️</span>':''}</span>
+      <span class="ci">#${c.id}</span>
+    </div>
     <div class="cm">
-      <span class="sb ${c.sex}">${c.sex==='female'?'♀':c.sex==='male'?'♂':'?'}</span>
-      <span class="ab">day ${age}</span>
-      <span class="ab">${c.move.replace('Basic','').replace('_',' ').replace(/([A-Z])/g,' $1').trim().split(' ')[0]||'—'}</span>
+      ${isH?'<span class="ab">Age '+age+'</span>':''}
       ${isH&&catRoom(c)?'<span class="htag" style="background:rgba(162,155,254,.12);border-color:rgba(162,155,254,.4);color:var(--neu)">'+roomLabel(catRoom(c))+'</span>':''}
-      ${isVeteran(c)?'<span class="htag" style="background:rgba(255,217,61,.1);border-color:rgba(255,217,61,.5);color:var(--a4)">⚔ Lv'+c.level+'</span>':''}
-      ${isH?'<span class="htag">🏠</span>':''}${onAdventure(c)?'<span class="htag" style="background:rgba(58,240,196,.12);border-color:rgba(58,240,196,.4);color:var(--a3)">⚔️</span>':''}
+      ${isVeteran(c)?'<span class="htag" style="background:rgba(255,217,61,.1);border-color:rgba(255,217,61,.5);color:var(--a4)">Lv '+c.level+'</span>':''}
     </div>
     <div class="tgs">${tags}</div>
   </div>`;
@@ -1037,7 +1122,7 @@ function oCat(id){
   document.getElementById('mb').innerHTML=`
     <div class="mr">
       <div class="mf"><div class="lb">Sex</div><div class="vl s-${c.sex}">${c.sex}</div></div>
-      <div class="mf"><div class="lb">Age</div><div class="vl">Day ${age}</div></div>
+      <div class="mf"><div class="lb">Age</div><div class="vl">${isH?'Age '+age:'Retired'}</div></div>
       <div class="mf"><div class="lb">Level</div><div class="vl" style="color:${isVeteran(c)?'var(--a4)':'var(--txt)'}">${c.level}${isVeteran(c)?' ⚔':''}</div></div>
       <div class="mf"><div class="lb">Inbredness</div><div class="vl">${(c.coi*100).toFixed(2)}%</div></div>
     </div>
