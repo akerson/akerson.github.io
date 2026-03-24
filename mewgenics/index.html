@@ -63,9 +63,15 @@ nav button.vbtn.on{color:var(--a4);background:rgba(255,217,61,.08);border-left:2
 .ni{font-size:14px;min-width:16px}
 .nbadge{margin-left:auto;font-size:9px;padding:2px 6px;background:rgba(255,217,61,.15);color:var(--house);border:1px solid rgba(255,217,61,.3)}
 
-main{padding:22px 26px;overflow-y:auto;max-height:calc(100vh - 55px)}
-#mut-list{overflow-x:auto}
+main{padding:22px 26px;overflow-y:auto;max-height:calc(100vh - 55px);box-sizing:border-box}
+main.no-scroll{overflow:hidden;padding:0}
+#mut-list{overflow-x:auto;display:flex;flex-direction:column;flex:1;min-height:0}
+#mut-wrapper{overflow-x:scroll;overflow-y:auto;flex:1;min-height:0}
+#mut-wrapper::-webkit-scrollbar{height:8px;width:8px}
+#mut-wrapper::-webkit-scrollbar-track{background:var(--bg2)}
+#mut-wrapper::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:4px}
 .page{display:none}.page.act{display:block}
+#p-mut.act{display:flex;flex-direction:column;height:calc(100vh - 55px);overflow:hidden;padding:8px 26px 8px 26px}
 h2{font-family:'Silkscreen',monospace;font-size:13px;color:var(--acc);margin-bottom:16px;letter-spacing:.05em}
 h2.hh{color:var(--house)}
 h3{font-family:'Silkscreen',monospace;font-size:9px;color:var(--mut);letter-spacing:.1em;margin-bottom:10px}
@@ -109,12 +115,14 @@ select:focus{border-color:var(--acc)}
 .cc.inh{border-color:rgba(255,217,61,.35);background:rgba(255,217,61,.03)}
 .cc.inh:hover{border-color:var(--house)}
 .mut-tbl{width:100%;border-collapse:collapse;font-size:11px}
-.mut-tbl thead th{padding:5px 8px;text-align:left;border-bottom:1px solid var(--bdr);color:var(--mut);font-weight:600;font-size:10px;white-space:nowrap;user-select:none}
+.mut-tbl thead th{padding:5px 8px;text-align:left;border-bottom:1px solid var(--bdr);color:var(--mut);font-weight:600;font-size:10px;white-space:nowrap;user-select:none;position:sticky;top:0;background:var(--panel);z-index:2}
+.mut-tbl th.mname{left:0;z-index:4}
+.mut-tbl td.mname{left:0;z-index:1;box-shadow:2px 0 4px rgba(0,0,0,.3)}
 .mut-tbl thead th:hover{color:var(--txt)}
 .mslot-sort{color:var(--acc) !important}
 .mut-tbl tbody tr:hover{background:rgba(255,255,255,.03)}
 .mut-tbl tbody tr:nth-child(even){background:rgba(255,255,255,.01)}
-td.mname{padding:5px 10px 5px 4px;white-space:nowrap;font-weight:500;min-width:120px;border-bottom:1px solid rgba(255,255,255,.04)}
+td.mname{padding:5px 10px 5px 4px;white-space:nowrap;font-weight:500;min-width:120px;border-bottom:1px solid rgba(255,255,255,.04);position:sticky;background:var(--panel)}
 td.mslot{padding:4px 8px;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,.04);font-size:10px;max-width:120px;overflow:hidden;text-overflow:ellipsis}
 td.mslot.empty{color:var(--bdr)}
 td.mslot.vmut{color:var(--acc)}
@@ -190,6 +198,35 @@ th.mslot-h{padding:5px 8px;min-width:70px}
 
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--bdr)}::-webkit-scrollbar-thumb:hover{background:var(--mut)}
+
+/* ── Mutation Census page ── */
+#p-cen.act{display:block;padding:22px 26px;overflow-y:auto;max-height:calc(100vh - 55px)}
+.cen-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.cen-slot-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:18px}
+.cen-tab{background:none;border:1px solid var(--bdr);color:var(--mut);padding:5px 12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;transition:all .13s}
+.cen-tab:hover{border-color:var(--bdr2);color:var(--txt)}
+.cen-tab.on{border-color:var(--acc);color:var(--acc);background:rgba(255,107,53,.07)}
+.cen-tab.bd.on{border-color:var(--fem);color:var(--fem);background:rgba(232,93,138,.07)}
+.cen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.cen-card{background:var(--panel);border:1px solid var(--bdr);padding:13px 15px;transition:border-color .12s;display:flex;flex-direction:column;gap:0}
+.cen-card:hover{border-color:var(--bdr2)}
+.cen-card.bd{border-left:3px solid var(--fem)}
+.cen-card.bd .cen-mut-name{color:var(--fem)}
+.cen-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.cen-mut-name{font-family:'Silkscreen',monospace;font-size:13px;color:var(--acc);letter-spacing:.03em}
+.cen-count{font-size:10px;color:var(--mut);white-space:nowrap}
+.cen-count strong{color:var(--a3);font-size:12px}
+.cen-tip{font-size:10px;color:var(--mut);line-height:1.5;padding:6px 0 8px;border-bottom:1px solid var(--bdr)}
+.cen-no-tip-divider{border-bottom:1px solid var(--bdr);margin-bottom:0}
+.cen-cats{display:flex;flex-direction:column;gap:7px;padding-top:9px}
+.cen-room-group{display:flex;flex-direction:column;gap:4px}
+.cen-room-label{font-family:'Silkscreen',monospace;font-size:8px;color:var(--mut);letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.cen-room-cats{display:flex;flex-wrap:wrap;gap:3px}
+.cen-cat{font-size:10px;padding:2px 7px;border:1px solid var(--bdr);color:var(--txt);cursor:pointer;background:var(--p2);transition:border-color .1s,color .1s}
+.cen-cat:hover{border-color:var(--acc);color:var(--acc)}
+.cen-cat.fem{border-color:rgba(232,93,138,.4)}
+.cen-cat.mal{border-color:rgba(74,158,255,.3)}
+.cen-empty{color:var(--mut);font-size:12px;padding:40px;text-align:center}
 </style>
 </head>
 <body>
@@ -222,6 +259,7 @@ th.mslot-h{padding:5px 8px;min-width:70px}
 
       <div class="ns">Data</div>
       <button onclick="go('mut')" data-p="mut"><span class="ni">🧬</span>Mutations</button>
+      <button onclick="go('cen')" data-p="cen"><span class="ni">🔬</span>Census</button>
       <button onclick="go('prop')" data-p="prop"><span class="ni">⚙️</span>Properties</button>
     </nav>
     <main>
@@ -274,15 +312,21 @@ th.mslot-h{padding:5px 8px;min-width:70px}
 
       <div id="p-mut" class="page">
         <h2>MUTATIONS</h2>
-        <div class="tb" style="flex-wrap:wrap;gap:8px;margin-bottom:12px">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-            <span style="font-size:11px;color:var(--mut);opacity:.7">Room:</span>
-            <button class="fp on" data-mflt="all" onclick="toggleMutRoom('all',this)">All</button>
-            <span id="mut-room-pills" style="display:flex;gap:4px;flex-wrap:wrap"></span>
-          </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px">
-            <span style="font-size:11px;color:var(--mut);opacity:.7">Sort by slot:</span>
-            <select id="mut-sort" onchange="rdrMut()" class="sr" style="flex:none;min-width:auto">
+        <div style="margin-bottom:10px">
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px">
+            <div style="display:flex;gap:4px;align-items:center">
+              <span style="font-size:11px;color:var(--mut);opacity:.7;white-space:nowrap">Scope:</span>
+              <button class="fp on" id="mut-scope-house" onclick="setMutScope('house',this)">🏠 In House</button>
+              <button class="fp" id="mut-scope-all" onclick="setMutScope('all',this)">All Cats</button>
+            </div>
+            <div id="mut-room-row" style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+              <span style="font-size:11px;color:var(--mut);opacity:.7;white-space:nowrap">Room:</span>
+              <button class="fp on" data-mflt="all" onclick="toggleMutRoom('all',this)">All</button>
+              <span id="mut-room-pills" style="display:flex;gap:4px;flex-wrap:wrap"></span>
+            </div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <span style="font-size:11px;color:var(--mut);opacity:.7;white-space:nowrap">Sort:</span>
+              <select id="mut-sort" onchange="rdrMut()" class="sr" style="flex:none;min-width:auto">
               <option value="name">Cat Name</option>
               <option value="Fur">Fur</option>
               <option value="Body">Body</option>
@@ -291,14 +335,32 @@ th.mslot-h{padding:5px 8px;min-width:70px}
               <option value="Legs">Legs</option>
               <option value="Arms">Arms</option>
               <option value="Eyes">Eyes</option>
-              <option value="Eyebrows">Eyebrows</option>
+              <option value="Brows">Brows</option>
               <option value="Ears">Ears</option>
               <option value="Mouth">Mouth</option>
-            </select>
+              </select>
+            </div>
           </div>
         </div>
         <div id="mut-list"></div>
       </div>
+      
+      <div id="p-cen" class="page">
+        <h2>MUTATION CENSUS</h2>
+        <div class="cen-controls">
+          <input class="sr" id="cen-search" placeholder="Filter mutations…" oninput="rdrCen()" style="max-width:220px">
+          <label style="font-size:11px;color:var(--mut);display:flex;align-items:center;gap:6px">
+            <input type="checkbox" id="cen-bd" onchange="rdrCen()"> Show birth defects
+          </label>
+          <label style="font-size:11px;color:var(--mut);display:flex;align-items:center;gap:6px">
+            <input type="checkbox" id="cen-all" onchange="rdrCen()"> All cats (not just in-house)
+          </label>
+          <span id="cen-summary" style="font-size:11px;color:var(--mut);margin-left:auto"></span>
+        </div>
+        <div class="cen-slot-tabs" id="cen-tabs"></div>
+        <div class="cen-grid" id="cen-grid"></div>
+      </div>
+
       <div id="p-prop" class="page">
         <h2>GAME PROPERTIES</h2>
         <div class="tb"><input class="sr" id="s-pr" placeholder="Filter…" oninput="rPr()"><span class="cb2" id="pcnt"></span></div>
@@ -381,27 +443,27 @@ function skipEquip(b, o) {
 }
 
 const GON_TABLES = {
-  body:{300:"Rock Bod",301:"Cactus Bod",302:"Turtle Bod",303:"Snail Bod",304:"Robot Body",305:"Conjoined Bod",306:"Skin & Bones",307:"Udders",308:"Beach Bod",309:"Maggot Bod",310:"Puffball Bod",311:"Square Bod",312:"Money Bag Bod",313:"Spike Bod",314:"Porcupine",315:"Carapace",316:"Pangolin",317:"Camel Hump",318:"Egg Sack Back",319:"Fractured Bod",320:"Brick Bod",321:"Kitten Bod",322:"Backpack",323:"Fatty",324:"Eyeball",400:"+2 STR, -1 CON",401:"+2 STR, -1 DEX",402:"+2 STR, -1 CHA",403:"+2 STR, -1 INT",404:"+2 STR, -1 SPD",405:"+2 STR, -1 LCK",406:"+2 CON, -1 STR",407:"+2 CON, -1 DEX",408:"+2 CON, -1 CHA",409:"+2 CON, -1 INT",410:"+2 CON, -1 SPD",411:"+2 CON, -1 LCK",412:"+2 DEX, -1 CON",413:"+2 DEX, -1 STR",414:"+2 DEX, -1 CHA",415:"+2 DEX, -1 INT",416:"+2 DEX, -1 SPD",417:"+2 DEX, -1 LCK",418:"+2 INT, -1 CON",419:"+2 INT, -1 DEX",420:"+2 INT, -1 CHA",421:"+2 INT, -1 STR",422:"+2 INT, -1 SPD",423:"+2 INT, -1 LCK",424:"+2 CHA, -1 CON",425:"+2 CHA, -1 DEX",426:"+2 CHA, -1 STR",427:"+2 CHA, -1 INT",428:"+2 CHA, -1 SPD",429:"+2 CHA, -1 LCK",430:"+2 LCK, -1 CON",431:"+2 LCK, -1 DEX",432:"+2 LCK, -1 CHA",433:"+2 LCK, -1 INT",434:"+2 LCK, -1 SPD",435:"+2 LCK, -1 STR",436:"+2 SPD, -1 CON",437:"+2 SPD, -1 STR",438:"+2 SPD, -1 CHA",439:"+2 SPD, -1 INT",440:"+2 SPD, -1 DEX",441:"+2 SPD, -1 LCK",442:"-1 CHA",700:"Gastroschisis",701:"Deformed Ribcage",702:"Malnurished",703:"Body Welts",704:"Conjoined Body",750:"spike body",753:"mermaid body",758:"human head body",900:"slender"},
-  head:{300:"Square head",301:"Sloth head",302:"Big brain",303:"Spioke head",304:"Sludge head",305:"Strong Chin",306:"Alien head",307:"Bump-on-the-head Head",308:"Frog Head",309:"half moon",310:"rock head",311:"Money Bag head",312:"Magnet Head",313:"Poop Head",314:"Pyramid Head",315:"Upside Down Head",316:"Fractured Head",317:"Sideways Head",318:"Long Neck",319:"Exposed Brain",320:"Bubble Head",321:"Button Head",400:"+2 STR, -1 CON",401:"+2 STR, -1 DEX",402:"+2 STR, -1 CHA",403:"+2 STR, -1 INT",404:"+2 STR, -1 SPD",405:"+2 STR, -1 LCK",406:"+2 CON, -1 STR",407:"+2 CON, -1 DEX",408:"+2 CON, -1 CHA",409:"+2 CON, -1 INT",410:"+2 CON, -1 SPD",411:"+2 CON, -1 LCK",412:"+2 DEX, -1 CON",413:"+2 DEX, -1 STR",414:"+2 DEX, -1 CHA",415:"+2 DEX, -1 INT",416:"+2 DEX, -1 SPD",417:"+2 DEX, -1 LCK",418:"+2 INT, -1 CON",419:"+2 INT, -1 DEX",420:"+2 INT, -1 CHA",421:"+2 INT, -1 STR",422:"+2 INT, -1 SPD",423:"+2 INT, -1 LCK",424:"+2 CHA, -1 CON",425:"+2 CHA, -1 DEX",426:"+2 CHA, -1 STR",427:"+2 CHA, -1 INT",428:"+2 CHA, -1 SPD",429:"+2 CHA, -1 LCK",430:"+2 LCK, -1 CON",431:"+2 LCK, -1 DEX",432:"+2 LCK, -1 CHA",433:"+2 LCK, -1 INT",434:"+2 LCK, -1 SPD",435:"+2 LCK, -1 STR",436:"+2 SPD, -1 CON",437:"+2 SPD, -1 STR",438:"+2 SPD, -1 CHA",439:"+2 SPD, -1 INT",440:"+2 SPD, -1 DEX",441:"+2 SPD, -1 LCK",700:"microcephaly",701:"macrocephaly",702:"concave head",703:"soft spot",704:"cyclops",705:"conjoined head",706:"sloth",750:"spiked head",753:"tyler head",757:"grey head",759:"Human Head",900:"slender"},
-  tail:{300:"Extra Paw",301:"Turtle Head",302:"Scorpion Tail",303:"Rock Tail",304:"Monkey Tail",305:"Cacuts Tail",306:"Big Lump Tail",307:"Antenna Tail",308:"Baby Tail",309:"Baboon's' Ass",310:"Hand Tail",311:"Thorn Tail",312:"Holy Tail",313:"Hose Tail",314:"Bone Tail",315:"Maggot Tail",316:"Grass Tail",317:"Skunk Tail",318:"Rattle",319:"Snake Tail",320:"Glass Tail",321:"Extra Head",322:"Exhaust Pipe",323:"Jetpack Tail",324:"Wing Tail",325:"Spring Tail",326:"Eyeball Tail",327:"Tree Branch Tail",329:"Mr. Worm",331:"Dice Tail",332:"Tennis Racket",334:"Fire Flower Tail",336:"Horn Tail",337:"Tail Feather",338:"Flame Tail",339:"Light Bulb",341:"Tongue Tail",342:"Kitten Tail",400:"+2 STR, -1 CON",401:"+2 STR, -1 DEX",402:"+2 STR, -1 CHA",403:"+2 STR, -1 INT",404:"+2 STR, -1 SPD",405:"+2 STR, -1 LCK",406:"+2 CON, -1 STR",407:"+2 CON, -1 DEX",408:"+2 CON, -1 CHA",409:"+2 CON, -1 INT",410:"+2 CON, -1 SPD",411:"+2 CON, -1 LCK",412:"+2 DEX, -1 CON",413:"+2 DEX, -1 STR",414:"+2 DEX, -1 CHA",415:"+2 DEX, -1 INT",416:"+2 DEX, -1 SPD",417:"+2 DEX, -1 LCK",418:"+2 INT, -1 CON",419:"+2 INT, -1 DEX",420:"+2 INT, -1 CHA",421:"+2 INT, -1 STR",422:"+2 INT, -1 SPD",423:"+2 INT, -1 LCK",424:"+2 CHA, -1 CON",425:"+2 CHA, -1 DEX",426:"+2 CHA, -1 STR",427:"+2 CHA, -1 INT",428:"+2 CHA, -1 SPD",429:"+2 CHA, -1 LCK",430:"+2 LCK, -1 CON",431:"+2 LCK, -1 DEX",432:"+2 LCK, -1 CHA",433:"+2 LCK, -1 INT",434:"+2 LCK, -1 SPD",435:"+2 LCK, -1 STR",436:"+2 SPD, -1 CON",437:"+2 SPD, -1 STR",438:"+2 SPD, -1 CHA",439:"+2 SPD, -1 INT",440:"+2 SPD, -1 DEX",441:"+2 SPD, -1 LCK",700:"kinked tail",701:"lipoma",703:"heavy tail",704:"forked tail",750:"Bunny Tail*",751:"Beaver Tail*",752:"Pig Tail*",754:"Spiked Tail*",755:"mermaid Tail*",756:"Devil Tail*",757:"sonichu Tail*",759:"slender Tail*",760:"human head tail",900:"slender",1500:"rat tail"},
-  legs:{300:"Frog legs",301:"Hooves",302:"Tentacles",303:"Lobster Claws",304:"Muscular Legs",305:"Tar Legs",306:"Bug Legs",307:"Tires",308:"Human Legs",309:"Knife Legs",310:"Spring Legs",311:"Square Legs",312:"Balloon Legs",313:"Snake Legs",314:"Weapon Legs",315:"Socks",317:"Raptor Claws",318:"Stigmata",319:"High Tops",320:"Talons",321:"Flippers",322:"Bear Claws",323:"Beetle Feet",324:"Branches",325:"Extra Head",326:"Needle Feet",327:"Mushroom Legs",328:"Glass Bottle",329:"Water Bottle",330:"Sausage Legs",331:"Jet Legs",332:"Peg Legs",333:"Wing Legs",334:"Ape Legs",335:"Glass Legs",336:"Crow Legs",337:"Floating Legs",339:"Wing Legs 2",340:"Lucky Toe",341:"Whip Legs",343:"Kitten Legs",400:"+2 STR, -1 CON",401:"+2 STR, -1 DEX",402:"+2 STR, -1 CHA",403:"+2 STR, -1 INT",404:"+2 STR, -1 SPD",405:"+2 STR, -1 LCK",406:"+2 CON, -1 STR",407:"+2 CON, -1 DEX",408:"+2 CON, -1 CHA",409:"+2 CON, -1 INT",410:"+2 CON, -1 SPD",411:"+2 CON, -1 LCK",412:"+2 DEX, -1 CON",413:"+2 DEX, -1 STR",414:"+2 DEX, -1 CHA",415:"+2 DEX, -1 INT",416:"+2 DEX, -1 SPD",417:"+2 DEX, -1 LCK",418:"+2 INT, -1 CON",419:"+2 INT, -1 DEX",420:"+2 INT, -1 CHA",421:"+2 INT, -1 STR",422:"+2 INT, -1 SPD",423:"+2 INT, -1 LCK",424:"+2 CHA, -1 CON",425:"+2 CHA, -1 DEX",426:"+2 CHA, -1 STR",427:"+2 CHA, -1 INT",428:"+2 CHA, -1 SPD",429:"+2 CHA, -1 LCK",430:"+2 LCK, -1 CON",431:"+2 LCK, -1 DEX",432:"+2 LCK, -1 CHA",433:"+2 LCK, -1 INT",434:"+2 LCK, -1 SPD",435:"+2 LCK, -1 STR",436:"+2 SPD, -1 CON",437:"+2 SPD, -1 STR",438:"+2 SPD, -1 CHA",439:"+2 SPD, -1 INT",440:"+2 SPD, -1 DEX",441:"+2 SPD, -1 LCK",700:"lobster claw",701:"extra finger",702:"club foot",703:"syndactyly",704:"curled paw",705:"club foot2",706:"backwards knees",707:"blob legs",754:"Wing Hoof Legs",756:"Sonichu Legs",757:"bigfoot Legs",758:"nessie Legs",759:"nessie Legs",761:"mothman Legs",762:"slender",763:"slender",900:"slender"},
-  ears:{300:"horn",301:"antenna",302:"fishy",303:"bullhorn",304:"pigtails",305:"boil",306:"bunny ear",307:"brains",308:"shrek",309:"antlers",310:"human",313:"Ram horns",314:"Deer horns",315:"Fly Ears",316:"Bat Ears",317:"Bone Ears",318:"Frog Eyes",319:"Pierced Ears",320:"Alien Ears",321:"Spring Ears",322:"Lamb Ears",323:"Vamp Ears",325:"Tree Branch",326:"Worm Ear",327:"Ant Antenna",328:"Snake Ears",329:"External Gills",330:"Hook Ears",331:"Mace Ears",332:"Blubber Lobes",333:"Metal Plate",334:"Metal Detector",335:"Docked Ears",336:"Large Leaves",337:"Burning ears",338:"Frozen ears",339:"Lightning Rods",340:"Aura Ears",341:"Large Ears",342:"Infested Ears",343:"Long Antlers",344:"Kitten",345:"Mouse Ears",400:"+2 STR, -1 CON",401:"+2 STR, -1 DEX",402:"+2 STR, -1 CHA",403:"+2 STR, -1 INT",404:"+2 STR, -1 SPD",405:"+2 STR, -1 LCK",406:"+2 CON, -1 STR",407:"+2 CON, -1 DEX",408:"+2 CON, -1 CHA",409:"+2 CON, -1 INT",410:"+2 CON, -1 SPD",411:"+2 CON, -1 LCK",412:"+2 DEX, -1 CON",413:"+2 DEX, -1 STR",414:"+2 DEX, -1 CHA",415:"+2 DEX, -1 INT",416:"+2 DEX, -1 SPD",417:"+2 DEX, -1 LCK",418:"+2 INT, -1 CON",419:"+2 INT, -1 DEX",420:"+2 INT, -1 CHA",421:"+2 INT, -1 STR",422:"+2 INT, -1 SPD",423:"+2 INT, -1 LCK",424:"+2 CHA, -1 CON",425:"+2 CHA, -1 DEX",426:"+2 CHA, -1 STR",427:"+2 CHA, -1 INT",428:"+2 CHA, -1 SPD",429:"+2 CHA, -1 LCK",430:"+2 LCK, -1 CON",431:"+2 LCK, -1 DEX",432:"+2 LCK, -1 CHA",433:"+2 LCK, -1 INT",434:"+2 LCK, -1 SPD",435:"+2 LCK, -1 STR",436:"+2 SPD, -1 CON",437:"+2 SPD, -1 STR",438:"+2 SPD, -1 CHA",439:"+2 SPD, -1 INT",440:"+2 SPD, -1 DEX",441:"+2 SPD, -1 LCK",700:"anotia",701:"turner syndrome",702:"underdeveloped ears",703:"low ears",704:"wilted ears",750:"Jackrabbit Ears",751:"Folded Ears",752:"Fin Ears",753:"Goat Horns",754:"Electric Ears",755:"Head Ferns",900:"slender",1500:"rat ears"},
-  eyes:{300:"Button Eyes",301:"Demon Eyes",302:"Pop Eyes",303:"Gem Eyes",304:"Holes",305:"Zen Eyes",306:"Confusing Eyes",307:"Half Moon Eyes",308:"Spider Eyes",309:"Doll Eyes",310:"Octo Eyes",311:"gecko eye",312:"Metal Eyes",313:"Issac's Eyes",314:"Dead Eyes",315:"Kinetic eyes",316:"Lightning eyes",317:"Dice Eyes",318:"Goat Eyes",319:"Horn Eyes",324:"Treasure Eyes",325:"Nail Eyes",326:"4 Eyes",327:"Baby Blue Eyes",328:"Bull's Eye'",329:"Spinning Eyes",331:"Glassy Eyes",332:"Bleeding Eyes",333:"Huge Eyes",334:"Infested Eyes",335:"Fake Eyelashes",336:"Bolt Eyes",337:"Ice Eyes",338:"Fire Eyes",339:"Water Eyes",340:"Leech Eyes",341:"Flower Eyes",342:"Poison Eyes",343:"Clown Eyes",344:"Sun Eyes",345:"Evil Eyes",346:"Rock Eyes",347:"Hypno Eyes",348:"Pop Eyes",349:"8 Eyes",351:"Chaos Eyes",352:"Runny Mascara",353:"Chameleon Eyes",400:"+2 STR, -1 CON",401:"+2 STR, -1 DEX",402:"+2 STR, -1 CHA",403:"+2 STR, -1 INT",404:"+2 STR, -1 SPD",405:"+2 STR, -1 LCK",406:"+2 CON, -1 STR",407:"+2 CON, -1 DEX",408:"+2 CON, -1 CHA",409:"+2 CON, -1 INT",410:"+2 CON, -1 SPD",411:"+2 CON, -1 LCK",412:"+2 DEX, -1 CON",413:"+2 DEX, -1 STR",414:"+2 DEX, -1 CHA",415:"+2 DEX, -1 INT",416:"+2 DEX, -1 SPD",417:"+2 DEX, -1 LCK",418:"+2 INT, -1 CON",419:"+2 INT, -1 DEX",420:"+2 INT, -1 CHA",421:"+2 INT, -1 STR",422:"+2 INT, -1 SPD",423:"+2 INT, -1 LCK",424:"+2 CHA, -1 CON",425:"+2 CHA, -1 DEX",426:"+2 CHA, -1 STR",427:"+2 CHA, -1 INT",428:"+2 CHA, -1 SPD",429:"+2 CHA, -1 LCK",430:"+2 LCK, -1 CON",431:"+2 LCK, -1 DEX",432:"+2 LCK, -1 CHA",433:"+2 LCK, -1 INT",434:"+2 LCK, -1 SPD",435:"+2 LCK, -1 STR",436:"+2 SPD, -1 CON",437:"+2 SPD, -1 STR",438:"+2 SPD, -1 CHA",439:"+2 SPD, -1 INT",440:"+2 SPD, -1 DEX",441:"+2 SPD, -1 LCK",442:"Eyes 442",700:"graves disease",701:"anophthalmia",702:"+1 CHA, +1 INT, -2 CON",704:"lazy eye",705:"cataracts",706:"crossed eyes",750:"glasses",754:"alien eyes",755:"mothman eyes",900:"slender",1029:"spider eye"},
-  eyebrows:{300:"Bolt Brows",301:"Confusing Brows",302:"Metal Brows",303:"Fancy Makeup",304:"Wolfy Brows",305:"Dotty Brows",306:"Clown Makeup",307:"Antennae",308:"Long Lashes",309:"Spiny Brows",310:"Extra Eye",311:"Stacked Brows",313:"Square Glasses",314:"Holy Brows",315:"Triangle Eyes",400:"+2 STR, -1 CON",401:"+2 STR, -1 DEX",402:"+2 STR, -1 CHA",403:"+2 STR, -1 INT",404:"+2 STR, -1 SPD",405:"+2 STR, -1 LCK",406:"+2 CON, -1 STR",407:"+2 CON, -1 DEX",408:"+2 CON, -1 CHA",409:"+2 CON, -1 INT",410:"+2 CON, -1 SPD",411:"+2 CON, -1 LCK",412:"+2 DEX, -1 CON",413:"+2 DEX, -1 STR",414:"+2 DEX, -1 CHA",415:"+2 DEX, -1 INT",416:"+2 DEX, -1 SPD",417:"+2 DEX, -1 LCK",418:"+2 INT, -1 CON",419:"+2 INT, -1 DEX",420:"+2 INT, -1 CHA",421:"+2 INT, -1 STR",422:"+2 INT, -1 SPD",423:"+2 INT, -1 LCK",424:"+2 CHA, -1 CON",425:"+2 CHA, -1 DEX",426:"+2 CHA, -1 STR",427:"+2 CHA, -1 INT",428:"+2 CHA, -1 SPD",429:"+2 CHA, -1 LCK",430:"+2 LCK, -1 CON",431:"+2 LCK, -1 DEX",432:"+2 LCK, -1 CHA",433:"+2 LCK, -1 INT",434:"+2 LCK, -1 SPD",435:"+2 LCK, -1 STR",436:"+2 SPD, -1 CON",437:"+2 SPD, -1 STR",438:"+2 SPD, -1 CHA",439:"+2 SPD, -1 INT",440:"+2 SPD, -1 DEX",441:"+2 SPD, -1 LCK",700:"bushy",701:"no eyebrows",702:"unibrow",900:"slender"},
-  mouth:{300:"Sabertoothed",301:"Hippo Teeth",302:"Flesh Kid",303:"Delerious",304:"Spider",305:"Ash",306:"Famine",307:"Alien Chomp",308:"Licky",309:"Jacko",310:"Lip Fillers",311:"Leech Mouth",312:"Bear Trap Mouth",313:"Full Mouth",314:"Gold Tooth",315:"Double Mouth",316:"Horse Face",317:"Glass Teeth",318:"mole mouth",319:"Catfish Mouth",321:"Zipper Mouth",322:"Shark Mouth",323:"Gills",324:"Eyeball",326:"Double Mouth 2",327:"Clown Lips",328:"Bandage Mouth",400:"+2 STR, -1 CON",401:"+2 STR, -1 DEX",402:"+2 STR, -1 CHA",403:"+2 STR, -1 INT",404:"+2 STR, -1 SPD",405:"+2 STR, -1 LCK",406:"+2 CON, -1 STR",407:"+2 CON, -1 DEX",408:"+2 CON, -1 CHA",409:"+2 CON, -1 INT",410:"+2 CON, -1 SPD",411:"+2 CON, -1 LCK",412:"+2 DEX, -1 CON",413:"+2 DEX, -1 STR",414:"+2 DEX, -1 CHA",415:"+2 DEX, -1 INT",416:"+2 DEX, -1 SPD",417:"+2 DEX, -1 LCK",418:"+2 INT, -1 CON",419:"+2 INT, -1 DEX",420:"+2 INT, -1 CHA",421:"+2 INT, -1 STR",422:"+2 INT, -1 SPD",423:"+2 INT, -1 LCK",424:"+2 CHA, -1 CON",425:"+2 CHA, -1 DEX",426:"+2 CHA, -1 STR",427:"+2 CHA, -1 INT",428:"+2 CHA, -1 SPD",429:"+2 CHA, -1 LCK",430:"+2 LCK, -1 CON",431:"+2 LCK, -1 DEX",432:"+2 LCK, -1 CHA",433:"+2 LCK, -1 INT",434:"+2 LCK, -1 SPD",435:"+2 LCK, -1 STR",436:"+2 SPD, -1 CON",437:"+2 SPD, -1 STR",438:"+2 SPD, -1 CHA",439:"+2 SPD, -1 INT",440:"+2 SPD, -1 DEX",441:"+2 SPD, -1 LCK",700:"cleft pallet",701:"anodontia",703:"underbite",704:"overbite",705:"Fetus Mouth",750:"beaver teeth",751:"pig snout",752:"Dog tongue",754:"Isaacs mouth",755:"Edmund beard",756:"Tylers beard",757:"Mermaid mouth",760:"bigfoot mouth",900:"Slender",1026:"spider mouth",1500:"rat mouth"},
-  texture:{300:"Stitches",301:"Fish Scales",302:"Conjoined",303:"Patches",304:"Confusing Hide",305:"Robot Hide",306:"Veiny",307:"Eyeballs",308:"Heart Tattoo",309:"Tatted Up",310:"Cash Hide",400:"+2 STR, -1 CON",401:"+2 STR, -1 DEX",402:"+2 STR, -1 CHA",403:"+2 STR, -1 INT",404:"+2 STR, -1 SPD",405:"+2 STR, -1 LCK",406:"+2 CON, -1 STR",407:"+2 CON, -1 DEX",408:"+2 CON, -1 CHA",409:"+2 CON, -1 INT",410:"+2 CON, -1 SPD",411:"+2 CON, -1 LCK",412:"+2 DEX, -1 CON",413:"+2 DEX, -1 STR",414:"+2 DEX, -1 CHA",415:"+2 DEX, -1 INT",416:"+2 DEX, -1 SPD",417:"+2 DEX, -1 LCK",418:"+2 INT, -1 CON",419:"+2 INT, -1 DEX",420:"+2 INT, -1 CHA",421:"+2 INT, -1 STR",422:"+2 INT, -1 SPD",423:"+2 INT, -1 LCK",424:"+2 CHA, -1 CON",425:"+2 CHA, -1 DEX",426:"+2 CHA, -1 STR",427:"+2 CHA, -1 INT",428:"+2 CHA, -1 SPD",429:"+2 CHA, -1 LCK",430:"+2 LCK, -1 CON",431:"+2 LCK, -1 DEX",432:"+2 LCK, -1 CHA",433:"+2 LCK, -1 INT",434:"+2 LCK, -1 SPD",435:"+2 LCK, -1 STR",436:"+2 SPD, -1 CON",437:"+2 SPD, -1 STR",438:"+2 SPD, -1 CHA",439:"+2 SPD, -1 INT",440:"+2 SPD, -1 DEX",441:"+2 SPD, -1 LCK",700:"neurofibromatosis",701:"melanocytic nevus",702:"bleeding",703:"blue spots",704:"red dots",705:"jaundice",706:"vitiligo",750:"skunk Hide"},
+  body:{300:"Rock Bod",301:"Cactus Bod",302:"Turtle Bod",303:"Snail Bod",304:"Robot Body",305:"Conjoined Bod",306:"Skin & Bones",307:"Udders",308:"Beach Bod",309:"Maggot Bod",310:"Puffball Bod",311:"Square Bod",312:"Money Bag Bod",313:"Spike Bod",314:"Porcupine",315:"Carapace",316:"Pangolin",317:"Camel Hump",318:"Egg Sack Back",319:"Fractured Bod",320:"Brick Bod",321:"Kitten Bod",322:"Backpack",323:"Fatty",324:"Eyeball",400:"Glass Cannon",401:"Lumbering",402:"Ugly Strong",403:"Meatheaded",404:"Plodding",405:"Ill-Fated",406:"Soft but Tough",407:"Thick-Footed",408:"Weathered",409:"Blissfully Dumb",410:"Immovable",411:"Hexed",412:"Wiry",413:"Lithe",414:"Creepy-Fingered",415:"Instinctive",416:"Twitchy",417:"Jinxed",418:"Frail-Brained",419:"Butterfingers",420:"Insufferable",421:"Noodle-Armed",422:"Contemplative",423:"Overthinking",424:"Delicate",425:"Clumsy Charmer",426:"Silver-Tongued",427:"Loveable Idiot",428:"Fashionably Late",429:"Cursed Cutie",430:"Sickly Lucky",431:"Stumbling",432:"Homely",433:"Oblivious",434:"Dawdling",435:"Feeble-Lucky",436:"Papery",437:"Scrawny",438:"Frantic",439:"Harebrained",440:"Wobbly",441:"Reckless",442:"-1 CHA",700:"Gastroschisis",701:"Deformed Ribcage",702:"Malnurished",703:"Body Welts",704:"Conjoined Body",750:"spike body",753:"mermaid body",758:"human head body",900:"slender"},
+  head:{300:"Square head",301:"Sloth head",302:"Big brain",303:"Spioke head",304:"Sludge head",305:"Strong Chin",306:"Alien head",307:"Bump-on-the-head Head",308:"Frog Head",309:"half moon",310:"rock head",311:"Money Bag head",312:"Magnet Head",313:"Poop Head",314:"Pyramid Head",315:"Upside Down Head",316:"Fractured Head",317:"Sideways Head",318:"Long Neck",319:"Exposed Brain",320:"Bubble Head",321:"Button Head",400:"Glass Cannon",401:"Lumbering",402:"Ugly Strong",403:"Meatheaded",404:"Plodding",405:"Ill-Fated",406:"Soft but Tough",407:"Thick-Footed",408:"Weathered",409:"Blissfully Dumb",410:"Immovable",411:"Hexed",412:"Wiry",413:"Lithe",414:"Creepy-Fingered",415:"Instinctive",416:"Twitchy",417:"Jinxed",418:"Frail-Brained",419:"Butterfingers",420:"Insufferable",421:"Noodle-Armed",422:"Contemplative",423:"Overthinking",424:"Delicate",425:"Clumsy Charmer",426:"Silver-Tongued",427:"Loveable Idiot",428:"Fashionably Late",429:"Cursed Cutie",430:"Sickly Lucky",431:"Stumbling",432:"Homely",433:"Oblivious",434:"Dawdling",435:"Feeble-Lucky",436:"Papery",437:"Scrawny",438:"Frantic",439:"Harebrained",440:"Wobbly",441:"Reckless",700:"microcephaly",701:"macrocephaly",702:"concave head",703:"soft spot",704:"cyclops",705:"conjoined head",706:"sloth",750:"spiked head",753:"tyler head",757:"grey head",759:"Human Head",900:"slender"},
+  tail:{300:"Extra Paw",301:"Turtle Head",302:"Scorpion Tail",303:"Rock Tail",304:"Monkey Tail",305:"Cacuts Tail",306:"Big Lump Tail",307:"Antenna Tail",308:"Baby Tail",309:"Baboon's' Ass",310:"Hand Tail",311:"Thorn Tail",312:"Holy Tail",313:"Hose Tail",314:"Bone Tail",315:"Maggot Tail",316:"Grass Tail",317:"Skunk Tail",318:"Rattle",319:"Snake Tail",320:"Glass Tail",321:"Extra Head",322:"Exhaust Pipe",323:"Jetpack Tail",324:"Wing Tail",325:"Spring Tail",326:"Eyeball Tail",327:"Tree Branch Tail",329:"Mr. Worm",331:"Dice Tail",332:"Tennis Racket",334:"Fire Flower Tail",336:"Horn Tail",337:"Tail Feather",338:"Flame Tail",339:"Light Bulb",341:"Tongue Tail",342:"Kitten Tail",400:"Glass Cannon",401:"Lumbering",402:"Ugly Strong",403:"Meatheaded",404:"Plodding",405:"Ill-Fated",406:"Soft but Tough",407:"Thick-Footed",408:"Weathered",409:"Blissfully Dumb",410:"Immovable",411:"Hexed",412:"Wiry",413:"Lithe",414:"Creepy-Fingered",415:"Instinctive",416:"Twitchy",417:"Jinxed",418:"Frail-Brained",419:"Butterfingers",420:"Insufferable",421:"Noodle-Armed",422:"Contemplative",423:"Overthinking",424:"Delicate",425:"Clumsy Charmer",426:"Silver-Tongued",427:"Loveable Idiot",428:"Fashionably Late",429:"Cursed Cutie",430:"Sickly Lucky",431:"Stumbling",432:"Homely",433:"Oblivious",434:"Dawdling",435:"Feeble-Lucky",436:"Papery",437:"Scrawny",438:"Frantic",439:"Harebrained",440:"Wobbly",441:"Reckless",700:"kinked tail",701:"lipoma",703:"heavy tail",704:"forked tail",750:"Bunny Tail*",751:"Beaver Tail*",752:"Pig Tail*",754:"Spiked Tail*",755:"mermaid Tail*",756:"Devil Tail*",757:"sonichu Tail*",759:"slender Tail*",760:"human head tail",900:"slender",1500:"rat tail"},
+  legs:{300:"Frog legs",301:"Hooves",302:"Tentacles",303:"Lobster Claws",304:"Muscular Legs",305:"Tar Legs",306:"Bug Legs",307:"Tires",308:"Human Legs",309:"Knife Legs",310:"Spring Legs",311:"Square Legs",312:"Balloon Legs",313:"Snake Legs",314:"Weapon Legs",315:"Socks",317:"Raptor Claws",318:"Stigmata",319:"High Tops",320:"Talons",321:"Flippers",322:"Bear Claws",323:"Beetle Feet",324:"Branches",325:"Extra Head",326:"Needle Feet",327:"Mushroom Legs",328:"Glass Bottle",329:"Water Bottle",330:"Sausage Legs",331:"Jet Legs",332:"Peg Legs",333:"Wing Legs",334:"Ape Legs",335:"Glass Legs",336:"Crow Legs",337:"Floating Legs",339:"Wing Legs 2",340:"Lucky Toe",341:"Whip Legs",343:"Kitten Legs",400:"Glass Cannon",401:"Lumbering",402:"Ugly Strong",403:"Meatheaded",404:"Plodding",405:"Ill-Fated",406:"Soft but Tough",407:"Thick-Footed",408:"Weathered",409:"Blissfully Dumb",410:"Immovable",411:"Hexed",412:"Wiry",413:"Lithe",414:"Creepy-Fingered",415:"Instinctive",416:"Twitchy",417:"Jinxed",418:"Frail-Brained",419:"Butterfingers",420:"Insufferable",421:"Noodle-Armed",422:"Contemplative",423:"Overthinking",424:"Delicate",425:"Clumsy Charmer",426:"Silver-Tongued",427:"Loveable Idiot",428:"Fashionably Late",429:"Cursed Cutie",430:"Sickly Lucky",431:"Stumbling",432:"Homely",433:"Oblivious",434:"Dawdling",435:"Feeble-Lucky",436:"Papery",437:"Scrawny",438:"Frantic",439:"Harebrained",440:"Wobbly",441:"Reckless",700:"lobster claw",701:"extra finger",702:"club foot",703:"syndactyly",704:"curled paw",705:"club foot2",706:"backwards knees",707:"blob legs",754:"Wing Hoof Legs",756:"Sonichu Legs",757:"bigfoot Legs",758:"nessie Legs",759:"nessie Legs",761:"mothman Legs",762:"slender",763:"slender",900:"slender"},
+  ears:{300:"horn",301:"antenna",302:"fishy",303:"bullhorn",304:"pigtails",305:"boil",306:"bunny ear",307:"brains",308:"shrek",309:"antlers",310:"human",313:"Ram horns",314:"Deer horns",315:"Fly Ears",316:"Bat Ears",317:"Bone Ears",318:"Frog Eyes",319:"Pierced Ears",320:"Alien Ears",321:"Spring Ears",322:"Lamb Ears",323:"Vamp Ears",325:"Tree Branch",326:"Worm Ear",327:"Ant Antenna",328:"Snake Ears",329:"External Gills",330:"Hook Ears",331:"Mace Ears",332:"Blubber Lobes",333:"Metal Plate",334:"Metal Detector",335:"Docked Ears",336:"Large Leaves",337:"Burning ears",338:"Frozen ears",339:"Lightning Rods",340:"Aura Ears",341:"Large Ears",342:"Infested Ears",343:"Long Antlers",344:"Kitten",345:"Mouse Ears",400:"Glass Cannon",401:"Lumbering",402:"Ugly Strong",403:"Meatheaded",404:"Plodding",405:"Ill-Fated",406:"Soft but Tough",407:"Thick-Footed",408:"Weathered",409:"Blissfully Dumb",410:"Immovable",411:"Hexed",412:"Wiry",413:"Lithe",414:"Creepy-Fingered",415:"Instinctive",416:"Twitchy",417:"Jinxed",418:"Frail-Brained",419:"Butterfingers",420:"Insufferable",421:"Noodle-Armed",422:"Contemplative",423:"Overthinking",424:"Delicate",425:"Clumsy Charmer",426:"Silver-Tongued",427:"Loveable Idiot",428:"Fashionably Late",429:"Cursed Cutie",430:"Sickly Lucky",431:"Stumbling",432:"Homely",433:"Oblivious",434:"Dawdling",435:"Feeble-Lucky",436:"Papery",437:"Scrawny",438:"Frantic",439:"Harebrained",440:"Wobbly",441:"Reckless",700:"anotia",701:"turner syndrome",702:"underdeveloped ears",703:"low ears",704:"wilted ears",750:"Jackrabbit Ears",751:"Folded Ears",752:"Fin Ears",753:"Goat Horns",754:"Electric Ears",755:"Head Ferns",900:"slender",1500:"rat ears"},
+  eyes:{300:"Button Eyes",301:"Demon Eyes",302:"Pop Eyes",303:"Gem Eyes",304:"Holes",305:"Zen Eyes",306:"Confusing Eyes",307:"Half Moon Eyes",308:"Spider Eyes",309:"Doll Eyes",310:"Octo Eyes",311:"gecko eye",312:"Metal Eyes",313:"Issac's Eyes",314:"Dead Eyes",315:"Kinetic eyes",316:"Lightning eyes",317:"Dice Eyes",318:"Goat Eyes",319:"Horn Eyes",324:"Treasure Eyes",325:"Nail Eyes",326:"4 Eyes",327:"Baby Blue Eyes",328:"Bull's Eye'",329:"Spinning Eyes",331:"Glassy Eyes",332:"Bleeding Eyes",333:"Huge Eyes",334:"Infested Eyes",335:"Fake Eyelashes",336:"Bolt Eyes",337:"Ice Eyes",338:"Fire Eyes",339:"Water Eyes",340:"Leech Eyes",341:"Flower Eyes",342:"Poison Eyes",343:"Clown Eyes",344:"Sun Eyes",345:"Evil Eyes",346:"Rock Eyes",347:"Hypno Eyes",348:"Pop Eyes",349:"8 Eyes",351:"Chaos Eyes",352:"Runny Mascara",353:"Chameleon Eyes",400:"Glass Cannon",401:"Lumbering",402:"Ugly Strong",403:"Meatheaded",404:"Plodding",405:"Ill-Fated",406:"Soft but Tough",407:"Thick-Footed",408:"Weathered",409:"Blissfully Dumb",410:"Immovable",411:"Hexed",412:"Wiry",413:"Lithe",414:"Creepy-Fingered",415:"Instinctive",416:"Twitchy",417:"Jinxed",418:"Frail-Brained",419:"Butterfingers",420:"Insufferable",421:"Noodle-Armed",422:"Contemplative",423:"Overthinking",424:"Delicate",425:"Clumsy Charmer",426:"Silver-Tongued",427:"Loveable Idiot",428:"Fashionably Late",429:"Cursed Cutie",430:"Sickly Lucky",431:"Stumbling",432:"Homely",433:"Oblivious",434:"Dawdling",435:"Feeble-Lucky",436:"Papery",437:"Scrawny",438:"Frantic",439:"Harebrained",440:"Wobbly",441:"Reckless",442:"Eyes 442",700:"graves disease",701:"anophthalmia",702:"+1 CHA, +1 INT, -2 CON",704:"lazy eye",705:"cataracts",706:"crossed eyes",750:"glasses",754:"alien eyes",755:"mothman eyes",900:"slender",1029:"spider eye"},
+  eyebrows:{300:"Bolt Brows",301:"Confusing Brows",302:"Metal Brows",303:"Fancy Makeup",304:"Wolfy Brows",305:"Dotty Brows",306:"Clown Makeup",307:"Antennae",308:"Long Lashes",309:"Spiny Brows",310:"Extra Eye",311:"Stacked Brows",313:"Square Glasses",314:"Holy Brows",315:"Triangle Eyes",400:"Glass Cannon",401:"Lumbering",402:"Ugly Strong",403:"Meatheaded",404:"Plodding",405:"Ill-Fated",406:"Soft but Tough",407:"Thick-Footed",408:"Weathered",409:"Blissfully Dumb",410:"Immovable",411:"Hexed",412:"Wiry",413:"Lithe",414:"Creepy-Fingered",415:"Instinctive",416:"Twitchy",417:"Jinxed",418:"Frail-Brained",419:"Butterfingers",420:"Insufferable",421:"Noodle-Armed",422:"Contemplative",423:"Overthinking",424:"Delicate",425:"Clumsy Charmer",426:"Silver-Tongued",427:"Loveable Idiot",428:"Fashionably Late",429:"Cursed Cutie",430:"Sickly Lucky",431:"Stumbling",432:"Homely",433:"Oblivious",434:"Dawdling",435:"Feeble-Lucky",436:"Papery",437:"Scrawny",438:"Frantic",439:"Harebrained",440:"Wobbly",441:"Reckless",700:"bushy",701:"no eyebrows",702:"unibrow",900:"slender"},
+  mouth:{300:"Sabertoothed",301:"Hippo Teeth",302:"Flesh Kid",303:"Delerious",304:"Spider",305:"Ash",306:"Famine",307:"Alien Chomp",308:"Licky",309:"Jacko",310:"Lip Fillers",311:"Leech Mouth",312:"Bear Trap Mouth",313:"Full Mouth",314:"Gold Tooth",315:"Double Mouth",316:"Horse Face",317:"Glass Teeth",318:"mole mouth",319:"Catfish Mouth",321:"Zipper Mouth",322:"Shark Mouth",323:"Gills",324:"Eyeball",326:"Double Mouth 2",327:"Clown Lips",328:"Bandage Mouth",400:"Glass Cannon",401:"Lumbering",402:"Ugly Strong",403:"Meatheaded",404:"Plodding",405:"Ill-Fated",406:"Soft but Tough",407:"Thick-Footed",408:"Weathered",409:"Blissfully Dumb",410:"Immovable",411:"Hexed",412:"Wiry",413:"Lithe",414:"Creepy-Fingered",415:"Instinctive",416:"Twitchy",417:"Jinxed",418:"Frail-Brained",419:"Butterfingers",420:"Insufferable",421:"Noodle-Armed",422:"Contemplative",423:"Overthinking",424:"Delicate",425:"Clumsy Charmer",426:"Silver-Tongued",427:"Loveable Idiot",428:"Fashionably Late",429:"Cursed Cutie",430:"Sickly Lucky",431:"Stumbling",432:"Homely",433:"Oblivious",434:"Dawdling",435:"Feeble-Lucky",436:"Papery",437:"Scrawny",438:"Frantic",439:"Harebrained",440:"Wobbly",441:"Reckless",700:"cleft pallet",701:"anodontia",703:"underbite",704:"overbite",705:"Fetus Mouth",750:"beaver teeth",751:"pig snout",752:"Dog tongue",754:"Isaacs mouth",755:"Edmund beard",756:"Tylers beard",757:"Mermaid mouth",760:"bigfoot mouth",900:"Slender",1026:"spider mouth",1500:"rat mouth"},
+  texture:{300:"Stitches",301:"Fish Scales",302:"Conjoined",303:"Patches",304:"Confusing Hide",305:"Robot Hide",306:"Veiny",307:"Eyeballs",308:"Heart Tattoo",309:"Tatted Up",310:"Cash Hide",400:"Glass Cannon",401:"Lumbering",402:"Ugly Strong",403:"Meatheaded",404:"Plodding",405:"Ill-Fated",406:"Soft but Tough",407:"Thick-Footed",408:"Weathered",409:"Blissfully Dumb",410:"Immovable",411:"Hexed",412:"Wiry",413:"Lithe",414:"Creepy-Fingered",415:"Instinctive",416:"Twitchy",417:"Jinxed",418:"Frail-Brained",419:"Butterfingers",420:"Insufferable",421:"Noodle-Armed",422:"Contemplative",423:"Overthinking",424:"Delicate",425:"Clumsy Charmer",426:"Silver-Tongued",427:"Loveable Idiot",428:"Fashionably Late",429:"Cursed Cutie",430:"Sickly Lucky",431:"Stumbling",432:"Homely",433:"Oblivious",434:"Dawdling",435:"Feeble-Lucky",436:"Papery",437:"Scrawny",438:"Frantic",439:"Harebrained",440:"Wobbly",441:"Reckless",700:"neurofibromatosis",701:"melanocytic nevus",702:"bleeding",703:"blue spots",704:"red dots",705:"jaundice",706:"vitiligo",750:"skunk Hide"},
 };
 
 const GON_STAT_MODS = {
-  body:{300:{"con": 1},302:{"spd": -1},303:{"spd": -2},304:{"int": 1, "spd": 1},305:{"lck": 1},306:{"con": -3},307:{"cha": 1},308:{"str": 1, "con": 1, "int": -1},310:{"cha": 1},311:{"con": 1},314:{"cha": -1},317:{"con": 1},323:{"spd": -3},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},442:{"cha": -1},700:{"con": -2},701:{"spd": -2},702:{"con": -1},758:{"con": 1},900:{"con": -2, "spd": 1}},
-  head:{300:{"con": 1},301:{"str": 1, "con": 1, "int": -1},302:{"con": -1, "int": 2},304:{"cha": -2},305:{"cha": 1},306:{"int": 1},309:{"lck": 2},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"int": -2},701:{"int": -2},757:{"int": 2},900:{"cha": -1}},
-  tail:{300:{"str": 1},304:{"dex": 1},306:{"con": 1},307:{"spd": 1},308:{"lck": 1},309:{"cha": 1},321:{"int": 1},324:{"spd": 2},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"lck": -2},701:{"spd": -1, "cha": -1},900:{"spd": 1},1500:{"dex": 1}},
-  legs:{301:{"spd": 1},304:{"str": 1},306:{"dex": 1},307:{"spd": 1},308:{"lck": 1},311:{"con": 1},322:{"str": 1, "con": 1},323:{"spd": 2},324:{"con": 1},325:{"spd": -2},332:{"spd": -1},334:{"str": 1},339:{"spd": 2},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"str": -2},701:{"dex": -2},702:{"spd": -2},703:{"spd": -2},756:{"spd": 2}},
-  ears:{300:{"str": 1},301:{"int": 1},303:{"str": 1},304:{"cha": 1},306:{"spd": 1},307:{"int": 1},308:{"str": 1, "cha": -1},310:{"int": 1},322:{"cha": 1},342:{"con": -1},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"lck": -2},701:{"int": -2},754:{"spd": 1}},
-  eyes:{301:{"dex": 1},303:{"int": 1, "cha": 1},305:{"str": -1, "dex": -1, "int": 3},327:{"cha": 2},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"cha": -2},701:{"lck": -2},702:{"con": -2, "int": 1, "cha": 1},750:{"int": 1}},
-  eyebrows:{300:{"spd": 1},303:{"cha": 1},304:{"dex": 1},305:{"lck": 1},308:{"cha": 1},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"lck": -1}},
-  mouth:{300:{"str": 1},303:{"int": 1},310:{"cha": 1},312:{"str": 1},316:{"cha": -1},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"cha": -2},701:{"str": -1, "dex": -1},751:{"con": 2},756:{"int": 1}},
-  texture:{300:{"cha": -1},302:{"lck": 1},305:{"int": 1},306:{"str": 1},308:{"cha": 1},400:{"str": 2, "con": -1},401:{"str": 2, "dex": -1},402:{"str": 2, "cha": -1},403:{"str": 2, "int": -1},404:{"str": 2, "spd": -1},405:{"str": 2, "lck": -1},406:{"str": -1, "con": 2},407:{"dex": -1, "con": 2},408:{"con": 2, "cha": -1},409:{"con": 2, "int": -1},410:{"con": 2, "spd": -1},411:{"con": 2, "lck": -1},412:{"dex": 2, "con": -1},413:{"str": -1, "dex": 2},414:{"dex": 2, "cha": -1},415:{"dex": 2, "int": -1},416:{"dex": 2, "spd": -1},417:{"dex": 2, "lck": -1},418:{"con": -1, "int": 2},419:{"dex": -1, "int": 2},420:{"int": 2, "cha": -1},421:{"str": -1, "int": 2},422:{"int": 2, "spd": -1},423:{"int": 2, "lck": -1},424:{"con": -1, "cha": 2},425:{"dex": -1, "cha": 2},426:{"str": -1, "cha": 2},427:{"int": -1, "cha": 2},428:{"spd": -1, "cha": 2},429:{"cha": 2, "lck": -1},430:{"con": -1, "lck": 2},431:{"dex": -1, "lck": 2},432:{"cha": -1, "lck": 2},433:{"int": -1, "lck": 2},434:{"spd": -1, "lck": 2},435:{"str": -1, "lck": 2},436:{"con": -1, "spd": 2},437:{"str": -1, "spd": 2},438:{"spd": 2, "cha": -1},439:{"int": -1, "spd": 2},440:{"dex": -1, "spd": 2},441:{"spd": 2, "lck": -1},700:{"cha": -2},701:{"cha": -2}},
+  body:{300:{"con":1},302:{"spd":-1,"shield":5},303:{"spd":-2,"shield":10},304:{"spd":1,"int":1},305:{"lck":1},306:{"con":-3,"shield":12},307:{"cha":1},308:{"str":1,"con":1,"int":-1},310:{"cha":1},311:{"con":1},316:{"shield":2},320:{"shield":1},700:{"con":-2},701:{"spd":-2},702:{"con":-1},704:{"spd":-3,"con":2},753:{"shield":5},900:{"con":-2,"spd":1}},
+  head:{300:{"con":1},301:{"int":-1,"str":1,"con":1},302:{"int":2,"con":-1},305:{"cha":1},306:{"int":1},309:{"lck":2},310:{"shield":2},700:{"int":-2},701:{"int":-2},702:{"int":-1},705:{"cha":-3,"int":2},757:{"int":2}},
+  tail:{300:{"str":1},304:{"dex":1},306:{"con":1},307:{"spd":1},309:{"cha":1},312:{"divine_shield":1},321:{"int":1},324:{"spd":2},700:{"lck":-2},701:{"spd":-1,"cha":-1},750:{"cha":1},752:{"con":1},900:{"spd":1},1500:{"dex":1}},
+  legs:{304:{"str":1},306:{"dex":1},307:{"spd":1},308:{"lck":1},311:{"con":1},318:{"divine_shield":1},322:{"str":1,"con":1},323:{"spd":2},324:{"con":1},700:{"str":-2},701:{"dex":-2},702:{"spd":-2},704:{"str":-1},706:{"spd":-1},756:{"spd":2}},
+  ears:{300:{"str":1},301:{"int":1},304:{"cha":1},305:{"shield":1},306:{"spd":1},307:{"int":1},308:{"str":1,"cha":-1},310:{"int":1},322:{"cha":1},333:{"shield":3},340:{"divine_shield":1},700:{"lck":-2},701:{"int":-2},702:{"cha":-1}},
+  eyebrows:{300:{"spd":1},302:{"shield":2},303:{"cha":1},304:{"dex":1},305:{"lck":1},308:{"cha":1},700:{"lck":-1},701:{"cha":-1},702:{"int":-1}},
+  eyes:{301:{"dex":1},303:{"int":1,"cha":1},305:{"str":-1,"dex":-1,"int":3},327:{"cha":2},700:{"cha":-2},701:{"lck":-2},750:{"int":1}},
+  mouth:{300:{"str":1},303:{"int":1},310:{"cha":1},321:{"shield":3},700:{"cha":-2},701:{"str":-1,"dex":-1},703:{"int":-2,"con":1},704:{"cha":-2,"str":1},751:{"con":2},756:{"int":1}},
+  texture:{302:{"lck":1},305:{"int":1},306:{"str":1},308:{"cha":1},700:{"cha":-2},701:{"cha":-2,"shield":1}},
 };
 
 // Map body part slot names to their gon table
@@ -489,15 +551,15 @@ function getVisualStatMods(cat) {
 }
 
 const GON_TOOLTIPS = {
-  body:{301:"+1 Thorns.",309:"Units that contact you get knocked back 2 tiles.",312:"Spawn a coin when you take damage.",313:"+1 Kinetic Spikes.",314:"+2 Thorns.",315:"+1 Brace.",317:"Immune to Heat Wave weather.",318:"25% chance to spawn a Charmed Fly each turn.",319:"When you take damage from an attack, gain a random buff.",321:"Spawn a Charmed Kitten familiar when you get downed.",322:"Gain an extra consumable item at the end of each battle.",323:"Trample. When damaged, move 1 tile in a random direction.",324:"Gain +1 range when you get a kill.",703:"Start each battle with Bruise 1.",750:"+1 Thorns.",758:"Start with +1 Bonus Attack."},
-  head:{303:"+1 Thorns.",304:"+2 Health Regeneration +5% dodge chance.",307:"Units that contact you get knocked back 1 tile.",308:"+1 movement range while wet. Water does not slow movement.",311:"Spawn a coin when you take damage.",312:"Your basic attack pulls units towards you.",313:"Poop when you take damage.",314:"Gain +1 [img:int] at the end of each turn.",315:"At the start of each battle, swap your highest and lowest stats.",316:"When you take damage from an attack, gain a random buff.",317:"+5% dodge chance.",318:"+1 range.",319:"Gain +1 [img:int] permanently at the end of each battle. Start each battle with Bruise 2.",320:"Your basic attack has +2 Knockback.",321:"You have a 5% chance to inflict Fear on units who contact or attack you.",703:"Attacks against your face count as backstabs.",704:"20% miss chance.\nYour spells cost 1 less mana.",706:"Brace 1.",750:"+1 Thorns.",753:"You are immune to ice.",759:"Take an extra turn at the start of the battle.",900:"+1 range. +1 reach."},
-  tail:{301:"Poop when you take damage.",302:"Your basic attack inflicts Poison.",303:"Your basic attack has a 5% chance to Stun.",305:"+1 Thorns.",308:"+5% dodge chance.",310:"Your basic attack has a 10% chance to repeat once.",311:"Thorns 1.",313:"Your basic attack creates water tiles.",314:"Whenever you down a unit, you have a 10% chance to reanimate that unit with 50% HP.",315:"20% chance to spawn a Maggot when hit.",316:"25% chance to spawn tall grass wherever you end your movement.",317:"When hit, fart a Poison 4 attack with Knockback behind you.",318:"Your basic attack inflicts Poison.",319:"Units who contact you get Poisoned.",320:"Bleed 1. Bleed Thorns 2.",322:"Gain +1 [img:spd] each turn.",323:"Your movement action is a jump.",325:"Units that contact you get knocked back 2 tiles.",326:"10% dodge chance. Bruise 1.",327:"If you don't move, gain 3 Charge at the end of the turn.",329:"You can unequip cursed items and parasites.",331:"You can reroll your options when you level up.",332:"+25% chance to reflect projectiles.",334:"Your basic attack inflicts Burn 1.",336:"+1 Thorns.",337:"Your basic attack is wind element.",338:"Your basic attack inflicts Burn 1.",339:"While at full mana, you have +2 Damage.",341:"Gain +1 Charge when you take damage.",342:"Spawn a Charmed Kitten familiar when you get downed.",703:"Start each battle with Immobile 1.",704:"Hunter abilities are also offered when you level up.",751:"+1 Brace.",754:"+1 Thorns.",755:"Water does not slow movement.",756:"+1 Bleed Thorns.",757:"Your movement action is shadowstep.",759:"Start with +1 Bonus Attack.",760:"Start with 2 backflips."},
-  legs:{300:"+1 movement range while wet. Water does not slow movement.",301:"Your basic attack has a 5% chance to Stun.",302:"Knockback immunity.",303:"Your basic attack has a 5% chance to Immobilize.",305:"+5% dodge chance.",309:"Your basic attack has a 10% chance to inflict Bleed 3.",310:"Your movement action is a jump.",312:"Your basic attack has +1 Knockback.",313:"+1 reach.",314:"Your weapons have +1 Damage.",315:"Ice immunity.",317:"Your basic attack inflicts Bleed 1 if it's melee.",319:"10% chance to gain a bonus move each turn.",320:"10% chance to gain a bonus attack each turn.",321:"Moving through water tiles costs 0 movement.",325:"Collarless spells cost -1 mana.",326:"Your basic attack inflicts a random debuff.",327:"Gain 2 random stat ups and 1 random stat down at the end of each turn.",328:"Equip a temporary Bottles weapon at the start of the battle.",329:"Equip a temporary Water Bottle trinket at the start of the battle.",330:"+1 Health Regeneration",331:"+1 movement range. Your movement action is a jump.",332:"50% chance to spawn a pickup on an adjacent tile when you end your turn.",333:"Your basic attack has wind element and +1 Knockback.",334:"Your basic attack tosses units into the air if it's melee.",335:"+1 Bleed Thorns. Spawn glass when you take damage.",336:"Your basic attack inflicts Soul Link.",337:"You are immune to tile effects.",339:"Fly away when hit.",340:"When you take damage, gain +1 [img:lck].",341:"Your basic attack makes units face away from you.",343:"Spawn a Charmed Kitten familiar when you get downed.",703:"Water does not slow movement.",705:"Trample.",707:"Permanently Slow.",754:"Your movement action is a jump. Your basic attack inflicts Bruise.",757:"Trample.",758:"You have All Stats Up while wet.",759:"You have All Stats Up while wet.",761:"Your movement action is a jump. Your basic attack inflicts Bleed.",762:"Ignore the effects of tiles and traps.",763:"Ignore the effects of tiles and traps.",900:"Ignore the effects of tiles and traps."},
-  ears:{302:"+1 Health and Mana Regeneration while wet.",303:"Adds +1 Knockback to your basic attack if it's melee.",309:"Adds +1 Bleed to your basic attack.",313:"Adds +1 Knockback to your basic attack if it's melee.",314:"Thorns 1. Your basic attack inflicts Bleed if it's melee.",315:"50% chance to spawn a Charmed Fly each turn. Start with Poison 1.",316:"You can see hidden things. 5% dodge chance.",317:"Whenever you down a unit, you have a 10% chance to reanimate that unit with 50% HP.",318:"You have Brace 1 while wet.",319:"Gain +1 Charge when you take damage.",320:"+1 Kinetic Spikes.",321:"Units that contact you get knocked back 1 tile.",323:"Gain 1 HP when your basic attack deals damage.",325:"If you're wet, gain +1 Charge and +1 [img:shield] at the end of your turn.",326:"5% chance to spawn a Maggot familiar each turn.",327:"An extra food pickup will spawn in each battle.",328:"5% chance to Petrify on damage and when hit.",329:"Your basic attack leaves water tiles.",330:"Thorns 1. 10% chance to inflict Immobile on units that contact you.",331:"Your basic attack has +1 Knockback.",332:"Brace 1.",334:"Spawn 1-3 more coins/scrap around the map on random tiles at the start of each battle.",335:"Start with Bleed 1 and a bonus attack.",336:"You gain 3 mana at the end of your turn if you didn't use your movement action.",337:"Your basic attack inflicts Burn 1.",338:"Your basic attack has a 15% chance to inflict Freeze.",339:"You have electric immunity.",341:"10% chance to backflip when targeted.",342:"20% chance to spawn a Charmed Flea when damaged.",343:"Thorns 1.",344:"Spawn a Charmed Kitten familiar when you get downed.",345:"Units that contact or attack you have a 15% chance to get Charmed.",703:"Start each battle with Confusion 2.",704:"Start each battle with Immobile 1.",750:"Your movement action is a jump.",751:"+10% dodge chance.",752:"You have +2 Damage while wet.",753:"+1 Knockback damage. Your basic attack has +1 Knockback.",754:"Electric damage you deal is increased by 1.",755:"Gain +1 Charge every time you cast a spell.",900:"+10% dodge chance.",1500:"+2% dodge chance"},
-  eyes:{300:"Your basic attack has a 10% chance to inflict Fear.",302:"+1 Thorns.",304:"Take your turn later.",306:"Your basic attack has a 10% chance to inflict Confusion 3.",307:"Gain 1 mana when anything dies.",308:"+5% dodge chance.",309:"+2 corpse health.",310:"+1 Health Regeneration",311:"You do not take extra damage from backstabs.",312:"+1 Brace.",313:"Your basic attack creates water tiles.",314:"When you are downed, spawn 3 Flies. +2 corpse health.",315:"+1 Kinetic Spikes.",316:"15% chance to counter attack with Chain Lightning when you get hit.",317:"Gain a random stat up at the end of each turn.",318:"You can see hidden things. +1 Knockback damage.",319:"Blind. +1 Damage. +1 Thorns.",324:"Spawn 2 extra coins each battle.",325:"Thorns 1.",326:"Gain 2 Charge each time you cast 4 spells.",328:"+10% crit chance.",329:"Your basic attack has a 15% chance to inflict Confusion.",331:"At the start of each battle, gain a random temporary pill if your trinket slot is empty.",332:"Start each battle Bleeding. Gain 1 Charge each time you take damage.",333:"Your basic attack can't miss.",334:"Blind. Spawn a Flea when you take damage.",335:"Your basic attack has a 10% chance to Charm.",336:"Your basic attack is electric element and has a 5% chance to stun.",337:"Your basic attack is ice element and inflicts Slow.",338:"Your basic attack inflicts Burn.",339:"+1 Health Regeneration while wet. Your basic attack is water element.",340:"Your basic attack inflicts Leech.",341:"Gain Charge 1 the first time you move each turn.",342:"Your basic attack inflicts Poison 1. Start each battle Poisoned.",343:"You have a 5% chance to inflict Fear on units who contact or attack you.",344:"You have a 10% chance to Blind units who contact or attack you.",345:"Inflict a random debuff on units who contact you.",346:"Spawn a rock when damaged.",347:"Your basic attack has a 15% chance to inflict Confusion 2.",348:"+1 range, +1 reach.",349:"Emit 4 Sparkles each time you cast 8 spells.",351:"Your bonus ability is a different random spell each battle.",352:"You have All Stats Up while Bleeding.",353:"You take no extra damage from backstabs.",442:"10% chance to reflect projectiles.",704:"10% miss chance.",705:"Gain 5% miss chance every turn.",706:"Start each battle with Confusion 2.",754:"+1 range. Your basic attack is gravity element.",755:"Your basic attack has a 15% chance to inflict Fear.",900:"Your basic attack has a 10% chance to inflict Slow.",1029:"+5% crit chance."},
-  eyebrows:{301:"You have a 10% chance to inflict Confusion on units who contact or attack you.",306:"You have a 5% chance to inflict Fear on units who contact or attack you.",307:"+1 Mana Regeneration. +1 Health Regeneration.",309:"+1 Thorns.",310:"+1 Range.",311:"When you cast your third spell each turn, heal 2.",313:"Spawn 1-2 extra pickups in each battle.",314:"When an allied cat dies, gain +2 Damage.",315:"You can reroll your options when you level up.",900:"+5% dodge chance. Your basic attack has a 1% chance to inflict Freeze."},
-  mouth:{301:"Gain 1 health when you deal damage.",302:"+1 Health Regeneration",304:"Your basic attack inflicts Poison.",305:"+100 corpse health.",306:"10% chance to spawn a Fly when you take damage.",307:"Your basic attack has a 1% chance to instakill.",308:"+1 Health Regeneration",309:"Your basic attack has a 10% chance to inflict Fear.",311:"Your basic attack inflicts Leech 1.",312:"Your basic attack has a 10% chance to inflict Immobile if it's melee.",313:"At the end of each round, spit at an enemy .",314:"Spawn 5-10 coins when downed.",315:"10% chance to gain a bonus attack each turn.",316:"Your basic attack inflicts Bruise.",317:"Spawn glass when you take damage. +1 Bleed Thorns.",318:"Your movement action is Dig.",319:"Water does not slow movement. +1 Health Regeneration while wet.",322:"Your basic attack inflicts Bleed.",323:"+2 Health Regeneration while wet.",324:"+1 range.",326:"Gain +1 Health Regeneration whenever you eat food.",327:"You can reroll your options when you level up.",328:"Can't eat food, use consumables, or use musical abilities. +2 Health Regeneration",705:"Your basic attack can be used two extra times each turn but is replaced with a 1-damage spit attack.",750:"Your basic attack destroys inanimate objects and turns tiles into dirt.",752:"Your basic attack creates water tiles.",754:"Adjacent units get All Stats Down.",755:"Ice Immunity.",757:"Your basic attack inflicts Bleed.",760:"When a food pickup spawns within 2 tiles of you, move to it.",900:"Your basic attack has a 10% chance to inflict Fear.",1026:"Your basic attack has a 10% chance to inflict Webbed.",1500:"Your basic attack inflicts Poison."},
-  texture:{300:"+1 Health Regeneration",301:"+1 Health and Mana Regeneration while wet.",303:"Start each battle with a random stat up.",304:"Units that contact or attack you have a 10% chance to become Confused.",307:"+5% dodge chance.",309:"Your basic attack has a 5% chance to inflict Fear. You have a 5% chance to inflict Fear on units who contact or attack you.",310:"Gain double the effects of pickups you collect.",702:"Start each battle with Bleed 1.",703:"Mage abilities are also offered when you level up.",704:"Fighter abilities are also offered when you level up.",705:"Thief abilities are also offered when you level up.",706:"10% dodge chance.",750:"Units who contact you get Poison 2."},
+  body:{300:"+1 CON.",301:"+1 Thorns.",302:"-1 SPD, +5 Shield.",303:"-2 SPD, +10 Shield.",304:"+1 SPD, +1 INT.",305:"+1 LCK.",306:"-3 CON, +12 Shield.",307:"+1 CHA.",308:"+1 STR, +1 CON, -1 INT.",309:"Units that contact you get knocked back 2 tiles.",310:"+1 CHA.",311:"+1 CON.",312:"Spawn a coin when you take damage.",313:"+1 Kinetic Spikes.",314:"+2 Thorns.",315:"+1 Brace.",316:"+2 Shield.",317:"Immune to Heat Wave weather.",318:"25% chance to spawn a Charmed Fly each turn.",319:"When you take damage from an attack, gain a random buff.",320:"+1 Shield.",321:"Spawn a Charmed Kitten familiar when you get downed.",322:"Gain an extra consumable item at the end of each battle.",323:"Trample. When damaged, move 1 tile in a random direction.",324:"Gain +1 range when you get a kill.",700:"-2 CON.",701:"-2 SPD.",702:"-1 CON.",703:"Start each battle with Bruise 1.",704:"-3 SPD, +2 CON.",750:"+1 Thorns.",753:"+5 Shield.",758:"Start with +1 Bonus Attack.",900:"-2 CON, +1 SPD."},
+  head:{300:"+1 CON.",301:"-1 INT, +1 STR, +1 CON.",302:"+2 INT, -1 CON.",303:"+1 Thorns.",304:"+2 Health Regeneration +5% dodge chance.",305:"+1 CHA.",306:"+1 INT.",307:"Units that contact you get knocked back 1 tile.",308:"+1 movement range while wet. Water does not slow movement.",309:"+2 LCK.",310:"+2 Shield.",311:"Spawn a coin when you take damage.",312:"Your basic attack pulls units towards you.",313:"Poop when you take damage.",314:"Gain +1 [img:int] at the end of each turn.",315:"At the start of each battle, swap your highest and lowest stats.",316:"When you take damage from an attack, gain a random buff.",317:"+5% dodge chance.",318:"+1 range.",319:"Gain +1 [img:int] permanently at the end of each battle. Start each battle with Bruise 2.",320:"Your basic attack has +2 Knockback.",321:"You have a 5% chance to inflict Fear on units who contact or attack you.",700:"-2 INT.",701:"-2 INT.",702:"-1 INT.",703:"Attacks against your face count as backstabs.",704:"20% miss chance.\\\\\\\\\\\\\\\\nYour spells cost 1 less mana.",705:"-3 CHA, +2 INT.",706:"Brace 1.",750:"+1 Thorns.",753:"You are immune to ice.",757:"+2 INT.",759:"Take an extra turn at the start of the battle.",900:"+1 range. +1 reach."},
+  tail:{300:"+1 STR.",301:"Poop when you take damage.",302:"Your basic attack inflicts Poison.",303:"Your basic attack has a 5% chance to Stun.",304:"+1 DEX.",305:"+1 Thorns.",306:"+1 CON.",307:"+1 SPD.",308:"+5% dodge chance.",309:"+1 CHA.",310:"Your basic attack has a 10% chance to repeat once.",311:"Thorns 1.",312:"+1 Holy Shield.",313:"Your basic attack creates water tiles.",314:"Whenever you down a unit, you have a 10% chance to reanimate that unit with 50% HP.",315:"20% chance to spawn a Maggot when hit.",316:"25% chance to spawn tall grass wherever you end your movement.",317:"When hit, fart a Poison 4 attack with Knockback behind you.",318:"Your basic attack inflicts Poison.",319:"Units who contact you get Poisoned.",320:"Bleed 1. Bleed Thorns 2.",321:"+1 INT.",322:"Gain +1 [img:spd] each turn.",323:"Your movement action is a jump.",324:"+2 SPD.",325:"Units that contact you get knocked back 2 tiles.",326:"10% dodge chance. Bruise 1.",327:"If you don't move, gain 3 Charge at the end of the turn.",329:"You can unequip cursed items and parasites.",331:"You can reroll your options when you level up.",332:"+25% chance to reflect projectiles.",334:"Your basic attack inflicts Burn 1.",336:"+1 Thorns.",337:"Your basic attack is wind element.",338:"Your basic attack inflicts Burn 1.",339:"While at full mana, you have +2 Damage.",341:"Gain +1 Charge when you take damage.",342:"Spawn a Charmed Kitten familiar when you get downed.",700:"-2 LCK.",701:"-1 SPD, -1 CHA.",703:"Start each battle with Immobile 1.",704:"Hunter abilities are also offered when you level up.",750:"+1 CHA.",751:"+1 Brace.",752:"+1 CON.",754:"+1 Thorns.",755:"Water does not slow movement.",756:"+1 Bleed Thorns.",757:"Your movement action is shadowstep.",759:"Start with +1 Bonus Attack.",760:"Start with 2 backflips.",900:"+1 SPD.",1500:"+1 DEX."},
+  legs:{300:"+1 movement range while wet. Water does not slow movement.",301:"Your basic attack has a 5% chance to Stun.",302:"Knockback immunity.",303:"Your basic attack has a 5% chance to Immobilize.",304:"+1 STR.",305:"+5% dodge chance.",306:"+1 DEX.",307:"+1 SPD.",308:"+1 LCK.",309:"Your basic attack has a 10% chance to inflict Bleed 3.",310:"Your movement action is a jump.",311:"+1 CON.",312:"Your basic attack has +1 Knockback.",313:"+1 reach.",314:"Your weapons have +1 Damage.",315:"Ice immunity.",317:"Your basic attack inflicts Bleed 1 if it's melee.",318:"+1 Holy Shield.",319:"10% chance to gain a bonus move each turn.",320:"10% chance to gain a bonus attack each turn.",321:"Moving through water tiles costs 0 movement.",322:"+1 STR, +1 CON.",323:"+2 SPD.",324:"+1 CON.",325:"Collarless spells cost -1 mana.",326:"Your basic attack inflicts a random debuff.",327:"Gain 2 random stat ups and 1 random stat down at the end of each turn.",328:"Equip a temporary Bottles weapon at the start of the battle.",329:"Equip a temporary Water Bottle trinket at the start of the battle.",330:"+1 Health Regeneration",331:"+1 movement range. Your movement action is a jump.",332:"50% chance to spawn a pickup on an adjacent tile when you end your turn.",333:"Your basic attack has wind element and +1 Knockback.",334:"Your basic attack tosses units into the air if it's melee.",335:"+1 Bleed Thorns. Spawn glass when you take damage.",336:"Your basic attack inflicts Soul Link.",337:"You are immune to tile effects.",339:"Fly away when hit.",340:"When you take damage, gain +1 [img:lck].",341:"Your basic attack makes units face away from you.",343:"Spawn a Charmed Kitten familiar when you get downed.",700:"-2 STR.",701:"-2 DEX.",702:"-2 SPD.",703:"Water does not slow movement.",704:"-1 STR.",705:"Trample.",706:"-1 SPD.",707:"Permanently Slow.",754:"Your movement action is a jump. Your basic attack inflicts Bruise.",756:"+2 SPD.",757:"Trample.",758:"You have All Stats Up while wet.",759:"You have All Stats Up while wet.",761:"Your movement action is a jump. Your basic attack inflicts Bleed.",762:"Ignore the effects of tiles and traps.",763:"Ignore the effects of tiles and traps.",900:"Ignore the effects of tiles and traps."},
+  ears:{300:"+1 STR.",301:"+1 INT.",302:"+1 Health and Mana Regeneration while wet.",303:"Adds +1 Knockback to your basic attack if it's melee.",304:"+1 CHA.",305:"+1 Shield.",306:"+1 SPD.",307:"+1 INT.",308:"+1 STR, -1 CHA.",309:"Adds +1 Bleed to your basic attack.",310:"+1 INT.",313:"Adds +1 Knockback to your basic attack if it's melee.",314:"Thorns 1. Your basic attack inflicts Bleed if it's melee.",315:"50% chance to spawn a Charmed Fly each turn. Start with Poison 1.",316:"You can see hidden things. 5% dodge chance.",317:"Whenever you down a unit, you have a 10% chance to reanimate that unit with 50% HP.",318:"You have Brace 1 while wet.",319:"Gain +1 Charge when you take damage.",320:"+1 Kinetic Spikes.",321:"Units that contact you get knocked back 1 tile.",322:"+1 CHA.",323:"Gain 1 HP when your basic attack deals damage.",325:"If you're wet, gain +1 Charge and +1 [img:shield] at the end of your turn.",326:"5% chance to spawn a Maggot familiar each turn.",327:"An extra food pickup will spawn in each battle.",328:"5% chance to Petrify on damage and when hit.",329:"Your basic attack leaves water tiles.",330:"Thorns 1. 10% chance to inflict Immobile on units that contact you.",331:"Your basic attack has +1 Knockback.",332:"Brace 1.",333:"+3 Shield.",334:"Spawn 1-3 more coins/scrap around the map on random tiles at the start of each battle.",335:"Start with Bleed 1 and a bonus attack.",336:"You gain 3 mana at the end of your turn if you didn't use your movement action.",337:"Your basic attack inflicts Burn 1.",338:"Your basic attack has a 15% chance to inflict Freeze.",339:"You have electric immunity.",340:"+1 Holy Shield.",341:"10% chance to backflip when targeted.",342:"20% chance to spawn a Charmed Flea when damaged.",343:"Thorns 1.",344:"Spawn a Charmed Kitten familiar when you get downed.",345:"Units that contact or attack you have a 15% chance to get Charmed.",700:"-2 LCK.",701:"-2 INT.",702:"-1 CHA.",703:"Start each battle with Confusion 2.",704:"Start each battle with Immobile 1.",750:"Your movement action is a jump.",751:"+10% dodge chance.",752:"You have +2 Damage while wet.",753:"+1 Knockback damage. Your basic attack has +1 Knockback.",754:"Electric damage you deal is increased by 1.",755:"Gain +1 Charge every time you cast a spell.",900:"+10% dodge chance.",1500:"+2% dodge chance"},
+  eyebrows:{2:"-2 CHA.",300:"+1 SPD.",301:"You have a 10% chance to inflict Confusion on units who contact or attack you.",302:"+2 Shield.",303:"+1 CHA.",304:"+1 DEX.",305:"+1 LCK.",306:"You have a 5% chance to inflict Fear on units who contact or attack you.",307:"+1 Mana Regeneration. +1 Health Regeneration.",308:"+1 CHA.",309:"+1 Thorns.",310:"+1 Range.",311:"When you cast your third spell each turn, heal 2.",313:"Spawn 1-2 extra pickups in each battle.",314:"When an allied cat dies, gain +2 Damage.",315:"You can reroll your options when you level up.",700:"-1 LCK.",701:"-1 CHA.",702:"-1 INT.",900:"+5% dodge chance. Your basic attack has a 1% chance to inflict Freeze."},
+  eyes:{300:"Your basic attack has a 10% chance to inflict Fear.",301:"+1 DEX.",302:"+1 Thorns.",303:"+1 INT, +1 CHA.",304:"Take your turn later.",305:"-1 STR, -1 DEX, +3 INT.",306:"Your basic attack has a 10% chance to inflict Confusion 3.",307:"Gain 1 mana when anything dies.",308:"+5% dodge chance.",309:"+2 corpse health.",310:"+1 Health Regeneration",311:"You do not take extra damage from backstabs.",312:"+1 Brace.",313:"Your basic attack creates water tiles.",314:"When you are downed, spawn 3 Flies. +2 corpse health.",315:"+1 Kinetic Spikes.",316:"15% chance to counter attack with Chain Lightning when you get hit.",317:"Gain a random stat up at the end of each turn.",318:"You can see hidden things. +1 Knockback damage.",319:"Blind. +1 Damage. +1 Thorns.",324:"Spawn 2 extra coins each battle.",325:"Thorns 1.",326:"Gain 2 Charge each time you cast 4 spells.",327:"+2 CHA.",328:"+10% crit chance.",329:"Your basic attack has a 15% chance to inflict Confusion.",331:"At the start of each battle, gain a random temporary pill if your trinket slot is empty.",332:"Start each battle Bleeding. Gain 1 Charge each time you take damage.",333:"Your basic attack can't miss.",334:"Blind. Spawn a Flea when you take damage.",335:"Your basic attack has a 10% chance to Charm.",336:"Your basic attack is electric element and has a 5% chance to stun.",337:"Your basic attack is ice element and inflicts Slow.",338:"Your basic attack inflicts Burn.",339:"+1 Health Regeneration while wet. Your basic attack is water element.",340:"Your basic attack inflicts Leech.",341:"Gain Charge 1 the first time you move each turn.",342:"Your basic attack inflicts Poison 1. Start each battle Poisoned.",343:"You have a 5% chance to inflict Fear on units who contact or attack you.",344:"You have a 10% chance to Blind units who contact or attack you.",345:"Inflict a random debuff on units who contact you.",346:"Spawn a rock when damaged.",347:"Your basic attack has a 15% chance to inflict Confusion 2.",348:"+1 range, +1 reach.",349:"Emit 4 Sparkles each time you cast 8 spells.",351:"Your bonus ability is a different random spell each battle.",352:"You have All Stats Up while Bleeding.",353:"You take no extra damage from backstabs.",442:"10% chance to reflect projectiles.",700:"-2 CHA.",701:"-2 LCK.",704:"10% miss chance.",705:"Gain 5% miss chance every turn.",706:"Start each battle with Confusion 2.",750:"+1 INT.",754:"+1 range. Your basic attack is gravity element.",755:"Your basic attack has a 15% chance to inflict Fear.",900:"Your basic attack has a 10% chance to inflict Slow.",1029:"+5% crit chance."},
+  mouth:{300:"+1 STR.",301:"Gain 1 health when you deal damage.",302:"+1 Health Regeneration",303:"+1 INT.",304:"Your basic attack inflicts Poison.",305:"+100 corpse health.",306:"10% chance to spawn a Fly when you take damage.",307:"Your basic attack has a 1% chance to instakill.",308:"+1 Health Regeneration",309:"Your basic attack has a 10% chance to inflict Fear.",310:"+1 CHA.",311:"Your basic attack inflicts Leech 1.",312:"Your basic attack has a 10% chance to inflict Immobile if it's melee.",313:"At the end of each round, spit at an enemy .",314:"Spawn 5-10 coins when downed.",315:"10% chance to gain a bonus attack each turn.",316:"Your basic attack inflicts Bruise.",317:"Spawn glass when you take damage. +1 Bleed Thorns.",318:"Your movement action is Dig.",319:"Water does not slow movement. +1 Health Regeneration while wet.",321:"+3 Shield.",322:"Your basic attack inflicts Bleed.",323:"+2 Health Regeneration while wet.",324:"+1 range.",326:"Gain +1 Health Regeneration whenever you eat food.",327:"You can reroll your options when you level up.",328:"Can't eat food, use consumables, or use musical abilities. +2 Health Regeneration",700:"-2 CHA.",701:"-1 STR, -1 DEX.",703:"-2 INT, +1 CON.",704:"-2 CHA, +1 STR.",705:"Your basic attack can be used two extra times each turn but is replaced with a 1-damage spit attack.",750:"Your basic attack destroys inanimate objects and turns tiles into dirt.",751:"+2 CON.",752:"Your basic attack creates water tiles.",754:"Adjacent units get All Stats Down.",755:"Ice Immunity.",756:"+1 INT.",757:"Your basic attack inflicts Bleed.",760:"When a food pickup spawns within 2 tiles of you, move to it.",900:"Your basic attack has a 10% chance to inflict Fear.",1026:"Your basic attack has a 10% chance to inflict Webbed.",1500:"Your basic attack inflicts Poison."},
+  texture:{300:"+1 Health Regeneration",301:"+1 Health and Mana Regeneration while wet.",302:"+1 LCK.",303:"Start each battle with a random stat up.",304:"Units that contact or attack you have a 10% chance to become Confused.",305:"+1 INT.",306:"+1 STR.",307:"+5% dodge chance.",308:"+1 CHA.",309:"Your basic attack has a 5% chance to inflict Fear. You have a 5% chance to inflict Fear on units who contact or attack you.",310:"Gain double the effects of pickups you collect.",700:"-2 CHA.",701:"-2 CHA, +1 Shield.",702:"Start each battle with Bleed 1.",703:"Mage abilities are also offered when you level up.",704:"Fighter abilities are also offered when you level up.",705:"Thief abilities are also offered when you level up.",706:"10% dodge chance.",750:"Units who contact you get Poison 2."},
 };
 
 
@@ -521,7 +583,7 @@ function passiveName(key) {
 function passiveDesc(key) {
   const dk = 'DISORDER_'+key.toUpperCase();
   const pk = 'PASSIVE_' +key.toUpperCase();
-  const csvDesc = PASSIVE_DESCS[dk] || PASSIVE_DESCS[pk] || '';
+  const csvDesc = PASSIVE_DESCS[dk] || PASSIVE_DESCS[pk] || PASSIVE_DESCS[key] || PASSIVE_DESCS[key.toUpperCase()] || '';
   if (csvDesc) return csvDesc;
   // Fall back to stat modifiers from disorders.gon
   const sm = DISORDER_STATS[key.toUpperCase()];
@@ -961,7 +1023,7 @@ function rSum(){
 
   // Mutation distribution by body part
   // getVisualMuts returns keys like 'Fur','Body','Head' etc - use those directly
-  const DIST_SLOTS = ['Fur','Body','Head','Tail','Legs','Arms','Eyes','Eyebrows','Ears','Mouth'];
+  const DIST_SLOTS = ['Fur','Body','Head','Tail','Legs','Arms','Eyes','Brows','Ears','Mouth'];
   const slotCounts = {};
   for (const c of hCats) {
     const vm = getVisualMuts(c);
@@ -1017,9 +1079,10 @@ function updateNavFilterButtons() {
   // In House / Veterans: highlight only when that filter is the sole active filter
   document.getElementById('nav-house').classList.toggle('on', activeFilters.has('house') && activeFilters.size === 1);
   document.getElementById('nav-vet').classList.toggle('on',   activeFilters.has('vet')   && activeFilters.size === 1);
-  // All Cats: highlight when NO filters are active, or when any filter OTHER than house/vet is active
+  // All Cats: highlight only when ON the cats page AND no house/vet-only filter is active
+  const onCatsPage = document.getElementById('p-cats')?.classList.contains('act');
   const onlySimple = activeFilters.size === 0 || [...activeFilters].some(k => k !== 'house' && k !== 'vet');
-  document.querySelector('[data-p="cats"]').classList.toggle('on', onlySimple);
+  document.querySelector('[data-p="cats"]').classList.toggle('on', onCatsPage && onlySimple);
 }
 
 function bFPs(){
@@ -1099,7 +1162,7 @@ function cHTML(c){
   const tags=[
     ...Object.entries(getVisualMuts(c)).map(([slot,{name,tip,isBD}])=>'<span class="tg '+(isBD?'bdef':'vmut')+(tip?' tt':'')+'"'+(tip?' data-tip="'+tip.replace(/"/g,"'")+'"':'')+'>'+name+'</span>'),
     ...c.mutations.map(m=>'<span class="tg mut'+(passiveDesc(m)?' tt':'')+'"'+(passiveDesc(m)?' data-tip="'+passiveDesc(m).replace(/"/g,"'")+ '"':'')+'>'+passiveName(m)+'</span>'),
-    ...c.passives.map(p=>'<span class="tg pass">'+passiveName(p)+'</span>'),
+    ...c.passives.map(p=>'<span class="tg pass'+(passiveDesc(p)?' tt':'')+'"'+(passiveDesc(p)?' data-tip="'+passiveDesc(p).replace(/"/g,"'")+'"':'')+'>'+passiveName(p)+'</span>'),
     ...c.skills.slice(0,3).map(s=>'<span class="tg mv'+(abilityDesc(s)?' tt':'')+'"'+(abilityDesc(s)?' data-tip="'+abilityDesc(s).replace(/"/g,"'")+'"':'')+'>'+abilityName(s)+'</span>'),
   ].join('');
   return`<div class="cc ${isAccessible?'inh':''}" onclick="oCat(${c.id})">
@@ -1189,9 +1252,9 @@ function oCat(id){
     ${c.passives.length?'<div class="ms"><h3>PASSIVES</h3><div style="display:flex;flex-wrap:wrap;gap:6px">'+c.passives.map(p=>'<span class="apill pass'+(passiveDesc(p)?' tt':'')+('"')+((passiveDesc(p)?' data-tip="'+passiveDesc(p).replace(/"/g,"'")+('"'):''))+'>'+passiveName(p)+'</span>').join('')+'</div></div>':''}
     <div class="ms"><h3>PERSONALITY</h3>
       <div class="mr">
-        <div class="mf"><div class="lb">Libido</div><div class="vl">${c.libido}</div></div>
-        <div class="mf"><div class="lb">Sexuality</div><div class="vl">${c.sexuality}</div></div>
-        <div class="mf"><div class="lb">Aggression</div><div class="vl">${c.aggression}</div></div>
+        <div class="mf"><div class="lb">Libido</div><div class="vl">${c.libido<0.3?'Low':c.libido>0.7?'High':'Mid'} <span style="font-size:10px;color:var(--mut)">(${c.libido})</span></div></div>
+        <div class="mf"><div class="lb">Sexuality</div><div class="vl">${c.sexuality<0.1?'Straight':c.sexuality>0.9?'Gay':'Bisexual'} <span style="font-size:10px;color:var(--mut)">(${c.sexuality})</span></div></div>
+        <div class="mf"><div class="lb">Aggression</div><div class="vl">${c.aggression<0.3?'Low':c.aggression>0.7?'High':'Mid'} <span style="font-size:10px;color:var(--mut)">(${c.aggression})</span></div></div>
       </div>
       ${c.loverKey?`<div class="mr"><div class="mf"><div class="lb">Lover</div><div class="vl" style="cursor:pointer;color:var(--fem)" onclick="document.getElementById('mov').classList.remove('open');oCat(${c.loverKey})">#${c.loverKey} — ${CATS.find(x=>x.id===c.loverKey)?.name||'?'}</div></div></div>`:''}
       ${c.haterKey?`<div class="mr"><div class="mf"><div class="lb">Rival</div><div class="vl" style="cursor:pointer;color:var(--acc)" onclick="document.getElementById('mov').classList.remove('open');oCat(${c.haterKey})">#${c.haterKey} — ${CATS.find(x=>x.id===c.haterKey)?.name||'?'}</div></div></div>`:''}
@@ -1215,7 +1278,162 @@ function rPr(){
 // ═══════════════════════════════════════════
 // Navigation
 // ═══════════════════════════════════════════
-const lazyPages={cats:rdrCats, prop:rPr, mut:rdrMut};
+
+// ═══════════════════════════════════════════
+// Mutation Census Page
+// ═══════════════════════════════════════════
+const CEN_SLOTS = [
+  {key:'all',      label:'All',      gon:null},
+  {key:'fur',      label:'Fur',      gon:'texture'},
+  {key:'body',     label:'Body',     gon:'body'},
+  {key:'head',     label:'Head',     gon:'head'},
+  {key:'tail',     label:'Tail',     gon:'tail'},
+  {key:'legs',     label:'Legs',     gon:'legs'},
+  {key:'eyes',     label:'Eyes',     gon:'eyes'},
+  {key:'eyebrows', label:'Brows',    gon:'eyebrows'},
+  {key:'ears',     label:'Ears',     gon:'ears'},
+  {key:'mouth',    label:'Mouth',    gon:'mouth'},
+];
+
+let cenSlot = 'all';
+
+function buildCenTabs() {
+  document.getElementById('cen-tabs').innerHTML = CEN_SLOTS.map(s =>
+    `<button class="cen-tab${cenSlot===s.key?' on':''}" onclick="setCenSlot('${s.key}')">${s.label}</button>`
+  ).join('');
+}
+
+function setCenSlot(key) {
+  cenSlot = key;
+  buildCenTabs();
+  rdrCen();
+}
+
+function getCenTip(gon, spriteIdx) {
+  return GON_TOOLTIPS[gon]?.[spriteIdx] ||
+    (GON_STAT_MODS[gon]?.[spriteIdx]
+      ? Object.entries(GON_STAT_MODS[gon][spriteIdx])
+          .map(([s,v]) => (v>0?'+':'')+v+' '+s.toUpperCase()).join(', ')
+      : '');
+}
+
+function rdrCen() {
+  const q       = (document.getElementById('cen-search')?.value || '').toLowerCase();
+  const showBD  = document.getElementById('cen-bd')?.checked;
+  const allCats = document.getElementById('cen-all')?.checked;
+  const pool    = allCats ? CATS : CATS.filter(c => HOUSE_IDS.has(c.id));
+
+  // Build census: { 'fur|texture|302': {name, gon, spriteIdx, tip, isBD, cats:[]} }
+  const census = {};
+
+  const addEntry = (slotKey, gon, spriteIdx, cat) => {
+    const name = GON_TABLES[gon]?.[spriteIdx];
+    if (!name) return;
+    const isBD = (BIRTH_DEFECT_IDS[gon] || []).includes(spriteIdx);
+    if (!showBD && isBD) return;
+    const k = `${slotKey}|${gon}|${spriteIdx}`;
+    if (!census[k]) {
+      census[k] = {
+        name: toTitleCase(name),
+        slot: slotKey,
+        gon, spriteIdx, isBD,
+        tip: getCenTip(gon, spriteIdx),
+        cats: []
+      };
+    }
+    census[k].cats.push(cat);
+  };
+
+  for (const cat of pool) {
+    if (!cat.bodyParts) continue;
+
+    // Texture / fur
+    const tex = cat.bodyParts.textureSpriteIdx;
+    if (tex != null) addEntry('fur', 'texture', tex, cat);
+
+    // Body parts - deduplicate paired slots (use first seen per gon+sprite)
+    const seen = new Set();
+    for (const [pname, spriteIdx] of (cat.bodyParts.parts || [])) {
+      const gon = PART_TO_GON[pname];
+      if (!gon) continue;
+      const dk = gon + ':' + spriteIdx;
+      if (seen.has(dk)) continue;
+      seen.add(dk);
+      addEntry(gon, gon, spriteIdx, cat);
+    }
+  }
+
+  // Filter by slot tab
+  const slotDef = CEN_SLOTS.find(s => s.key === cenSlot);
+  let entries = Object.values(census);
+  if (cenSlot !== 'all') {
+    const gonKey = slotDef?.gon;
+    entries = entries.filter(e => e.gon === gonKey);
+  }
+
+  // Filter by search
+  if (q) entries = entries.filter(e =>
+    e.name.toLowerCase().includes(q) ||
+    (e.tip && e.tip.toLowerCase().includes(q))
+  );
+
+  // Sort: count desc, then name asc
+  entries.sort((a, b) => b.cats.length - a.cats.length || a.name.localeCompare(b.name));
+
+  // Summary
+  const total = entries.reduce((s, e) => s + e.cats.length, 0);
+  document.getElementById('cen-summary').textContent =
+    `${entries.length} mutation${entries.length!==1?'s':''} · ${total} instance${total!==1?'s':''}`;
+
+  // Render
+  if (!entries.length) {
+    document.getElementById('cen-grid').innerHTML =
+      '<div class="cen-empty">No mutations match.</div>';
+    return;
+  }
+
+  document.getElementById('cen-grid').innerHTML = entries.map(e => {
+    const sexCls = c => c.sex === 'female' ? 'fem' : c.sex === 'male' ? 'mal' : '';
+    // Group cats by room
+    const roomGroups = {};
+    for (const c of e.cats.slice().sort((a,b) => a.name.localeCompare(b.name))) {
+      const room = catRoom(c);
+      const groupKey = HOUSE_IDS.has(c.id) ? (room || '_house') : '_away';
+      if (!roomGroups[groupKey]) roomGroups[groupKey] = [];
+      roomGroups[groupKey].push(c);
+    }
+    // Render groups in room order, then _house (unroomed in-house), then _away
+    const groupOrder = [...ROOM_ORDER, '_house', '_away'];
+    const catPills = groupOrder
+      .filter(k => roomGroups[k])
+      .map(k => {
+        const label = k === '_away' ? 'Not in house'
+                    : k === '_house' ? 'In House'
+                    : roomLabel(k);
+        const pills = roomGroups[k].map(c => {
+          const lvl = c.level ? ` · Lv ${c.level}` : '';
+          const sexLabel = c.sexuality < 0.1 ? 'Straight' : c.sexuality > 0.9 ? 'Gay' : 'Bisexual';
+          return `<span class="cen-cat ${sexCls(c)} tt" data-tip="${sexLabel}${lvl}" onclick="oCat(${c.id})">${c.name}</span>`;
+        }).join('');
+        return `<div class="cen-room-group"><span class="cen-room-label">${label}</span><div class="cen-room-cats">${pills}</div></div>`;
+      }).join('');
+
+    const slotLabel = cenSlot === 'all'
+      ? `<span style="font-size:9px;color:var(--mut);margin-right:6px">${e.gon.toUpperCase()}</span>`
+      : '';
+
+    return `<div class="cen-card${e.isBD?' bd':''}">
+      <div class="cen-header">
+        <span class="cen-mut-name">${slotLabel}${e.name}</span>
+        <span class="cen-count"><strong>${e.cats.length}</strong> cat${e.cats.length!==1?'s':''}</span>
+      </div>
+      ${e.tip ? `<div class="cen-tip">${e.tip}</div>` : `<div class="cen-no-tip-divider"></div>`}
+      <div class="cen-cats">${catPills}</div>
+    </div>`;
+  }).join('');
+}
+
+const lazyPages={cats:rdrCats, prop:rPr, mut:rdrMut, cen:()=>{buildCenTabs();rdrCen();}};
 
 // ═══════════════════════════════════════════
 // Mutations Page
@@ -1233,21 +1451,16 @@ function getFullMuts(cat) {
   if (!cat.bodyParts?.parts) return slots;
   const FULL_LABELS = {
     body:'Body', head:'Head', tail:'Tail',
-    leg1:'Legs', leg2:'Legs', arm1:'Arms', arm2:'Arms',
-    lefteye:'Eyes', righteye:'Eyes',
-    lefteyebrow:'Eyebrows', righteyebrow:'Eyebrows',
-    leftear:'Ears', rightear:'Ears',
+    leg1:'L.Leg', leg2:'R.Leg', arm1:'L.Arm', arm2:'R.Arm',
+    lefteye:'L.Eye', righteye:'R.Eye',
+    lefteyebrow:'L.Brow', righteyebrow:'R.Brow',
+    leftear:'L.Ear', rightear:'R.Ear',
     mouth:'Mouth'
   };
-  const pairLeftF = {leg2:'leg1', arm2:'arm1', righteye:'lefteye', righteyebrow:'lefteyebrow', rightear:'leftear'};
-  const spriteOfF = {};
-  for (const [pname, spriteIdx] of cat.bodyParts.parts) spriteOfF[pname] = spriteIdx;
   for (const [pname, spriteIdx] of cat.bodyParts.parts) {
     const gon = PART_TO_GON[pname];
     const label = FULL_LABELS[pname];
     if (!gon || !label) continue;
-    const leftPart = pairLeftF[pname];
-    if (leftPart && spriteOfF[leftPart] === spriteIdx) continue;
     const n = GON_TABLES[gon]?.[spriteIdx];
     if (!n) continue;
     const tip = GON_TOOLTIPS[gon]?.[spriteIdx] || (GON_STAT_MODS[gon]?.[spriteIdx] ? Object.entries(GON_STAT_MODS[gon][spriteIdx]).map(([s,v])=>(v>0?'+':'')+v+' '+s.toUpperCase()).join(', ') : '');
@@ -1256,10 +1469,24 @@ function getFullMuts(cat) {
   return slots;
 }
 
-const ALL_MUT_SLOTS = ['Fur','Body','Head','Tail','Legs','Arms','Eyes','Eyebrows','Ears','Mouth'];
-const mutRooms = new Set(); // empty = all rooms
+const ALL_MUT_SLOTS = ['Fur','Body','Head','Tail','Legs','Arms','Eyes','Brows','Ears','Mouth'];
+const mutRooms = new Set();
+let mutScope = 'house'; // 'house' or 'all'
+ // empty = all rooms
 let mutSortSlot = 'name';
 let mutSortDir = 1; // 1=asc, -1=desc
+
+function setMutScope(scope, el) {
+  mutScope = scope;
+  document.getElementById('mut-scope-house').classList.toggle('on', scope === 'house');
+  document.getElementById('mut-scope-all').classList.toggle('on', scope === 'all');
+  // Hide room filter when showing all cats
+  const roomRow = document.getElementById('mut-room-row');
+  if (roomRow) roomRow.style.display = scope === 'house' ? '' : 'none';
+  mutRooms.clear();
+  document.querySelectorAll('#p-mut .fp[data-mflt]').forEach(b => b.classList.toggle('on', b.dataset.mflt === 'all'));
+  rdrMut();
+}
 
 function toggleMutRoom(room, el) {
   if (room === 'all') {
@@ -1296,21 +1523,27 @@ function setMutSort(slot) {
   rdrMut();
 }
 
+const MUT_SLOT_LEFT  = {Legs:'L.Leg', Arms:'L.Arm', Eyes:'L.Eye', Brows:'L.Brow', Ears:'L.Ear'};
+const MUT_SLOT_RIGHT = {Legs:'R.Leg', Arms:'R.Arm', Eyes:'R.Eye', Brows:'R.Brow', Ears:'R.Ear'};
+const UNPAIRED_SLOTS = new Set(['Fur','Body','Head','Tail','Mouth']);
 function rdrMut() {
   // sync sort slot from dropdown if changed directly
   const selVal = document.getElementById('mut-sort')?.value || 'name';
   if (selVal !== mutSortSlot) { mutSortSlot = selVal; mutSortDir = 1; }
 
-  let cats = CATS.filter(inHouse);
-  if (mutRooms.size > 0) cats = cats.filter(c => mutRooms.has(catRoom(c)));
+  let cats = mutScope === 'all' ? [...CATS] : CATS.filter(inHouse);
+  if (mutScope === 'house' && mutRooms.size > 0) cats = cats.filter(c => mutRooms.has(catRoom(c)));
+  // For all-cats view, only show cats with at least one mutation
+  if (mutScope === 'all') cats = cats.filter(c => Object.keys(getFullMuts(c)).length > 0);
 
   cats = [...cats].sort((a, b) => {
     let cmp = 0;
     if (mutSortSlot === 'name') {
       cmp = a.name.localeCompare(b.name);
     } else {
-      const na = getFullMuts(a)[mutSortSlot]?.name || '';
-      const nb = getFullMuts(b)[mutSortSlot]?.name || '';
+      const resolvedSlot = MUT_SLOT_LEFT[mutSortSlot] || mutSortSlot;
+      const na = getFullMuts(a)[resolvedSlot]?.name || '';
+      const nb = getFullMuts(b)[resolvedSlot]?.name || '';
       if (!na && !nb) cmp = 0;
       else if (!na) cmp = 1;
       else if (!nb) cmp = -1;
@@ -1323,16 +1556,46 @@ function rdrMut() {
   const rows = cats.map(c => {
     const muts = getFullMuts(c);
     const sexSym = c.sex==='female'?'♀':c.sex==='male'?'♂':'?';
-    const cells = ALL_MUT_SLOTS.map(slot => {
-      const m = muts[slot];
+
+    // Check if any paired slot is asymmetric
+    let hasAsym = false;
+    for (const slot of ALL_MUT_SLOTS) {
+      if (UNPAIRED_SLOTS.has(slot)) continue;
+      const lKey = MUT_SLOT_LEFT[slot], rKey = MUT_SLOT_RIGHT[slot];
+      const lName = muts[lKey]?.name || '', rName = muts[rKey]?.name || '';
+      if (lName !== rName) { hasAsym = true; break; }
+    }
+
+    // Primary row: left-side values
+    const cells1 = ALL_MUT_SLOTS.map(slot => {
+      const key = UNPAIRED_SLOTS.has(slot) ? slot : MUT_SLOT_LEFT[slot];
+      const m = muts[key];
       if (!m) return '<td class="mslot empty">—</td>';
       const tip = m.tip ? ' data-tip="'+m.tip.replace(/"/g,"'")+'"' : '';
       return '<td class="mslot '+(m.isBD?'bdef':'vmut')+(m.tip?' tt':'')+'"'+tip+' title="'+m.name+'">'+m.name+'</td>';
     }).join('');
-    return '<tr onclick="oCat('+c.id+')" style="cursor:pointer">'
-      +'<td class="mname"><span class="s-'+c.sex+'" style="font-size:10px;margin-right:4px">'+sexSym+'</span>'
-      +c.name+(isVeteran(c)?'<span style="font-size:9px;margin-left:3px;opacity:.7;color:var(--a4)">⚔️</span>':'')+'</td>'
-      +cells+'</tr>';
+
+    const nameCell = '<td class="mname" rowspan="'+(hasAsym?2:1)+'">'
+      +'<span class="s-'+c.sex+'" style="font-size:10px;margin-right:4px">'+sexSym+'</span>'
+      +c.name+(isVeteran(c)?'<span style="font-size:9px;margin-left:3px;opacity:.7;color:var(--a4)">⚔️</span>':'')+'</td>';
+
+    let html = '<tr onclick="oCat('+c.id+')" style="cursor:pointer">'+nameCell+cells1+'</tr>';
+
+    if (hasAsym) {
+      // Second row: right-side values, blank where same as left
+      const cells2 = ALL_MUT_SLOTS.map(slot => {
+        if (UNPAIRED_SLOTS.has(slot)) return '<td class="mslot empty" style="opacity:.2">·</td>';
+        const lKey = MUT_SLOT_LEFT[slot], rKey = MUT_SLOT_RIGHT[slot];
+        const lName = muts[lKey]?.name || '', rName = muts[rKey]?.name || '';
+        if (lName === rName) return '<td class="mslot empty" style="opacity:.2">·</td>';
+        const m = muts[rKey];
+        if (!m) return '<td class="mslot empty" style="opacity:.4">—</td>';
+        const tip = m.tip ? ' data-tip="'+m.tip.replace(/"/g,"'")+'"' : '';
+        return '<td class="mslot '+(m.isBD?'bdef':'vmut')+(m.tip?' tt':'')+'" style="opacity:.8" '+tip+' title="'+m.name+' (R)">'+m.name+'</td>';
+      }).join('');
+      html += '<tr onclick="oCat('+c.id+')" style="cursor:pointer;background:rgba(255,255,255,.015)">'+cells2+'</tr>';
+    }
+    return html;
   }).join('');
 
   const arrow = mutSortDir === 1 ? ' ↑' : ' ↓';
@@ -1345,7 +1608,7 @@ function rdrMut() {
 
   const catHdrArrow = mutSortSlot === 'name' ? '<span style="opacity:.7">'+arrow+'</span>' : '';
   document.getElementById('mut-list').innerHTML =
-    '<div style="overflow-x:auto"><table class="mut-tbl"><thead><tr>'
+    '<div id="mut-wrapper"><table class="mut-tbl"><thead><tr>'
     +'<th class="mname'+(mutSortSlot==='name'?' mslot-sort':'')+'" data-slot="name" onclick="setMutSort(this.dataset.slot)" style="cursor:pointer">Cat'+catHdrArrow+'</th>'
     +headers+'</tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
@@ -1354,7 +1617,8 @@ function go(n){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('act'));
   document.querySelectorAll('nav button').forEach(b=>b.classList.remove('on'));
   document.getElementById('p-'+n).classList.add('act');
-  document.querySelector('[data-p="'+n+'"]').classList.add('on');
+  document.querySelector('[data-p="'+n+'"]')?.classList.add('on');
+  document.querySelector('main').classList.toggle('no-scroll', n==='mut');
   if(lazyPages[n])lazyPages[n]();
 }
 
