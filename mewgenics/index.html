@@ -1062,18 +1062,25 @@ async function loadFile(buf) {
   if (hsRow2 && hsRow2.values[0]) {
     const hs = hsRow2.values[0][0] instanceof Uint8Array ? hsRow2.values[0][0] : new Uint8Array(hsRow2.values[0][0]);
     const dec = new TextDecoder();
-    let pos = 16; // skip uint32+uint32+uint64 header
+    // Format: 4 bytes unknown, uint32 count at offset 4, entries start at offset 8
+    // Each entry: uint32 cat_key + 4 pad (8 bytes), uint32 room_len + 4 pad (8 bytes), room_name, 24 bytes position
+    const count = rdU32(hs, 4);
+    let pos = 8;
     const hsIds = new Set();
-    while (pos < hs.length - 8) {
-      const nameLen = rdU64(hs, pos); pos += 8;
-      if (nameLen <= 0 || nameLen > 64 || pos + nameLen > hs.length) break;
-      const room = dec.decode(hs.slice(pos, pos + nameLen)); pos += nameLen;
-      pos += 24; // skip 3×float64 position
+    for (let i = 0; i < count; i++) {
       if (pos + 8 > hs.length) break;
-      const catId = rdI64(hs, pos); pos += 8;
-      if (catId > 0) {
-        hsIds.add(catId);
-        ROOM_MAP.set(catId, room);
+      const catKey = rdU32(hs, pos); pos += 8; // uint32 + 4 bytes padding
+      if (pos + 8 > hs.length) break;
+      const roomLen = rdU32(hs, pos); pos += 8; // uint32 + 4 bytes padding
+      let room = '';
+      if (roomLen > 0 && pos + roomLen <= hs.length) {
+        room = dec.decode(hs.slice(pos, pos + roomLen));
+        pos += roomLen;
+      }
+      pos += 24; // skip x/y/z position (3 × float64)
+      if (catKey > 0 && room) {
+        hsIds.add(catKey);
+        ROOM_MAP.set(catKey, room);
       }
     }
     // Use house_state as authoritative source for HOUSE_IDS
@@ -1130,10 +1137,10 @@ const catRoom = c => ROOM_MAP.get(c.id) || null;
 // Room name lookup and display order
 const ROOM_NAMES = {
   'Attic':        'Attic',
-  'Floor2_Large': 'Floor 2 Left',
-  'Floor2_Small': 'Floor 2 Right',
   'Floor1_Large': 'Floor 1 Left',
   'Floor1_Small': 'Floor 1 Right',
+  'Floor2_Large': 'Floor 2 Right',
+  'Floor2_Small': 'Floor 2 Left',
 };
 const ROOM_ORDER = ['Attic','Floor2_Large','Floor2_Small','Floor1_Large','Floor1_Small'];
 const roomLabel = r => ROOM_NAMES[r] || r;
