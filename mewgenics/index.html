@@ -220,7 +220,7 @@ th.mslot-h{padding:5px 8px;min-width:70px}
 .cen-no-tip-divider{border-bottom:1px solid var(--bdr);margin-bottom:0}
 .cen-cats{display:flex;flex-direction:column;gap:7px;padding-top:9px}
 .cen-room-group{display:flex;flex-direction:column;gap:4px}
-.cen-room-label{font-family:'Silkscreen',monospace;font-size:8px;color:var(--mut);letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.cen-room-label{font-family:'Silkscreen',monospace;font-size:8px;color:var(--mut);letter-spacing:.1em;text-transform:uppercase;opacity:.7}.cen-room-hide{font-size:9px;padding:0 4px;line-height:16px;height:16px;opacity:.4;cursor:pointer;margin-left:4px;border-radius:3px}.cen-room-hide:hover{opacity:.8}.cen-room-hide.off{opacity:.8;background:var(--fem);color:#fff}
 .cen-room-cats{display:flex;flex-wrap:wrap;gap:3px}
 .cen-cat{font-size:10px;padding:2px 7px;border:1px solid var(--bdr);color:var(--txt);cursor:pointer;background:var(--p2);transition:border-color .1s,color .1s}
 .cen-cat:hover{border-color:var(--acc);color:var(--acc)}
@@ -263,6 +263,7 @@ th.mslot-h{padding:5px 8px;min-width:70px}
   <p>or click to browse</p>
   <p style="margin-top:10px;font-size:11px">Accepts <code style="color:var(--a3)">.sav</code> files · processed locally, nothing uploaded</p>
   <input type="file" id="fi" accept=".sav,.db,.sqlite">
+  <p style="font-size:10px;color:var(--mut);margin-top:8px;font-family:'Space Mono',monospace">Save location: <code style="color:var(--a3)">%AppData%\Glaiel Games\Mewgenics</code></p>
 </div>
 
 <div id="loading"><div class="spin">PARSING SAVE FILE...</div><div class="pbar"><div class="pfill"></div></div></div>
@@ -382,6 +383,7 @@ th.mslot-h{padding:5px 8px;min-width:70px}
           <label style="font-size:11px;color:var(--mut);display:flex;align-items:center;gap:6px">
             <input type="checkbox" id="cen-all" onchange="rdrCen()"> All cats (not just in-house)
           </label>
+          <button class="fp" id="cen-clear-rooms" onclick="cenHiddenRooms.clear();document.querySelectorAll('.cen-room-hide').forEach(b=>b.classList.remove('off'));rdrCen()" style="display:none">Clear room filters</button>
           <span id="cen-summary" style="font-size:11px;color:var(--mut);margin-left:auto"></span>
         </div>
         <div class="cen-slot-tabs" id="cen-tabs"></div>
@@ -1108,6 +1110,11 @@ function reloadUI(){
   document.getElementById('rldb').style.display='none';
   document.getElementById('dropz').style.display='block';
   document.getElementById('hs').innerHTML='';
+  // Reset file input so the same file can be re-selected
+  const fi = document.getElementById('fi');
+  fi.value = '';
+  // Trigger click to open file picker immediately
+  fi.click();
 }
 
 // ═══════════════════════════════════════════
@@ -1698,6 +1705,15 @@ function getCenTip(gon, spriteIdx) {
       : '');
 }
 
+const cenHiddenRooms = new Set();
+function toggleCenRoom(key, btn) {
+  if (cenHiddenRooms.has(key)) { cenHiddenRooms.delete(key); btn.classList.remove('off'); }
+  else { cenHiddenRooms.add(key); btn.classList.add('off'); }
+  const clearBtn = document.getElementById('cen-clear-rooms');
+  if (clearBtn) clearBtn.style.display = cenHiddenRooms.size > 0 ? '' : 'none';
+  rdrCen();
+}
+
 function rdrCen() {
   const q       = (document.getElementById('cen-search')?.value || '').toLowerCase();
   const showBD  = document.getElementById('cen-bd')?.checked;
@@ -1759,10 +1775,19 @@ function rdrCen() {
   );
 
   // Sort: count desc, then name asc
-  entries.sort((a, b) => b.cats.length - a.cats.length || a.name.localeCompare(b.name));
+  // Pre-compute visible count for each entry so sort order reflects hidden rooms
+  entries.forEach(e => {
+    e.visibleCount = e.cats.filter(c => {
+      const room = catRoom(c);
+      const groupKey = HOUSE_IDS.has(c.id) ? (room || '_house') : '_away';
+      return !cenHiddenRooms.has(groupKey);
+    }).length;
+  });
+  entries = entries.filter(e => e.visibleCount > 0);
+  entries.sort((a, b) => b.visibleCount - a.visibleCount || a.name.localeCompare(b.name));
 
   // Summary
-  const total = entries.reduce((s, e) => s + e.cats.length, 0);
+  const total = entries.reduce((s, e) => s + e.visibleCount, 0);
   document.getElementById('cen-summary').textContent =
     `${entries.length} mutation${entries.length!==1?'s':''} · ${total} instance${total!==1?'s':''}`;
 
@@ -1791,13 +1816,18 @@ function rdrCen() {
         const label = k === '_away' ? 'Not in house'
                     : k === '_house' ? 'In House'
                     : roomLabel(k);
+        if (cenHiddenRooms.has(k)) return '';
         const pills = roomGroups[k].map(c => {
           const lvl = c.level ? ` · Lv ${c.level}` : '';
+          const age = ` · Age ${catAge(c)}`;
           const sexLabel = c.sexuality < 0.1 ? 'Straight' : c.sexuality > 0.9 ? 'Gay' : 'Bisexual';
-          return `<span class="cen-cat ${sexCls(c)} tt" data-tip="${sexLabel}${lvl}" onclick="oCat(${c.id})">${c.name}</span>`;
+          return `<span class="cen-cat ${sexCls(c)} tt" data-tip="${sexLabel}${lvl}${age}" onclick="oCat(${c.id})">${c.name}</span>`;
         }).join('');
-        return `<div class="cen-room-group"><span class="cen-room-label">${label}</span><div class="cen-room-cats">${pills}</div></div>`;
+        const hideBtn = `<button class="cen-room-hide fp${cenHiddenRooms.has(k)?'':''}" onclick="toggleCenRoom('${k}',this)" title="Hide room">✕</button>`;
+        return `<div class="cen-room-group"><span class="cen-room-label">${label}${hideBtn}</span><div class="cen-room-cats">${pills}</div></div>`;
       }).join('');
+
+    const visibleCount = e.visibleCount;
 
     const slotLabel = cenSlot === 'all'
       ? `<span style="font-size:9px;color:var(--mut);margin-right:6px">${e.gon.toUpperCase()}</span>`
@@ -1807,7 +1837,7 @@ function rdrCen() {
     return `<div class="cen-card${e.isBD?' bd':''}">
       <div class="cen-header">
         <span class="cen-mut-name">${cenImg}${slotLabel}${e.name}</span>
-        <span class="cen-count"><strong>${e.cats.length}</strong> cat${e.cats.length!==1?'s':''}</span>
+        <span class="cen-count"><strong>${visibleCount}</strong> cat${visibleCount!==1?'s':''}</span>
       </div>
       ${e.tip ? `<div class="cen-tip">${e.tip}</div>` : `<div class="cen-no-tip-divider"></div>`}
       <div class="cen-cats">${catPills}</div>
