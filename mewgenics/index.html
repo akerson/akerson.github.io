@@ -381,7 +381,11 @@ th.mslot-h{padding:5px 8px;min-width:70px}
         <div class="cen-controls">
           <input class="sr" id="cen-search" placeholder="Filter mutations…" oninput="rdrCen()" style="max-width:220px">
           <label style="font-size:11px;color:var(--mut);display:flex;align-items:center;gap:6px">
-            <input type="checkbox" id="cen-bd" onchange="rdrCen()"> Show birth defects
+            <select id="cen-bd" onchange="rdrCen()" style="font-size:11px;padding:2px 4px;background:var(--p2);color:var(--txt);border:1px solid var(--bdr);border-radius:3px">
+              <option value="all">Mutations + Birth Defects</option>
+              <option value="mut">Mutations Only</option>
+              <option value="bd">Birth Defects Only</option>
+            </select>
           </label>
           <label style="font-size:11px;color:var(--mut);display:flex;align-items:center;gap:6px">
             <input type="checkbox" id="cen-all" onchange="rdrCen()"> All cats (not just in-house)
@@ -1471,7 +1475,9 @@ function rSum(){
            style="border-radius:4px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);object-fit:contain;flex-shrink:0"
            onerror="this.style.opacity='.2'">`
       : `<div style="width:28px;height:28px;border-radius:4px;background:var(--p2);border:1px solid var(--bdr);flex-shrink:0"></div>`;
-    return `<div class="tt" ${tipAttr} style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:5px;background:var(--p2);margin-bottom:5px">
+    const slotToCen = {Fur:'fur',Body:'body',Head:'head',Tail:'tail',Legs:'legs',Arms:'legs',Eyes:'eyes',Brows:'eyebrows',Ears:'ears',Mouth:'mouth'};
+    const cenKey = slotToCen[slot] || 'all';
+    return `<div class="tt" ${tipAttr} onclick="goToCensus('${cenKey}')" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:5px;background:var(--p2);margin-bottom:5px;cursor:pointer" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
       ${icon}
       <div style="flex:1;min-width:0">
         <div style="font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em">${slot}</div>
@@ -1805,6 +1811,11 @@ function buildCenTabs() {
   ).join('');
 }
 
+function goToCensus(slot) {
+  go('cen');
+  setCenSlot(slot);
+}
+
 function setCenSlot(key) {
   cenSlot = key;
   buildCenTabs();
@@ -1830,7 +1841,7 @@ function toggleCenRoom(key, btn) {
 
 function rdrCen() {
   const q       = (document.getElementById('cen-search')?.value || '').toLowerCase();
-  const showBD  = document.getElementById('cen-bd')?.checked;
+  const bdMode  = document.getElementById('cen-bd')?.value || 'all';
   const allCats = document.getElementById('cen-all')?.checked;
   const pool    = allCats ? CATS : CATS.filter(c => HOUSE_IDS.has(c.id));
 
@@ -1841,7 +1852,8 @@ function rdrCen() {
     const name = GON_TABLES[gon]?.[spriteIdx];
     if (!name) return;
     const isBD = (BIRTH_DEFECT_IDS[gon] || []).includes(spriteIdx);
-    if (!showBD && isBD) return;
+    if (bdMode === 'mut' && isBD) return;
+    if (bdMode === 'bd' && !isBD) return;
     const k = `${slotKey}|${gon}|${spriteIdx}`;
     if (!census[k]) {
       census[k] = {
