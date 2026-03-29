@@ -1304,7 +1304,7 @@ function rSum(){
   const vets = CATS.filter(isVeteran);
   const clsCounts = {};
   for (const c of vets) {
-    const cls = c.collar || 'Colorless';
+    const cls = (c.collar === 'Medic' ? 'Cleric' : c.collar) || 'Colorless';
     clsCounts[cls] = (clsCounts[cls] || 0) + 1;
   }
   const sortedCls = Object.entries(clsCounts).sort((a,b) => b[1]-a[1]);
@@ -1697,6 +1697,7 @@ function cHTML(c){
       ${isH?'<span class="ab">Age '+age+'</span>':''}
       ${isH&&catRoom(c)?'<span class="htag" style="background:rgba(162,155,254,.12);border-color:rgba(162,155,254,.4);color:var(--neu)">'+roomLabel(catRoom(c))+'</span>':''}
       ${isVeteran(c)?'<span class="htag" style="background:rgba(255,217,61,.1);border-color:rgba(255,217,61,.5);color:var(--a4)">Lv '+c.level+'</span>':''}
+      ${isVeteran(c)&&c.collar?'<span class="htag" style="background:rgba(196,92,245,.1);border-color:rgba(196,92,245,.4);color:#c45cf5">'+(c.collar==='Medic'?'Cleric':c.collar==='Colorless'?'Collarless':c.collar)+'</span>':''}
     </div>
     <div class="tgs">${tags}</div>
   </div>`;
@@ -1766,10 +1767,62 @@ function oCat(id){
     <div class="mr">
       <div class="mf"><div class="lb">Move</div><div class="vl" style="color:var(--mal);font-size:12px">${c.move?abilityName(c.move):'—'}</div></div>
       ${catRoom(c)?`<div class="mf"><div class="lb">Room</div><div class="vl" style="color:var(--neu);font-size:12px">${roomLabel(catRoom(c))}</div></div>`:''}
-      ${c.collar?`<div class="mf"><div class="lb">Collar</div><div class="vl" style="font-size:12px">${c.collar}</div></div>`:''}
+      ${c.collar?`<div class="mf"><div class="lb">Collar</div><div class="vl" style="font-size:12px">${(c.collar==='Medic'?'Cleric':c.collar)}</div></div>`:''}
     </div>
     <div class="ms"><h3>STATS</h3>${statRows}</div>
-    ${(()=>{const vm=getVisualMuts(c);const entries=Object.entries(vm);return entries.length?'<div class="ms"><h3>VISUAL MUTATIONS</h3><div style="display:flex;flex-wrap:wrap;gap:6px">'+entries.map(([slot,{name,tip,isBD,gon,spriteIdx}])=>{const rich=mutTipHTML(name,tip,gon,spriteIdx,isBD);return '<span class="apill '+(isBD?'bdef':'vmut')+' tt" data-tip="'+rich.replace(/"/g,"'")+'"><span style="opacity:.6;font-size:10px">'+slot+': </span>'+name+'</span>';}).join('')+'</div></div>':'';})()}
+    ${(()=>{
+      const vm=getVisualMuts(c);
+      const SO=['Fur','Body','Head','Tail','Legs','Arms','Eyes','Eyebrows','Ears','Mouth'];
+      const cells=SO.map(function(slot){
+        const m=vm[slot];
+        const emptyCard='<div style="background:rgba(255,255,255,.03);border:0.5px solid rgba(255,255,255,.07);border-radius:6px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:80px;justify-content:center;opacity:.3">'
+          +'<div style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em">'+slot+'</div>'
+          +'<div style="width:32px;height:32px;border-radius:4px;background:rgba(255,255,255,.05)"></div>'
+          +'<div style="font-size:10px;color:rgba(255,255,255,.2)">—</div>'
+          +'</div>';
+        if(!m) return emptyCard;
+        const name=m.name,tip=m.tip,isBD=m.isBD,gon=m.gon,spriteIdx=m.spriteIdx;
+        const rich=mutTipHTML(name,tip,gon,spriteIdx,isBD);
+        const tipAttr='data-tip="'+rich.replace(/"/g,"'")+'"';
+        const imgPath=(gon!=null&&spriteIdx!=null)?('images/mutations/'+gon+'/'+spriteIdx+'.svg'):null;
+        const iconBg=isBD?'rgba(232,93,138,.1)':'rgba(255,255,255,.06)';
+        const iconBdr=isBD?'rgba(232,93,138,.35)':'rgba(255,255,255,.12)';
+        const cardBg=isBD?'rgba(232,93,138,.07)':'rgba(255,255,255,.05)';
+        const cardBdr=isBD?'rgba(232,93,138,.25)':'rgba(255,255,255,.1)';
+        const nameCol=isBD?'#ff9fd2':'rgba(255,255,255,.85)';
+        const imgHtml=imgPath
+          ?('<img src="'+imgPath+'" width="32" height="32" style="border-radius:4px;background:'+iconBg+';border:0.5px solid '+iconBdr+';object-fit:contain" onerror="this.style.opacity=0.2">')
+          :('<div style="width:32px;height:32px;border-radius:4px;background:'+iconBg+';border:0.5px solid '+iconBdr+'"></div>');
+        return '<div class="tt" '+tipAttr+' style="background:'+cardBg+';border:0.5px solid '+cardBdr+';border-radius:6px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:80px;justify-content:center;cursor:default">'
+          +'<div style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em">'+slot+'</div>'
+          +imgHtml
+          +'<div style="font-size:10px;color:'+nameCol+';text-align:center;line-height:1.2;max-width:72px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">'+name+'</div>'
+          +'</div>';
+      }).join('');
+      // Any extra slots not in the fixed grid (e.g. R.Eye, R.Eyebrow, R.Ear)
+      const extraSlots=Object.keys(vm).filter(function(k){return SO.indexOf(k)===-1;});
+      const extraHtml=extraSlots.length?'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">'+extraSlots.map(function(slot){
+        const mx=vm[slot];
+        const rich=mutTipHTML(mx.name,mx.tip,mx.gon,mx.spriteIdx,mx.isBD);
+        const tipAttr='data-tip="'+rich.replace(/"/g,"'")+'"';
+        const imgPath=(mx.gon!=null&&mx.spriteIdx!=null)?('images/mutations/'+mx.gon+'/'+mx.spriteIdx+'.svg'):null;
+        const nameCol=mx.isBD?'#ff9fd2':'rgba(255,255,255,.85)';
+        const iconBg=mx.isBD?'rgba(232,93,138,.1)':'rgba(255,255,255,.06)';
+        const iconBdr=mx.isBD?'rgba(232,93,138,.35)':'rgba(255,255,255,.12)';
+        const cardBg=mx.isBD?'rgba(232,93,138,.07)':'rgba(255,255,255,.05)';
+        const cardBdr=mx.isBD?'rgba(232,93,138,.25)':'rgba(255,255,255,.1)';
+        const imgHtml=imgPath
+          ?('<img src="'+imgPath+'" width="32" height="32" style="border-radius:4px;background:'+iconBg+';border:0.5px solid '+iconBdr+';object-fit:contain" onerror="this.style.opacity=0.2">')
+          :('<div style="width:32px;height:32px;border-radius:4px;background:'+iconBg+';border:0.5px solid '+iconBdr+'"></div>');
+        return '<div class="tt" '+tipAttr+' style="background:'+cardBg+';border:0.5px solid '+cardBdr+';border-radius:6px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:80px;justify-content:center;cursor:default;width:calc(20% - 5px)">'
+          +'<div style="font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em">'+slot+'</div>'
+          +imgHtml
+          +'<div style="font-size:10px;color:'+nameCol+';text-align:center;line-height:1.2;max-width:72px">'+mx.name+'</div>'
+          +'</div>';
+      }).join('')+'</div>':'';
+      return '<div class="ms"><h3>VISUAL MUTATIONS</h3><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">'+cells+'</div>'+extraHtml+'</div>';
+    })()
+    }
     ${c.skills.length?'<div class="ms"><h3>ABILITIES</h3><div style="display:flex;flex-wrap:wrap;gap:6px">'+c.skills.map(s=>{const at=abilityTipHTML(abilityName(s),abilityDesc(s),abilityImgPath(s),false,abilityClass(s),abilityImgBasePath(s));return '<span class="apill mv tt" data-tip="'+at.replace(/"/g,"'")+'">'+abilityName(s)+'</span>';}).join('')+'</div></div>':''}
     ${c.mutations.length?'<div class="ms"><h3>DISORDERS</h3><div style="display:flex;flex-wrap:wrap;gap:6px">'+c.mutations.map(m=>{const pt=abilityTipHTML(passiveName(m),passiveDesc(m),passiveImgPath(m),true,passiveClass(m),passiveImgBasePath(m),'Disorder');return '<span class="apill mut'+(passiveDesc(m)?' tt':'')+'"'+(passiveDesc(m)?' data-tip="'+pt.replace(/"/g,"'")+'"':'')+'>'+passiveName(m)+'</span>';}).join('')+'</div></div>':''}
     ${c.passives.length?'<div class="ms"><h3>PASSIVES</h3><div style="display:flex;flex-wrap:wrap;gap:6px">'+c.passives.map(p=>{const pt=abilityTipHTML(passiveName(p),passiveDesc(p),passiveImgPath(p),true,passiveClass(p),passiveImgBasePath(p));return '<span class="apill pass'+(passiveDesc(p)?' tt':'')+'"'+(passiveDesc(p)?' data-tip="'+pt.replace(/"/g,"'")+'"':'')+'>'+passiveName(p)+'</span>';}).join('')+'</div></div>':''}
