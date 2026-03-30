@@ -1431,7 +1431,7 @@ function rSum(){
   const mxVetSk   = topVetSk[0]?.[1]  || 1;
   const mxVetPass = topVetPass[0]?.[1] || 1;
   document.getElementById('vet-sk-chart').innerHTML = '<div style="display:flex;flex-direction:column;gap:5px">'+topVetSk.map(([s,n]) => {
-    const tip = abilityDesc(s) ? abilityTipHTML(abilityName(s),abilityDesc(s),abilityImgPath(s),false,abilityClass(s),abilityImgBasePath(s),null,s,null,catTotalStats(c)) : '';
+    const tip = abilityDesc(s) ? abilityTipHTML(abilityName(s),abilityDesc(s),abilityImgPath(s),false,abilityClass(s),abilityImgBasePath(s),null,s,null,null) : '';
     return abilityIconCard(abilityName(s),abilityClass(s),abilityImgPath(s),abilityImgBasePath(s),false,n,tip,s);
   }).join('')+'</div>' || '<div style="opacity:.4;font-size:12px">No data</div>';
   document.getElementById('vet-pass-chart').innerHTML = '<div style="display:flex;flex-direction:column;gap:5px">'+topVetPass.map(([p,n]) => {
@@ -1492,7 +1492,7 @@ function rSum(){
   const topSk = Object.entries(sk).sort((a,b)=>b[1]-a[1]).slice(0,3);
   const mxSk = topSk[0]?.[1]||1;
   document.getElementById('sk-chart').innerHTML='<div style="display:flex;flex-direction:column;gap:5px">'+topSk.map(([s,n])=>{
-    const tip = abilityDesc(s) ? abilityTipHTML(abilityName(s),abilityDesc(s),abilityImgPath(s),false,abilityClass(s),abilityImgBasePath(s),null,s,null,catTotalStats(c)) : '';
+    const tip = abilityDesc(s) ? abilityTipHTML(abilityName(s),abilityDesc(s),abilityImgPath(s),false,abilityClass(s),abilityImgBasePath(s),null,s,null,null) : '';
     return abilityIconCard(abilityName(s),abilityClass(s),abilityImgPath(s),abilityImgBasePath(s),false,n,tip,s);
   }).join('')+'</div>';
 
