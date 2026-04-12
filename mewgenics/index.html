@@ -2045,8 +2045,7 @@ function rdrCen() {
   const slotDef = CEN_SLOTS.find(s => s.key === cenSlot);
   let entries = Object.values(census);
   if (cenSlot !== 'all') {
-    const gonKey = slotDef?.gon;
-    entries = entries.filter(e => e.gon === gonKey);
+    entries = entries.filter(e => e.slot === cenSlot);
   }
 
   // Filter by search
