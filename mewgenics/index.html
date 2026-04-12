@@ -1591,7 +1591,7 @@ function rSum(){
            style="border-radius:4px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);object-fit:contain;flex-shrink:0"
            onerror="this.style.opacity='.2'">`
       : `<div style="width:28px;height:28px;border-radius:4px;background:var(--p2);border:1px solid var(--bdr);flex-shrink:0"></div>`;
-    const slotToCen = {Fur:'fur',Body:'body',Head:'head',Tail:'tail',Legs:'legs',Arms:'legs',Eyes:'eyes',Brows:'eyebrows',Ears:'ears',Mouth:'mouth'};
+    const slotToCen = {Fur:'fur',Body:'body',Head:'head',Tail:'tail',Legs:'legs',Arms:'arms',Eyes:'eyes',Brows:'eyebrows',Ears:'ears',Mouth:'mouth'};
     const cenKey = slotToCen[slot] || 'all';
     return `<div class="tt" ${tipAttr} onclick="goToCensus('${cenKey}')" style="display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:5px;background:var(--p2);margin-bottom:5px;cursor:pointer" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
       ${icon}
@@ -1949,6 +1949,7 @@ const CEN_SLOTS = [
   {key:'head',     label:'Head',     gon:'head'},
   {key:'tail',     label:'Tail',     gon:'tail'},
   {key:'legs',     label:'Legs',     gon:'legs'},
+  {key:'arms',     label:'Arms',     gon:'legs'},
   {key:'eyes',     label:'Eyes',     gon:'eyes'},
   {key:'eyebrows', label:'Brows',    gon:'eyebrows'},
   {key:'ears',     label:'Ears',     gon:'ears'},
@@ -2026,15 +2027,17 @@ function rdrCen() {
     const tex = cat.bodyParts.textureSpriteIdx;
     if (tex != null) addEntry('fur', 'texture', tex, cat);
 
-    // Body parts - deduplicate paired slots (use first seen per gon+sprite)
+    // Body parts - deduplicate paired slots (use first seen per part-group+sprite)
     const seen = new Set();
+    const PART_SLOT = {leg1:'legs',leg2:'legs',arm1:'arms',arm2:'arms'};
     for (const [pname, spriteIdx] of (cat.bodyParts.parts || [])) {
       const gon = PART_TO_GON[pname];
       if (!gon) continue;
-      const dk = gon + ':' + spriteIdx;
+      const slotKey = PART_SLOT[pname] || gon;
+      const dk = slotKey + ':' + spriteIdx;
       if (seen.has(dk)) continue;
       seen.add(dk);
-      addEntry(gon, gon, spriteIdx, cat);
+      addEntry(slotKey, gon, spriteIdx, cat);
     }
   }
 
