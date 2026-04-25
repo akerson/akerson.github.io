@@ -2808,9 +2808,10 @@ function rMarks() {
     <th style="text-align:left;padding:6px 10px;color:var(--mut);font-size:11px;border-bottom:1px solid var(--bdr);position:sticky;left:0;background:var(--bg)">CLASS</th>
     ${MARK_MAPS.map(m=>`<th style="padding:4px 2px;color:var(--a2);font-size:9px;border-bottom:1px solid var(--bdr);text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="${m.label}">${ABBR[m.label]||m.label}</th>`).join('')}
     ${SUM_COLS.map(c=>`<th style="padding:4px 2px;color:${c.color};font-size:10px;border-bottom:1px solid var(--bdr);text-align:center" title="${c.title}">${c.label}</th>`).join('')}
-    <th style="padding:6px 4px;color:var(--mut);font-size:10px;border-bottom:1px solid var(--bdr);text-align:center">★</th>
+    <th style="padding:6px 4px;color:var(--mut);font-size:10px;border-bottom:1px solid var(--bdr);text-align:center">★/126</th>
   </tr></thead><tbody>`;
 
+  let grandTotal = 0;
   for (const cls of MARK_CLASSES) {
     const label = MARK_CLASS_LABEL[cls] || cls;
     const color = CLS_COLOR[cls] || '#aaa';
@@ -2851,6 +2852,7 @@ function rMarks() {
       cells += `<td style="text-align:center;padding:4px 2px;border-bottom:1px solid rgba(255,255,255,.04)">${cell}</td>`;
     }
 
+    grandTotal += totalMarks;
     const markColor = totalMarks===9 ? color : totalMarks>0 ? 'var(--a2)' : 'rgba(255,255,255,.2)';
     const sumCells = [
       {v:cH, c:'#ff9944'}, {v:cC, c:'#ff4444'}, {v:cI, c:'#cc44ff'},
@@ -2871,10 +2873,11 @@ function rMarks() {
     MARK_CLASSES.filter(cls => (marks[key]?.[cls]?.[2]||0) > 0).length
   );
   const emptyCols = SUM_COLS.map(()=>'<td></td>').join('');
+  const grandColor = grandTotal===126?'var(--a3)':grandTotal>0?'var(--a2)':'rgba(255,255,255,.2)';
   html += `<tr style="border-top:1px solid var(--bdr)">
     <td style="padding:6px 10px;color:var(--mut);font-size:11px;position:sticky;left:0;background:var(--bg)">CLEARS</td>
     ${colTotals.map(n=>`<td style="text-align:center;padding:4px 2px;color:${n===14?'var(--a3)':n>0?'var(--a2)':'rgba(255,255,255,.2)'};font-size:11px">${n||'·'}</td>`).join('')}
-    ${emptyCols}<td></td>
+    ${emptyCols}<td style="text-align:center;padding:4px 4px;color:${grandColor};font-weight:bold;font-size:11px">${grandTotal}/126</td>
   </tr>`;
 
   html += '</tbody></table></div>';
