@@ -307,6 +307,8 @@ th.mslot-h{padding:5px 8px;min-width:70px}
       <button onclick="go('lib-ab')" data-p="lib-ab" class="ab-nav"><span class="ni">⚔️</span>Abilities</button>
       <button onclick="go('lib-pass')" data-p="lib-pass" class="pass-nav"><span class="ni">✨</span>Passives</button>
       <button onclick="go('lib-dis')" data-p="lib-dis" class="dis-nav"><span class="ni">🧠</span>Disorders</button>
+      <div class="ns">Progress</div>
+      <button onclick="go('marks')" data-p="marks"><span class="ni">🏆</span>Marks</button>
     </nav>
     <main>
 
@@ -465,6 +467,12 @@ th.mslot-h{padding:5px 8px;min-width:70px}
           <span id="lib-dis-count" class="cb2"></span>
         </div>
         <div class="lib-grid" id="lib-dis-grid"></div>
+      </div>
+
+
+      <div id="p-marks" class="page">
+        <h2>MARKS PROGRESS</h2>
+        <div id="marks-content"></div>
       </div>
 
     </main>
@@ -1045,6 +1053,7 @@ function parseAccessibleCats(pedBlob) {
 // Global State
 // ═══════════════════════════════════════════
 let CATS=[], FURN=[], PROPS=[], HOUSE_IDS=new Set(), PEDIGREE_MAP=new Map(), CURRENT_DAY=0, ROOM_MAP=new Map();
+let MARKS_DATA=null;
 let catPage=1;
 let activeFilters=new Set(); // set of active filter keys
 let catSearch='';
@@ -1152,6 +1161,16 @@ async function loadFile(buf) {
   document.getElementById('nbadge-house').textContent=HOUSE_IDS.size;
   document.getElementById('nbadge-vet').textContent=CATS.filter(isVeteran).length;
 
+
+
+  // Parse marks progress from npc_progress file
+  try {
+    const npcRow = db.exec("SELECT data FROM files WHERE key='npc_progress'");
+    if (npcRow && npcRow[0] && npcRow[0].values[0]) {
+      const npcBuf = new Uint8Array(npcRow[0].values[0][0]);
+      MARKS_DATA = parseMarks(npcBuf);
+    }
+  } catch(e) { console.warn('marks parse failed:', e.message); }
   rSum(); bFPs();
   buildMutRoomPills();
   rdrCats();
@@ -2440,7 +2459,7 @@ function rdrLibDis() {
 }
 
 
-const lazyPages={cats:rdrCats, mut:rdrMut, cen:()=>{buildCenTabs();rdrCen();}, "lib-mut":()=>{buildLibMutTabs();rdrLibMut();}, "lib-ab":()=>{buildLibAbTabs();rdrLibAb();}, "lib-pass":()=>{buildLibPassTabs();rdrLibPass();}, "lib-dis":rdrLibDis};
+const lazyPages={cats:rdrCats, mut:rdrMut, cen:()=>{buildCenTabs();rdrCen();}, "lib-mut":()=>{buildLibMutTabs();rdrLibMut();}, "lib-ab":()=>{buildLibAbTabs();rdrLibAb();}, "lib-pass":()=>{buildLibPassTabs();rdrLibPass();}, "lib-dis":rdrLibDis, marks:rMarks};
 
 // ═══════════════════════════════════════════
 // Mutations Page
@@ -2675,6 +2694,212 @@ dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dov')});
 dz.addEventListener('dragleave',()=>dz.classList.remove('dov'));
 dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dov');hFile(e.dataTransfer.files[0]);});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('mov').classList.remove('open')});
+
+// ── Marks Page ────────────────────────────────────────────────────────────────
+
+const MARK_CLASSES = ['Colorless','Fighter','Hunter','Mage','Tank','Medic','Thief',
+  'Necromancer','Tinkerer','Druid','Butcher','Psychic','Monk','Jester'];
+
+const MARK_MAPS = [
+  {key:'caves',      label:'Caves'},
+  {key:'boneyard',   label:'Boneyard'},
+  {key:'meatworld',  label:'Throbbing Domain'},
+  {key:'core',       label:'The Core'},
+  {key:'moon',       label:'The Moon'},
+  {key:'dimensionx', label:'The Rift'},
+  {key:'jurassic',   label:'Jurassic'},
+  {key:'theend',     label:'The End'},
+  {key:'endoftime',  label:'Infinity'},
+];
+
+// Class display name overrides
+const MARK_CLASS_LABEL = {Medic:'Cleric'};
+
+function parseMarks(buf) {
+  // buf: Uint8Array of npc_progress file
+  const dv = new DataView(buf.buffer || buf);
+  const td = new TextDecoder();
+
+  function rdU64(o) {
+    const lo = dv.getUint32(o, true);
+    const hi = dv.getUint32(o+4, true);
+    return lo + hi * 4294967296;
+  }
+  function rdStr(o) {
+    const n = rdU64(o); o += 8;
+    const s = td.decode(buf.slice(o, o+n)); o += n;
+    return [s, o];
+  }
+
+  const marks = {}; // {mapKey: {className: [v0,v1,v2,v3,v4,v5]}}
+  const mapSet = new Set(MARK_MAPS.map(m=>m.key));
+  const clsSet = new Set(MARK_CLASS_LABEL ? [...MARK_CLASSES] : MARK_CLASSES);
+
+  // Scan for map:class pairs
+  for (let i = 8; i < buf.length - 40; i++) {
+    // Try to read a string at i-8
+    try {
+      const slen = rdU64(i-8);
+      if (slen < 3 || slen > 20 || i + slen > buf.length) continue;
+      const mapKey = td.decode(buf.slice(i, i+slen));
+      if (!mapSet.has(mapKey)) continue;
+      const after = i + slen;
+      const cslen = rdU64(after);
+      if (cslen < 3 || cslen > 20 || after+8+cslen > buf.length) continue;
+      const cls = td.decode(buf.slice(after+8, after+8+cslen));
+      if (!MARK_CLASSES.includes(cls)) continue;
+      const vo = after + 8 + cslen;
+      if (vo + 24 > buf.length) continue;
+      const v = [
+        dv.getInt32(vo,    true),
+        dv.getInt32(vo+4,  true),
+        dv.getInt32(vo+8,  true),
+        dv.getInt32(vo+12, true),
+        dv.getInt32(vo+16, true),
+        dv.getInt32(vo+20, true),
+      ];
+      if (!marks[mapKey]) marks[mapKey] = {};
+      marks[mapKey][cls] = v;
+    } catch(e) {}
+  }
+  return marks;
+}
+
+function rMarks() {
+  const el = document.getElementById('marks-content');
+  if (!el) return;
+  if (!MARKS_DATA) {
+    el.innerHTML = '<div style="opacity:.5;padding:20px">No mark data found in save file.</div>';
+    return;
+  }
+
+  const marks = MARKS_DATA;
+  const CLS_COLOR = {
+    Hunter:'#3af0c4', Fighter:'#ff6b35', Mage:'#c45cf5', Tank:'#6699ff',
+    Medic:'#ff9999', Thief:'#ffcc44', Necromancer:'#9966cc', Tinkerer:'#44bbff',
+    Druid:'#88cc44', Butcher:'#ff4444', Psychic:'#ff88cc', Monk:'#ffaa44',
+    Jester:'#ffdd44', Colorless:'#aaaaaa'
+  };
+
+  const ABBR = {
+    'Caves':'Caves','Boneyard':'Bnyd.','Throbbing Domain':'Throb.',
+    'The Core':'Core','The Moon':'Moon','The Rift':'Rift',
+    'Jurassic':'Juras.','The End':'End','Infinity':'Inf.'
+  };
+
+  // Summary columns: H, C, I, M, S
+  const SUM_COLS = [
+    {key:'H', label:'H', color:'#ff9944', title:'Hard clears (includes C+I)'},
+    {key:'C', label:'C', color:'#ff4444', title:'Crazy clears (includes I)'},
+    {key:'I', label:'I', color:'#cc44ff', title:'Impossible clears'},
+    {key:'M', label:'M', color:'#44ddff', title:'Mono runs (includes S)'},
+    {key:'S', label:'S', color:'var(--fem)', title:'Solo cat runs'},
+  ];
+
+  let html = `<div style="overflow-x:auto">
+  <table style="border-collapse:collapse;table-layout:fixed;font-size:12px">
+  <colgroup>
+    <col style="width:110px">
+    ${MARK_MAPS.map(()=>'<col style="width:46px">').join('')}
+    ${SUM_COLS.map(()=>'<col style="width:36px">').join('')}
+    <col style="width:48px">
+  </colgroup>
+  <thead><tr>
+    <th style="text-align:left;padding:6px 10px;color:var(--mut);font-size:11px;border-bottom:1px solid var(--bdr);position:sticky;left:0;background:var(--bg)">CLASS</th>
+    ${MARK_MAPS.map(m=>`<th style="padding:4px 2px;color:var(--a2);font-size:9px;border-bottom:1px solid var(--bdr);text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="${m.label}">${ABBR[m.label]||m.label}</th>`).join('')}
+    ${SUM_COLS.map(c=>`<th style="padding:4px 2px;color:${c.color};font-size:10px;border-bottom:1px solid var(--bdr);text-align:center" title="${c.title}">${c.label}</th>`).join('')}
+    <th style="padding:6px 4px;color:var(--mut);font-size:10px;border-bottom:1px solid var(--bdr);text-align:center">★</th>
+  </tr></thead><tbody>`;
+
+  for (const cls of MARK_CLASSES) {
+    const label = MARK_CLASS_LABEL[cls] || cls;
+    const color = CLS_COLOR[cls] || '#aaa';
+    let totalMarks = 0;
+    // Counts — higher tiers cascade into lower
+    let cH=0, cC=0, cI=0, cM=0, cS=0;
+    let cells = '';
+
+    for (const {key} of MARK_MAPS) {
+      const v = marks[key]?.[cls];
+      const won     = v && v[2] > 0;
+      const diff    = v ? Math.max(0, v[1]) : 0;
+      const hasMono = v ? v[3] > 0 : false;
+      const hasSolo = v ? v[4] > 0 : false;
+
+      if (won) totalMarks++;
+
+      // Cascade: I adds to C and H; C adds to H; S adds to M
+      if (diff >= 3) { cI++; cC++; cH++; }
+      else if (diff === 2) { cC++; cH++; }
+      else if (diff === 1) { cH++; }
+      if (hasSolo) { cS++; cM++; }
+      else if (hasMono) { cM++; }
+
+      // Cell badge: show highest diff + highest solo type
+      let cell = '';
+      if (!won) {
+        cell = `<span style="opacity:.15;font-size:13px">○</span>`;
+      } else {
+        let inner = `<span style="color:${color};font-size:13px">●</span>`;
+        if      (diff >= 3) inner += `<sup style="color:#cc44ff;font-size:8px">I</sup>`;
+        else if (diff === 2) inner += `<sup style="color:#ff4444;font-size:8px">C</sup>`;
+        else if (diff === 1) inner += `<sup style="color:#ff9944;font-size:8px">H</sup>`;
+        if      (hasSolo) inner += `<sup style="color:var(--fem);font-size:8px">S</sup>`;
+        else if (hasMono) inner += `<sup style="color:#44ddff;font-size:8px">M</sup>`;
+        cell = inner;
+      }
+      cells += `<td style="text-align:center;padding:4px 2px;border-bottom:1px solid rgba(255,255,255,.04)">${cell}</td>`;
+    }
+
+    const markColor = totalMarks===9 ? color : totalMarks>0 ? 'var(--a2)' : 'rgba(255,255,255,.2)';
+    const sumCells = [
+      {v:cH, c:'#ff9944'}, {v:cC, c:'#ff4444'}, {v:cI, c:'#cc44ff'},
+      {v:cM, c:'#44ddff'}, {v:cS, c:'var(--fem)'}
+    ].map(({v,c})=>`<td style="text-align:center;padding:4px 2px;border-bottom:1px solid rgba(255,255,255,.04);color:${v?c:'rgba(255,255,255,.15)'};font-size:11px">${v||'·'}</td>`).join('');
+
+    html += `<tr>
+      <td style="padding:5px 10px;border-bottom:1px solid rgba(255,255,255,.04);position:sticky;left:0;background:var(--bg);overflow:hidden;white-space:nowrap">
+        <span style="color:${color};font-weight:bold;font-size:12px">${label}</span>
+      </td>
+      ${cells}${sumCells}
+      <td style="text-align:center;padding:4px 4px;border-bottom:1px solid rgba(255,255,255,.04);color:${markColor};font-weight:bold;font-size:12px">${totalMarks}/9</td>
+    </tr>`;
+  }
+
+  // Clears row
+  const colTotals = MARK_MAPS.map(({key}) =>
+    MARK_CLASSES.filter(cls => (marks[key]?.[cls]?.[2]||0) > 0).length
+  );
+  const emptyCols = SUM_COLS.map(()=>'<td></td>').join('');
+  html += `<tr style="border-top:1px solid var(--bdr)">
+    <td style="padding:6px 10px;color:var(--mut);font-size:11px;position:sticky;left:0;background:var(--bg)">CLEARS</td>
+    ${colTotals.map(n=>`<td style="text-align:center;padding:4px 2px;color:${n===14?'var(--a3)':n>0?'var(--a2)':'rgba(255,255,255,.2)'};font-size:11px">${n||'·'}</td>`).join('')}
+    ${emptyCols}<td></td>
+  </tr>`;
+
+  html += '</tbody></table></div>';
+  html += `<div style="margin-top:14px;display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--muted)">
+    <div style="display:flex;gap:16px">
+      <span style="opacity:.5;min-width:40px">MARKS</span>
+      <span>● cleared</span><span>○ not cleared</span>
+    </div>
+    <div style="display:flex;gap:16px">
+      <span style="opacity:.5;min-width:40px">DIFF</span>
+      <span style="color:#ff9944">H = hard</span>
+      <span style="color:#ff4444">C = crazy</span>
+      <span style="color:#cc44ff">I = impossible</span>
+      <span style="opacity:.5">— higher tiers count toward lower (I adds to C+H)</span>
+    </div>
+    <div style="display:flex;gap:16px">
+      <span style="opacity:.5;min-width:40px">SOLO</span>
+      <span style="color:#44ddff">M = mono (solo class)</span>
+      <span style="color:var(--fem)">S = solo cat</span>
+      <span style="opacity:.5">— S counts toward M</span>
+    </div>
+  </div>`;
+
+  el.innerHTML = html;
+}
 </script>
 </body>
 </html>
