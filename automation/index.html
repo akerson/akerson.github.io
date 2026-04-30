@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRS Agent — Drug Substance Automation</title>
+<script src="docx.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#7A00E6;--mid:#5C00AD;--light:#A64DFF;--ice:#F3EEFF;--ice2:#E5D4FF;
+  --white:#fff;--bg:#F8F7FA;--border:#E2D6F5;--border2:#C9B8E8;
+  --text:#1A0035;--body:#3D3050;--muted:#7B6A96;--subtle:#A898C0;
+  --success:#1A7A4A;--sbg:#F0FFF6;--sborder:#A8E6C3;
+  --warn:#CC6600;--wbg:#FFF8F0;--wborder:#F5D5A0;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--body);min-height:100vh;font-size:14px;line-height:1.5}
+
+/* Header */
+.header{background:var(--white);border-bottom:1px solid var(--border);padding:0 36px;height:54px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(122,0,230,.05)}
+.hw{font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--text);text-transform:uppercase}
+.hsep{width:1px;height:18px;background:var(--border)}
+.hsub{font-size:12px;color:var(--muted)}
+.hright{margin-left:auto;display:flex;align-items:center;gap:10px}
+.hbadge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--p);background:var(--ice);border:1px solid var(--ice2);border-radius:4px;padding:3px 10px}
+.akw{display:flex;align-items:center;gap:8px}
+.aklbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle);white-space:nowrap}
+.akin{font-family:'Consolas',monospace;font-size:12px;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:5px 10px;width:240px;outline:none;transition:border-color .12s}
+.akin:focus{border-color:var(--p);background:var(--white)}
+.akin.set{border-color:var(--success);color:var(--success)}
+.aksave{font-size:11px;font-weight:600;color:var(--white);background:var(--p);border:none;border-radius:4px;padding:5px 12px;cursor:pointer}
+.aksave:hover{background:var(--mid)}
+
+/* Layout */
+.layout{display:grid;grid-template-columns:236px 1fr;min-height:calc(100vh - 54px)}
+
+/* Sidebar */
+.sidebar{background:var(--white);border-right:1px solid var(--border);padding:24px 0;position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto;display:flex;flex-direction:column}
+.slbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);padding:0 18px 10px}
+.sitem{display:flex;align-items:flex-start;gap:10px;padding:9px 18px;cursor:pointer}
+.sitem:hover{background:var(--ice)}
+.strack{display:flex;flex-direction:column;align-items:center;flex-shrink:0;margin-top:2px}
+.sdot{width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--subtle)}
+.sdot.active{border-color:var(--p);background:var(--p);color:var(--white)}
+.sdot.done{border-color:var(--success);background:var(--success);color:var(--white)}
+.sdot.spinning{border-color:var(--p);border-top-color:transparent;background:transparent;animation:dotspin .7s linear infinite}
+@keyframes dotspin{to{transform:rotate(360deg)}}
+.sline{width:2px;height:14px;background:var(--border);margin:2px 0}
+.sline.done{background:var(--success)}
+.sinfo{padding-top:1px}
+.sname{font-size:12px;font-weight:600;color:var(--muted)}
+.sname.active{color:var(--p)}
+.sname.done{color:var(--success)}
+.sdesc{font-size:10.5px;color:var(--subtle);margin-top:1px}
+.sdivider{border:none;border-top:1px solid var(--border);margin:14px 0}
+.snote{padding:0 18px;font-size:11px;color:var(--subtle);line-height:1.6}
+
+/* Main */
+.main{padding:32px 40px;overflow-y:auto}
+.main::-webkit-scrollbar{width:5px}
+.main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* Page headers */
+.peyebrow{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--p);margin-bottom:5px}
+.ptitle{font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px}
+.pdesc{font-size:13px;color:var(--muted);max-width:680px;margin-bottom:24px}
+
+/* Context banner */
+.cbanner{background:var(--ice);border:1px solid var(--ice2);border-left:3px solid var(--p);border-radius:0 6px 6px 0;padding:11px 16px;margin-bottom:24px;display:flex;gap:24px;flex-wrap:wrap}
+.citem{font-size:12px;color:var(--muted)}
+.citem strong{color:var(--text);font-weight:600}
+
+/* Cards */
+.card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:18px;box-shadow:0 1px 4px rgba(122,0,230,.04)}
+.ch{padding:13px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px}
+.cicon{width:26px;height:26px;border-radius:4px;background:var(--p);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--white);flex-shrink:0}
+.ctitle{font-size:13.5px;font-weight:700;color:var(--text)}
+.csub{font-size:11.5px;color:var(--muted);margin-top:1px}
+.ctag{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--p);background:var(--ice);border:1px solid var(--ice2);border-radius:3px;padding:2px 9px}
+.cbody{padding:20px}
+
+/* Fields */
+.flbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:7px}
+textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:11px 13px;color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;line-height:1.65;resize:vertical;outline:none;transition:border-color .12s,box-shadow .12s}
+textarea:focus{border-color:var(--p);background:var(--white);box-shadow:0 0 0 3px rgba(122,0,230,.07)}
+input[type=text]{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:5px 10px;color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;outline:none;transition:border-color .12s;width:100%}
+input[type=text]:focus{border-color:var(--p);background:var(--white)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:5px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s}
+.btn-p{background:var(--p);color:var(--white)}
+.btn-p:hover:not(:disabled){background:var(--mid)}
+.btn-p:disabled{opacity:.4;cursor:not-allowed}
+.btn-g{background:var(--white);color:var(--muted);border:1px solid var(--border)}
+.btn-g:hover:not(:disabled){background:var(--bg);color:var(--body)}
+.btn-g:disabled{opacity:.4;cursor:not-allowed}
+.btn-sm{padding:5px 12px;font-size:12px}
+.spin{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .65s linear infinite;display:none}
+.btn.loading .spin{display:block}
+.btn.loading .blbl{opacity:.55}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Phase cards */
+.phases-grid{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.phase-card{background:var(--white);border:1px solid var(--border);border-radius:7px;padding:12px 15px;display:flex;align-items:flex-start;gap:11px}
+.pnum{width:28px;height:28px;border-radius:50%;background:var(--ice);border:1px solid var(--ice2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--p);flex-shrink:0;margin-top:2px}
+.pfields{flex:1;display:flex;flex-direction:column;gap:6px}
+.prm{display:flex;align-items:center;gap:8px}
+.pni{font-weight:600;font-size:13px}
+.pdi{font-size:12px;color:var(--muted);width:100%}
+.prem{color:var(--subtle);background:none;border:none;cursor:pointer;font-size:18px;padding:2px 6px;line-height:1;border-radius:3px}
+.prem:hover{background:var(--bg);color:#cc0033}
+.add-phase{display:flex;align-items:center;gap:8px;padding:9px 15px;background:var(--white);border:1px dashed var(--border2);border-radius:7px;color:var(--muted);font-size:13px;cursor:pointer;width:100%;transition:all .12s;margin-top:4px}
+.add-phase:hover{background:var(--ice);border-color:var(--p);color:var(--p)}
+
+/* EM cards */
+.em-grid{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.em-card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.em-header{background:var(--ice);border-bottom:1px solid var(--ice2);padding:10px 16px;display:flex;align-items:center;gap:10px}
+.em-tag{font-family:'Consolas',monospace;font-size:11px;font-weight:700;color:var(--p);background:var(--white);border:1px solid var(--ice2);border-radius:3px;padding:2px 8px}
+.em-body{padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.em-section-lbl{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--subtle);margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.tag-row{display:flex;gap:8px;margin-bottom:5px;align-items:flex-start;font-size:12px}
+.tag-chip{font-family:'Consolas',monospace;font-size:10.5px;font-weight:700;color:var(--p);background:var(--ice);border:1px solid var(--ice2);border-radius:3px;padding:2px 7px;white-space:nowrap;flex-shrink:0}
+.tag-type{color:var(--muted);font-size:11px;flex-shrink:0}
+.tag-svc{color:var(--body)}
+.cmd-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--mid);background:var(--ice);border:1px solid var(--ice2);border-radius:3px;padding:3px 9px;margin:0 4px 5px 0}
+
+/* Progress */
+.progress-bar{background:var(--border);border-radius:3px;height:4px;overflow:hidden;margin:10px 0 4px}
+.progress-fill{height:100%;background:var(--p);border-radius:3px;transition:width .4s ease}
+.progress-lbl{font-size:11px;color:var(--muted)}
+
+/* Output sections */
+.phase-output{background:var(--white);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;overflow:hidden}
+.po-header{background:var(--ice);border-bottom:1px solid var(--ice2);padding:11px 16px;display:flex;align-items:center;gap:9px}
+.po-num{width:24px;height:24px;border-radius:50%;background:var(--p);color:var(--white);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.po-name{font-size:13px;font-weight:700;color:var(--text)}
+.po-body{padding:16px;display:flex;flex-direction:column;gap:18px}
+.po-sublbl{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+
+/* Tables */
+.dt{width:100%;border-collapse:collapse;font-size:12.5px}
+.dt th{background:var(--ice);color:var(--text);font-weight:700;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:7px 11px;text-align:left;border-bottom:1px solid var(--ice2)}
+.dt td{padding:8px 11px;border-bottom:1px solid var(--border);color:var(--body);vertical-align:top}
+.dt tr:last-child td{border-bottom:none}
+.dt tr:hover td{background:#fdfcff}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px}
+.b-enable{background:var(--sbg);color:var(--success);border:1px solid var(--sborder)}
+.b-disable{background:var(--wbg);color:var(--warn);border:1px solid var(--wborder)}
+.b-step{background:var(--ice);color:var(--p);border:1px solid var(--ice2);min-width:26px;text-align:center}
+.b-phase{background:var(--ice);color:var(--mid);border:1px solid var(--ice2)}
+.mono{font-family:'Consolas',monospace;font-size:11.5px;color:var(--p)}
+
+/* Phase sequence table */
+.seq-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+.seq-table th{background:var(--p);color:var(--white);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 12px;text-align:left}
+.seq-table td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.seq-table tr:nth-child(even) td{background:var(--bg)}
+.seq-table tr:last-child td{border-bottom:none}
+
+/* Download bar */
+.dl-bar{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--p);border-radius:0 8px 8px 0;padding:14px 18px;display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.dl-bar h3{font-size:14px;font-weight:700;color:var(--text)}
+.dl-bar p{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* FHX output */
+.fhx-output{background:#1A0035;border:1px solid #3D0080;border-radius:8px;overflow:hidden;margin-top:16px}
+.fhx-bar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#2A0055;border-bottom:1px solid #3D0080;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--light)}
+.fhx-bar .dot{width:7px;height:7px;border-radius:50%;background:var(--p);flex-shrink:0}
+.fhx-flag{margin-left:auto;font-size:10px;font-weight:600;color:var(--light);text-transform:none;letter-spacing:0}
+.fhx-content{padding:18px;font-family:'Cascadia Code','Consolas','Courier New',monospace;font-size:11.5px;line-height:1.75;color:#D4B8F0;white-space:pre-wrap;max-height:520px;overflow-y:auto}
+.fhx-content::-webkit-scrollbar{width:5px}
+.fhx-content::-webkit-scrollbar-thumb{background:#3D0080;border-radius:3px}
+
+/* Status */
+.status-msg{padding:10px 14px;border-radius:5px;font-size:12.5px;margin-top:12px}
+.s-info{background:var(--ice);border:1px solid var(--ice2);color:var(--mid)}
+.s-error{background:#fff0f3;border:1px solid #ffbdcc;color:#cc0033;display:none}
+.s-success{background:var(--sbg);border:1px solid var(--sborder);color:var(--success)}
+
+/* Info strip */
+.info-strip{background:var(--ice);border:1px solid var(--ice2);border-radius:6px;padding:9px 13px;margin-bottom:18px;font-size:12px;color:var(--mid);display:flex;gap:8px}
+
+.hidden{display:none}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div style="width:3px;height:22px;background:var(--p);border-radius:2px"></div>
+  <div class="hw">FRS Agent</div>
+  <div class="hsep"></div>
+  <div class="hsub">Drug Substance · DeltaV / ISA-88</div>
+  <div class="hright">
+    <div class="akw">
+      <span class="aklbl">API Key</span>
+      <input class="akin" id="aki" type="password" placeholder="sk-ant-..." autocomplete="off" onkeydown="if(event.key==='Enter')saveKey()">
+      <button class="aksave" onclick="saveKey()">Set</button>
+    </div>
+    <div class="hbadge">Proof of Concept</div>
+    <button class="aksave" onclick="loadDevState()" style="background:var(--mid);font-size:10px;padding:4px 10px;" title="Skip to FHX with synthetic data">Dev: Jump to FHX</button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="slbl">Pipeline</div>
+
+    <div id="si-1" class="sitem">
+      <div class="strack"><div class="sdot active" id="dot-1">1</div><div class="sline" id="line-1"></div></div>
+      <div class="sinfo"><div class="sname active" id="sn-1">Process Narrative</div><div class="sdesc">Describe the unit operation</div></div>
+    </div>
+    <div id="si-2" class="sitem">
+      <div class="strack"><div class="sdot" id="dot-2">2</div><div class="sline" id="line-2"></div></div>
+      <div class="sinfo"><div class="sname" id="sn-2">Phase Decomposition</div><div class="sdesc">Review and confirm phases</div></div>
+    </div>
+    <div id="si-3" class="sitem">
+      <div class="strack"><div class="sdot" id="dot-3">3</div><div class="sline" id="line-3"></div></div>
+      <div class="sinfo"><div class="sname" id="sn-3">Physical Model</div><div class="sdesc">Equipment modules, tags, commands</div></div>
+    </div>
+    <div id="si-4" class="sitem">
+      <div class="strack"><div class="sdot" id="dot-4">4</div><div class="sline" id="line-4"></div></div>
+      <div class="sinfo"><div class="sname" id="sn-4">Phase Sequence</div><div class="sdesc">EM orchestration per phase</div></div>
+    </div>
+    <div id="si-5" class="sitem">
+      <div class="strack"><div class="sdot" id="dot-5">5</div><div class="sline" id="line-5"></div></div>
+      <div class="sinfo"><div class="sname" id="sn-5">FRS — Phase 1</div><div class="sdesc">FRS grounded in physical model</div></div>
+    </div>
+    <div id="si-6" class="sitem">
+      <div class="strack"><div class="sdot" id="dot-6">6</div></div>
+      <div class="sinfo"><div class="sname" id="sn-6">FHX Export</div><div class="sdesc">DeltaV phase FHX file</div></div>
+    </div>
+
+    <hr class="sdivider">
+    <div class="snote">All content is synthetic pharmaceutical process data. No proprietary information used.</div>
+    <hr class="sdivider">
+    <div class="snote" style="color:#C9B8E8;font-size:10.5px">AI outputs are working drafts. Engineer review required at every step.</div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main" id="main">
+
+    <!-- ─── STEP 1: Narrative ─────────────────────────── -->
+    <div id="sec-1">
+      <div class="peyebrow">Step 1</div>
+      <div class="ptitle">Process Narrative</div>
+      <div class="pdesc">Describe the unit operation in plain language. The agent decomposes this into phases, builds a physical model, and generates the FRS and FHX for the first phase.</div>
+
+      <div class="card">
+        <div class="cbody">
+          <div class="flbl">Unit Operation Description</div>
+          <textarea id="narrative" rows="11">The buffer preparation unit operation involves charging Purified Water for Injection (WFI) to a 500L stainless steel vessel via a controlled transfer from the WFI loop. The target charge volume is 400L ±2%. Once charged, sodium chloride (NaCl) is added manually via a charge port to achieve a target concentration of 150 mM. Agitation is initiated at 120 RPM and maintained until the conductivity setpoint of 15.0 mS/cm ±0.5 mS/cm is confirmed by an in-line conductivity probe. The pH is then adjusted to 7.4 ±0.1 using 1N HCl or 1N NaOH as required. Once both conductivity and pH are in range, the batch is held for a minimum of 10 minutes at 20°C ±2°C before release to filtration. The unit operation must be completed within 4 hours of initiating the WFI charge.</textarea>
+          <div style="margin-top:12px;display:flex;gap:10px;align-items:center">
+            <button class="btn btn-p" id="btn-decomp" onclick="runDecomposition()"><div class="spin"></div><span class="blbl">Identify Phases</span></button>
+            <span style="font-size:12px;color:var(--muted)">Agent proposes phases for your review before continuing.</span>
+          </div>
+          <div class="s-error" id="err-decomp"></div>
+          <div class="hidden" id="prog-decomp" style="margin-top:12px">
+            <div class="progress-bar"><div class="progress-fill" id="pf-decomp" style="width:0%"></div></div>
+            <div class="progress-lbl" id="pl-decomp">Starting...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── STEP 2: Phase Review ───────────────────────── -->
+    <div id="sec-2" class="hidden">
+      <div class="peyebrow">Step 2</div>
+      <div class="ptitle">Review Phases</div>
+      <div class="pdesc">The agent has proposed phases based on your narrative and validated coverage. Edit names and descriptions to match your site terminology before generating the physical model.</div>
+
+      <div class="info-strip">&#9432;&nbsp; Phase names become ISA-88 operation names. The physical model will be scoped to support all phases listed here.</div>
+
+      <!-- Narrative preview -->
+      <div style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle)">Process Narrative</span>
+          <button class="btn btn-g btn-sm" onclick="toggleNarPreview()"><span id="narChev">&#9660;</span> Toggle</button>
+        </div>
+        <div id="nar-preview" style="background:var(--white);border:1px solid var(--border);border-radius:6px;padding:12px 14px;font-size:12.5px;color:var(--body);line-height:1.6;max-height:120px;overflow-y:auto"></div>
+      </div>
+
+      <div class="phases-grid" id="phases-grid"></div>
+      <button class="add-phase" onclick="addPhaseCard()">+ Add Phase</button>
+
+      <div style="margin-top:18px;display:flex;gap:10px;align-items:center">
+        <button class="btn btn-p" id="btn-physmodel" onclick="runPhysicalModel()"><div class="spin"></div><span class="blbl">Generate Physical Model</span></button>
+        <button class="btn btn-g" onclick="goBack(1,2)">Back</button>
+      </div>
+      <div class="s-error" id="err-phys"></div>
+      <div class="hidden" id="prog-phys" style="margin-top:12px">
+        <div class="progress-bar"><div class="progress-fill" id="pf-phys" style="width:0%"></div></div>
+        <div class="progress-lbl" id="pl-phys">Generating physical model...</div>
+      </div>
+    </div>
+
+    <!-- ─── STEP 3: Physical Model ─────────────────────── -->
+    <div id="sec-3" class="hidden">
+      <div class="peyebrow">Step 3</div>
+      <div class="ptitle">Physical Model</div>
+      <div class="pdesc">ISA-88 physical model proposed for your unit operation. Equipment modules, instrumentation tags, and available commands. Review before generating the phase sequence.</div>
+
+      <div class="cbanner" id="unit-banner">
+        <div class="citem"><strong>Process Cell:</strong> <span id="pc-name">—</span></div>
+        <div class="citem"><strong>Unit:</strong> <span id="unit-name">—</span></div>
+        <div class="citem"><strong>Equipment Modules:</strong> <span id="em-count">—</span></div>
+      </div>
+
+      <div class="em-grid" id="em-grid"></div>
+
+      <div style="margin-top:18px;display:flex;gap:10px">
+        <button class="btn btn-p" id="btn-seq" onclick="runPhaseSequence()"><div class="spin"></div><span class="blbl">Generate Phase Sequence</span></button>
+        <button class="btn btn-g" onclick="goBack(2,3)">Back</button>
+      </div>
+      <div class="s-error" id="err-seq"></div>
+      <div class="hidden" id="prog-seq" style="margin-top:12px">
+        <div class="progress-bar"><div class="progress-fill" id="pf-seq" style="width:0%"></div></div>
+        <div class="progress-lbl" id="pl-seq">Generating phase sequence...</div>
+      </div>
+    </div>
+
+    <!-- ─── STEP 4: Phase Sequence ─────────────────────── -->
+    <div id="sec-4" class="hidden">
+      <div class="peyebrow">Step 4</div>
+      <div class="ptitle">Phase Sequence</div>
+      <div class="pdesc">Equipment module orchestration across all phases. Shows which EMs are active in each phase, the commands called, and the phase transition conditions. This is the coordination layer above the FRS.</div>
+
+      <div id="seq-output"></div>
+
+      <div style="margin-top:18px;display:flex;gap:10px;align-items:center">
+        <button class="btn btn-p" id="btn-frs" onclick="runFRS()"><div class="spin"></div><span class="blbl">Generate FRS — Phase 1</span></button>
+        <button class="btn btn-g" onclick="goBack(3,4)">Back</button>
+        <span style="font-size:12px;color:var(--muted)" id="frs-phase-hint"></span>
+      </div>
+      <div class="s-error" id="err-frs"></div>
+      <div class="hidden" id="prog-frs" style="margin-top:12px">
+        <div class="progress-bar"><div class="progress-fill" id="pf-frs" style="width:0%"></div></div>
+        <div class="progress-lbl" id="pl-frs">Generating FRS sections...</div>
+      </div>
+    </div>
+
+    <!-- ─── STEP 5: FRS Phase 1 ────────────────────────── -->
+    <div id="sec-5" class="hidden">
+      <div class="peyebrow">Step 5</div>
+      <div class="ptitle">FRS — <span id="frs-phase-name"></span></div>
+      <div class="pdesc">Functional requirements for the first phase, grounded in the physical model. Tag names, EM commands, and alarm references are derived from the proposed instrumentation.</div>
+
+      <div id="frs-params-section" class="card" style="margin-bottom:18px">
+        <div class="ch"><div class="cicon">P</div><div><div class="ctitle">Recipe Input Parameters</div><div class="csub">Parameters scoped to Phase 1 recipe inputs</div></div></div>
+        <div class="cbody"><table class="dt"><thead><tr><th>Parameter</th><th>Description</th><th>Units</th><th>Typical Value</th><th>Type</th></tr></thead><tbody id="params-body"></tbody></table></div>
+      </div>
+
+      <div id="frs-phase-detail"></div>
+
+      <div style="margin-top:18px;display:flex;gap:10px">
+        <button class="btn btn-p" id="btn-fhx" onclick="runFHX()"><div class="spin"></div><span class="blbl">Generate FHX</span></button>
+        <button class="btn btn-g btn-sm" onclick="downloadFRSDocx()">Download FRS .docx</button>
+        <button class="btn btn-g" onclick="goBack(4,5)">Back</button>
+      </div>
+      <div class="s-error" id="err-fhx"></div>
+      <div class="hidden" id="prog-fhx" style="margin-top:12px">
+        <div class="progress-bar"><div class="progress-fill" id="pf-fhx" style="width:0%"></div></div>
+        <div class="progress-lbl" id="pl-fhx">Generating FHX...</div>
+      </div>
+    </div>
+
+    <!-- ─── STEP 6: FHX Export ─────────────────────────── -->
+    <div id="sec-6" class="hidden">
+      <div class="peyebrow">Step 6</div>
+      <div class="ptitle">FHX Export</div>
+      <div class="pdesc">DeltaV-style batch phase FHX generated from the Phase 1 FRS and physical model. Download and review with a qualified automation engineer before import or use.</div>
+
+      <div class="dl-bar">
+        <div><h3>Phase FHX Ready</h3><p>DeltaV-style phase logic — review and validate before use in any environment.</p></div>
+        <button class="btn btn-p" onclick="downloadFHX()">Download .fhx</button>
+        <button class="btn btn-p" onclick="downloadFRSDocx()" style="background:var(--mid)">Download FRS .docx</button>
+        <button class="btn btn-g" onclick="resetAll()" style="margin-left:4px">New Process</button>
+      </div>
+
+      <div class="fhx-output">
+        <div class="fhx-bar"><div class="dot"></div>DeltaV Phase FHX — Draft<div class="fhx-flag">Engineer review required before use</div></div>
+        <div class="fhx-content" id="fhx-content"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────────────────────────
+const API='https://api.anthropic.com/v1/messages';
+let state={
+  narrative:'', phases:[], physModel:null,
+  phaseSeq:null, frsPhase1:null, frsParams:null, fhxText:''
+};
+
+// ─── API Key ─────────────────────────────────────────────────────────────────
+function saveKey(){
+  const inp=document.getElementById('aki');
+  const val=inp.value.trim();
+  if(!val.startsWith('sk-ant-')){inp.style.borderColor='#CC0033';return}
+  window._apiKey=val;
+  inp.classList.add('set');
+  inp.value=val.slice(0,12)+'••••••••••••••••••••';
+  inp.disabled=true;
+  const w=inp.closest('.akw');
+  const rb=document.createElement('button');
+  rb.className='aksave';rb.style.background='var(--subtle)';rb.textContent='Reset';
+  rb.onclick=()=>{window._apiKey='';inp.value='';inp.disabled=false;inp.classList.remove('set');inp.style.borderColor='';w.removeChild(rb)};
+  w.appendChild(rb);
+}
+
+// ─── Claude call ─────────────────────────────────────────────────────────────
+async function claude(system, user, maxTokens=3000){
+  const key=window._apiKey||'';
+  const headers={'Content-Type':'application/json'};
+  if(key){headers['x-api-key']=key;headers['anthropic-version']='2023-06-01';headers['anthropic-dangerous-direct-browser-access']='true'}
+  const r=await fetch(API,{method:'POST',headers,body:JSON.stringify({
+    model:'claude-sonnet-4-6',max_tokens:maxTokens,system,
+    messages:[{role:'user',content:user}]
+  })});
+  const d=await r.json();
+  if(d.error)throw new Error(d.error.message);
+  return d.content.map(b=>b.text||'').join('');
+}
+
+function parseJSON(raw){
+  let s=raw.trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/i,'').trim();
+  try{return JSON.parse(s)}catch(e){}
+  try{
+    const lb=s.lastIndexOf('}');
+    if(lb===-1)throw new Error('no obj');
+    let t=s.slice(0,lb+1);
+    let br=0,bk=0;
+    for(const c of t){if(c==='{')br++;else if(c==='}')br--;else if(c==='[')bk++;else if(c===']')bk--;}
+    while(br>0){t+='}';br--}
+    while(bk>0){t+=']';bk--}
+    return JSON.parse(t);
+  }catch(e2){throw new Error('JSON parse failed: '+e2.message)}
+}
+
+// ─── Sidebar helpers ─────────────────────────────────────────────────────────
+function setStep(n,state){
+  const dot=document.getElementById('dot-'+n);
+  const nm=document.getElementById('sn-'+n);
+  const line=document.getElementById('line-'+n);
+  dot.className='sdot'+(state==='active'?' active':state==='done'?' done':state==='spinning'?' spinning':'');
+  nm.className='sname'+(state==='active'?' active':state==='done'?' done':'');
+  if(state==='done')dot.textContent='✓';
+  else if(state==='spinning')dot.textContent='';
+  else dot.textContent=n;
+  if(line)line.className='sline'+(state==='done'?' done':'');
+}
+function showSection(n){
+  for(let i=1;i<=6;i++)document.getElementById('sec-'+i).classList.toggle('hidden',i!==n);
+}
+function goBack(target,current){showSection(target);setStep(current,'');setStep(target,'active')}
+function load(id,on){const b=document.getElementById(id);b.disabled=on;on?b.classList.add('loading'):b.classList.remove('loading')}
+function showErr(id,m){const e=document.getElementById(id);e.textContent=m;e.style.display='block'}
+function clrErr(id){document.getElementById(id).style.display='none'}
+function show(id){document.getElementById(id).classList.remove('hidden')}
+function hide(id){document.getElementById(id).classList.add('hidden')}
+function setP(pfid,plid,pct,lbl){
+  document.getElementById(pfid).style.width=pct+'%';
+  document.getElementById(plid).textContent=lbl;
+}
+
+// ─── Phase card helpers ───────────────────────────────────────────────────────
+function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function makePhaseCard(num,ph){
+  const d=document.createElement('div');
+  d.className='phase-card';d.dataset.id=ph.id||'phase_'+num;
+  d.innerHTML=`<div class="pnum">${num}</div>
+    <div class="pfields">
+      <div class="prm">
+        <input type="text" class="pni" value="${escH(ph.name)}" placeholder="Phase name" style="font-weight:600;font-size:13px;border:none;background:transparent;padding:0;color:var(--text)">
+        <button class="prem" onclick="removePhase(this)">&times;</button>
+      </div>
+      <input type="text" class="pdi" value="${escH(ph.description)}" placeholder="Description..." style="border:none;background:transparent;padding:0">
+    </div>`;
+  return d;
+}
+function renderPhaseCards(phases){
+  const g=document.getElementById('phases-grid');g.innerHTML='';
+  phases.forEach((ph,i)=>g.appendChild(makePhaseCard(i+1,ph)));
+}
+function addPhaseCard(){
+  const g=document.getElementById('phases-grid'),num=g.children.length+1;
+  g.appendChild(makePhaseCard(num,{id:'phase_'+num,name:'New Phase',description:''}));
+  renum();
+}
+function removePhase(btn){btn.closest('.phase-card').remove();renum()}
+function renum(){document.querySelectorAll('#phases-grid .phase-card').forEach((c,i)=>c.querySelector('.pnum').textContent=i+1)}
+function getPhases(){
+  return Array.from(document.querySelectorAll('#phases-grid .phase-card')).map((c,i)=>({
+    id:'phase_'+(i+1),
+    name:c.querySelector('.pni').value.trim()||'Phase '+(i+1),
+    description:c.querySelector('.pdi').value.trim()
+  }));
+}
+function toggleNarPreview(){
+  const p=document.getElementById('nar-preview'),ch=document.getElementById('narChev');
+  const collapsed=p.style.display==='none';
+  p.style.display=collapsed?'block':'none';
+  ch.innerHTML=collapsed?'&#9660;':'&#9654;';
+}
+
+// ─── STEP 1 → 2: Decomposition ───────────────────────────────────────────────
+async function runDecomposition(){
+  clrErr('err-decomp');
+  const narrative=document.getElementById('narrative').value.trim();
+  if(!narrative)return;
+  load('btn-decomp',true);show('prog-decomp');
+  state.narrative=narrative;
+  setStep(2,'spinning');
+
+  const SYS=`You are an ISA-88 batch process expert in pharmaceutical drug substance manufacturing.
+Decompose a process narrative into discrete ISA-88 phases. Each phase = one operation in a unit procedure.
+Rules: clear start/end condition; 3-7 phases; don't over-fragment; Setup and Discharge phases where applicable.
+Return ONLY valid JSON: {"phases":[{"id":"phase_1","name":"Setup Phase","description":"..."}]}`;
+
+  try{
+    setP('pf-decomp','pl-decomp',40,'Identifying phases...');
+    const r1=await claude(SYS,'Decompose:\n\n'+narrative,2000);
+    const p1=parseJSON(r1);
+
+    setP('pf-decomp','pl-decomp',80,'Validating coverage...');
+    const VSYS=`You are an ISA-88 expert reviewing a phase decomposition for completeness.
+Check every distinct operation, material addition, adjustment step, and hold period in the narrative is covered.
+Add phases only if clearly missing. Keep descriptions brief (one sentence max).
+Return ONLY compact JSON — no whitespace, no preamble:
+{"phases":[{"id":"phase_1","name":"Name","description":"One sentence."}],"changes_made":"None or brief summary"}`;
+    const r2=await claude(VSYS,`NARRATIVE:\n${narrative}\n\nPROPOSED:\n${p1.phases.map((p,i)=>`${i+1}. ${p.name}: ${p.description}`).join('\n')}\n\nReturn corrected phases.`,2000);
+    const p2=parseJSON(r2);
+
+    hide('prog-decomp');
+    setStep(2,'');
+    state.phases=p2.phases;
+    renderPhaseCards(p2.phases);
+    document.getElementById('nar-preview').textContent=narrative;
+    setStep(1,'done');setStep(2,'active');
+    showSection(2);
+  }catch(e){
+    hide('prog-decomp');showErr('err-decomp','Decomposition failed: '+e.message);
+  }finally{load('btn-decomp',false)}
+}
+
+// ─── STEP 2 → 3: Physical Model ──────────────────────────────────────────────
+async function runPhysicalModel(){
+  clrErr('err-phys');
+  const phases=getPhases();
+  if(!phases.length)return;
+  state.phases=phases;
+  load('btn-physmodel',true);show('prog-phys');
+  setStep(2,'spinning');
+
+  const phaseList=phases.map((p,i)=>`${i+1}. ${p.name}: ${p.description}`).join('\n');
+
+  const SYS=`You are a DeltaV ISA-88 physical model expert in pharmaceutical drug substance manufacturing.
+Propose an ISA-88 physical model (process cell → unit → equipment modules) for the described process.
+
+Equipment Module (EM) rules:
+- Each EM represents a distinct functional group of equipment (e.g., WFI Transfer, Agitation, pH Adjustment)
+- Name EMs using DeltaV convention: EM_[FUNCTION]_[NUMBER] (e.g., EM_WFI_001)
+- Tag instrumentation using ISA-5.1: FT=flow, LT=level, TT=temperature, AT=analyzer/conductivity/pH, XV=on-off valve, PMP=pump, AGT=agitator
+- Number tags sequentially (e.g., FT-1001, XV-1001, LT-1001)
+- Commands are DeltaV EM-level outputs the batch phase can call
+
+Return ONLY valid JSON:
+{
+  "process_cell":"DS_BUFPREP_AREA",
+  "unit":"BUFPREP_500L_001",
+  "equipment_modules":[
+    {
+      "id":"EM_WFI",
+      "tag":"EM_WFI_001",
+      "name":"WFI Transfer",
+      "description":"Controlled WFI transfer from loop to vessel",
+      "instrumentation":[
+        {"tag":"FT-1001","type":"Flow Transmitter","service":"WFI Inlet Flow","eu":"L/min","range":"0-500"}
+      ],
+      "commands":[
+        {"name":"OPEN","description":"Open WFI inlet valve XV-1001"},
+        {"name":"CLOSE","description":"Close WFI inlet valve XV-1001"},
+        {"name":"CHARGE","description":"Transfer WFI to volume setpoint"}
+      ]
+    }
+  ]
+}`;
+
+  const USER=`NARRATIVE:\n${state.narrative}\n\nCONFIRMED PHASES:\n${phaseList}\n\nGenerate the ISA-88 physical model.`;
+
+  try{
+    const raw=await claude(SYS,USER,8000);
+    const model=parseJSON(raw);
+    state.physModel=model;
+    renderPhysicalModel(model);
+    hide('prog-phys');
+    setStep(2,'done');setStep(3,'active');
+    showSection(3);
+  }catch(e){
+    hide('prog-phys');setStep(2,'active');showErr('err-phys','Physical model failed: '+e.message);
+  }finally{load('btn-physmodel',false)}
+}
+
+function renderPhysicalModel(model){
+  document.getElementById('pc-name').textContent=model.process_cell||'—';
+  document.getElementById('unit-name').textContent=model.unit||'—';
+  document.getElementById('em-count').textContent=(model.equipment_modules||[]).length;
+
+  const grid=document.getElementById('em-grid');
+  grid.innerHTML='';
+  (model.equipment_modules||[]).forEach(em=>{
+    const tags=(em.instrumentation||[]).map(t=>`
+      <div class="tag-row">
+        <span class="tag-chip">${escH(t.tag)}</span>
+        <span class="tag-type">${escH(t.type)}</span>
+        <span class="tag-svc">— ${escH(t.service)}${t.eu?' ('+escH(t.eu)+')':''}</span>
+      </div>`).join('');
+    const cmds=(em.commands||[]).map(c=>`<span class="cmd-badge" title="${escH(c.description)}">${escH(c.name)}</span>`).join('');
+    const card=document.createElement('div');
+    card.className='em-card';
+    card.innerHTML=`
+      <div class="em-header">
+        <span class="em-tag">${escH(em.tag)}</span>
+        <span style="font-size:13px;font-weight:700;color:var(--text)">${escH(em.name)}</span>
+        <span style="font-size:12px;color:var(--muted);margin-left:6px">— ${escH(em.description)}</span>
+      </div>
+      <div class="em-body">
+        <div>
+          <div class="em-section-lbl">Instrumentation</div>
+          ${tags||'<span style="color:var(--subtle);font-size:12px">None specified</span>'}
+        </div>
+        <div>
+          <div class="em-section-lbl">Commands</div>
+          <div>${cmds||'<span style="color:var(--subtle);font-size:12px">None specified</span>'}</div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ─── STEP 3 → 4: Phase Sequence ──────────────────────────────────────────────
+async function runPhaseSequence(){
+  clrErr('err-seq');
+  load('btn-seq',true);show('prog-seq');
+  setStep(4,'spinning');
+
+  const emList=(state.physModel.equipment_modules||[]).map(e=>`${e.tag} (${e.name}): commands=${e.commands.map(c=>c.name).join(', ')}`).join('\n');
+  const phaseList=state.phases.map((p,i)=>`${i+1}. ${p.name}: ${p.description}`).join('\n');
+
+  const SYS=`You are an ISA-88 batch sequencing expert in pharmaceutical DeltaV automation.
+Given a physical model and confirmed phases, generate a phase sequence showing how equipment modules are orchestrated across the batch.
+
+For each phase produce:
+- Which EMs are active (by tag)
+- Key commands called on each EM in sequence
+- Phase start condition (what triggers it)
+- Phase end condition (what completes it)
+- Brief notes on critical process points
+
+Return ONLY valid JSON:
+{
+  "phase_sequence":[
+    {
+      "phase_id":"phase_1",
+      "phase_name":"Setup Phase",
+      "active_ems":["EM_WFI_001"],
+      "start_condition":"Batch initiated by operator",
+      "end_condition":"All EMs initialized and ready",
+      "steps":[
+        {"seq":1,"action":"Verify vessel empty and drain valves closed","em_tag":null,"command":null},
+        {"seq":2,"action":"Initialize WFI Transfer EM","em_tag":"EM_WFI_001","command":"INIT"}
+      ],
+      "notes":"Equipment must confirm ready state before phase completion"
+    }
+  ]
+}`;
+
+  const USER=`NARRATIVE:\n${state.narrative}\n\nPHASES:\n${phaseList}\n\nEQUIPMENT MODULES:\n${emList}\n\nGenerate the phase sequence.`;
+
+  try{
+    setP('pf-seq','pl-seq',60,'Generating phase sequence...');
+    const raw=await claude(SYS,USER,10000);
+    const seq=parseJSON(raw);
+    state.phaseSeq=seq;
+    renderPhaseSequence(seq);
+    hide('prog-seq');
+
+    // Set hint for next step
+    const ph1=state.phases[0];
+    document.getElementById('frs-phase-hint').textContent=`Will generate FRS for: ${ph1?ph1.name:'Phase 1'}`;
+
+    setStep(3,'done');setStep(4,'active');
+    showSection(4);
+  }catch(e){
+    hide('prog-seq');setStep(4,'');showErr('err-seq','Phase sequence failed: '+e.message);
+  }finally{load('btn-seq',false)}
+}
+
+function renderPhaseSequence(seq){
+  const out=document.getElementById('seq-output');
+  out.innerHTML='';
+  (seq.phase_sequence||[]).forEach((ph,i)=>{
+    const activeEMs=(ph.active_ems||[]).map(e=>`<span class="mono">${escH(e)}</span>`).join(', ');
+    const steps=(ph.steps||[]).map(st=>`
+      <tr>
+        <td><span class="badge b-step">${st.seq}</span></td>
+        <td>${escH(st.action)}</td>
+        <td>${st.em_tag?`<span class="mono">${escH(st.em_tag)}</span>`:'—'}</td>
+        <td>${st.command?`<span class="cmd-badge">${escH(st.command)}</span>`:'—'}</td>
+      </tr>`).join('');
+
+    const block=document.createElement('div');
+    block.className='phase-output';
+    block.innerHTML=`
+      <div class="po-header">
+        <div class="po-num">${i+1}</div>
+        <div class="po-name">${escH(ph.phase_name)}</div>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+          ${(ph.active_ems||[]).map(e=>`<span class="mono" style="font-size:11px">${escH(e)}</span>`).join('')}
+        </div>
+      </div>
+      <div class="po-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><div class="po-sublbl">Start Condition</div><div style="font-size:12.5px;color:var(--body)">${escH(ph.start_condition||'—')}</div></div>
+          <div><div class="po-sublbl">End Condition</div><div style="font-size:12.5px;color:var(--body)">${escH(ph.end_condition||'—')}</div></div>
+        </div>
+        <div>
+          <div class="po-sublbl">Step Sequence</div>
+          <table class="dt"><thead><tr><th>Step</th><th>Action</th><th>EM</th><th>Command</th></tr></thead>
+          <tbody>${steps}</tbody></table>
+        </div>
+        ${ph.notes?`<div><div class="po-sublbl">Notes</div><div style="font-size:12px;color:var(--muted);font-style:italic">${escH(ph.notes)}</div></div>`:''}
+      </div>`;
+    out.appendChild(block);
+  });
+}
+
+// ─── STEP 4 → 5: FRS Phase 1 ─────────────────────────────────────────────────
+async function runFRS(){
+  clrErr('err-frs');
+  const phase1=state.phases[0];
+  if(!phase1)return;
+  load('btn-frs',true);show('prog-frs');
+  setStep(5,'spinning');
+
+  // Build compact physical model summary for context (avoids token bloat from raw JSON)
+  const emSummary=(state.physModel?.equipment_modules||[]).map(em=>
+    `${em.tag} (${em.name}): instrumentation=[${(em.instrumentation||[]).map(t=>t.tag+' '+t.type).join(', ')}] commands=[${(em.commands||[]).map(c=>c.name).join(', ')}]`
+  ).join('\n');
+  const physSummary=`Process Cell: ${state.physModel?.process_cell||''}\nUnit: ${state.physModel?.unit||''}\nEquipment Modules:\n${emSummary}`;
+
+  const seq1=state.phaseSeq?.phase_sequence?.[0];
+  const seqSummary=seq1?`Phase: ${seq1.phase_name}\nStart: ${seq1.start_condition}\nEnd: ${seq1.end_condition}\nSteps:\n${(seq1.steps||[]).map(s=>`  ${s.seq}. ${s.action}${s.em_tag?' ['+s.em_tag+(s.command?' .'+s.command:'')+']':''}`).join('\n')}`:'';
+
+  const phaseList=state.phases.map((p,i)=>`${i+1}. ${p.name}: ${p.description}`).join('\n');
+
+  // Recipe params
+  const SYS_PARAMS=`You are a pharmaceutical automation engineer in DeltaV drug substance manufacturing.
+Generate recipe input parameters for a batch phase, grounded in the physical model provided.
+Reference specific tags (e.g., FT-1001 setpoint). Use DeltaV naming conventions.
+Return ONLY valid JSON:
+{"parameters":[{"name":"WFI_VOL_SP","description":"WFI charge volume setpoint (LT-1001)","units":"L","typical_value":"400","type":"Setpoint"}]}`;
+
+  const SYS_PHASE=`You are an ISA-88/DeltaV expert generating a detailed FRS for one batch phase.
+The FRS must be GROUNDED in the physical model — reference actual equipment module tags, instrument tags, and EM commands.
+Generate content for four subsections:
+1. SEQUENCE OF EVENTS: Numbered steps referencing EM tags and commands (e.g., "Enable EM_WFI_001 — call CHARGE command"). Include alarm enables/disables with actual tag references.
+2. CRITICAL ALARMS: With actual alarm tag references from the instrumentation list (ENABLE/DISABLE, alarm tag, description, reason).
+3. REPORT PARAMETERS: What to capture and at which step, referencing specific instrument tags.
+4. HOLD MONITORS: Process conditions using specific instrument tags as references.
+Return ONLY valid JSON:
+{
+  "sequence_of_events":[{"step":1,"action":"...","notes":""}],
+  "critical_alarms":{"enable":[{"alarm":"AT-1001_HH","description":"Conductivity high-high","reason":"..."}],"disable":[...]},
+  "report_parameters":[{"parameter":"WFI Volume Achieved","description":"...","units":"L","tag_reference":"LT-1001","capture_point":"Phase complete"}],
+  "hold_monitors":[{"monitor":"Vessel Temperature","tag_reference":"TT-1001","condition":"TT-1001.PV > 25°C","action":"Hold batch, investigate"}]
+}`;
+
+  const ctx=`PROCESS NARRATIVE:\n${state.narrative}\n\nALL PHASES:\n${phaseList}\n\nPHYSICAL MODEL:\n${physSummary}\n\nPHASE 1 SEQUENCE:\n${seqSummary}`;
+
+  try{
+    setP('pf-frs','pl-frs',20,'Generating recipe parameters...');
+    const rParams=await claude(SYS_PARAMS,ctx+`\n\nGenerate recipe parameters for: ${phase1.name}`,4000);
+    const params=parseJSON(rParams);
+    state.frsParams=params;
+
+    setP('pf-frs','pl-frs',60,'Generating phase FRS...');
+    const rPhase=await claude(SYS_PHASE,ctx+`\n\nGenerate the full FRS for Phase 1: "${phase1.name}"\nDescription: ${phase1.description}`,16000);
+    const phaseDetail=parseJSON(rPhase);
+    state.frsPhase1={name:phase1.name,id:phase1.id,detail:phaseDetail};
+
+    setP('pf-frs','pl-frs',100,'Complete.');
+    hide('prog-frs');
+
+    renderFRS(phase1,params,phaseDetail);
+    setStep(4,'done');setStep(5,'active');
+    showSection(5);
+  }catch(e){
+    hide('prog-frs');setStep(5,'');showErr('err-frs','FRS generation failed: '+e.message);
+  }finally{load('btn-frs',false)}
+}
+
+function renderFRS(phase,params,detail){
+  document.getElementById('frs-phase-name').textContent=phase.name;
+
+  // Params table
+  const pb=document.getElementById('params-body');
+  pb.innerHTML=(params.parameters||[]).map(p=>`
+    <tr>
+      <td class="mono">${escH(p.name)}</td>
+      <td>${escH(p.description)}</td>
+      <td>${escH(p.units)}</td>
+      <td>${escH(p.typical_value)}</td>
+      <td><span class="badge b-phase">${escH(p.type)}</span></td>
+    </tr>`).join('')||'<tr><td colspan="5" style="color:var(--subtle);font-style:italic">None</td></tr>';
+
+  // Phase detail
+  const container=document.getElementById('frs-phase-detail');
+  container.innerHTML='';
+  const soe=detail.sequence_of_events||[];
+  const alarms=detail.critical_alarms||{enable:[],disable:[]};
+  const rp=detail.report_parameters||[];
+  const hm=detail.hold_monitors||[];
+
+  const block=document.createElement('div');
+  block.className='card';
+  block.innerHTML=`
+    <div class="ch"><div class="cicon">Φ</div><div><div class="ctitle">${escH(phase.name)}</div><div class="csub">Phase FRS — grounded in physical model</div></div></div>
+    <div class="cbody" style="display:flex;flex-direction:column;gap:22px">
+      <div>
+        <div class="po-sublbl">Sequence of Events</div>
+        <table class="dt"><thead><tr><th>Step</th><th>Action</th><th>Notes</th></tr></thead>
+        <tbody>${soe.map(s=>`<tr><td><span class="badge b-step">${s.step}</span></td><td>${escH(s.action)}</td><td style="color:var(--muted);font-size:12px">${escH(s.notes||'')}</td></tr>`).join('')||'<tr><td colspan="3" style="color:var(--subtle);font-style:italic">None</td></tr>'}</tbody></table>
+      </div>
+      <div>
+        <div class="po-sublbl">Critical Alarms</div>
+        <table class="dt"><thead><tr><th>Action</th><th>Alarm Tag</th><th>Description</th><th>Reason</th></tr></thead>
+        <tbody>
+          ${(alarms.enable||[]).map(a=>`<tr><td><span class="badge b-enable">ENABLE</span></td><td class="mono">${escH(a.alarm)}</td><td>${escH(a.description)}</td><td style="color:var(--muted);font-size:12px">${escH(a.reason||'')}</td></tr>`).join('')}
+          ${(alarms.disable||[]).map(a=>`<tr><td><span class="badge b-disable">DISABLE</span></td><td class="mono">${escH(a.alarm)}</td><td>${escH(a.description)}</td><td style="color:var(--muted);font-size:12px">${escH(a.reason||'')}</td></tr>`).join('')}
+          ${!(alarms.enable?.length)&&!(alarms.disable?.length)?'<tr><td colspan="4" style="color:var(--subtle);font-style:italic">None</td></tr>':''}
+        </tbody></table>
+      </div>
+      <div>
+        <div class="po-sublbl">Report Parameters</div>
+        <table class="dt"><thead><tr><th>Parameter</th><th>Description</th><th>Units</th><th>Tag Reference</th><th>Capture Point</th></tr></thead>
+        <tbody>${rp.map(r=>`<tr><td style="font-weight:600">${escH(r.parameter)}</td><td>${escH(r.description)}</td><td>${escH(r.units||'')}</td><td class="mono">${escH(r.tag_reference||'')}</td><td style="color:var(--muted)">${escH(r.capture_point||'')}</td></tr>`).join('')||'<tr><td colspan="5" style="color:var(--subtle);font-style:italic">None</td></tr>'}</tbody></table>
+      </div>
+      <div>
+        <div class="po-sublbl">Hold Monitors</div>
+        <table class="dt"><thead><tr><th>Monitor</th><th>Tag Reference</th><th>Hold Condition</th><th>Recommended Action</th></tr></thead>
+        <tbody>${hm.map(h=>`<tr><td style="font-weight:600">${escH(h.monitor)}</td><td class="mono">${escH(h.tag_reference||'')}</td><td>${escH(h.condition)}</td><td style="color:var(--muted);font-size:12px">${escH(h.action||'')}</td></tr>`).join('')||'<tr><td colspan="4" style="color:var(--subtle);font-style:italic">None</td></tr>'}</tbody></table>
+      </div>
+    </div>`;
+  container.appendChild(block);
+}
+
+// ─── STEP 5 → 6: FHX ─────────────────────────────────────────────────────────
+async function runFHX(){
+  clrErr('err-fhx');
+  load('btn-fhx',true);show('prog-fhx');
+  setStep(6,'spinning');
+
+  const phase1=state.phases[0];
+  const physModel=state.physModel||{};
+  const frsDetail=state.frsPhase1?.detail||{};
+  const frsParams=state.frsParams?.parameters||[];
+
+  const emSummary=(physModel.equipment_modules||[]).map(em=>{
+    const alias=(em.id||em.tag||'EM').replace(/EM_/,'').replace(/_\d+$/,'');
+    return alias+' (#'+alias+'#) commands=['+em.commands.map(c=>c.name).join(',')+'] key_tags=['+em.instrumentation.slice(0,3).map(t=>t.tag).join(',')+']';
+  }).join('\n');
+
+  const SYS=`You are a DeltaV ISA-88 automation engineer. Generate the RUN_LOGIC SFC step sequence for a batch phase as JSON.
+
+EXACT PATH SYNTAX — errors here break import:
+- Phase param:       '^/R_PARAM_NAME.CV'
+- EM command write:  '//#ALIAS#/A_COMMAND.CV'
+- EM PV confirm:     '//#ALIAS#/A_PV.CV'
+- EM setpoint:       '//#ALIAS#/OP_001.CV'
+- EM alarm enable:   '//#ALIAS#/HH_ALM_ENAB.CV'
+- EM ownership:      '//#ALIAS_EM#/OWNER_ID.CV' := '//#THISUNIT#/THISUNIT.CV'
+- Step timer (secs): 'STEPNAME/TIME.CV'
+- Phase message:     '^/P_MSG1.CV'
+- Report result:     '^/RPT_RESULT.CV'
+- Report upload:     '^/REQUEST.CV' := 2000
+
+RULES:
+- Named set syntax: 'NAMED_SET_NAME:Value'  e.g. 'S_EM_AGIT_CTRL:Fixed Output'
+- Step names: S0000 (initial,no actions), S010, S020... in steps of 10
+- S010 = acquire EMs (OWNER_ID write with confirm)
+- S020 = acquire failed handler (if S010 CONFIRM_FAIL)
+- All other steps follow: A010=message, A020+=process actions
+- QUALIFIER always P
+- Range check: >= and <= operators (not =)
+- Hold time: 'SXXX/TIME.CV' >= ('^/R_HOLD_TIME.CV' * 60)
+- Final step: write '^/REQUEST.CV' := 2000 to upload report
+- TERMINATION=T on END transition only
+
+Return ONLY compact JSON (no spaces in keys, no markdown):`;
+
+  const USER = 'PHASE: '+(phase1?.name||'Phase 1')+'\n'+
+    'PHYSICAL MODEL:\n'+emSummary+'\n'+
+    'RECIPE PARAMS:\n'+frsParams.map(p=>p.name+' ('+p.units+' default='+p.typical_value+')').join('\n')+'\n'+
+    'SEQUENCE FROM FRS:\n'+(frsDetail.sequence_of_events||[]).map(s=>s.step+': '+s.action).join('\n')+'\n'+
+    'ALARMS ENABLE: '+(frsDetail.critical_alarms?.enable||[]).map(a=>a.alarm).join(', ')+'\n'+
+    'ALARMS DISABLE AT END: '+(frsDetail.critical_alarms?.disable||[]).map(a=>a.alarm).join(', ')+'\n'+
+    'REPORT PARAMS: '+(frsDetail.report_parameters||[]).map(r=>r.parameter+' ('+r.tag_reference+')').join(', ')+'\n\n'+
+    'Return JSON with keys: phase_name, em_aliases (array with alias,em_tag,named_set_on,named_set_off), steps (array), transitions (array), step_transition_connections (array), transition_step_connections (array)';
+
+  try{
+    setP('pf-fhx','pl-fhx',30,'Generating step logic...');
+    const raw=await claude(SYS,USER,8000);
+    const stepLogic=parseJSON(raw);
+    setP('pf-fhx','pl-fhx',70,'Assembling FHX file...');
+    const fhxText=assembleFHX(stepLogic,physModel,frsParams,phase1);
+    state.fhxText=fhxText;
+    document.getElementById('fhx-content').textContent=fhxText;
+    setP('pf-fhx','pl-fhx',100,'Complete.');
+    hide('prog-fhx');
+    setStep(5,'done');setStep(6,'active');
+    showSection(6);
+  }catch(e){
+    hide('prog-fhx');setStep(6,'');showErr('err-fhx','FHX generation failed: '+e.message);
+    console.error(e);
+  }finally{load('btn-fhx',false)}
+}
+
+function genUID(){
+  const h=()=>Math.floor(Math.random()*0xFFFFFFFF).toString(16).toUpperCase().padStart(8,'0');
+  return '__'+h()+'_'+h()+'__';
+}
+
+function sfcBoilerplate(){
+  return `  ATTRIBUTE_INSTANCE NAME="ACT_STEPS"
+  {
+    VALUE { CV="" }
+  }
+  ATTRIBUTE_INSTANCE NAME="ACT_TRANS"
+  {
+    VALUE { CV="" }
+  }
+  ATTRIBUTE_INSTANCE NAME="AUTO_ADVANCE"
+  {
+    VALUE { CV=T }
+  }
+  ATTRIBUTE_INSTANCE NAME="COMMAND"
+  {
+    VALUE
+    {
+      SET="$sfc_commands"
+      STRING_VALUE="Start Sequence"
+      CHANGEABLE=F
+    }
+  }
+  ATTRIBUTE_INSTANCE NAME="CONFIRM_FAIL"
+  {
+    VALUE { CV=F }
+  }
+  ATTRIBUTE_INSTANCE NAME="ERROR"
+  {
+    VALUE { CV=F }
+  }
+  ATTRIBUTE_INSTANCE NAME="INITIAL_STATE"
+  {
+    VALUE
+    {
+      SET="$sfc_initial_states"
+      STRING_VALUE="Sequence Active"
+      CHANGEABLE=F
+    }
+  }
+  ATTRIBUTE_INSTANCE NAME="RERROR"
+  {
+    VALUE { CV=F }
+  }
+  ATTRIBUTE_INSTANCE NAME="STATE"
+  {
+    VALUE
+    {
+      SET="$sfc_states"
+      STRING_VALUE="Sequence Active"
+      CHANGEABLE=F
+    }
+  }
+  ATTRIBUTE_INSTANCE NAME="STATUS"
+  {
+    VALUE
+    {
+      ENUM_SET="$module_status_opts"
+    }
+  }
+  ATTRIBUTE_INSTANCE NAME="TIME"
+  {
+    VALUE { CV=0 }
+  }`;
+}
+
+function buildAction(a){
+  if(!a||!a.name) return '';
+  const expr=(a.expression||'').replace(/"/g,'""');
+  let s='      ACTION NAME="'+a.name+'"\n      {\n';
+  s+='        DESCRIPTION="'+(a.description||'')+'"\n';
+  s+='        ACTION_TYPE=ASSIGN\n';
+  s+='        QUALIFIER='+(a.qualifier||'P')+'\n';
+  s+='        EXPRESSION="'+expr+'"\n';
+  s+='        DELAY_TIME=0\n';
+  if(a.confirm_expression){
+    const cexpr=(a.confirm_expression||'').replace(/"/g,'""');
+    s+='        CONFIRM_EXPRESSION="'+cexpr+'"\n';
+    s+='        CONFIRM_TIME_OUT='+(a.confirm_timeout||0)+'\n';
+  }
+  s+='      }\n';
+  return s;
+}
+
+function buildRunSFC(logic){
+  const steps=logic.steps||[];
+  const trans=logic.transitions||[];
+  const stc=logic.step_transition_connections||[];
+  const tsc=logic.transition_step_connections||[];
+  let y=50, out='  SFC_ALGORITHM\n  {\n';
+  steps.forEach(step=>{
+    out+='    STEP NAME="'+step.name+'"\n    {\n';
+    if(step.description)out+='      DESCRIPTION="'+(step.description||'').replace(/"/g,'""')+'"\n';
+    out+='      RECTANGLE= { X=550 Y='+y+' H=40 W=120 }\n';
+    (step.actions||[]).forEach(a=>{ out+=buildAction(a); });
+    out+='    }\n';
+    y+=200;
+  });
+  const initStep=steps.find(s=>s.initial)||steps[0];
+  out+='    INITIAL_STEP="'+(initStep?initStep.name:'S0000')+'"\n';
+  let ty=140;
+  trans.forEach(t=>{
+    out+='    TRANSITION NAME="'+t.name+'"\n    {\n';
+    out+='      POSITION= { X=600 Y='+(t.position_y||ty)+' }\n';
+    out+='      TERMINATION='+(t.termination?'T':'F')+'\n';
+    out+='      EXPRESSION="'+(t.expression||'TRUE').replace(/"/g,'""')+'"\n';
+    out+='    }\n';
+    ty+=200;
+  });
+  stc.forEach(c=>{ out+='    STEP_TRANSITION_CONNECTION STEP="'+c.step+'" TRANSITION="'+c.transition+'" { }\n'; });
+  tsc.forEach(c=>{ out+='    TRANSITION_STEP_CONNECTION TRANSITION="'+c.transition+'" STEP="'+c.step+'" { }\n'; });
+  out+='  }\n';
+  return out;
+}
+
+function buildAbortSFC(logic){
+  const aliases=logic.em_aliases||[];
+  let actions='      ACTION NAME="A010"\n      {\n        DESCRIPTION="Set abort message"\n        ACTION_TYPE=ASSIGN\n        QUALIFIER=P\n        EXPRESSION="' +
+    "'^/P_MSG1.CV' := \"\"Aborting Phase\"\";\\n'^/P_MSG2.CV' := \"\"\"\";\\n'^/P_MSG_TYPE1.CV' := '_MSG_TYPE:INFO';" +
+    '"\n        DELAY_TIME=0\n      }\n';
+  aliases.forEach((em,i)=>{
+    if(!em.named_set_off)return;
+    const safeOff=em.named_set_off||'S_EM_CTRL:Off';
+    const emAlias=(em.alias||'EM').toUpperCase();
+    const emExpr="'//#"+emAlias+"#/A_COMMAND.CV' := '"+safeOff+"';";
+    const emConf="'//#"+emAlias+"#/A_PV.CV' = '"+safeOff+"';";
+    actions+='      ACTION NAME="A0'+(20+i*10)+'"\n      {\n'+
+      '        DESCRIPTION="Safe state '+em.alias+' EM"\n'+
+      '        ACTION_TYPE=ASSIGN\n        QUALIFIER=P\n'+
+      '        EXPRESSION="'+emExpr.replace(/"/g,'""')+'"\n'+
+      '        DELAY_TIME=0\n'+
+      '        CONFIRM_EXPRESSION="'+emConf.replace(/"/g,'""')+'"\n'+
+      '        CONFIRM_TIME_OUT=0\n      }\n';
+  });
+  return '  SFC_ALGORITHM\n  {\n    STEP NAME="A0000"\n    {\n      RECTANGLE= { X=200 Y=50 H=40 W=100 }\n'+
+    actions+
+    '    }\n    INITIAL_STEP="A0000"\n    TRANSITION NAME="T1"\n    {\n'+
+    '      POSITION= { X=240 Y=150 }\n      TERMINATION=T\n      EXPRESSION="\'A0000/PENDING_CONFIRMS.CV\' = 0"\n    }\n'+
+    '    STEP_TRANSITION_CONNECTION STEP="A0000" TRANSITION="T1" { }\n  }\n';
+}
+
+function phaseClassBoilerplate(){
+  return `    ATTRIBUTE_INSTANCE NAME="AUTO_RESTART"
+    {
+      VALUE { CV=F }
+    }
+    ATTRIBUTE_INSTANCE NAME="BATCH_ID"
+    {
+      VALUE { CV="" }
+    }
+    ATTRIBUTE_INSTANCE NAME="BCOMMAND"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="BSTATUS"
+    {
+      VALUE
+      {
+        SET="$phase_state"
+        STRING_VALUE="Idle"
+        CHANGEABLE=F
+      }
+    }
+    ATTRIBUTE_INSTANCE NAME="CLASS"
+    {
+      VALUE { CV="" }
+    }
+    ATTRIBUTE_INSTANCE NAME="COMMANDMASK"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="DOWNLOAD_REQ"
+    {
+      VALUE { CV=F }
+    }
+    ATTRIBUTE_INSTANCE NAME="FAIL_INDEX"
+    {
+      VALUE
+      {
+        SET="phase_failures"
+        STRING_VALUE="OK"
+        CHANGEABLE=F
+      }
+    }
+    ATTRIBUTE_INSTANCE NAME="OWNER"
+    {
+      VALUE
+      {
+        SET="$phase_owner_id"
+        STRING_VALUE="DeltaV Batch"
+        CHANGEABLE=F
+      }
+    }
+    ATTRIBUTE_INSTANCE NAME="PAUSE_REQ"
+    {
+      VALUE { CV=F }
+    }
+    ATTRIBUTE_INSTANCE NAME="PAUSED"
+    {
+      VALUE { CV=F }
+    }
+    ATTRIBUTE_INSTANCE NAME="PHASE"
+    {
+      VALUE { CV="" }
+    }
+    ATTRIBUTE_INSTANCE NAME="PHASE_ACT"
+    {
+      VALUE { CV=F }
+    }
+    ATTRIBUTE_INSTANCE NAME="PHASE_CURRENT"
+    {
+      VALUE { CV=T }
+    }
+    ATTRIBUTE_INSTANCE NAME="PHASE_ENABLE"
+    {
+      VALUE { CV=T }
+    }
+    ATTRIBUTE_INSTANCE NAME="PROMPT_BOOL"
+    {
+      VALUE { CV=F }
+    }
+    ATTRIBUTE_INSTANCE NAME="PROMPT_FLOAT"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="PROMPT_INT"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="PROMPT_STRING"
+    {
+      VALUE { CV="" }
+    }
+    ATTRIBUTE_INSTANCE NAME="REQDATA1"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="REQDATA2"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="REQDATA3"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="REQDATA4"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="REQDATA5"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="REQUEST"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="RESTART_TYPE"
+    {
+      VALUE
+      {
+        SET="$phase_restart_types"
+        STRING_VALUE="Continue"
+        CHANGEABLE=F
+      }
+    }
+    ATTRIBUTE_INSTANCE NAME="SINGLE_STEP"
+    {
+      VALUE { CV=F }
+    }
+    ATTRIBUTE_INSTANCE NAME="SIZE"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="STATE_TIME"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="STATUS"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="STEP_INDEX"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="SWITCHED_OVER"
+    {
+      VALUE { CV=F }
+    }
+    ATTRIBUTE_INSTANCE NAME="TIME"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="TOO_LONG_TIME"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="UNIT"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="WATCHDOG"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="WDOG_STATE"
+    {
+      VALUE
+      {
+        SET="$phase_wdog_states"
+        STRING_VALUE="OK"
+        CHANGEABLE=F
+      }
+    }
+    ATTRIBUTE_INSTANCE NAME="WDOG_TIME"
+    {
+      VALUE { CV=0 }
+    }
+    ATTRIBUTE_INSTANCE NAME="XCOMMAND"
+    {
+      VALUE
+      {
+        SET="$phase_command"
+        STRING_VALUE="Reset"
+        CHANGEABLE=F
+      }
+    }`;
+}
+
+function assembleFHX(stepLogic,physModel,frsParams,phase1){
+  const now=new Date();
+  const ts=Math.floor(now.getTime()/1000);
+  const ds=now.toUTCString();
+  const RUN=genUID(),ABORT=genUID(),HOLD=genUID(),RESTART=genUID(),STOP=genUID();
+  const pName=(stepLogic.phase_name||phase1?.name||'PH_PHASE').replace(/\s+/g,'_').toUpperCase();
+  const passthruSFC='  SFC_ALGORITHM\n  {\n    STEP NAME="S1"\n    {\n      RECTANGLE= { X=200 Y=50 H=40 W=100 }\n    }\n    INITIAL_STEP="S1"\n    TRANSITION NAME="T1"\n    {\n      POSITION= { X=240 Y=150 }\n      TERMINATION=T\n      EXPRESSION="TRUE"\n    }\n    STEP_TRANSITION_CONNECTION STEP="S1" TRANSITION="T1" { }\n  }\n';
+  const holdSFC='  SFC_ALGORITHM\n  {\n    STEP NAME="H0000"\n    {\n      RECTANGLE= { X=200 Y=50 H=40 W=100 }\n    }\n    INITIAL_STEP="H0000"\n    TRANSITION NAME="T1"\n    {\n      POSITION= { X=240 Y=150 }\n      TERMINATION=T\n      EXPRESSION="\'H0000/PENDING_CONFIRMS.CV\' = 0"\n    }\n    STEP_TRANSITION_CONNECTION STEP="H0000" TRANSITION="T1" { }\n  }\n';
+
+  let bpDecl='',bpAttr='',pcaAttr='',pcaInst='';
+  frsParams.forEach((p,i)=>{
+    const hi=(parseFloat(p.typical_value)||1)*3;
+    const cv=parseFloat(p.typical_value)||0;
+    bpDecl+='    BATCH_PHASE_PARAMETER NAME="'+p.name+'" TYPE=BATCH_PARAMETER_REAL DIRECTION=INPUT\n    {\n      ID='+(i+1)+'\n      GROUP="Batch"\n      DESCRIPTION="'+p.description+'"\n    }\n';
+    const safeUnits=(p.units||'').replace(/°/g,'deg').replace(/[\u0080-\uFFFF]/g,'_');
+    bpAttr+='    ATTRIBUTE_INSTANCE NAME="'+p.name+'"\n    {\n      VALUE { DESCRIPTION="" HIGH='+hi+' LOW=0 SCALABLE=F CV='+cv+' UNITS="'+safeUnits+'" }\n    }\n';
+    pcaAttr+='    ATTRIBUTE NAME="'+p.name+'" TYPE=FLOAT\n    {\n      INDEX='+(i+1)+'\n      EDITABLE=F\n      RECTANGLE= { X=-50 Y=-50 H=1 W=1 }\n      GROUP="Batch"\n    }\n';
+    pcaInst+='    ATTRIBUTE_INSTANCE NAME="'+p.name+'"\n    {\n      VALUE { CV='+cv+' }\n    }\n';
+  });
+  bpDecl+='    BATCH_PHASE_PARAMETER NAME="RPT_RESULT" TYPE=UNICODE_STRING DIRECTION=OUTPUT\n    {\n      ID='+(frsParams.length+1)+'\n      GROUP="Batch"\n      DESCRIPTION="Report Result"\n    }\n';
+  bpAttr+='    ATTRIBUTE_INSTANCE NAME="RPT_RESULT"\n    {\n      VALUE { CV="" }\n    }\n';
+  pcaAttr+='    ATTRIBUTE NAME="RPT_RESULT" TYPE=UNICODE_STRING\n    {\n      INDEX='+(frsParams.length+1)+'\n      EDITABLE=F\n      RECTANGLE= { X=-50 Y=-50 H=1 W=1 }\n      GROUP="Batch"\n    }\n';
+  pcaInst+='    ATTRIBUTE_INSTANCE NAME="RPT_RESULT"\n    {\n      VALUE { CV="" }\n    }\n    ATTRIBUTE_INSTANCE NAME="P_MSG2"\n    {\n      VALUE { CV="" }\n    }\n    ATTRIBUTE_INSTANCE NAME="P_MSG_TYPE1"\n    {\n      VALUE\n      {\n        SET="_MSG_TYPE"\n        STRING_VALUE="INFO"\n        CHANGEABLE=F\n      }\n    }\n    ATTRIBUTE_INSTANCE NAME="P_MSG1"\n    {\n      VALUE { CV="" }\n    }\n    ATTRIBUTE_INSTANCE NAME="P_CONFIRM_TMOUT"\n    {\n      VALUE { CV=0 }\n    }\n';
+
+  const fhxBody='/* Version: 14.5.1.7944.xr */\n/* "'+ds+'" */\n/* AI-GENERATED DRAFT — ENGINEER REVIEW REQUIRED BEFORE IMPORT */\n/* Named set values must be verified against site configuration */\n\nSCHEMA\n user="AI_GENERATED" time='+ts+'/* "'+ds+'" */\n{\n  VERSION='+ts+'\n  MAJOR_VERSION=14\n  MINOR_VERSION=5\n  MAINTENANCE_VERSION=1\n  BUILD_VERSION=7944\n  BUILD_ID="xr"\n  VERSION_STR="14.5.1.7944.xr"\n  ONLINE_UPGRADE=F\n}\nLOCALE\n user="AI_GENERATED" time='+ts+'\n{\n  LOCALE="English_United States.1252"\n}\n\nFUNCTION_BLOCK_DEFINITION NAME="'+RUN+'" CATEGORY=""\n user="AI_GENERATED" time='+ts+'\n{\n'+buildRunSFC(stepLogic)+sfcBoilerplate()+'\n}\nFUNCTION_BLOCK_DEFINITION NAME="'+ABORT+'" CATEGORY=""\n user="AI_GENERATED" time='+ts+'\n{\n'+buildAbortSFC(stepLogic)+sfcBoilerplate()+'\n}\nFUNCTION_BLOCK_DEFINITION NAME="'+HOLD+'" CATEGORY=""\n user="AI_GENERATED" time='+ts+'\n{\n'+holdSFC+sfcBoilerplate()+'\n}\nFUNCTION_BLOCK_DEFINITION NAME="'+RESTART+'" CATEGORY=""\n user="AI_GENERATED" time='+ts+'\n{\n'+passthruSFC+sfcBoilerplate()+'\n}\nFUNCTION_BLOCK_DEFINITION NAME="'+STOP+'" CATEGORY=""\n user="AI_GENERATED" time='+ts+'\n{\n'+passthruSFC+sfcBoilerplate()+'\n}\nBATCH_EQUIPMENT_PHASE_CLASS NAME="'+pName+'" CATEGORY="Library/Phase Classes/AI_Generated"\n user="AI_GENERATED" time='+ts+'\n{\n  DESCRIPTION="AI-Generated Draft — Engineer Review Required"\n  PARTNERS=0\n  BATCH_PHASE_DEFINITION\n  {\n'+bpDecl+bpAttr+'  }\n  PHASE_CLASS_ALGORITHM NAME="DEFAULT"\n  {\n    PHASE_ALGORITHM\n    {\n    }\n    FUNCTION_BLOCK NAME="RUN_LOGIC" DEFINITION="'+RUN+'"\n    {\n      DESCRIPTION="Running logic"\n      ID=10000001\n      RECTANGLE= { X=-50 Y=-50 H=1 W=1 }\n      ALGORITHM_GENERATED=T\n    }\n    FUNCTION_BLOCK NAME="ABORT_LOGIC" DEFINITION="'+ABORT+'"\n    {\n      DESCRIPTION="Aborting logic"\n      ID=10000002\n      RECTANGLE= { X=-50 Y=-50 H=1 W=1 }\n      ALGORITHM_GENERATED=T\n    }\n    FUNCTION_BLOCK NAME="HOLD_LOGIC" DEFINITION="'+HOLD+'"\n    {\n      DESCRIPTION="Holding logic"\n      ID=10000003\n      RECTANGLE= { X=-50 Y=-50 H=1 W=1 }\n      ALGORITHM_GENERATED=T\n    }\n    FUNCTION_BLOCK NAME="RESTART_LOGIC" DEFINITION="'+RESTART+'"\n    {\n      DESCRIPTION="Restarting logic"\n      ID=10000004\n      RECTANGLE= { X=-50 Y=-50 H=1 W=1 }\n      ALGORITHM_GENERATED=T\n    }\n    FUNCTION_BLOCK NAME="STOP_LOGIC" DEFINITION="'+STOP+'"\n    {\n      DESCRIPTION="Stopping logic"\n      ID=10000005\n      RECTANGLE= { X=-50 Y=-50 H=1 W=1 }\n      ALGORITHM_GENERATED=T\n    }\n    FUNCTION_BLOCK NAME="FAIL_MONITOR" DEFINITION="C_FAIL_MON_V01"\n    {\n      DESCRIPTION="Failure monitor"\n      ID=10000006\n      RECTANGLE= { X=-50 Y=-50 H=1 W=140 }\n      ALGORITHM_GENERATED=T\n    }\n'+pcaAttr+'    ATTRIBUTE NAME="P_MSG2" TYPE=UNICODE_STRING\n    {\n      RECTANGLE= { X=-100 Y=-100 H=20 W=70 }\n      GROUP="Batch"\n      CATEGORY { CATEGORY=COMMON }\n      CATEGORY { CATEGORY=BATCH_ALGORITHM }\n    }\n    ATTRIBUTE NAME="P_MSG_TYPE1" TYPE=ENUMERATION_VALUE\n    {\n      RECTANGLE= { X=-100 Y=-100 H=20 W=70 }\n      CATEGORY { CATEGORY=COMMON }\n      CATEGORY { CATEGORY=BATCH_ALGORITHM }\n    }\n    ATTRIBUTE NAME="P_MSG1" TYPE=UNICODE_STRING\n    {\n      RECTANGLE= { X=-100 Y=-100 H=20 W=70 }\n      GROUP="Batch"\n      CATEGORY { CATEGORY=COMMON }\n      CATEGORY { CATEGORY=BATCH_ALGORITHM }\n    }\n    ATTRIBUTE NAME="P_CONFIRM_TMOUT" TYPE=INT16\n    {\n      RECTANGLE= { X=-100 Y=-100 H=20 W=70 }\n      GROUP="Batch"\n      CATEGORY { CATEGORY=COMMON }\n      CATEGORY { CATEGORY=BATCH_ALGORITHM }\n    }\n'+phaseClassBoilerplate()+'\n'+pcaInst+'  }\n}\n';
+  // DeltaV requires pure ASCII — replace non-ASCII chars before encoding
+  const sanitized = fhxBody
+    .replace(/°/g, 'deg')        // degree symbol
+    .replace(/±/g, '+/-')        // plus-minus
+    .replace(/µ/g, 'u')          // micro
+    .replace(/[\u0080-\uFFFF]/g, '_'); // catch-all for any other non-ASCII
+  // DeltaV requires Windows line endings (CRLF)
+  return sanitized.replace(/\n/g,'\r\n');
+}
+
+
+// ─── Downloads ────────────────────────────────────────────────────────────────
+
+function downloadFHX(){
+  if(!state.fhxText)return;
+  const phase1=state.phases[0];
+  const name=(phase1?.name||'PHASE1').replace(/\s+/g,'_').toUpperCase();
+  // DeltaV requires UTF-16 LE with BOM
+  const str=state.fhxText;
+  const buf=new ArrayBuffer((str.length+1)*2);
+  const view=new Uint16Array(buf);
+  view[0]=0xFEFF;
+  for(let i=0;i<str.length;i++) view[i+1]=str.charCodeAt(i);
+  const blob=new Blob([buf],{type:'text/plain;charset=utf-16le'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=name+'_DRAFT.fhx';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+async function downloadFRSDocx(){
+  if(!window.docx){alert('docx.js not found — check it is in the same folder as index.html.');return}
+  const btn=event.target;btn.disabled=true;btn.textContent='Building...';
+  const {Document,Paragraph,TextRun,Table,TableRow,TableCell,HeadingLevel,AlignmentType,BorderStyle,WidthType,ShadingType,Packer}=window.docx;
+  const phase1=state.phases[0];
+  const params=state.frsParams?.parameters||[];
+  const detail=state.frsPhase1?.detail||{};
+  const model=state.physModel||{};
+  const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const PURPLE='7A00E6';
+
+  const h1=t=>new Paragraph({text:t,heading:HeadingLevel.HEADING_1,spacing:{before:320,after:100}});
+  const h2=t=>new Paragraph({children:[new TextRun({text:t,bold:true,color:PURPLE,size:24})],spacing:{before:200,after:70}});
+  const h3=t=>new Paragraph({children:[new TextRun({text:t,bold:true,size:22,color:'3D3050'})],spacing:{before:150,after:50}});
+  const p=t=>new Paragraph({children:[new TextRun({text:t||'',size:22,color:'3D3050'})],spacing:{after:70}});
+  const lp=(l,v)=>new Paragraph({children:[new TextRun({text:l+': ',bold:true,size:22}),new TextRun({text:v||'—',size:22,color:'3D3050'})],spacing:{after:55}});
+  const sp=()=>new Paragraph({text:'',spacing:{after:70}});
+  const thc=t=>new TableCell({children:[new Paragraph({children:[new TextRun({text:t,bold:true,size:18})],alignment:AlignmentType.LEFT})],shading:{fill:'EDE0FF',type:ShadingType.CLEAR,color:'auto'}});
+  const tc=(t,opts={})=>new TableCell({children:[new Paragraph({children:[new TextRun({text:t||'—',size:20,color:'3D3050',...opts})],spacing:{before:40,after:40}})]});
+  const mkTbl=(hdrs,rows)=>new Table({width:{size:100,type:WidthType.PERCENTAGE},rows:[
+    new TableRow({children:hdrs.map(h=>thc(h)),tableHeader:true}),
+    ...rows.map(row=>new TableRow({children:row.map(cell=>tc(String(cell||'—')))}))
+  ]});
+
+  const children=[];
+  children.push(new Paragraph({children:[new TextRun({text:'FUNCTIONAL REQUIREMENTS SPECIFICATION',bold:true,size:36,color:PURPLE})],alignment:AlignmentType.CENTER,spacing:{before:720,after:120}}));
+  children.push(new Paragraph({children:[new TextRun({text:(phase1?.name||'Phase 1')+' — '+model.unit,bold:true,size:26})],alignment:AlignmentType.CENTER,spacing:{after:400}}));
+  children.push(lp('Document No','FRS-'+Date.now().toString().slice(-6)));
+  children.push(lp('Revision','00'));
+  children.push(lp('Status','DRAFT — AI-Assisted, Pending Engineer Review'));
+  children.push(lp('Date',today));
+  children.push(lp('Unit',model.unit||'—'));
+  children.push(lp('Process Cell',model.process_cell||'—'));
+  children.push(sp());
+  children.push(new Paragraph({children:[new TextRun({text:'AI-generated draft. Review and approve before use as a controlled document. All tags and setpoints require validation against the site instrument list.',italics:true,size:18,color:'7B6A96'})],spacing:{after:160}}));
+  children.push(h1('Process Narrative'));
+  children.push(p(state.narrative));
+  children.push(sp());
+  children.push(h1('Physical Model Summary'));
+  (model.equipment_modules||[]).forEach(em=>{
+    children.push(h3(em.tag+' — '+em.name));
+    children.push(p(em.description));
+    if(em.instrumentation?.length) children.push(mkTbl(['Tag','Type','Service','EU'],em.instrumentation.map(t=>[t.tag,t.type,t.service,t.eu||''])));
+    children.push(sp());
+  });
+  children.push(h1('Section 1 — Recipe Input Parameters'));
+  if(params.length) children.push(mkTbl(['Parameter','Description','Units','Typical Value','Type'],params.map(p=>[p.name,p.description,p.units,p.typical_value,p.type])));
+  children.push(sp());
+  children.push(h1('Section 2 — Phase FRS: '+(phase1?.name||'Phase 1')));
+  const soe=detail.sequence_of_events||[];
+  const alarms=detail.critical_alarms||{enable:[],disable:[]};
+  const rp=detail.report_parameters||[];
+  const hm=detail.hold_monitors||[];
+  if(soe.length){children.push(h3('Sequence of Events'));children.push(mkTbl(['Step','Action','Notes'],soe.map(s=>[String(s.step),s.action,s.notes||''])));children.push(sp())}
+  const allAlarms=[...(alarms.enable||[]).map(a=>['ENABLE',a.alarm,a.description,a.reason||'']),...(alarms.disable||[]).map(a=>['DISABLE',a.alarm,a.description,a.reason||''])];
+  if(allAlarms.length){children.push(h3('Critical Alarms'));children.push(mkTbl(['Action','Alarm Tag','Description','Reason'],allAlarms));children.push(sp())}
+  if(rp.length){children.push(h3('Report Parameters'));children.push(mkTbl(['Parameter','Description','Units','Tag Reference','Capture Point'],rp.map(r=>[r.parameter,r.description,r.units||'',r.tag_reference||'',r.capture_point||''])));children.push(sp())}
+  if(hm.length){children.push(h3('Hold Monitors'));children.push(mkTbl(['Monitor','Tag Reference','Hold Condition','Action'],hm.map(h=>[h.monitor,h.tag_reference||'',h.condition,h.action||''])));children.push(sp())}
+  children.push(h1('Approval'));
+  children.push(mkTbl(['Role','Name','Signature','Date'],[['Automation Engineer','','',''],['QA Reviewer','','',''],['Process Engineer','','','']]));
+
+  const doc=new Document({creator:'FRS Agent — AI Draft',title:'FRS — '+(phase1?.name||'Phase 1'),sections:[{children}]});
+  const blob=await Packer.toBlob(doc);
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='FRS_Draft_'+(phase1?.name||'Phase1').replace(/\s+/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.docx';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  btn.disabled=false;btn.textContent='Download FRS .docx';
+}
+
+// ─── Reset ────────────────────────────────────────────────────────────────────
+function loadDevState(){
+  // Pre-populate state with synthetic mix/equil data — jump straight to FHX step
+  state.narrative='The buffer preparation unit operation involves charging WFI to a 500L vessel. Once charged, NaCl is added manually. Agitation is initiated at 120 RPM and maintained until conductivity of 15.0 mS/cm ±0.5 mS/cm is confirmed. pH is then adjusted to 7.4 ±0.1. The batch is held for a minimum of 10 minutes at 20°C ±2°C before release.';
+  state.phases=[
+    {id:'phase_1',name:'Setup Phase',description:'Equipment preparation and alarm enablement'},
+    {id:'phase_2',name:'Mix Equilibration Phase',description:'Agitate to conductivity and temperature setpoints, then hold'},
+    {id:'phase_3',name:'Discharge Phase',description:'Release to filtration'}
+  ];
+  state.physModel={
+    process_cell:'DS_BUFPREP_AREA',
+    unit:'BUFPREP_500L_001',
+    equipment_modules:[
+      {id:'EM_AGT',tag:'EM_AGT_001',name:'Agitator',description:'Vessel agitation',
+       instrumentation:[{tag:'ST-1001',type:'Speed Transmitter',service:'Agitator speed',eu:'RPM'},{tag:'ZS-1001',type:'Running Feedback',service:'Motor run confirm',eu:''}],
+       commands:[{name:'Fixed Output',description:'Run at setpoint'},{name:'Off',description:'Stop agitator'}]},
+      {id:'EM_COND',tag:'EM_COND_001',name:'Conductivity Monitor',description:'In-line conductivity',
+       instrumentation:[{tag:'AT-1001',type:'Conductivity Transmitter',service:'Vessel conductivity',eu:'mS/cm'}],
+       commands:[{name:'ENABLE_ALARMS',description:'Enable HH/LL alarms'},{name:'DISABLE_ALARMS',description:'Disable alarms'}]},
+      {id:'EM_TEMP',tag:'EM_TEMP_001',name:'Temperature Monitor',description:'Vessel temperature and jacket',
+       instrumentation:[{tag:'TT-1001',type:'Temperature Transmitter',service:'Vessel temperature',eu:'°C'},{tag:'TIC-1001',type:'Temperature Controller',service:'Jacket control',eu:'°C'}],
+       commands:[{name:'AUTO',description:'Auto mode'},{name:'MANUAL',description:'Manual mode'}]}
+    ]
+  };
+  state.frsParams={parameters:[
+    {name:'R_AGT_SPEED_SP',description:'Agitator speed setpoint',units:'RPM',typical_value:'120',type:'Setpoint'},
+    {name:'R_COND_SP',description:'Conductivity target',units:'mS/cm',typical_value:'15',type:'Conductivity'},
+    {name:'R_COND_DEADBAND',description:'Conductivity acceptance window',units:'mS/cm',typical_value:'0.5',type:'Limit'},
+    {name:'R_TEMP_SP',description:'Vessel temperature setpoint',units:'°C',typical_value:'20',type:'Temperature'},
+    {name:'R_TEMP_DEADBAND',description:'Temperature acceptance window',units:'°C',typical_value:'2',type:'Limit'},
+    {name:'R_HOLD_TIME',description:'Minimum hold time once in spec',units:'min',typical_value:'10',type:'Time'},
+    {name:'R_PHASE_TIMEOUT',description:'Maximum phase duration',units:'min',typical_value:'120',type:'Time'}
+  ]};
+  state.frsPhase1={
+    name:'Mix Equilibration Phase',id:'phase_2',
+    detail:{
+      sequence_of_events:[
+        {step:1,action:'Enable conductivity alarms (AT-1001 HH/LL). Set temperature setpoint on EM_TEMP_001.',notes:'Alarm enable prior to agitation'},
+        {step:2,action:'Set agitator speed setpoint on EM_AGT_001 to R_AGT_SPEED_SP. Issue Fixed Output command to EM_AGT_001.',notes:'Confirm running via ZS-1001'},
+        {step:3,action:'Monitor AT-1001.PV for conductivity in range. Monitor TT-1001.PV for temperature in range.',notes:'Waiting step — no action'},
+        {step:4,action:'Hold for R_HOLD_TIME minutes. Record AT-1001.PV and TT-1001.PV at hold entry.',notes:'Report parameters captured here'},
+        {step:5,action:'Issue REQUEST:=2000 to upload report. Disable conductivity alarms.',notes:'Phase complete'}
+      ],
+      critical_alarms:{
+        enable:[{alarm:'AT-1001_HH',description:'Conductivity high-high',reason:'Vessel receiving product'},{alarm:'AT-1001_LL',description:'Conductivity low-low',reason:'Monitor during mix'},{alarm:'TT-1001_HH',description:'Temperature high-high',reason:'Temperature excursion protection'}],
+        disable:[{alarm:'AT-1001_HH',description:'Conductivity high-high',reason:'Phase complete'},{alarm:'AT-1001_LL',description:'Conductivity low-low',reason:'Phase complete'}]
+      },
+      report_parameters:[
+        {parameter:'Conductivity Achieved',description:'AT-1001.PV at hold entry',units:'mS/cm',tag_reference:'AT-1001',capture_point:'Hold entry'},
+        {parameter:'Temperature Achieved',description:'TT-1001.PV at hold entry',units:'°C',tag_reference:'TT-1001',capture_point:'Hold entry'},
+        {parameter:'Hold Duration',description:'Actual hold time completed',units:'sec',tag_reference:'S060/TIME.CV',capture_point:'Phase complete'}
+      ],
+      hold_monitors:[
+        {monitor:'Vessel Temperature',tag_reference:'TT-1001',condition:'TT-1001.PV > 25°C',action:'Hold batch, investigate jacket control'},
+        {monitor:'Conductivity',tag_reference:'AT-1001',condition:'AT-1001.PV > 20 mS/cm',action:'Hold batch, review addition'}
+      ]
+    }
+  };
+  // Mark all prior steps done, jump to FHX
+  for(let i=1;i<=5;i++) setStep(i,'done');
+  setStep(6,'');
+  showSection(5); // Show FRS review first so user can see the data, then hit Generate FHX
+  // Actually jump straight to the FHX trigger
+  document.getElementById('frs-phase-name').textContent='Mix Equilibration Phase';
+  // Populate params table
+  const pb=document.getElementById('params-body');
+  pb.innerHTML=state.frsParams.parameters.map(p=>'<tr><td class="mono">'+escH(p.name)+'</td><td>'+escH(p.description)+'</td><td>'+escH(p.units)+'</td><td>'+escH(p.typical_value)+'</td><td><span class="badge b-phase">'+escH(p.type)+'</span></td></tr>').join('');
+  // Show section 5 with a note
+  showSection(5);
+  setStep(5,'active');
+  document.getElementById('frs-phase-detail').innerHTML='<div class="status-msg s-info">Dev mode — synthetic mix/equil data loaded. Hit Generate FHX to test.</div>';
+}
+
+function resetAll(){
+  state={narrative:'',phases:[],physModel:null,phaseSeq:null,frsPhase1:null,frsParams:null,fhxText:''};
+  for(let i=1;i<=6;i++)setStep(i,i===1?'active':'');
+  showSection(1);
+}
+
+function toggleNarPreview(){
+  const p=document.getElementById('nar-preview'),ch=document.getElementById('narChev');
+  const c=p.style.display==='none';p.style.display=c?'block':'none';
+  ch.innerHTML=c?'&#9660;':'&#9654;';
+}
+</script>
+</body>
+</html>
