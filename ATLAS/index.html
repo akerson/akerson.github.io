@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FRS Agent — Drug Substance Automation</title>
+<title>ATLAS — Automation Transformation and Lifecycle Acceleration System</title>
 <script src="docx.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -184,23 +184,36 @@ input[type=text]:focus{border-color:var(--p);background:var(--white)}
 
 .hidden{display:none}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Edit mode */
+.section-edit-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.edit-toggle{display:inline-flex;align-items:center;gap:6px;background:var(--white);border:1px solid var(--border);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .12s}
+.edit-toggle:hover{border-color:var(--p);color:var(--p)}
+.edit-toggle.active{background:var(--ice);border-color:var(--p);color:var(--p)}
+.edit-note{font-size:11px;color:var(--subtle);font-style:italic}
+.json-editor-wrap{display:none;flex-direction:column;gap:8px;margin-bottom:16px}
+.json-editor-wrap.visible{display:flex}
+.json-editor{width:100%;background:var(--text);color:#D4F4A0;font-family:'Consolas',monospace;font-size:11.5px;line-height:1.65;border:1px solid #3A1A5C;border-radius:6px;padding:14px;resize:vertical;outline:none;min-height:220px}
+.json-editor:focus{border-color:var(--p);background:var(--text);color:#D4F4A0}
+.json-apply{background:var(--p);color:var(--white);border:none;border-radius:4px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer}
+.json-apply:hover{background:var(--mid)}
+.json-err{font-size:11px;color:#cc0033;font-style:italic;display:none}
+.edit-hint{font-size:10.5px;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:4px 10px}
 </style>
 </head>
 <body>
 
 <header class="header">
   <div style="width:3px;height:22px;background:var(--p);border-radius:2px"></div>
-  <div class="hw">FRS Agent</div>
+  <div class="hw">ATLAS</div>
   <div class="hsep"></div>
-  <div class="hsub">Drug Substance · DeltaV / ISA-88</div>
+  <div class="hsub">Automation Transformation and Lifecycle Acceleration System</div>
   <div class="hright">
     <div class="akw">
       <span class="aklbl">API Key</span>
       <input class="akin" id="aki" type="password" placeholder="sk-ant-..." autocomplete="off" onkeydown="if(event.key==='Enter')saveKey()">
       <button class="aksave" onclick="saveKey()">Set</button>
     </div>
-    <div class="hbadge">Proof of Concept</div>
-    <button class="aksave" onclick="loadDevState()" style="background:var(--mid);font-size:10px;padding:4px 10px;" title="Skip to FHX with synthetic data">Dev: Jump to FHX</button>
   </div>
 </header>
 
@@ -310,6 +323,19 @@ input[type=text]:focus{border-color:var(--p);background:var(--white)}
         <div class="citem"><strong>Equipment Modules:</strong> <span id="em-count">—</span></div>
       </div>
 
+      <!-- Edit bar for physical model -->
+      <div class="section-edit-bar" id="edit-bar-phys" style="display:none">
+        <button class="edit-toggle" id="edit-toggle-phys" onclick="toggleEdit('phys')">&#9998; Edit Physical Model</button>
+        <span class="edit-hint">Modify EM tags, instrumentation, and commands before generating the phase sequence.</span>
+      </div>
+      <div class="json-editor-wrap" id="json-wrap-phys">
+        <div class="flbl">Physical Model JSON — edit and apply to update the display</div>
+        <textarea class="json-editor" id="json-phys" rows="14"></textarea>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="json-apply" onclick="applyEdit('phys')">Apply Changes</button>
+          <span class="json-err" id="json-err-phys">Invalid JSON — check syntax and try again.</span>
+        </div>
+      </div>
       <div class="em-grid" id="em-grid"></div>
 
       <div style="margin-top:18px;display:flex;gap:10px">
@@ -329,6 +355,19 @@ input[type=text]:focus{border-color:var(--p);background:var(--white)}
       <div class="ptitle">Phase Sequence</div>
       <div class="pdesc">Equipment module orchestration across all phases. Shows which EMs are active in each phase, the commands called, and the phase transition conditions. This is the coordination layer above the FRS.</div>
 
+      <!-- Edit bar for phase sequence -->
+      <div class="section-edit-bar" id="edit-bar-seq" style="display:none">
+        <button class="edit-toggle" id="edit-toggle-seq" onclick="toggleEdit('seq')">&#9998; Edit Phase Sequence</button>
+        <span class="edit-hint">Adjust EM orchestration, step actions, or transition conditions before generating the FRS.</span>
+      </div>
+      <div class="json-editor-wrap" id="json-wrap-seq">
+        <div class="flbl">Phase Sequence JSON — edit and apply to update the display</div>
+        <textarea class="json-editor" id="json-seq" rows="14"></textarea>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="json-apply" onclick="applyEdit('seq')">Apply Changes</button>
+          <span class="json-err" id="json-err-seq">Invalid JSON — check syntax and try again.</span>
+        </div>
+      </div>
       <div id="seq-output"></div>
 
       <div style="margin-top:18px;display:flex;gap:10px;align-items:center">
@@ -354,6 +393,19 @@ input[type=text]:focus{border-color:var(--p);background:var(--white)}
         <div class="cbody"><table class="dt"><thead><tr><th>Parameter</th><th>Description</th><th>Units</th><th>Typical Value</th><th>Type</th></tr></thead><tbody id="params-body"></tbody></table></div>
       </div>
 
+      <!-- Edit bar for FRS -->
+      <div class="section-edit-bar" id="edit-bar-frs" style="display:none">
+        <button class="edit-toggle" id="edit-toggle-frs" onclick="toggleEdit('frs')">&#9998; Edit FRS Content</button>
+        <span class="edit-hint">Edit sequence of events, alarm references, or report parameters before generating the FHX.</span>
+      </div>
+      <div class="json-editor-wrap" id="json-wrap-frs">
+        <div class="flbl">FRS JSON — edit and apply to update the display</div>
+        <textarea class="json-editor" id="json-frs" rows="14"></textarea>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="json-apply" onclick="applyEdit('frs')">Apply Changes</button>
+          <span class="json-err" id="json-err-frs">Invalid JSON — check syntax and try again.</span>
+        </div>
+      </div>
       <div id="frs-phase-detail"></div>
 
       <div style="margin-top:18px;display:flex;gap:10px">
@@ -382,8 +434,8 @@ input[type=text]:focus{border-color:var(--p);background:var(--white)}
       </div>
 
       <div class="fhx-output">
-        <div class="fhx-bar"><div class="dot"></div>DeltaV Phase FHX — Draft<div class="fhx-flag">Engineer review required before use</div></div>
-        <div class="fhx-content" id="fhx-content"></div>
+        <div class="fhx-bar"><div class="dot"></div>DeltaV Phase FHX — Draft<div class="fhx-flag" style="display:flex;gap:10px;align-items:center"><span style="opacity:.6;font-size:9px">click to edit</span> Engineer review required before use</div></div>
+        <div class="fhx-content" id="fhx-content" contenteditable="true" spellcheck="false" title="Click to edit FHX directly"></div>
       </div>
     </div>
 
@@ -599,6 +651,7 @@ Return ONLY valid JSON:
     const model=parseJSON(raw);
     state.physModel=model;
     renderPhysicalModel(model);
+    showEditBar('phys');
     hide('prog-phys');
     setStep(2,'done');setStep(3,'active');
     showSection(3);
@@ -689,6 +742,7 @@ Return ONLY valid JSON:
     const seq=parseJSON(raw);
     state.phaseSeq=seq;
     renderPhaseSequence(seq);
+    showEditBar('seq');
     hide('prog-seq');
 
     // Set hint for next step
@@ -1383,7 +1437,7 @@ async function downloadFRSDocx(){
   children.push(h1('Approval'));
   children.push(mkTbl(['Role','Name','Signature','Date'],[['Automation Engineer','','',''],['QA Reviewer','','',''],['Process Engineer','','','']]));
 
-  const doc=new Document({creator:'FRS Agent — AI Draft',title:'FRS — '+(phase1?.name||'Phase 1'),sections:[{children}]});
+  const doc=new Document({creator:'ATLAS — AI Draft',title:'FRS — '+(phase1?.name||'Phase 1'),sections:[{children}]});
   const blob=await Packer.toBlob(doc);
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download='FRS_Draft_'+(phase1?.name||'Phase1').replace(/\s+/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.docx';
@@ -1463,6 +1517,67 @@ function loadDevState(){
   setStep(5,'active');
   document.getElementById('frs-phase-detail').innerHTML='<div class="status-msg s-info">Dev mode — synthetic mix/equil data loaded. Hit Generate FHX to test.</div>';
 }
+
+
+// ─── Edit mode helpers ────────────────────────────────────────────────────────
+function toggleEdit(section){
+  const wrap=document.getElementById('json-wrap-'+section);
+  const btn=document.getElementById('edit-toggle-'+section);
+  const isOpen=wrap.classList.contains('visible');
+  if(isOpen){
+    wrap.classList.remove('visible');
+    btn.classList.remove('active');
+    btn.textContent='✎ Edit '+(section==='phys'?'Physical Model':section==='seq'?'Phase Sequence':'FRS Content');
+  } else {
+    // Populate textarea with current state
+    let data;
+    if(section==='phys') data=state.physModel;
+    else if(section==='seq') data=state.phaseSeq;
+    else if(section==='frs') data={params:state.frsParams,phase:state.frsPhase1};
+    document.getElementById('json-'+section).value=JSON.stringify(data,null,2);
+    document.getElementById('json-err-'+section).style.display='none';
+    wrap.classList.add('visible');
+    btn.classList.add('active');
+    btn.textContent='✕ Close Editor';
+  }
+}
+
+function applyEdit(section){
+  const ta=document.getElementById('json-'+section);
+  const err=document.getElementById('json-err-'+section);
+  err.style.display='none';
+  let parsed;
+  try{ parsed=JSON.parse(ta.value); }
+  catch(e){ err.textContent='Invalid JSON — '+e.message; err.style.display='block'; return; }
+
+  if(section==='phys'){
+    state.physModel=parsed;
+    renderPhysicalModel(parsed);
+  } else if(section==='seq'){
+    state.phaseSeq=parsed;
+    renderPhaseSequence(parsed);
+    const ph1=state.phases[0];
+    document.getElementById('frs-phase-hint').textContent=ph1?'Will generate FRS for: '+ph1.name:'';
+  } else if(section==='frs'){
+    if(parsed.params) state.frsParams=parsed.params;
+    if(parsed.phase) state.frsPhase1=parsed.phase;
+    const ph1=state.phases[0]||{name:'Phase 1'};
+    renderFRS(ph1,state.frsParams||{parameters:[]},state.frsPhase1?.detail||{});
+  }
+  // Close the editor after apply
+  toggleEdit(section);
+}
+
+function showEditBar(section){
+  const bar=document.getElementById('edit-bar-'+section);
+  if(bar) bar.style.display='flex';
+}
+
+// Sync contenteditable FHX back to state on input
+document.addEventListener('DOMContentLoaded',()=>{
+  const fhxEl=document.getElementById('fhx-content');
+  if(fhxEl) fhxEl.addEventListener('input',()=>{ state.fhxText=fhxEl.textContent; });
+});
 
 function resetAll(){
   state={narrative:'',phases:[],physModel:null,phaseSeq:null,frsPhase1:null,frsParams:null,fhxText:''};
