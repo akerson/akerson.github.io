@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="interface.css" />
+</HEAD>
+<BODY onload="setupGame()">
+<h1>You Found a Trash</h1>
+<div id="leftDiv">
+  <div id="area">
+    <div id="area-map"></div>
+    <div id="area-info">
+      <div class="boldtxt" id="area-name"></div>
+      <div class="boldtxt" id="area-sub"></div>
+      <p><div id="area-desc"></div></p>
+    </div>
+  </div>
+  <div>Health: [<span id="pHealth" class="greenBar"></span><span id="pMissingHealth" class="greyBar"></span>]</div>
+  <div>Action: [<span id="yellowBar"></span><span id="greyBar">----------</span>] <span id="action">None</span></div>
+  <p><div id="exits" class="inline"></div></p>
+  <p><div id="actions"></div></p>
+  <p><div id="floorItems"></div></p>
+  <p><div id="NPCs"></div></p>
+  <div id="mobs">
+    <div id="mobHeader"></div>
+    <div id="mobList"></div>
+  </div>
+</div>
+<div id="rightDiv">
+  <!--Area info, equipment, inventory, status-->
+  <div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'examine')" id="defaultOpen">Examine</button>
+    <button class="tablinks" onclick="openTab(event, 'stats')">Stats</button>
+    <button class="tablinks" onclick="openTab(event, 'gear')">Gear</button>
+    <button class="tablinks" onclick="openTab(event, 'inventory')">Inventory</button>
+    <button class="tablinks" onclick="openTab(event, 'attack')" id="combatPane">Attack</button>
+  </div>
+  <div id="game">
+    <div id="examine" class="tabcontent">
+      <div id="examineMain">
+        <h3>Examine</h3></br>
+        Nothing currently selected.
+      </div>
+      <p></p>
+      <div id="conversation"></div>
+      <div id="examineResult"></div>
+    </div>
+    <div id="stats" class="tabcontent">
+      <h3>Stats</h3>
+      <p>
+      <table id="stattable">
+        <tr><td><span id="yellowtxt">&nbsp;brawn</span> [ <span id="brawnStat">7.00</span>/&nbsp;&nbsp;]</td><td><span id="yellowtxt">&nbsp;&nbsp;cool</span>
+           [ <span id="coolStat">7.00</span>/&nbsp;&nbsp;]</td><td><span id="yellowtxt">&nbsp;reflexes</span> [ <span id="reflexStat">7.00</span>/&nbsp;&nbsp;]</td></tr>
+        <tr><td><span id="yellowtxt">brains</span> [ <span id="brainStat">7.00</span>/&nbsp;&nbsp;]</td><td><span id="yellowtxt">senses</span>
+           [ <span id="senseStat">7.00</span>/&nbsp;&nbsp;]</td><td><span id="yellowtxt">endurance</span> [ <span id="endStat">7.00</span>/&nbsp;&nbsp;]</td></tr>
+      </table>
+      </p>
+      <h3>Skills</h3>
+      <table id="stattable">
+      <tr class="heading"><td>Skill</td><td>Raw</td><td>Mod</td><td>Stat</td><td>Tot</td><td>Depends</td></tr>
+      <tr><td>fists</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">brawn,endurance</span></td></tr>
+      <tr><td>scavenge</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">senses,endurance</span></td></tr>
+      <tr><td>blades</td><td>1.00</td><td>+1</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">cool,reflexes</span></td></tr>
+      <tr><td>clubs</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">brawn, cool</span></td></tr>
+      <tr><td>pistols</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">reflexes, senses</span></td></tr>
+      <tr><td>medic</td><td>1.00</td><td>-2</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">brains, senses</span></td></tr>
+      <tr><td>craft</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">brains, cool</span></td></tr>
+      <tr><td>focus</td><td>1.00</td><td>&nbsp;</td><td>8</td><td>[ 9]</td><td><span id="yellowtxt">endurance, reflexes</span></td></tr>
+      </table>
+    </div>
+    <dov id="gear" class="tabcontent"></div>
+    <div id="inventory" class="tabcontent"></div>
+    <div id="attack" class="tabcontent">
+      <div id="attackHeading"></div><p>
+      <div id="attackLog"></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="constants.js"></script>
+<script type="text/javascript" src="npc.js"></script>
+<script type="text/javascript" src="mobs.js"></script>
+<script type="text/javascript" src="areas.js"></script>
+<script type="text/javascript" src="main.js"></script>
+</BODY>
+</HTML>
