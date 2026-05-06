@@ -199,6 +199,28 @@ input[type=text]:focus{border-color:var(--p);background:var(--white)}
 .json-apply:hover{background:var(--mid)}
 .json-err{font-size:11px;color:#cc0033;font-style:italic;display:none}
 .edit-hint{font-size:10.5px;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:4px 10px}
+
+/* API key modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,0,53,.55);z-index:999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.modal-overlay.hidden{display:none}
+.modal{background:var(--white);border-radius:10px;box-shadow:0 8px 40px rgba(26,0,53,.28);width:540px;max-width:92vw;overflow:hidden}
+.modal-header{background:var(--p);padding:18px 24px;display:flex;align-items:center;gap:12px}
+.modal-header h2{font-size:16px;font-weight:700;color:var(--white);margin:0}
+.modal-body{padding:24px}
+.modal-body p{font-size:13px;color:var(--slate);line-height:1.65;margin-bottom:14px}
+.modal-body p:last-child{margin-bottom:0}
+.modal-steps{display:flex;flex-direction:column;gap:10px;margin:16px 0}
+.modal-step{display:flex;gap:12px;align-items:flex-start}
+.modal-step-num{width:24px;height:24px;border-radius:50%;background:var(--p);color:var(--white);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.modal-step-txt{font-size:12.5px;color:var(--body);line-height:1.55}
+.modal-step-txt strong{color:var(--text)}
+.modal-link{display:inline-flex;align-items:center;gap:6px;background:var(--p);color:var(--white);border:none;border-radius:5px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;margin-top:4px}
+.modal-link:hover{background:var(--mid)}
+.modal-note{background:var(--ice);border:1px solid var(--ice2, #E5D4FF);border-radius:6px;padding:11px 14px;font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:14px}
+.modal-note strong{color:var(--mid)}
+.modal-footer{padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
+.modal-close{background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:7px 18px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+.modal-close:hover{background:var(--white);color:var(--body)}
 </style>
 </head>
 <body>
@@ -213,6 +235,7 @@ input[type=text]:focus{border-color:var(--p);background:var(--white)}
       <span class="aklbl">API Key</span>
       <input class="akin" id="aki" type="password" placeholder="sk-ant-..." autocomplete="off" onkeydown="if(event.key==='Enter')saveKey()">
       <button class="aksave" onclick="saveKey()">Set</button>
+      <button onclick="showApiModal()" style="background:none;border:1px solid var(--border);border-radius:50%;width:22px;height:22px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;padding:0;line-height:1;flex-shrink:0" title="How to get an API key">?</button>
     </div>
   </div>
 </header>
@@ -566,6 +589,7 @@ async function runDecomposition(){
   clrErr('err-decomp');
   const narrative=document.getElementById('narrative').value.trim();
   if(!narrative)return;
+  if(!window._apiKey){ showApiModal(); return; }
   load('btn-decomp',true);show('prog-decomp');
   state.narrative=narrative;
   setStep(2,'spinning');
@@ -702,6 +726,7 @@ function renderPhysicalModel(model){
 // ─── STEP 3 → 4: Phase Sequence ──────────────────────────────────────────────
 async function runPhaseSequence(){
   clrErr('err-seq');
+  if(!window._apiKey){ showApiModal(); return; }
   load('btn-seq',true);show('prog-seq');
   setStep(4,'spinning');
 
@@ -803,6 +828,7 @@ async function runFRS(){
   clrErr('err-frs');
   const phase1=state.phases[0];
   if(!phase1)return;
+  if(!window._apiKey){ showApiModal(); return; }
   load('btn-frs',true);show('prog-frs');
   setStep(5,'spinning');
 
@@ -922,6 +948,7 @@ function renderFRS(phase,params,detail){
 // ─── STEP 5 → 6: FHX ─────────────────────────────────────────────────────────
 async function runFHX(){
   clrErr('err-fhx');
+  if(!window._apiKey){ showApiModal(); return; }
   load('btn-fhx',true);show('prog-fhx');
   setStep(6,'spinning');
 
@@ -1606,6 +1633,14 @@ function playDone(){
   }catch(e){}
 }
 
+
+// ─── API key modal ────────────────────────────────────────────────────────────
+function showApiModal(){ document.getElementById('apikey-modal').classList.remove('hidden'); }
+function closeApiModal(e){
+  if(!e || e.target===document.getElementById('apikey-modal'))
+    document.getElementById('apikey-modal').classList.add('hidden');
+}
+
 function resetAll(){
   state={narrative:'',phases:[],physModel:null,phaseSeq:null,frsPhase1:null,frsParams:null,fhxText:''};
   for(let i=1;i<=6;i++)setStep(i,i===1?'active':'');
@@ -1618,5 +1653,58 @@ function toggleNarPreview(){
   ch.innerHTML=c?'&#9660;':'&#9654;';
 }
 </script>
+
+<!-- API key help modal -->
+<div class="modal-overlay hidden" id="apikey-modal" onclick="closeApiModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <h2>API Key Required — How to Get One</h2>
+    </div>
+    <div class="modal-body">
+      <p>ATLAS sends your process narrative directly to Anthropic's Claude AI via their API. To do this, you need a personal API key — a unique credential that authorises your requests and tracks usage for billing.</p>
+
+      <div class="modal-steps">
+        <div class="modal-step">
+          <div class="modal-step-num">1</div>
+          <div class="modal-step-txt"><strong>Go to the Anthropic Console</strong><br>
+            Open <strong>console.anthropic.com</strong> in your browser and sign in (or create a free account).</div>
+        </div>
+        <div class="modal-step">
+          <div class="modal-step-num">2</div>
+          <div class="modal-step-txt"><strong>Open API Keys</strong><br>
+            In the left sidebar, click <strong>API Keys</strong>, then click <strong>Create Key</strong>. Give it a name like "ATLAS".</div>
+        </div>
+        <div class="modal-step">
+          <div class="modal-step-num">3</div>
+          <div class="modal-step-txt"><strong>Copy the key immediately</strong><br>
+            Anthropic only shows the key once. Copy it and keep it somewhere safe — a password manager is ideal.</div>
+        </div>
+        <div class="modal-step">
+          <div class="modal-step-num">4</div>
+          <div class="modal-step-txt"><strong>Add a small credit balance</strong><br>
+            Go to <strong>Settings → Billing</strong> and add a credit (starting from $5). A full ATLAS run costs roughly $0.50–$1.50 depending on process complexity.</div>
+        </div>
+        <div class="modal-step">
+          <div class="modal-step-num">5</div>
+          <div class="modal-step-txt"><strong>Paste it into ATLAS</strong><br>
+            Enter your key in the <strong>API Key</strong> field in the header above and click <strong>Set</strong>.</div>
+        </div>
+      </div>
+
+      <a class="modal-link" href="https://console.anthropic.com" target="_blank" rel="noopener">
+        Open Anthropic Console ↗
+      </a>
+
+      <div class="modal-note">
+        <strong>Your key stays on your device.</strong> It is held in browser memory only and sent directly to Anthropic. It is never stored in the application, never sent to any other server, and disappears when you close the tab. Using synthetic or non-proprietary data is recommended for any shared or unsecured environment.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-close" onclick="closeApiModal()">Got it</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
