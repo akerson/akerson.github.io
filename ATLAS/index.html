@@ -595,6 +595,7 @@ Return ONLY compact JSON — no whitespace, no preamble:
     renderPhaseCards(p2.phases);
     document.getElementById('nar-preview').textContent=narrative;
     setStep(1,'done');setStep(2,'active');
+    playDone();
     showSection(2);
   }catch(e){
     hide('prog-decomp');showErr('err-decomp','Decomposition failed: '+e.message);
@@ -654,6 +655,7 @@ Return ONLY valid JSON:
     showEditBar('phys');
     hide('prog-phys');
     setStep(2,'done');setStep(3,'active');
+    playDone();
     showSection(3);
   }catch(e){
     hide('prog-phys');setStep(2,'active');showErr('err-phys','Physical model failed: '+e.message);
@@ -750,6 +752,7 @@ Return ONLY valid JSON:
     document.getElementById('frs-phase-hint').textContent=`Will generate FRS for: ${ph1?ph1.name:'Phase 1'}`;
 
     setStep(3,'done');setStep(4,'active');
+    playDone();
     showSection(4);
   }catch(e){
     hide('prog-seq');setStep(4,'');showErr('err-seq','Phase sequence failed: '+e.message);
@@ -854,6 +857,7 @@ Return ONLY valid JSON:
 
     renderFRS(phase1,params,phaseDetail);
     setStep(4,'done');setStep(5,'active');
+    playDone();
     showSection(5);
   }catch(e){
     hide('prog-frs');setStep(5,'');showErr('err-frs','FRS generation failed: '+e.message);
@@ -979,6 +983,7 @@ Return ONLY compact JSON (no spaces in keys, no markdown):`;
     setP('pf-fhx','pl-fhx',100,'Complete.');
     hide('prog-fhx');
     setStep(5,'done');setStep(6,'active');
+    playDone();
     showSection(6);
   }catch(e){
     hide('prog-fhx');setStep(6,'');showErr('err-fhx','FHX generation failed: '+e.message);
@@ -1578,6 +1583,28 @@ document.addEventListener('DOMContentLoaded',()=>{
   const fhxEl=document.getElementById('fhx-content');
   if(fhxEl) fhxEl.addEventListener('input',()=>{ state.fhxText=fhxEl.textContent; });
 });
+
+
+// ─── Completion sound (Web Audio API — no external files needed) ──────────────
+function playDone(){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    // Two-note chime: a pleasant rising interval
+    [[523.25,0,0.12],[659.25,0.13,0.18]].forEach(([freq,start,dur])=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type='sine';
+      osc.frequency.value=freq;
+      gain.gain.setValueAtTime(0,ctx.currentTime+start);
+      gain.gain.linearRampToValueAtTime(0.18,ctx.currentTime+start+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+start+dur);
+      osc.start(ctx.currentTime+start);
+      osc.stop(ctx.currentTime+start+dur+0.05);
+    });
+  }catch(e){}
+}
 
 function resetAll(){
   state={narrative:'',phases:[],physModel:null,phaseSeq:null,frsPhase1:null,frsParams:null,fhxText:''};
