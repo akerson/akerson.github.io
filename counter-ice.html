@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COUNTER-ICE // crack the code while it lies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0B0712; --panel:#150C24; --panel2:#1E1234;
+    --ink:#EFE6FF; --dim:#8A7AA8; --line:#2E1F47;
+    --hit:#19E3B4;   /* correct slot — lock acquired */
+    --near:#FFB23E;  /* right glyph, wrong slot — signal nearby */
+    --dead:#4A3A66;  /* absent — dead channel */
+    --signal:#FF2E97;/* brand / lie shimmer */
+    --verify:#5BE0FF;/* verified-truth frame */
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #1c0e33 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #1a0a2e 0%, transparent 55%),
+      var(--void);
+    color:var(--ink);
+    font-family:"Space Grotesk",system-ui,sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{ /* scanlines */
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:99;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px);
+    mix-blend-mode:multiply; opacity:.5;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:22px 18px 64px}
+
+  /* ---- header ---- */
+  header{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; border-bottom:1px solid var(--line); padding-bottom:14px}
+  .logo{font-weight:700; font-size:clamp(22px,4.5vw,34px); letter-spacing:.04em}
+  .logo b{color:var(--signal)}
+  .tag{font-family:"Space Mono",monospace; font-size:12px; color:var(--dim); letter-spacing:.18em; text-transform:uppercase}
+  .daemon{margin-left:auto; font-family:"Space Mono",monospace; font-size:12px; color:var(--signal);
+    border:1px solid var(--line); padding:6px 10px; border-radius:2px; background:rgba(255,46,151,.06)}
+  .daemon span{color:var(--dim)}
+
+  .grid{display:grid; grid-template-columns:1fr 290px; gap:22px; margin-top:22px}
+  @media (max-width:820px){ .grid{grid-template-columns:1fr} }
+
+  /* ---- board ---- */
+  .board{display:flex; flex-direction:column; gap:10px}
+  .row{display:grid; gap:8px; grid-auto-flow:column; justify-content:start}
+  .tile{
+    width:54px; height:54px; display:grid; place-items:center; position:relative;
+    font-family:"Space Mono",monospace; font-weight:700; font-size:22px;
+    border:1px solid var(--line); border-radius:3px; background:var(--panel2);
+    user-select:none;
+  }
+  @media (max-width:520px){ .tile{width:44px;height:44px;font-size:18px} }
+
+  /* feedback states */
+  .tile.hit{background:color-mix(in srgb, var(--hit) 20%, var(--panel2)); border-color:var(--hit); color:#d8fff4}
+  .tile.near{background:color-mix(in srgb, var(--near) 18%, var(--panel2)); border-color:var(--near); color:#ffe9c2}
+  .tile.dead{background:var(--panel); border-color:var(--line); color:var(--dim)}
+
+  /* untrusted glitch — feedback you haven't verified */
+  .tile.untrusted{cursor:pointer}
+  .tile.untrusted::after{
+    content:attr(data-g); position:absolute; inset:0; display:grid; place-items:center;
+    color:var(--signal); mix-blend-mode:screen; opacity:.0; pointer-events:none;
+    animation:glitch 2.6s steps(1) infinite;
+  }
+  .tile.untrusted .glyph{animation:jit 2.6s steps(1) infinite}
+  @keyframes glitch{
+    0%,86%,100%{opacity:0; transform:translate(0,0)}
+    87%{opacity:.85; transform:translate(2px,-1px)}
+    90%{opacity:.7; transform:translate(-2px,1px)}
+    93%{opacity:.9; transform:translate(1px,1px)}
+  }
+  @keyframes jit{
+    0%,86%,100%{transform:translate(0,0); text-shadow:none}
+    88%{transform:translate(-1px,0); text-shadow:1.5px 0 var(--signal), -1.5px 0 var(--verify)}
+    92%{transform:translate(1px,0); text-shadow:-1.5px 0 var(--signal), 1.5px 0 var(--verify)}
+  }
+  .tile.untrusted::before{ /* dashed "unverified" hint */
+    content:""; position:absolute; inset:3px; border:1px dashed color-mix(in srgb,var(--signal) 50%, transparent);
+    border-radius:2px; opacity:.5;
+  }
+  /* verified — snaps to hard truth */
+  .tile.verified{box-shadow:0 0 0 2px var(--verify), 0 0 18px -4px var(--verify); border-color:var(--verify)}
+  .tile.verified::before, .tile.verified::after{display:none}
+  .tile .vmark{position:absolute; top:2px; right:4px; font-size:10px; color:var(--verify)}
+  .tile.lie-revealed{outline:2px dotted var(--signal); outline-offset:2px}
+  .tile .truth{position:absolute; bottom:1px; right:4px; font-size:9px; color:var(--verify); font-family:"Space Mono",monospace}
+
+  @media (prefers-reduced-motion: reduce){
+    .tile.untrusted::after{display:none}
+    .tile.untrusted .glyph{animation:none}
+  }
+
+  .rowmeta{font-family:"Space Mono",monospace; font-size:11px; color:var(--dim); align-self:center; padding-left:10px; white-space:nowrap}
+
+  /* input row */
+  .inputrow{margin-top:6px}
+  .tile.slot{background:var(--panel); border-style:dashed; cursor:pointer}
+  .tile.slot.active{border-color:var(--signal); box-shadow:0 0 0 1px var(--signal) inset}
+
+  /* keypad */
+  .keypad{display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; max-width:430px}
+  .key{
+    font-family:"Space Mono",monospace; font-weight:700; font-size:16px;
+    width:42px; height:42px; border:1px solid var(--line); border-radius:3px;
+    background:var(--panel2); color:var(--ink); cursor:pointer; transition:transform .05s, border-color .1s;
+  }
+  .key:hover{border-color:var(--signal)} .key:active{transform:translateY(1px)}
+  .key.wide{width:auto; padding:0 16px; color:var(--signal)}
+  .key.go{background:var(--signal); color:#1a0014; border-color:var(--signal)}
+  .key:disabled{opacity:.35; cursor:not-allowed}
+
+  /* ---- sidebar ---- */
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:16px}
+  .panel + .panel{margin-top:14px}
+  .panel h3{margin:0 0 12px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim); font-weight:600}
+  .ctrl{margin-bottom:14px}
+  .ctrl label{display:flex; justify-content:space-between; font-family:"Space Mono",monospace; font-size:12px; margin-bottom:6px}
+  .ctrl label b{color:var(--signal)}
+  input[type=range]{width:100%; accent-color:var(--signal)}
+  .seg{display:flex; gap:6px}
+  .seg button{flex:1; font-family:"Space Mono",monospace; font-size:11px; padding:7px 4px; border:1px solid var(--line);
+    background:var(--panel2); color:var(--dim); border-radius:3px; cursor:pointer}
+  .seg button.on{border-color:var(--signal); color:var(--ink); background:rgba(255,46,151,.1)}
+  .hint{font-size:11px; color:var(--dim); line-height:1.5; font-family:"Space Mono",monospace}
+
+  .tokens{display:flex; gap:6px; align-items:center; font-family:"Space Mono",monospace; font-size:13px}
+  .tok{width:13px; height:13px; border-radius:50%; border:1px solid var(--verify)}
+  .tok.full{background:var(--verify); box-shadow:0 0 8px -2px var(--verify)}
+
+  .stat{display:flex; justify-content:space-between; font-family:"Space Mono",monospace; font-size:13px; padding:4px 0}
+  .stat b{color:var(--ink)}
+
+  .startbtn{width:100%; margin-top:4px; font-family:"Space Grotesk"; font-weight:600; font-size:14px; letter-spacing:.04em;
+    padding:12px; border:1px solid var(--signal); background:var(--signal); color:#1a0014; border-radius:4px; cursor:pointer}
+  .startbtn.ghost{background:transparent; color:var(--signal)}
+
+  /* log */
+  .log{margin-top:22px; border:1px solid var(--line); border-radius:4px; background:rgba(0,0,0,.25); padding:12px 14px;
+    font-family:"Space Mono",monospace; font-size:12px; color:var(--dim); max-height:150px; overflow:auto; line-height:1.7}
+  .log .l{color:var(--ink)} .log .w{color:var(--hit)} .log .e{color:var(--signal)} .log .v{color:var(--verify)}
+
+  .legend{display:flex; gap:14px; flex-wrap:wrap; font-family:"Space Mono",monospace; font-size:11px; color:var(--dim); margin-top:14px}
+  .legend i{display:inline-block; width:11px; height:11px; border-radius:2px; vertical-align:-1px; margin-right:5px}
+
+  .banner{font-family:"Space Mono",monospace; font-size:14px; padding:10px 14px; border-radius:4px; margin-bottom:14px; display:none}
+  .banner.win{display:block; background:rgba(25,227,180,.12); border:1px solid var(--hit); color:#bff5e7}
+  .banner.lose{display:block; background:rgba(255,46,151,.12); border:1px solid var(--signal); color:#ffd0e6}
+
+  .xray{font-size:11px; color:var(--dim); display:flex; align-items:center; gap:7px; font-family:"Space Mono",monospace; cursor:pointer; margin-top:10px}
+  .xray input{accent-color:var(--signal)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">COUNTER<b>·</b>ICE</div>
+    <div class="tag">intrusion // the feed lies to you</div>
+    <div class="daemon" id="daemon"><span>daemon:</span> idle</div>
+  </header>
+
+  <div class="grid">
+    <!-- BOARD -->
+    <main>
+      <div class="banner" id="banner"></div>
+      <div class="board" id="board"></div>
+
+      <div class="row inputrow" id="inputRow"></div>
+      <div class="keypad" id="keypad"></div>
+
+      <div class="legend">
+        <span><i style="background:var(--hit)"></i>locked (right slot)</span>
+        <span><i style="background:var(--near)"></i>signal (wrong slot)</span>
+        <span><i style="background:var(--dead)"></i>dead</span>
+        <span><i style="border:1px dashed var(--signal);background:transparent"></i>unverified — may be a lie</span>
+        <span><i style="box-shadow:0 0 0 2px var(--verify);background:transparent"></i>verified truth</span>
+      </div>
+
+      <div class="log" id="log"></div>
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="panel">
+        <h3>Operator — skill</h3>
+        <div class="ctrl">
+          <label>Decryption <b id="vSkill">40</b></label>
+          <input type="range" id="skill" min="0" max="100" step="20" value="40">
+          <div class="hint">Skill doesn't crack the code — it buys forgiveness. Higher Decryption = more Verify tokens and a few extra attempts.</div>
+        </div>
+        <div class="ctrl">
+          <label>Verify tokens</label>
+          <div class="tokens" id="tokens"></div>
+          <div class="hint" style="margin-top:7px">Tap any feedback tile to spend a token and lock it to ground truth. The glitch stops; you finally trust that one cell.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Target — difficulty</h3>
+        <div class="ctrl">
+          <label>Code length <b id="vLen">4</b></label>
+          <input type="range" id="len" min="3" max="6" step="1" value="4">
+        </div>
+        <div class="ctrl">
+          <label>Glyph set <b id="vAlpha">8</b></label>
+          <input type="range" id="alpha" min="4" max="16" step="2" value="8">
+        </div>
+        <div class="ctrl">
+          <label>Lie budget K <b id="vK">1</b></label>
+          <input type="range" id="kLies" min="0" max="3" step="1" value="1">
+          <div class="hint">Corrupted feedback cells per response. Capped below code length, so at least one cell per row is always honest.</div>
+        </div>
+        <div class="ctrl">
+          <label>Lie pattern</label>
+          <div class="seg" id="mode">
+            <button data-m="fresh" class="on">fresh</button>
+            <button data-m="compromised">compromised</button>
+          </div>
+          <div class="hint" id="modeHint" style="margin-top:7px">FRESH: random cells lie each probe. Trust nothing twice.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Session</h3>
+        <div class="stat"><span>Attempts</span><b id="sAtt">— / —</b></div>
+        <div class="stat"><span>Tokens left</span><b id="sTok">—</b></div>
+        <button class="startbtn" id="newBtn">▶ New crack</button>
+        <label class="xray"><input type="checkbox" id="xray"> x-ray (design tool): expose lies</label>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(() => {
+  const HEX = "0123456789ABCDEF".split("");
+  const $ = s => document.querySelector(s);
+
+  const el = {
+    board: $("#board"), inputRow: $("#inputRow"), keypad: $("#keypad"),
+    log: $("#log"), banner: $("#banner"), daemon: $("#daemon"),
+    tokens: $("#tokens"), sAtt: $("#sAtt"), sTok: $("#sTok"),
+    skill: $("#skill"), len: $("#len"), alpha: $("#alpha"), kLies: $("#kLies"),
+    vSkill: $("#vSkill"), vLen: $("#vLen"), vAlpha: $("#vAlpha"), vK: $("#vK"),
+    mode: $("#mode"), modeHint: $("#modeHint"), newBtn: $("#newBtn"), xray: $("#xray"),
+  };
+
+  const DAEMON_TAUNTS = [
+    "you read what i let you read.",
+    "two of those are true. guess which.",
+    "noise is cheaper than walls.",
+    "verify all you like. tokens run out.",
+    "the feed is mine. you only rent it.",
+  ];
+
+  let G = null; // game state
+
+  // ---- config from controls ----
+  function cfg(){
+    const L = +el.len.value;
+    let K = +el.kLies.value;
+    K = Math.min(K, L - 1);            // guarantee >=1 honest cell per row
+    const skill = +el.skill.value;
+    const tokens = Math.floor(skill / 20);             // 0..5
+    const guesses = L + 5 + K * 2 + Math.floor(skill / 25); // generous, scales w/ skill
+    return {
+      L, K, skill, tokens, guesses,
+      alphabet: HEX.slice(0, +el.alpha.value),
+      mode: el.mode.querySelector(".on").dataset.m,
+    };
+  }
+
+  // ---- true Wordle-style feedback (two pass) ----
+  function trueFeedback(guess, target){
+    const res = new Array(target.length).fill("dead");
+    const left = {};
+    target.forEach(c => left[c] = (left[c]||0)+1);
+    guess.forEach((c,i)=>{ if(c===target[i]){ res[i]="hit"; left[c]--; }});
+    guess.forEach((c,i)=>{ if(res[i]!=="hit" && left[c]>0){ res[i]="near"; left[c]--; }});
+    return res;
+  }
+
+  // corrupt a status to a *different* one
+  function corrupt(s){
+    const opts = ["hit","near","dead"].filter(x=>x!==s);
+    return opts[Math.floor(Math.random()*opts.length)];
+  }
+
+  function newGame(){
+    const c = cfg();
+    const target = Array.from({length:c.L}, () =>
+      c.alphabet[Math.floor(Math.random()*c.alphabet.length)]);
+    G = {
+      ...c, target,
+      rows: [], input: new Array(c.L).fill(null), active: 0,
+      tokensLeft: c.tokens, over: false,
+      // compromised mode: fix which positions are tapped
+      compromisedSet: pickK([...Array(c.L).keys()], c.K),
+    };
+    el.banner.className = "banner";
+    daemonSay("connection open. " + (c.K>0 ? "feed integrity: compromised." : "feed integrity: clean."));
+    render(); renderKeypad(); renderTokens(); pushLog("New crack — "+c.L+" glyphs, K="+c.K+" lies/probe, "+c.mode+" pattern.", "l");
+  }
+
+  function pickK(arr, k){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+    return new Set(a.slice(0,k));
+  }
+
+  // ---- submit a guess ----
+  function submit(){
+    if(G.over || G.input.includes(null)) return;
+    const guess = G.input.slice();
+    const truth = trueFeedback(guess, G.target);
+
+    // decide which cells lie
+    let lieIdx;
+    if(G.mode === "compromised"){
+      lieIdx = new Set([...G.compromisedSet]);
+    } else { // fresh
+      lieIdx = pickK([...Array(G.L).keys()], G.K);
+    }
+    const shown = truth.map((s,i)=> lieIdx.has(i) ? corrupt(s) : s);
+
+    const win = guess.every((c,i)=>c===G.target[i]);
+    G.rows.push({ guess, shown, truth, lie:lieIdx, verified:new Array(G.L).fill(false) });
+    G.input = new Array(G.L).fill(null); G.active = 0;
+
+    if(win){ end(true); }
+    else if(G.rows.length >= G.guesses){ end(false); }
+    else { daemonSay(DAEMON_TAUNTS[Math.floor(Math.random()*DAEMON_TAUNTS.length)]); }
+    render();
+  }
+
+  function end(won){
+    G.over = true;
+    if(won){
+      el.banner.className="banner win";
+      el.banner.textContent="◇ ICE cracked in "+G.rows.length+" probe"+(G.rows.length>1?"s":"")+". Code: "+G.target.join(" ");
+      pushLog("ROOT. code = "+G.target.join(""), "w");
+      daemonSay("...how.");
+    } else {
+      el.banner.className="banner lose";
+      el.banner.textContent="✕ Lockout. The code was "+G.target.join(" ")+".";
+      pushLog("Lockout. code was "+G.target.join(""), "e");
+      daemonSay("trace complete. goodbye.");
+    }
+    render();
+  }
+
+  // ---- spend a verify token on a tile ----
+  function verifyTile(rowIdx, i){
+    if(G.over) return;
+    const row = G.rows[rowIdx];
+    if(row.verified[i]) return;
+    if(G.tokensLeft <= 0){ pushLog("No verify tokens left.", "e"); return; }
+    G.tokensLeft--;
+    row.verified[i] = true;
+    const wasLie = row.lie.has(i);
+    pushLog("Verified r"+(rowIdx+1)+"·c"+(i+1)+" → "+row.truth[i].toUpperCase()+(wasLie?"  (feed was lying)":"  (feed was honest)"), "v");
+    renderTokens(); render();
+  }
+
+  // ---- render board ----
+  function render(){
+    el.board.innerHTML = "";
+    G.rows.forEach((row, r) => {
+      const div = document.createElement("div");
+      div.className = "row";
+      div.style.gridTemplateColumns = `repeat(${G.L}, auto)`;
+      row.guess.forEach((g,i)=>{
+        // displayed status: verified -> truth, else shown
+        const verified = row.verified[i];
+        const status = verified ? row.truth[i] : row.shown[i];
+        const untrusted = !verified && !G.over;
+        const t = document.createElement("div");
+        t.className = "tile "+status + (untrusted?" untrusted":"") + (verified?" verified":"");
+        t.dataset.g = g;
+        let inner = `<span class="glyph">${g}</span>`;
+        if(verified) inner += `<span class="vmark">✓</span>`;
+        // x-ray design tool: mark lies
+        if(el.xray.checked && row.lie.has(i) && !verified){
+          t.classList.add("lie-revealed");
+          inner += `<span class="truth">${row.truth[i][0]}</span>`;
+        }
+        t.innerHTML = inner;
+        if(untrusted) t.onclick = ()=>verifyTile(r,i);
+        div.appendChild(t);
+      });
+      const meta = document.createElement("div");
+      meta.className="rowmeta";
+      const hits = row.truth.filter(s=>s==="hit").length;
+      meta.textContent = "probe "+(r+1);
+      div.appendChild(meta);
+      el.board.appendChild(div);
+    });
+    renderInput();
+    el.sAtt.textContent = (G.rows.length)+" / "+G.guesses;
+    el.sTok.textContent = G.tokensLeft;
+  }
+
+  function renderInput(){
+    el.inputRow.innerHTML = "";
+    el.inputRow.style.gridTemplateColumns = `repeat(${G.L}, auto)`;
+    if(G.over){ el.inputRow.style.opacity=.3; } else el.inputRow.style.opacity=1;
+    for(let i=0;i<G.L;i++){
+      const t = document.createElement("div");
+      t.className = "tile slot"+(i===G.active?" active":"");
+      t.innerHTML = `<span class="glyph">${G.input[i] ?? ""}</span>`;
+      t.onclick = ()=>{ if(!G.over){ G.active=i; renderInput(); } };
+      el.inputRow.appendChild(t);
+    }
+  }
+
+  function renderKeypad(){
+    el.keypad.innerHTML = "";
+    G.alphabet.forEach(ch=>{
+      const b=document.createElement("button");
+      b.className="key"; b.textContent=ch;
+      b.onclick=()=>typeGlyph(ch);
+      el.keypad.appendChild(b);
+    });
+    const back=document.createElement("button");
+    back.className="key wide"; back.textContent="⌫ del"; back.onclick=delGlyph;
+    el.keypad.appendChild(back);
+    const go=document.createElement("button");
+    go.className="key wide go"; go.textContent="↵ probe"; go.onclick=submit;
+    el.keypad.appendChild(go);
+  }
+
+  function typeGlyph(ch){
+    if(G.over) return;
+    G.input[G.active]=ch;
+    G.active = Math.min(G.active+1, G.L-1);
+    renderInput();
+  }
+  function delGlyph(){
+    if(G.over) return;
+    if(G.input[G.active]!=null){ G.input[G.active]=null; }
+    else if(G.active>0){ G.active--; G.input[G.active]=null; }
+    renderInput();
+  }
+
+  function renderTokens(){
+    el.tokens.innerHTML="";
+    const total = G.tokens;
+    for(let i=0;i<Math.max(total,1);i++){
+      const d=document.createElement("div");
+      d.className="tok"+(i<G.tokensLeft?" full":"");
+      el.tokens.appendChild(d);
+    }
+    if(total===0) el.tokens.innerHTML='<span class="hint">none — raise Decryption</span>';
+  }
+
+  function daemonSay(msg){ el.daemon.innerHTML = '<span>daemon:</span> '+msg; }
+  function pushLog(msg, cls){
+    const p=document.createElement("div");
+    p.className=cls||""; p.textContent="› "+msg;
+    el.log.prepend(p);
+  }
+
+  // ---- control wiring ----
+  el.skill.oninput=()=>{ el.vSkill.textContent=el.skill.value; };
+  el.len.oninput=()=>{ el.vLen.textContent=el.len.value; clampK(); };
+  el.alpha.oninput=()=>{ el.vAlpha.textContent=el.alpha.value; };
+  el.kLies.oninput=()=>{ clampK(); };
+  function clampK(){
+    const maxK = +el.len.value - 1;
+    if(+el.kLies.value > maxK) el.kLies.value = maxK;
+    el.kLies.max = maxK;
+    el.vK.textContent = el.kLies.value;
+  }
+  el.mode.querySelectorAll("button").forEach(b=>{
+    b.onclick=()=>{
+      el.mode.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+      b.classList.add("on");
+      el.modeHint.textContent = b.dataset.m==="fresh"
+        ? "FRESH: random cells lie each probe. Trust nothing twice."
+        : "COMPROMISED: K fixed channels lie every probe. Find them, trust the rest.";
+    };
+  });
+  el.newBtn.onclick=newGame;
+  el.xray.onchange=()=>{ if(G) render(); };
+
+  // keyboard
+  document.addEventListener("keydown", e=>{
+    if(!G || G.over) return;
+    const k = e.key.toUpperCase();
+    if(G.alphabet.includes(k)) typeGlyph(k);
+    else if(e.key==="Backspace") delGlyph();
+    else if(e.key==="Enter") submit();
+    else if(e.key==="ArrowLeft"){ G.active=Math.max(0,G.active-1); renderInput(); }
+    else if(e.key==="ArrowRight"){ G.active=Math.min(G.L-1,G.active+1); renderInput(); }
+  });
+
+  clampK();
+  newGame();
+})();
+</script>
+</body>
+</html>
