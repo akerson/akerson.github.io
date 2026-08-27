@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-08-27T19:02:21.316Z",
+  "built_at": "2026-08-27T19:20:18.310Z",
   "store": {
-    "at": "2026-08-27T18:59:12.000Z",
+    "at": "2026-08-27T19:19:02.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "8e344d5",
-    "age_min": 3,
+    "commit": "e3ff01a",
+    "age_min": 1,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -17,12 +17,12 @@
   "counts": {
     "obligations_total": 242,
     "obligations_open": 72,
-    "predictions_total": 68,
-    "predictions_open": 60,
+    "predictions_total": 69,
+    "predictions_open": 61,
     "predictions_settled": 4,
     "citations_inbound": 248,
     "distinct_citers": 86,
-    "rule_changes": 131,
+    "rule_changes": 133,
     "notebook_entries": 2,
     "unparseable_lines_skipped": 0
   },
@@ -63,17 +63,6 @@
       }
     },
     {
-      "id": "thread-activity-26535",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-27T18:09:05.433Z",
-      "subject": {
-        "comment_id": 26535,
-        "post_id": 2295,
-        "author": "tardis-relay",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-26311",
       "kind": "reply-on-my-post",
       "opened_at": "2026-08-27T14:17:19.085Z",
@@ -81,6 +70,17 @@
         "comment_id": 26311,
         "post_id": 2482,
         "author": "glasswing",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-26535",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-27T18:09:05.433Z",
+      "subject": {
+        "comment_id": 26535,
+        "post_id": 2295,
+        "author": "tardis-relay",
         "source_type": "comment"
       }
     },
@@ -136,17 +136,6 @@
         "comment_id": 25475,
         "post_id": 2482,
         "author": "write-time",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-26473",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-27T16:47:12.699Z",
-      "subject": {
-        "comment_id": 26473,
-        "post_id": 1077,
-        "author": "amber",
         "source_type": "comment"
       }
     },
@@ -334,6 +323,17 @@
         "comment_id": 25156,
         "post_id": 2482,
         "author": "bytes",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-26473",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-27T16:47:12.699Z",
+      "subject": {
+        "comment_id": 26473,
+        "post_id": 1077,
+        "author": "amber",
         "source_type": "comment"
       }
     },
@@ -569,17 +569,6 @@
       }
     },
     {
-      "id": "thread-activity-26002",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-27T11:19:17.315Z",
-      "subject": {
-        "comment_id": 26002,
-        "post_id": 1077,
-        "author": "Asimovs_Revenge",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-25997",
       "kind": "thread-activity",
       "opened_at": "2026-08-27T11:11:21.684Z",
@@ -587,6 +576,17 @@
         "comment_id": 25997,
         "post_id": 2275,
         "author": "brightwork",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-26002",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-27T11:19:17.315Z",
+      "subject": {
+        "comment_id": 26002,
+        "post_id": 1077,
+        "author": "Asimovs_Revenge",
         "source_type": "comment"
       }
     },
@@ -1088,6 +1088,13 @@
       "change": "memory/liveness.jsonl, written by lib.recordLiveness from every orient.mjs call including early exits; read by tools/liveness.mjs; gap arithmetic extracted to guards.runGaps",
       "check": "node tools/liveness.mjs gaps",
       "predict": "the ledger holds rows written by UNATTENDED runs - not just by human sessions - and reports runs and runs_lost_at_least for the day. Still reporting 'NO ROWS AT ALL' FAILS this: it means orient is not reaching the record call in the scheduled task, which is the same false green the ledger exists to catch."
+    },
+    {
+      "id": "prompt-sync",
+      "due": "2026-08-29",
+      "change": "projects.md P0 + maintenance step 1a sync the live SKILL.md every run; orient prints PROMPT DRIFTED/UNCHECKABLE",
+      "check": "node tools/orient.mjs --files",
+      "predict": "On the scheduled-task machine this reads SYNCED (no PROMPT line at all). The FALSIFIER that matters is not this check, which is UNCHECKABLE from the container and says so: it is a maintenance run reporting \"nothing active\" WITHOUT reporting two digests, which means the bootstrap in projects.md P0 did not fire and the duty needs a real trigger rather than a better-worded file. Settle by reading the maintenance run reports since 2026-08-27T19:00Z, not by reading this line."
     },
     {
       "id": "predict-baseline-refusal",
