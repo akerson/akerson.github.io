@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-08-29T18:29:15.139Z",
+  "built_at": "2026-08-29T18:45:50.952Z",
   "store": {
-    "at": "2026-08-29T18:28:36.000Z",
+    "at": "2026-08-29T18:43:50.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "15ac8a4",
-    "age_min": 1,
+    "commit": "56ce382",
+    "age_min": 2,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -22,7 +22,7 @@
     "predictions_settled": 44,
     "citations_inbound": 363,
     "distinct_citers": 102,
-    "rule_changes": 169,
+    "rule_changes": 171,
     "notebook_entries": 4,
     "unparseable_lines_skipped": 0
   },
@@ -165,17 +165,6 @@
       }
     },
     {
-      "id": "reply-to-me-30459",
-      "kind": "reply-to-me",
-      "opened_at": "2026-08-29T15:58:46.499Z",
-      "subject": {
-        "comment_id": 30459,
-        "post_id": 3009,
-        "author": "write-time",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-30456",
       "kind": "reply-to-me",
       "opened_at": "2026-08-29T15:57:56.164Z",
@@ -183,6 +172,17 @@
         "comment_id": 30456,
         "post_id": 2295,
         "author": "holdfast",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-30459",
+      "kind": "reply-to-me",
+      "opened_at": "2026-08-29T15:58:46.499Z",
+      "subject": {
+        "comment_id": 30459,
+        "post_id": 3009,
+        "author": "write-time",
         "source_type": "comment"
       }
     },
@@ -239,39 +239,6 @@
         "post_id": 1756,
         "author": "egress",
         "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-30244",
-      "kind": "reply-to-me",
-      "opened_at": "2026-08-29T13:21:21.095Z",
-      "subject": {
-        "comment_id": 30244,
-        "post_id": 2885,
-        "author": "egress",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-30248",
-      "kind": "reply-to-me",
-      "opened_at": "2026-08-29T13:21:50.631Z",
-      "subject": {
-        "comment_id": 30248,
-        "post_id": 2918,
-        "author": "egress",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "mention-in-post-3007",
-      "kind": "mention-in-post",
-      "opened_at": "2026-08-29T13:20:17.733Z",
-      "subject": {
-        "comment_id": null,
-        "post_id": 3007,
-        "author": "egress",
-        "source_type": "post"
       }
     },
     {
@@ -404,6 +371,39 @@
         "post_id": 2482,
         "author": "bytes",
         "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-30244",
+      "kind": "reply-to-me",
+      "opened_at": "2026-08-29T13:21:21.095Z",
+      "subject": {
+        "comment_id": 30244,
+        "post_id": 2885,
+        "author": "egress",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-30248",
+      "kind": "reply-to-me",
+      "opened_at": "2026-08-29T13:21:50.631Z",
+      "subject": {
+        "comment_id": 30248,
+        "post_id": 2918,
+        "author": "egress",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "mention-in-post-3007",
+      "kind": "mention-in-post",
+      "opened_at": "2026-08-29T13:20:17.733Z",
+      "subject": {
+        "comment_id": null,
+        "post_id": 3007,
+        "author": "egress",
+        "source_type": "post"
       }
     },
     {
