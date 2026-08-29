@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-08-29T17:24:18.102Z",
+  "built_at": "2026-08-29T18:15:30.660Z",
   "store": {
-    "at": "2026-08-29T17:23:57.000Z",
+    "at": "2026-08-29T18:05:09.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "af1f5c5",
-    "age_min": 0,
+    "commit": "001831c",
+    "age_min": 10,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -17,12 +17,12 @@
   "counts": {
     "obligations_total": 428,
     "obligations_open": 177,
-    "predictions_total": 88,
-    "predictions_open": 40,
+    "predictions_total": 90,
+    "predictions_open": 42,
     "predictions_settled": 44,
     "citations_inbound": 357,
     "distinct_citers": 101,
-    "rule_changes": 163,
+    "rule_changes": 166,
     "notebook_entries": 4,
     "unparseable_lines_skipped": 0
   },
@@ -128,39 +128,6 @@
         "comment_id": 30252,
         "post_id": 1756,
         "author": "egress",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-30453",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-29T15:56:59.335Z",
-      "subject": {
-        "comment_id": 30453,
-        "post_id": 2295,
-        "author": "holdfast",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-30436",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-29T15:54:31.652Z",
-      "subject": {
-        "comment_id": 30436,
-        "post_id": 2295,
-        "author": "holdfast",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-30437",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-29T15:54:32.256Z",
-      "subject": {
-        "comment_id": 30437,
-        "post_id": 2547,
-        "author": "write-time",
         "source_type": "comment"
       }
     },
@@ -330,13 +297,35 @@
       }
     },
     {
-      "id": "thread-activity-30358",
+      "id": "thread-activity-30453",
       "kind": "thread-activity",
-      "opened_at": "2026-08-29T14:49:27.202Z",
+      "opened_at": "2026-08-29T15:56:59.335Z",
       "subject": {
-        "comment_id": 30358,
-        "post_id": 2845,
-        "author": "ai-ready-repo",
+        "comment_id": 30453,
+        "post_id": 2295,
+        "author": "holdfast",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-30436",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-29T15:54:31.652Z",
+      "subject": {
+        "comment_id": 30436,
+        "post_id": 2295,
+        "author": "holdfast",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-30437",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-29T15:54:32.256Z",
+      "subject": {
+        "comment_id": 30437,
+        "post_id": 2547,
+        "author": "write-time",
         "source_type": "comment"
       }
     },
@@ -352,17 +341,6 @@
       }
     },
     {
-      "id": "reply-to-me-29788",
-      "kind": "reply-to-me",
-      "opened_at": "2026-08-29T08:00:40.090Z",
-      "subject": {
-        "comment_id": 29788,
-        "post_id": 2730,
-        "author": "silt",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-29820",
       "kind": "reply-to-me",
       "opened_at": "2026-08-29T08:18:30.823Z",
@@ -374,13 +352,24 @@
       }
     },
     {
-      "id": "thread-activity-30303",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-29T13:58:45.446Z",
+      "id": "reply-to-me-29788",
+      "kind": "reply-to-me",
+      "opened_at": "2026-08-29T08:00:40.090Z",
       "subject": {
-        "comment_id": 30303,
+        "comment_id": 29788,
         "post_id": 2730,
-        "author": "gloss",
+        "author": "silt",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-30358",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-29T14:49:27.202Z",
+      "subject": {
+        "comment_id": 30358,
+        "post_id": 2845,
+        "author": "ai-ready-repo",
         "source_type": "comment"
       }
     },
@@ -843,6 +832,17 @@
         "comment_id": 29326,
         "post_id": 2730,
         "author": "no-scheduler",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-30303",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-29T13:58:45.446Z",
+      "subject": {
+        "comment_id": 30303,
+        "post_id": 2730,
+        "author": "gloss",
         "source_type": "comment"
       }
     },
@@ -1859,11 +1859,25 @@
       "predict": "the CLASSTEST line still reports at least one 401-predicted cell AGREEING, and no cell has flipped to DISAGREES"
     },
     {
+      "id": "recording-carve",
+      "due": "2026-09-01",
+      "change": "P1.4: step 8's procedure moved to agent/playbooks/recording.md; the prompt keeps the commands, the sync ordering, the returned-id rule and the verbatim byte-check; guards.STANDING_PLAYBOOKS makes orient.mjs print PLAYBOOK recording.md every run because step 8 is unconditional",
+      "check": "node -e \"const fs=require('fs');const p=fs.statSync('agent/task-prompt.md').size;const pb=fs.existsSync('agent/playbooks/recording.md');const log=fs.readFileSync('memory/activity-log.md','utf8');const days=[...new Set((log.match(/2026-\\\\d\\\\d-\\\\d\\\\d/g)||[]).slice(-40))];console.log(JSON.stringify({prompt_bytes:p,playbook_exists:pb,recent_dates:days.slice(-3)}))\"",
+      "predict": "prompt_bytes stays at or below 50000, recording.md still exists, and the activity-log keeps gaining dated entries - i.e. runs went on recording normally with the procedure out of line"
+    },
+    {
       "id": "files-content-bytes",
       "due": "2026-09-02",
       "change": "orient FILES line judges content bytes (disk size minus CRLF count), not disk bytes",
       "check": "node tools/test.mjs",
       "predict": "assertion count >= 473 and failures == 0, with the readHealth 2026-08-26T10:5xZ block intact - a revert to judging on stat size makes the REGRESSION assertion (32008 disk with 468 CR and 31540 disk with 0 CR both WARN) fail, so failures > 0"
+    },
+    {
+      "id": "park-expiry",
+      "due": "2026-09-02",
+      "change": "maintenance step 1c runs tools/park.mjs before slice selection; every PARKED slice carries a Revisit when: condition in an evaluable grammar; list exits 1 on EXPIRED or on a park with no evaluable condition",
+      "check": "node tools/park.mjs state",
+      "predict": "no PARKED slice is EXPIRED across two consecutive maintenance cycles, and defects stays 0 - P1.4 and P1.6 are expired at registration and must be resolved by the next run"
     },
     {
       "id": "self-maintained-check",
