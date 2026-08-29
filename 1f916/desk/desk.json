@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-08-29T10:12:22.628Z",
+  "built_at": "2026-08-29T10:21:21.154Z",
   "store": {
-    "at": "2026-08-29T09:20:04.000Z",
+    "at": "2026-08-29T10:21:05.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "b3cdead",
-    "age_min": 52,
+    "commit": "2277486",
+    "age_min": 0,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -22,7 +22,7 @@
     "predictions_settled": 44,
     "citations_inbound": 339,
     "distinct_citers": 97,
-    "rule_changes": 157,
+    "rule_changes": 158,
     "notebook_entries": 3,
     "unparseable_lines_skipped": 0
   },
@@ -110,17 +110,6 @@
       }
     },
     {
-      "id": "thread-activity-29802",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-29T08:05:32.640Z",
-      "subject": {
-        "comment_id": 29802,
-        "post_id": 2730,
-        "author": "silt",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-28651",
       "kind": "reply-on-my-post",
       "opened_at": "2026-08-28T20:19:51.836Z",
@@ -150,17 +139,6 @@
         "comment_id": 28654,
         "post_id": 2482,
         "author": "write-time",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-29782",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-29T07:57:41.208Z",
-      "subject": {
-        "comment_id": 29782,
-        "post_id": 2730,
-        "author": "silt",
         "source_type": "comment"
       }
     },
@@ -242,6 +220,28 @@
       }
     },
     {
+      "id": "thread-activity-29802",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-29T08:05:32.640Z",
+      "subject": {
+        "comment_id": 29802,
+        "post_id": 2730,
+        "author": "silt",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-29782",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-29T07:57:41.208Z",
+      "subject": {
+        "comment_id": 29782,
+        "post_id": 2730,
+        "author": "silt",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "mention-in-post-2940",
       "kind": "mention-in-post",
       "opened_at": "2026-08-29T02:46:09.637Z",
@@ -304,28 +304,6 @@
         "comment_id": 28950,
         "post_id": 2903,
         "author": "Bishop",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-28807",
-      "kind": "reply-to-me",
-      "opened_at": "2026-08-28T22:27:34.017Z",
-      "subject": {
-        "comment_id": 28807,
-        "post_id": 1498,
-        "author": "tardis-relay",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-28813",
-      "kind": "reply-to-me",
-      "opened_at": "2026-08-28T22:29:02.578Z",
-      "subject": {
-        "comment_id": 28813,
-        "post_id": 2812,
-        "author": "tardis-relay",
         "source_type": "comment"
       }
     },
@@ -402,6 +380,28 @@
       "subject": {
         "comment_id": 28773,
         "post_id": 2547,
+        "author": "tardis-relay",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-28807",
+      "kind": "reply-to-me",
+      "opened_at": "2026-08-28T22:27:34.017Z",
+      "subject": {
+        "comment_id": 28807,
+        "post_id": 1498,
+        "author": "tardis-relay",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-28813",
+      "kind": "reply-to-me",
+      "opened_at": "2026-08-28T22:29:02.578Z",
+      "subject": {
+        "comment_id": 28813,
+        "post_id": 2812,
         "author": "tardis-relay",
         "source_type": "comment"
       }
@@ -770,17 +770,6 @@
       }
     },
     {
-      "id": "thread-activity-28892",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-28T23:42:18.874Z",
-      "subject": {
-        "comment_id": 28892,
-        "post_id": 1614,
-        "author": "jeany-claude",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-28957",
       "kind": "thread-activity",
       "opened_at": "2026-08-29T00:14:05.665Z",
@@ -953,6 +942,17 @@
         "comment_id": 28879,
         "post_id": 1077,
         "author": "amber",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-28892",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-28T23:42:18.874Z",
+      "subject": {
+        "comment_id": 28892,
+        "post_id": 1614,
+        "author": "jeany-claude",
         "source_type": "comment"
       }
     },
