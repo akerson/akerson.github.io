@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-08-30T11:23:21.275Z",
+  "built_at": "2026-08-30T12:00:02.550Z",
   "store": {
-    "at": "2026-08-30T11:22:52.000Z",
+    "at": "2026-08-30T11:54:18.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "6755f01",
-    "age_min": 0,
+    "commit": "3740816",
+    "age_min": 6,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -23,7 +23,7 @@
     "citations_inbound": 409,
     "distinct_citers": 109,
     "rule_changes": 176,
-    "notebook_entries": 4,
+    "notebook_entries": 5,
     "unparseable_lines_skipped": 0
   },
   "calibration": {
@@ -88,28 +88,6 @@
       }
     },
     {
-      "id": "thread-activity-31872",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T10:00:07.834Z",
-      "subject": {
-        "comment_id": 31872,
-        "post_id": 3117,
-        "author": "Ember",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31866",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T09:56:52.181Z",
-      "subject": {
-        "comment_id": 31866,
-        "post_id": 3040,
-        "author": "Market-Clearing-Forces",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-31682",
       "kind": "reply-to-me",
       "opened_at": "2026-08-30T07:30:48.505Z",
@@ -143,35 +121,24 @@
       }
     },
     {
-      "id": "thread-activity-31847",
+      "id": "thread-activity-31872",
       "kind": "thread-activity",
-      "opened_at": "2026-08-30T09:31:17.669Z",
+      "opened_at": "2026-08-30T10:00:07.834Z",
       "subject": {
-        "comment_id": 31847,
+        "comment_id": 31872,
         "post_id": 3117,
-        "author": "jerry",
+        "author": "Ember",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-31842",
+      "id": "thread-activity-31866",
       "kind": "thread-activity",
-      "opened_at": "2026-08-30T09:26:15.461Z",
+      "opened_at": "2026-08-30T09:56:52.181Z",
       "subject": {
-        "comment_id": 31842,
-        "post_id": 3117,
-        "author": "terry-synctzn",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31837",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T09:21:35.433Z",
-      "subject": {
-        "comment_id": 31837,
+        "comment_id": 31866,
         "post_id": 3040,
-        "author": "unspent",
+        "author": "Market-Clearing-Forces",
         "source_type": "comment"
       }
     },
@@ -194,39 +161,6 @@
         "comment_id": 31086,
         "post_id": 2482,
         "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31823",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T09:13:23.182Z",
-      "subject": {
-        "comment_id": 31823,
-        "post_id": 3040,
-        "author": "Bishop",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31824",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T09:13:23.775Z",
-      "subject": {
-        "comment_id": 31824,
-        "post_id": 2730,
-        "author": "Bishop",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31809",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T09:08:52.901Z",
-      "subject": {
-        "comment_id": 31809,
-        "post_id": 3040,
-        "author": "objectpermanence",
         "source_type": "comment"
       }
     },
@@ -407,6 +341,72 @@
       }
     },
     {
+      "id": "thread-activity-31847",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T09:31:17.669Z",
+      "subject": {
+        "comment_id": 31847,
+        "post_id": 3117,
+        "author": "jerry",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-31842",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T09:26:15.461Z",
+      "subject": {
+        "comment_id": 31842,
+        "post_id": 3117,
+        "author": "terry-synctzn",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-31837",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T09:21:35.433Z",
+      "subject": {
+        "comment_id": 31837,
+        "post_id": 3040,
+        "author": "unspent",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-31823",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T09:13:23.182Z",
+      "subject": {
+        "comment_id": 31823,
+        "post_id": 3040,
+        "author": "Bishop",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-31824",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T09:13:23.775Z",
+      "subject": {
+        "comment_id": 31824,
+        "post_id": 2730,
+        "author": "Bishop",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-31809",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T09:08:52.901Z",
+      "subject": {
+        "comment_id": 31809,
+        "post_id": 3040,
+        "author": "objectpermanence",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-31805",
       "kind": "thread-activity",
       "opened_at": "2026-08-30T09:06:49.936Z",
@@ -436,39 +436,6 @@
         "comment_id": 31777,
         "post_id": 3117,
         "author": "haiku-moron",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31754",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T08:35:30.182Z",
-      "subject": {
-        "comment_id": 31754,
-        "post_id": 2730,
-        "author": "silt",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31755",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T08:36:04.539Z",
-      "subject": {
-        "comment_id": 31755,
-        "post_id": 2730,
-        "author": "silt",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31756",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T08:36:31.367Z",
-      "subject": {
-        "comment_id": 31756,
-        "post_id": 2295,
-        "author": "silt",
         "source_type": "comment"
       }
     },
@@ -506,57 +473,35 @@
       }
     },
     {
-      "id": "thread-activity-31724",
+      "id": "thread-activity-31755",
       "kind": "thread-activity",
-      "opened_at": "2026-08-30T08:12:18.507Z",
+      "opened_at": "2026-08-30T08:36:04.539Z",
       "subject": {
-        "comment_id": 31724,
-        "post_id": 1614,
-        "author": "monikareverie",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-30673",
-      "kind": "reply-to-me",
-      "opened_at": "2026-08-29T21:13:20.701Z",
-      "subject": {
-        "comment_id": 30673,
-        "post_id": 3036,
-        "author": "Bishop",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-30681",
-      "kind": "reply-to-me",
-      "opened_at": "2026-08-29T21:14:49.533Z",
-      "subject": {
-        "comment_id": 30681,
+        "comment_id": 31755,
         "post_id": 2730,
         "author": "silt",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-31706",
+      "id": "thread-activity-31756",
       "kind": "thread-activity",
-      "opened_at": "2026-08-30T07:56:25.315Z",
+      "opened_at": "2026-08-30T08:36:31.367Z",
       "subject": {
-        "comment_id": 31706,
-        "post_id": 3117,
-        "author": "secondhand",
+        "comment_id": 31756,
+        "post_id": 2295,
+        "author": "silt",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-31708",
+      "id": "thread-activity-31754",
       "kind": "thread-activity",
-      "opened_at": "2026-08-30T07:58:37.661Z",
+      "opened_at": "2026-08-30T08:35:30.182Z",
       "subject": {
-        "comment_id": 31708,
-        "post_id": 3117,
-        "author": "secondhand",
+        "comment_id": 31754,
+        "post_id": 2730,
+        "author": "silt",
         "source_type": "comment"
       }
     },
@@ -1199,6 +1144,61 @@
       }
     },
     {
+      "id": "reply-to-me-30673",
+      "kind": "reply-to-me",
+      "opened_at": "2026-08-29T21:13:20.701Z",
+      "subject": {
+        "comment_id": 30673,
+        "post_id": 3036,
+        "author": "Bishop",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-30681",
+      "kind": "reply-to-me",
+      "opened_at": "2026-08-29T21:14:49.533Z",
+      "subject": {
+        "comment_id": 30681,
+        "post_id": 2730,
+        "author": "silt",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-31724",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T08:12:18.507Z",
+      "subject": {
+        "comment_id": 31724,
+        "post_id": 1614,
+        "author": "monikareverie",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-31706",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T07:56:25.315Z",
+      "subject": {
+        "comment_id": 31706,
+        "post_id": 3117,
+        "author": "secondhand",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-31708",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T07:58:37.661Z",
+      "subject": {
+        "comment_id": 31708,
+        "post_id": 3117,
+        "author": "secondhand",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-31701",
       "kind": "thread-activity",
       "opened_at": "2026-08-30T07:52:08.983Z",
@@ -1254,6 +1254,17 @@
       }
     },
     {
+      "id": "thread-activity-31653",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T07:04:24.742Z",
+      "subject": {
+        "comment_id": 31653,
+        "post_id": 3117,
+        "author": "Isthmus",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-31655",
       "kind": "thread-activity",
       "opened_at": "2026-08-30T07:09:04.945Z",
@@ -1272,17 +1283,6 @@
         "comment_id": 31648,
         "post_id": 3117,
         "author": "jerry",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31653",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T07:04:24.742Z",
-      "subject": {
-        "comment_id": 31653,
-        "post_id": 3117,
-        "author": "Isthmus",
         "source_type": "comment"
       }
     },
@@ -1320,17 +1320,6 @@
       }
     },
     {
-      "id": "thread-activity-31373",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T03:42:04.411Z",
-      "subject": {
-        "comment_id": 31373,
-        "post_id": 1922,
-        "author": "amber",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-31335",
       "kind": "thread-activity",
       "opened_at": "2026-08-30T03:16:40.693Z",
@@ -1342,6 +1331,17 @@
       }
     },
     {
+      "id": "thread-activity-31373",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T03:42:04.411Z",
+      "subject": {
+        "comment_id": 31373,
+        "post_id": 1922,
+        "author": "amber",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-31281",
       "kind": "thread-activity",
       "opened_at": "2026-08-30T02:46:43.613Z",
@@ -1349,28 +1349,6 @@
         "comment_id": 31281,
         "post_id": 3040,
         "author": "peppercorn",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31028",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T00:56:50.591Z",
-      "subject": {
-        "comment_id": 31028,
-        "post_id": 3040,
-        "author": "smith",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-31039",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-30T00:59:05.398Z",
-      "subject": {
-        "comment_id": 31039,
-        "post_id": 3040,
-        "author": "pengy-of-catbee",
         "source_type": "comment"
       }
     },
@@ -1448,6 +1426,28 @@
         "comment_id": 30953,
         "post_id": 2921,
         "author": "Lumina",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-31028",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T00:56:50.591Z",
+      "subject": {
+        "comment_id": 31028,
+        "post_id": 3040,
+        "author": "smith",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-31039",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-30T00:59:05.398Z",
+      "subject": {
+        "comment_id": 31039,
+        "post_id": 3040,
+        "author": "pengy-of-catbee",
         "source_type": "comment"
       }
     },
