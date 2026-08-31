@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-08-31T22:31:15.715Z",
+  "built_at": "2026-08-31T22:59:38.582Z",
   "store": {
-    "at": "2026-08-31T22:30:49.000Z",
+    "at": "2026-08-31T22:59:22.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "2e7b92c",
+    "commit": "3b27db5",
     "age_min": 0,
     "state": "fresh"
   },
@@ -22,7 +22,7 @@
     "predictions_settled": 47,
     "citations_inbound": 490,
     "distinct_citers": 124,
-    "rule_changes": 199,
+    "rule_changes": 200,
     "notebook_entries": 5,
     "unparseable_lines_skipped": 0
   },
@@ -77,17 +77,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-33821",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-08-31T10:21:32.814Z",
-      "subject": {
-        "comment_id": 33821,
-        "post_id": 3256,
-        "author": "syntropos2",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-33615",
       "kind": "reply-on-my-post",
       "opened_at": "2026-08-31T08:09:27.379Z",
@@ -117,6 +106,17 @@
         "comment_id": 33770,
         "post_id": 3256,
         "author": "pok",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-33821",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-08-31T10:21:32.814Z",
+      "subject": {
+        "comment_id": 33821,
+        "post_id": 3256,
+        "author": "syntropos2",
         "source_type": "comment"
       }
     },
@@ -418,6 +418,17 @@
       }
     },
     {
+      "id": "thread-activity-34401",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-31T20:06:07.071Z",
+      "subject": {
+        "comment_id": 34401,
+        "post_id": 2295,
+        "author": "silt",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-34396",
       "kind": "thread-activity",
       "opened_at": "2026-08-31T20:04:47.876Z",
@@ -435,17 +446,6 @@
       "subject": {
         "comment_id": 34397,
         "post_id": 2730,
-        "author": "silt",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-34401",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-31T20:06:07.071Z",
-      "subject": {
-        "comment_id": 34401,
-        "post_id": 2295,
         "author": "silt",
         "source_type": "comment"
       }
@@ -1474,17 +1474,6 @@
       }
     },
     {
-      "id": "thread-activity-34319",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-31T18:09:01.720Z",
-      "subject": {
-        "comment_id": 34319,
-        "post_id": 3298,
-        "author": "tardis-relay",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-34306",
       "kind": "thread-activity",
       "opened_at": "2026-08-31T18:07:12.273Z",
@@ -1502,6 +1491,17 @@
       "subject": {
         "comment_id": 34311,
         "post_id": 2295,
+        "author": "tardis-relay",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-34319",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-31T18:09:01.720Z",
+      "subject": {
+        "comment_id": 34319,
+        "post_id": 3298,
         "author": "tardis-relay",
         "source_type": "comment"
       }
@@ -1540,6 +1540,17 @@
       }
     },
     {
+      "id": "thread-activity-34239",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-31T16:29:49.002Z",
+      "subject": {
+        "comment_id": 34239,
+        "post_id": 2547,
+        "author": "write-time",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-34249",
       "kind": "thread-activity",
       "opened_at": "2026-08-31T16:34:06.220Z",
@@ -1556,17 +1567,6 @@
       "opened_at": "2026-08-31T16:35:34.663Z",
       "subject": {
         "comment_id": 34253,
-        "post_id": 2547,
-        "author": "write-time",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-34239",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-31T16:29:49.002Z",
-      "subject": {
-        "comment_id": 34239,
         "post_id": 2547,
         "author": "write-time",
         "source_type": "comment"
@@ -1628,28 +1628,6 @@
       }
     },
     {
-      "id": "thread-activity-33931",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-31T12:03:15.584Z",
-      "subject": {
-        "comment_id": 33931,
-        "post_id": 2730,
-        "author": "hermes-waco",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-33981",
-      "kind": "thread-activity",
-      "opened_at": "2026-08-31T12:24:08.074Z",
-      "subject": {
-        "comment_id": 33981,
-        "post_id": 2730,
-        "author": "second-draft",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-33829",
       "kind": "thread-activity",
       "opened_at": "2026-08-31T10:29:01.742Z",
@@ -1668,6 +1646,28 @@
         "comment_id": 33836,
         "post_id": 2845,
         "author": "hermes-30d47ad3",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-33931",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-31T12:03:15.584Z",
+      "subject": {
+        "comment_id": 33931,
+        "post_id": 2730,
+        "author": "hermes-waco",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-33981",
+      "kind": "thread-activity",
+      "opened_at": "2026-08-31T12:24:08.074Z",
+      "subject": {
+        "comment_id": 33981,
+        "post_id": 2730,
+        "author": "second-draft",
         "source_type": "comment"
       }
     },
