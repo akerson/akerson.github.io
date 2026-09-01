@@ -1,0 +1,155 @@
+/* The Salt Road — styles.
+   Layout is mobile-first: the base rules target a phone, and the
+   `min-width:600px` block below scales things up for larger screens. */
+
+:root{
+  --bg:#161310;
+  --bg-alt:#1d1913;
+  --panel:#231e17;
+  --panel-border:#4a4030;
+  --ink:#ece2c8;
+  --muted:#a39370;
+  --faint:#6f6350;
+  --gold:#c9a227;
+  --gold-dim:#8a712a;
+  --rust:#a4553b;
+  --moss:#5c7a52;
+  --wipe:#7a2e2e;
+  --tap:44px;            /* minimum comfortable touch target */
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+html{ -webkit-text-size-adjust:100%; }
+body{
+  background:var(--bg);
+  background-image:radial-gradient(ellipse at top, #211c15 0%, var(--bg) 60%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  min-height:100svh;
+  line-height:1.5;
+  overflow-wrap:break-word;
+}
+h1,h2,h3{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-weight:600;
+  margin:0 0 0.3em 0;
+  letter-spacing:0.01em;
+}
+button{ font-family:inherit; touch-action:manipulation; }
+button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+
+#app{
+  max-width:620px;
+  margin:0 auto;
+  /* env(safe-area-inset-*) keeps content clear of notches and home indicators */
+  padding:20px max(16px, env(safe-area-inset-left)) calc(48px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right));
+}
+
+.eyebrow{ font-size:13px; color:var(--gold-dim); margin-bottom:6px; }
+.hero h1{ font-size:clamp(32px, 9vw, 40px); color:var(--ink); }
+.hero p.lede{ color:var(--muted); font-size:16px; max-width:46ch; margin:10px 0 24px 0; }
+
+.rules{ border-left:2px solid var(--panel-border); padding-left:14px; margin:0 0 26px 0; list-style:none; }
+.rules li{ color:var(--muted); font-size:14.5px; margin-bottom:10px; max-width:52ch; }
+.rules li b{ color:var(--ink); font-weight:600; }
+
+.roster{ display:grid; grid-template-columns:1fr; gap:10px; margin-bottom:26px; }
+.roster-card{ border:1px solid var(--panel-border); background:var(--panel); padding:12px 14px; border-radius:3px; }
+.roster-card .name{ font-family:'Cormorant Garamond',Georgia,serif; font-size:19px; font-weight:600; }
+.roster-card .epithet{ color:var(--gold-dim); font-size:13px; margin-bottom:8px; }
+.stat-row{ display:flex; flex-wrap:wrap; gap:6px 12px; font-size:13px; color:var(--muted); }
+.stat-row span.primary{ color:var(--gold); font-weight:600; }
+
+.btn-primary{
+  display:block; width:100%; min-height:var(--tap);
+  background:var(--gold); color:#1a1610; border:none;
+  font-weight:600; font-size:16px; padding:13px 26px; border-radius:3px; cursor:pointer;
+}
+.btn-primary:hover{ background:#dcb42f; }
+.btn-secondary{
+  display:block; width:100%; min-height:var(--tap);
+  background:transparent; color:var(--ink); border:1px solid var(--panel-border);
+  font-weight:500; font-size:15px; padding:12px 20px; border-radius:3px; cursor:pointer; margin-top:6px;
+}
+.btn-secondary:hover{ border-color:var(--gold-dim); color:var(--gold); }
+
+/* The status bar sticks to the top so party state stays visible while scrolling. */
+.statusbar{
+  position:sticky; top:0; z-index:5;
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  border:1px solid var(--panel-border); background:var(--panel);
+  padding:10px 12px; border-radius:3px; margin-bottom:20px; flex-wrap:wrap;
+  box-shadow:0 6px 16px -10px #000;
+}
+.party-row{ display:flex; gap:6px; flex-wrap:wrap; }
+.party-token{ font-size:12px; padding:4px 8px; border:1px solid var(--panel-border); border-radius:20px; color:var(--muted); }
+.party-token.fatigued{ border-color:var(--gold-dim); color:#d9c98a; }
+.party-token.injured{ border-color:var(--rust); color:#d99b86; }
+.party-token.dead{ border-color:var(--faint); color:var(--faint); text-decoration:line-through; }
+.meters{ display:flex; gap:14px; align-items:center; font-size:13px; color:var(--muted); }
+.meter b{ color:var(--ink); }
+.gem{ display:inline-block; width:10px; height:10px; border:1px solid var(--gold-dim); transform:rotate(45deg); margin-right:6px; }
+.gem.filled{ background:var(--gold); }
+
+.event-tag{ display:inline-block; font-size:12.5px; color:var(--gold-dim); border:1px solid var(--panel-border); padding:3px 9px; border-radius:20px; margin-bottom:10px; }
+.stop-count{ color:var(--faint); font-size:13px; margin-bottom:2px; }
+.event-title{ font-size:clamp(24px, 7vw, 28px); margin-bottom:10px; }
+.event-prompt{ color:var(--muted); font-size:15.5px; max-width:56ch; margin-bottom:20px; }
+
+.option-btn{
+  display:block; width:100%; min-height:var(--tap); text-align:left;
+  background:var(--bg-alt); border:1px solid var(--panel-border); color:var(--ink);
+  padding:14px 16px; margin-bottom:10px; border-radius:3px; cursor:pointer;
+}
+.option-btn:hover:not(:disabled){ border-color:var(--gold); }
+.option-btn:active:not(:disabled){ background:#262019; }
+.option-btn:disabled{ opacity:0.45; cursor:not-allowed; }
+.option-label{ font-size:15.5px; font-weight:600; margin-bottom:3px; }
+.option-sub{ font-size:12.5px; color:var(--faint); }
+.option-sub.flee{ color:var(--rust); }
+
+.actor-btn{
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+  width:100%; min-height:var(--tap);
+  background:var(--bg-alt); border:1px solid var(--panel-border); color:var(--ink);
+  padding:12px 16px; margin-bottom:8px; border-radius:3px; cursor:pointer;
+  font-size:15px; text-align:left;
+}
+.actor-btn:hover{ border-color:var(--gold); }
+.actor-btn:active{ background:#262019; }
+.actor-btn .mod{ color:var(--gold); font-weight:600; white-space:nowrap; }
+.actor-btn .tags{ color:var(--rust); font-size:12px; margin-left:8px; }
+
+.breakdown{ border:1px solid var(--panel-border); background:var(--bg-alt); padding:12px 14px; border-radius:3px; margin-bottom:16px; font-size:13.5px; color:var(--muted); }
+.breakdown div{ margin-bottom:6px; }
+.breakdown .tally{ color:var(--ink); font-weight:600; margin-top:6px; }
+.tier-pill{ display:inline-block; font-size:12px; padding:2px 8px; border-radius:20px; margin-left:6px; font-weight:600; white-space:nowrap; }
+.tier-disaster{ background:var(--wipe); color:#f2d4d4; }
+.tier-setback{ background:#5a4a24; color:#e9d9a8; }
+.tier-success{ background:#3c4f37; color:#cfe6c6; }
+.tier-triumph{ background:var(--gold); color:#1a1610; }
+
+.result-text{ font-size:16px; margin-bottom:14px; }
+.effects{ list-style:none; padding:0; margin:0 0 20px 0; }
+.effects li{ color:var(--gold-dim); font-size:13.5px; margin-bottom:4px; }
+
+.end-title{ font-size:clamp(30px, 9vw, 36px); }
+.end-title.win{ color:var(--gold); }
+.end-title.lose{ color:var(--rust); }
+.end-sub{ color:var(--muted); font-size:15.5px; margin-bottom:24px; max-width:52ch; }
+
+/* Tablet and desktop: two-up roster, inline buttons, roomier padding. */
+@media (min-width:600px){
+  #app{ padding:28px 20px 60px 20px; }
+  .roster{ grid-template-columns:1fr 1fr; }
+  .btn-primary, .btn-secondary{ display:inline-block; width:auto; }
+  .statusbar{ gap:14px; padding:10px 14px; }
+  .party-token{ font-size:12.5px; }
+  .meters{ font-size:13.5px; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition:none !important; }
+}
