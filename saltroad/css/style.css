@@ -1,6 +1,8 @@
 /* The Salt Road — styles.
-   Layout is mobile-first: the base rules target a phone, and the
-   `min-width:600px` block below scales things up for larger screens. */
+   Layout is mobile-first. Width alone is a poor proxy for "phone" — large
+   Android devices report viewports well over 600px — so the roomier layout
+   is gated on `hover:hover` (a real pointer) rather than width, and grids
+   size themselves off the available space instead of a breakpoint. */
 
 :root{
   --bg:#161310;
@@ -41,11 +43,22 @@ button{ font-family:inherit; touch-action:manipulation; }
 button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
 
 #app{
-  max-width:620px;
+  /* Wide enough to use a big phone's screen, capped so text stays readable. */
+  width:min(100%, 760px);
   margin:0 auto;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  /* Short screens (start, end) centre instead of stranding empty space below.
+     `safe` keeps tall content reachable rather than overflowing off the top. */
+  justify-content:safe center;
   /* env(safe-area-inset-*) keeps content clear of notches and home indicators */
-  padding:20px max(16px, env(safe-area-inset-left)) calc(48px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right));
+  padding:20px max(16px, env(safe-area-inset-left)) calc(28px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right));
 }
+
+/* Gameplay screens carry the sticky status bar and must stay top-aligned;
+   only the short start and end screens centre. */
+#app:has(.statusbar){ justify-content:flex-start; }
 
 .eyebrow{ font-size:13px; color:var(--gold-dim); margin-bottom:6px; }
 .hero h1{ font-size:clamp(32px, 9vw, 40px); color:var(--ink); }
@@ -55,7 +68,7 @@ button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
 .rules li{ color:var(--muted); font-size:14.5px; margin-bottom:10px; max-width:52ch; }
 .rules li b{ color:var(--ink); font-weight:600; }
 
-.roster{ display:grid; grid-template-columns:1fr; gap:10px; margin-bottom:26px; }
+.roster{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:10px; margin-bottom:26px; }
 .roster-card{ border:1px solid var(--panel-border); background:var(--panel); padding:12px 14px; border-radius:3px; }
 .roster-card .name{ font-family:'Cormorant Garamond',Georgia,serif; font-size:19px; font-weight:600; }
 .roster-card .epithet{ color:var(--gold-dim); font-size:13px; margin-bottom:8px; }
@@ -77,7 +90,7 @@ button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
 
 /* The status bar sticks to the top so party state stays visible while scrolling. */
 .statusbar{
-  position:sticky; top:0; z-index:5;
+  position:sticky; top:0; z-index:5; flex:none;
   display:flex; align-items:center; justify-content:space-between; gap:10px;
   border:1px solid var(--panel-border); background:var(--panel);
   padding:10px 12px; border-radius:3px; margin-bottom:20px; flex-wrap:wrap;
@@ -140,14 +153,22 @@ button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
 .end-title.lose{ color:var(--rust); }
 .end-sub{ color:var(--muted); font-size:15.5px; margin-bottom:24px; max-width:52ch; }
 
-/* Tablet and desktop: two-up roster, inline buttons, roomier padding. */
-@media (min-width:600px){
-  #app{ padding:28px 20px 60px 20px; }
-  .roster{ grid-template-columns:1fr 1fr; }
-  .btn-primary, .btn-secondary{ display:inline-block; width:auto; }
+/* Pointer-driven, not width-driven: only a device with a real hovering
+   pointer gets auto-width buttons. Touch devices keep full-width targets
+   however wide their viewport reports. */
+@media (hover:hover) and (pointer:fine) and (min-width:600px){
+  #app{ padding:28px 20px 48px 20px; justify-content:flex-start; }
+  /* align-self, not just width: #app is a flex column, so children stretch. */
+  .btn-primary, .btn-secondary{ width:auto; min-width:200px; align-self:flex-start; }
   .statusbar{ gap:14px; padding:10px 14px; }
   .party-token{ font-size:12.5px; }
   .meters{ font-size:13.5px; }
+}
+
+/* Roomier type once there is genuinely room for it, touch or not. */
+@media (min-width:600px){
+  .rules li, .option-sub{ font-size:14.5px; }
+  .party-token{ font-size:12.5px; }
 }
 
 @media (prefers-reduced-motion:reduce){
