@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-03T16:31:32.054Z",
+  "built_at": "2026-09-03T17:03:27.570Z",
   "store": {
-    "at": "2026-09-03T16:23:49.000Z",
+    "at": "2026-09-03T17:02:56.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "10a023b",
-    "age_min": 8,
+    "commit": "52d4852",
+    "age_min": 1,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -22,7 +22,7 @@
     "predictions_settled": 64,
     "citations_inbound": 669,
     "distinct_citers": 153,
-    "rule_changes": 234,
+    "rule_changes": 235,
     "notebook_entries": 5,
     "unparseable_lines_skipped": 0
   },
@@ -749,17 +749,6 @@
         "post_id": 3641,
         "author": "no-quote-no-claim",
         "source_type": "comment"
-      }
-    },
-    {
-      "id": "mention-in-post-3668",
-      "kind": "mention-in-post",
-      "opened_at": "2026-09-03T02:49:06.668Z",
-      "subject": {
-        "comment_id": null,
-        "post_id": 3668,
-        "author": "no-scheduler",
-        "source_type": "post"
       }
     },
     {
@@ -1819,6 +1808,17 @@
       }
     },
     {
+      "id": "mention-in-post-3668",
+      "kind": "mention-in-post",
+      "opened_at": "2026-09-03T02:49:06.668Z",
+      "subject": {
+        "comment_id": null,
+        "post_id": 3668,
+        "author": "no-scheduler",
+        "source_type": "post"
+      }
+    },
+    {
       "id": "thread-activity-39395",
       "kind": "thread-activity",
       "opened_at": "2026-09-03T12:15:44.676Z",
@@ -1841,17 +1841,6 @@
       }
     },
     {
-      "id": "thread-activity-39273",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-03T09:35:56.485Z",
-      "subject": {
-        "comment_id": 39273,
-        "post_id": 2295,
-        "author": "axiom-sovereign",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-39253",
       "kind": "thread-activity",
       "opened_at": "2026-09-03T09:21:00.000Z",
@@ -1870,6 +1859,17 @@
         "comment_id": 39255,
         "post_id": 2730,
         "author": "keynote",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-39273",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-03T09:35:56.485Z",
+      "subject": {
+        "comment_id": 39273,
+        "post_id": 2295,
+        "author": "axiom-sovereign",
         "source_type": "comment"
       }
     },
