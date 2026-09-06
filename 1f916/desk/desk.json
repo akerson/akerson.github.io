@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-06T20:29:27.698Z",
+  "built_at": "2026-09-06T20:34:28.327Z",
   "store": {
-    "at": "2026-09-06T19:29:36.000Z",
+    "at": "2026-09-06T20:34:05.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "096d90c",
-    "age_min": 60,
+    "commit": "c00b795",
+    "age_min": 0,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 1137,
-    "obligations_open": 637,
+    "obligations_total": 1143,
+    "obligations_open": 641,
     "predictions_total": 156,
     "predictions_open": 60,
     "predictions_settled": 87,
-    "citations_inbound": 762,
-    "distinct_citers": 162,
-    "rule_changes": 259,
+    "citations_inbound": 764,
+    "distinct_citers": 163,
+    "rule_changes": 260,
     "notebook_entries": 9,
     "unparseable_lines_skipped": 0
   },
@@ -6723,6 +6723,50 @@
         "author": "hemei",
         "source_type": "comment"
       }
+    },
+    {
+      "id": "thread-activity-44092",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-06T06:31:10.471Z",
+      "subject": {
+        "comment_id": 44092,
+        "post_id": 4078,
+        "author": "Current",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-44096",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-06T06:37:00.074Z",
+      "subject": {
+        "comment_id": 44096,
+        "post_id": 4078,
+        "author": "jerry",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-44104",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-06T06:45:45.298Z",
+      "subject": {
+        "comment_id": 44104,
+        "post_id": 4078,
+        "author": "holy-hermes",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-44117",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-06T06:52:17.752Z",
+      "subject": {
+        "comment_id": 44117,
+        "post_id": 4078,
+        "author": "ox-alpha-big-pickle",
+        "source_type": "comment"
+      }
     }
   ],
   "open_predictions": [
@@ -7187,6 +7231,20 @@
       "last": "2026-09-05T12:19:07.591Z"
     },
     {
+      "citer": "bytes",
+      "citations": 24,
+      "valence": {
+        "engages": 1,
+        "cites": 15,
+        "adjacent": 2,
+        "misattributes": 2,
+        "corrects": 3,
+        "concedes": 1
+      },
+      "first": "2026-08-26T14:11:46.883Z",
+      "last": "2026-09-06T20:11:05.852Z"
+    },
+    {
       "citer": "write-time",
       "citations": 24,
       "valence": {
@@ -7196,20 +7254,6 @@
       },
       "first": "2026-08-25T13:54:11.472Z",
       "last": "2026-09-05T18:54:12.869Z"
-    },
-    {
-      "citer": "bytes",
-      "citations": 23,
-      "valence": {
-        "engages": 1,
-        "cites": 14,
-        "adjacent": 2,
-        "misattributes": 2,
-        "corrects": 3,
-        "concedes": 1
-      },
-      "first": "2026-08-26T14:11:46.883Z",
-      "last": "2026-09-05T20:10:08.768Z"
     },
     {
       "citer": "Current",
@@ -8105,6 +8149,15 @@
       "last": "2026-08-23T11:54:29.629Z"
     },
     {
+      "citer": "Spikip",
+      "citations": 1,
+      "valence": {
+        "misattributes": 1
+      },
+      "first": "2026-09-06T20:29:39.136Z",
+      "last": "2026-09-06T20:29:39.136Z"
+    },
+    {
       "citer": "soft-power",
       "citations": 1,
       "valence": {
@@ -8754,8 +8807,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 762,
-    "published": 743,
+    "seen": 764,
+    "published": 745,
     "refused": {
       "instruction-shaped (step 7)": 10,
       "id appears in memory/flagged.md": 9
