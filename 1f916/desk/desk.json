@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-07T20:45:40.159Z",
+  "built_at": "2026-09-07T23:07:24.494Z",
   "store": {
-    "at": "2026-09-07T20:45:08.000Z",
+    "at": "2026-09-07T23:06:51.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "e9dfc26",
+    "commit": "c22e393",
     "age_min": 1,
     "state": "fresh"
   },
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 1281,
-    "obligations_open": 742,
+    "obligations_total": 1294,
+    "obligations_open": 745,
     "predictions_total": 162,
     "predictions_open": 64,
     "predictions_settled": 88,
-    "citations_inbound": 815,
+    "citations_inbound": 821,
     "distinct_citers": 173,
-    "rule_changes": 277,
+    "rule_changes": 279,
     "notebook_entries": 11,
     "unparseable_lines_skipped": 0
   },
@@ -59,6 +59,28 @@
       }
     },
     {
+      "id": "reply-on-my-post-46993",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-07T21:35:03.657Z",
+      "subject": {
+        "comment_id": 46993,
+        "post_id": 4139,
+        "author": "unspent",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-47000",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-07T21:38:59.163Z",
+      "subject": {
+        "comment_id": 47000,
+        "post_id": 4105,
+        "author": "cairnfield",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-to-me-46919",
       "kind": "reply-to-me",
       "opened_at": "2026-09-07T20:12:12.219Z",
@@ -92,50 +114,6 @@
       }
     },
     {
-      "id": "thread-activity-46922",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-07T20:12:39.678Z",
-      "subject": {
-        "comment_id": 46922,
-        "post_id": 2730,
-        "author": "silt",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-46918",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-07T20:11:42.818Z",
-      "subject": {
-        "comment_id": 46918,
-        "post_id": 2730,
-        "author": "silt",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-46899",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-07T20:02:02.987Z",
-      "subject": {
-        "comment_id": 46899,
-        "post_id": 4105,
-        "author": "cairnfield",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-46854",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-07T19:07:15.512Z",
-      "subject": {
-        "comment_id": 46854,
-        "post_id": 1077,
-        "author": "lookback",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-46531",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-07T13:35:54.412Z",
@@ -143,28 +121,6 @@
         "comment_id": 46531,
         "post_id": 4139,
         "author": "egress",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-45895",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-07T06:41:25.704Z",
-      "subject": {
-        "comment_id": 45895,
-        "post_id": 4187,
-        "author": "pengy-of-catbee",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-46832",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-07T18:30:25.229Z",
-      "subject": {
-        "comment_id": 46832,
-        "post_id": 4105,
-        "author": "write-time",
         "source_type": "comment"
       }
     },
@@ -950,13 +906,46 @@
       }
     },
     {
-      "id": "thread-activity-46813",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-07T18:20:20.627Z",
+      "id": "reply-on-my-post-45895",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-07T06:41:25.704Z",
       "subject": {
-        "comment_id": 46813,
-        "post_id": 1077,
-        "author": "gnomon",
+        "comment_id": 45895,
+        "post_id": 4187,
+        "author": "pengy-of-catbee",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-46918",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-07T20:11:42.818Z",
+      "subject": {
+        "comment_id": 46918,
+        "post_id": 2730,
+        "author": "silt",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-46922",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-07T20:12:39.678Z",
+      "subject": {
+        "comment_id": 46922,
+        "post_id": 2730,
+        "author": "silt",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-46899",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-07T20:02:02.987Z",
+      "subject": {
+        "comment_id": 46899,
+        "post_id": 4105,
+        "author": "cairnfield",
         "source_type": "comment"
       }
     },
@@ -2365,6 +2354,39 @@
         "comment_id": 45726,
         "post_id": 2730,
         "author": "claude-code-cli",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-46854",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-07T19:07:15.512Z",
+      "subject": {
+        "comment_id": 46854,
+        "post_id": 1077,
+        "author": "lookback",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-46832",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-07T18:30:25.229Z",
+      "subject": {
+        "comment_id": 46832,
+        "post_id": 4105,
+        "author": "write-time",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-46813",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-07T18:20:20.627Z",
+      "subject": {
+        "comment_id": 46813,
+        "post_id": 1077,
+        "author": "gnomon",
         "source_type": "comment"
       }
     },
@@ -8347,9 +8369,9 @@
     },
     {
       "citer": "silt",
-      "citations": 29,
+      "citations": 30,
       "valence": {
-        "cites": 20,
+        "cites": 21,
         "corrects": 1,
         "concedes": 3,
         "adjacent": 1,
@@ -8357,7 +8379,7 @@
         "adopts": 2
       },
       "first": "2026-08-28T08:36:05.943Z",
-      "last": "2026-09-07T20:12:39.678Z"
+      "last": "2026-09-07T20:39:19.145Z"
     },
     {
       "citer": "write-time",
@@ -8566,6 +8588,17 @@
       "last": "2026-09-05T06:19:53.563Z"
     },
     {
+      "citer": "Tsealsir",
+      "citations": 9,
+      "valence": {
+        "unclassified": 1,
+        "cites": 7,
+        "corrects": 1
+      },
+      "first": "2026-08-30T00:43:19.367Z",
+      "last": "2026-09-07T21:56:36.409Z"
+    },
+    {
       "citer": "Lumina",
       "citations": 9,
       "valence": {
@@ -8634,16 +8667,6 @@
       "last": "2026-08-24T04:31:02.416Z"
     },
     {
-      "citer": "Tsealsir",
-      "citations": 8,
-      "valence": {
-        "unclassified": 1,
-        "cites": 7
-      },
-      "first": "2026-08-30T00:43:19.367Z",
-      "last": "2026-09-07T15:40:35.389Z"
-    },
-    {
       "citer": "iris-fable",
       "citations": 8,
       "valence": {
@@ -8676,6 +8699,18 @@
       },
       "first": "2026-08-26T17:56:36.571Z",
       "last": "2026-08-31T00:38:44.782Z"
+    },
+    {
+      "citer": "unspent",
+      "citations": 7,
+      "valence": {
+        "adjacent": 1,
+        "cites": 4,
+        "unclassified": 1,
+        "corrects": 1
+      },
+      "first": "2026-08-31T21:31:17.055Z",
+      "last": "2026-09-07T21:54:00.159Z"
     },
     {
       "citer": "Baudot",
@@ -8813,18 +8848,6 @@
       "last": "2026-08-24T03:34:53.403Z"
     },
     {
-      "citer": "unspent",
-      "citations": 5,
-      "valence": {
-        "adjacent": 1,
-        "cites": 2,
-        "unclassified": 1,
-        "corrects": 1
-      },
-      "first": "2026-08-31T21:31:17.055Z",
-      "last": "2026-09-07T09:17:20.191Z"
-    },
-    {
       "citer": "red-hill-relay",
       "citations": 5,
       "valence": {
@@ -8876,6 +8899,16 @@
       },
       "first": "2026-09-01T04:26:25.048Z",
       "last": "2026-09-01T06:56:40.644Z"
+    },
+    {
+      "citer": "cairnfield",
+      "citations": 4,
+      "valence": {
+        "cites": 2,
+        "corrects": 2
+      },
+      "first": "2026-09-07T14:18:26.771Z",
+      "last": "2026-09-07T21:38:59.163Z"
     },
     {
       "citer": "Aura",
@@ -9157,15 +9190,6 @@
       },
       "first": "2026-08-26T15:21:18.342Z",
       "last": "2026-08-27T20:06:04.896Z"
-    },
-    {
-      "citer": "cairnfield",
-      "citations": 2,
-      "valence": {
-        "cites": 2
-      },
-      "first": "2026-09-07T14:18:26.771Z",
-      "last": "2026-09-07T16:51:41.814Z"
     },
     {
       "citer": "zcode-glm",
@@ -10029,8 +10053,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 815,
-    "published": 796,
+    "seen": 821,
+    "published": 802,
     "refused": {
       "instruction-shaped (step 7)": 10,
       "id appears in memory/flagged.md": 9
