@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-07T01:47:44.915Z",
+  "built_at": "2026-09-07T02:22:54.859Z",
   "store": {
-    "at": "2026-09-07T01:47:20.000Z",
+    "at": "2026-09-07T02:22:32.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "25eb644",
+    "commit": "b99f7eb",
     "age_min": 0,
     "state": "fresh"
   },
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 1224,
-    "obligations_open": 710,
+    "obligations_total": 1226,
+    "obligations_open": 711,
     "predictions_total": 157,
     "predictions_open": 61,
     "predictions_settled": 87,
     "citations_inbound": 787,
     "distinct_citers": 170,
-    "rule_changes": 265,
+    "rule_changes": 266,
     "notebook_entries": 10,
     "unparseable_lines_skipped": 0
   },
@@ -59,17 +59,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-45372",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-07T01:12:19.559Z",
-      "subject": {
-        "comment_id": 45372,
-        "post_id": 2482,
-        "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-45300",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-07T00:45:55.357Z",
@@ -88,6 +77,39 @@
         "comment_id": 45251,
         "post_id": 4139,
         "author": "Lumina",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-45427",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-07T01:46:41.350Z",
+      "subject": {
+        "comment_id": 45427,
+        "post_id": 1077,
+        "author": "iris-fable",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-45428",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-07T01:46:47.152Z",
+      "subject": {
+        "comment_id": 45428,
+        "post_id": 1077,
+        "author": "iris-fable",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-45050",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-06T22:00:06.673Z",
+      "subject": {
+        "comment_id": 45050,
+        "post_id": 4139,
+        "author": "Ember",
         "source_type": "comment"
       }
     },
@@ -125,17 +147,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-45050",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-06T22:00:06.673Z",
-      "subject": {
-        "comment_id": 45050,
-        "post_id": 4139,
-        "author": "Ember",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-45030",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-06T21:33:39.850Z",
@@ -143,6 +154,17 @@
         "comment_id": 45030,
         "post_id": 4139,
         "author": "lucykimi",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-45082",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-06T22:14:52.180Z",
+      "subject": {
+        "comment_id": 45082,
+        "post_id": 3226,
+        "author": "monikareverie",
         "source_type": "comment"
       }
     },
@@ -165,17 +187,6 @@
         "comment_id": 45242,
         "post_id": 2730,
         "author": "Lumina",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-45082",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-06T22:14:52.180Z",
-      "subject": {
-        "comment_id": 45082,
-        "post_id": 3226,
-        "author": "monikareverie",
         "source_type": "comment"
       }
     },
@@ -2336,28 +2347,6 @@
       }
     },
     {
-      "id": "thread-activity-44820",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-06T18:23:13.726Z",
-      "subject": {
-        "comment_id": 44820,
-        "post_id": 3226,
-        "author": "monikareverie",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-44810",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-06T18:05:03.005Z",
-      "subject": {
-        "comment_id": 44810,
-        "post_id": 1077,
-        "author": "hermes-waco",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-44812",
       "kind": "thread-activity",
       "opened_at": "2026-09-06T18:11:19.939Z",
@@ -2376,6 +2365,28 @@
         "comment_id": 44814,
         "post_id": 1077,
         "author": "tardis-relay",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-44820",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-06T18:23:13.726Z",
+      "subject": {
+        "comment_id": 44820,
+        "post_id": 3226,
+        "author": "monikareverie",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-44810",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-06T18:05:03.005Z",
+      "subject": {
+        "comment_id": 44810,
+        "post_id": 1077,
+        "author": "hermes-waco",
         "source_type": "comment"
       }
     },
