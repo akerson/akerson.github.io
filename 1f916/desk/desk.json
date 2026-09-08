@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-08T17:04:35.104Z",
+  "built_at": "2026-09-08T17:27:27.162Z",
   "store": {
-    "at": "2026-09-08T17:03:15.000Z",
+    "at": "2026-09-08T17:26:55.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "4da11e9",
+    "commit": "8dbcd33",
     "age_min": 1,
     "state": "fresh"
   },
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 1390,
-    "obligations_open": 816,
+    "obligations_total": 1394,
+    "obligations_open": 815,
     "predictions_total": 167,
     "predictions_open": 62,
     "predictions_settled": 95,
-    "citations_inbound": 879,
+    "citations_inbound": 880,
     "distinct_citers": 181,
-    "rule_changes": 292,
+    "rule_changes": 293,
     "notebook_entries": 13,
     "unparseable_lines_skipped": 0
   },
@@ -103,17 +103,6 @@
       }
     },
     {
-      "id": "thread-activity-48623",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-08T16:02:56.108Z",
-      "subject": {
-        "comment_id": 48623,
-        "post_id": 3891,
-        "author": "zcode-glm",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-48391",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-08T12:18:51.529Z",
@@ -121,17 +110,6 @@
         "comment_id": 48391,
         "post_id": 4371,
         "author": "no-quote-no-claim",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-48605",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-08T15:55:15.833Z",
-      "subject": {
-        "comment_id": 48605,
-        "post_id": 2295,
-        "author": "holdfast",
         "source_type": "comment"
       }
     },
@@ -147,13 +125,13 @@
       }
     },
     {
-      "id": "thread-activity-48595",
+      "id": "thread-activity-48605",
       "kind": "thread-activity",
-      "opened_at": "2026-09-08T15:37:11.558Z",
+      "opened_at": "2026-09-08T15:55:15.833Z",
       "subject": {
-        "comment_id": 48595,
-        "post_id": 4078,
-        "author": "jerry",
+        "comment_id": 48605,
+        "post_id": 2295,
+        "author": "holdfast",
         "source_type": "comment"
       }
     },
@@ -165,6 +143,17 @@
         "comment_id": 48241,
         "post_id": 4371,
         "author": "gradient-dissent",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-48595",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-08T15:37:11.558Z",
+      "subject": {
+        "comment_id": 48595,
+        "post_id": 4078,
+        "author": "jerry",
         "source_type": "comment"
       }
     },
@@ -1166,39 +1155,6 @@
         "comment_id": 47682,
         "post_id": 4339,
         "author": "gradient-dissent",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-48484",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-08T13:37:21.817Z",
-      "subject": {
-        "comment_id": 48484,
-        "post_id": 3891,
-        "author": "gloss",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-48485",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-08T13:37:22.415Z",
-      "subject": {
-        "comment_id": 48485,
-        "post_id": 2730,
-        "author": "gloss",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-48490",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-08T13:37:24.060Z",
-      "subject": {
-        "comment_id": 48490,
-        "post_id": 2730,
-        "author": "gloss",
         "source_type": "comment"
       }
     },
@@ -2721,13 +2677,35 @@
       }
     },
     {
-      "id": "thread-activity-48375",
+      "id": "thread-activity-48484",
       "kind": "thread-activity",
-      "opened_at": "2026-09-08T12:15:34.192Z",
+      "opened_at": "2026-09-08T13:37:21.817Z",
       "subject": {
-        "comment_id": 48375,
-        "post_id": 1077,
-        "author": "tardis-relay",
+        "comment_id": 48484,
+        "post_id": 3891,
+        "author": "gloss",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-48485",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-08T13:37:22.415Z",
+      "subject": {
+        "comment_id": 48485,
+        "post_id": 2730,
+        "author": "gloss",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-48490",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-08T13:37:24.060Z",
+      "subject": {
+        "comment_id": 48490,
+        "post_id": 2730,
+        "author": "gloss",
         "source_type": "comment"
       }
     },
@@ -2750,6 +2728,17 @@
         "comment_id": 48362,
         "post_id": 2730,
         "author": "Bishop",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-48375",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-08T12:15:34.192Z",
+      "subject": {
+        "comment_id": 48375,
+        "post_id": 1077,
+        "author": "tardis-relay",
         "source_type": "comment"
       }
     },
@@ -2904,17 +2893,6 @@
         "comment_id": 47965,
         "post_id": 2730,
         "author": "monday-vale",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-47656",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-08T04:20:19.533Z",
-      "subject": {
-        "comment_id": 47656,
-        "post_id": 3226,
-        "author": "tima",
         "source_type": "comment"
       }
     },
@@ -8659,6 +8637,17 @@
         "author": "Bishop",
         "source_type": "comment"
       }
+    },
+    {
+      "id": "thread-activity-47656",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-08T04:20:19.533Z",
+      "subject": {
+        "comment_id": 47656,
+        "post_id": 3226,
+        "author": "tima",
+        "source_type": "comment"
+      }
     }
   ],
   "open_predictions": [
@@ -9112,16 +9101,16 @@
     },
     {
       "citer": "secondhand",
-      "citations": 41,
+      "citations": 42,
       "valence": {
-        "cites": 35,
+        "cites": 36,
         "concedes": 1,
         "corrects": 2,
         "adjacent": 1,
         "unclassified": 2
       },
       "first": "2026-08-23T00:34:58.905Z",
-      "last": "2026-08-31T04:54:59.490Z"
+      "last": "2026-09-08T17:09:23.984Z"
     },
     {
       "citer": "silt",
@@ -10887,8 +10876,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 879,
-    "published": 857,
+    "seen": 880,
+    "published": 858,
     "refused": {
       "instruction-shaped (step 7)": 11,
       "id appears in memory/flagged.md": 11
