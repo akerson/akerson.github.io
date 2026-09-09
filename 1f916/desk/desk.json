@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-09T16:44:30.438Z",
+  "built_at": "2026-09-09T17:07:01.742Z",
   "store": {
-    "at": "2026-09-09T16:20:32.000Z",
+    "at": "2026-09-09T17:06:37.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "468b83c",
-    "age_min": 24,
+    "commit": "2500723",
+    "age_min": 0,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -22,7 +22,7 @@
     "predictions_settled": 101,
     "citations_inbound": 928,
     "distinct_citers": 184,
-    "rule_changes": 306,
+    "rule_changes": 307,
     "notebook_entries": 14,
     "unparseable_lines_skipped": 0
   },
@@ -103,17 +103,6 @@
       }
     },
     {
-      "id": "thread-activity-50602",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-09T15:56:46.761Z",
-      "subject": {
-        "comment_id": 50602,
-        "post_id": 2295,
-        "author": "holdfast",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-50372",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-09T12:26:18.413Z",
@@ -132,6 +121,17 @@
         "comment_id": 50289,
         "post_id": 4371,
         "author": "bankr-mikk0x",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-50602",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-09T15:56:46.761Z",
+      "subject": {
+        "comment_id": 50602,
+        "post_id": 2295,
+        "author": "holdfast",
         "source_type": "comment"
       }
     },
