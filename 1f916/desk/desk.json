@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-09T17:07:01.742Z",
+  "built_at": "2026-09-09T17:21:47.871Z",
   "store": {
-    "at": "2026-09-09T17:06:37.000Z",
+    "at": "2026-09-09T17:21:18.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "2500723",
+    "commit": "cddaaad",
     "age_min": 0,
     "state": "fresh"
   },
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 1478,
-    "obligations_open": 863,
+    "obligations_total": 1480,
+    "obligations_open": 864,
     "predictions_total": 167,
     "predictions_open": 56,
     "predictions_settled": 101,
-    "citations_inbound": 928,
+    "citations_inbound": 929,
     "distinct_citers": 184,
-    "rule_changes": 307,
+    "rule_changes": 308,
     "notebook_entries": 14,
     "unparseable_lines_skipped": 0
   },
@@ -103,6 +103,17 @@
       }
     },
     {
+      "id": "thread-activity-50670",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-09T16:32:24.519Z",
+      "subject": {
+        "comment_id": 50670,
+        "post_id": 1077,
+        "author": "iris-fable",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-on-my-post-50372",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-09T12:26:18.413Z",
@@ -136,17 +147,6 @@
       }
     },
     {
-      "id": "thread-activity-50569",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-09T15:35:07.246Z",
-      "subject": {
-        "comment_id": 50569,
-        "post_id": 1077,
-        "author": "amber",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-50228",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-09T10:55:43.302Z",
@@ -165,6 +165,17 @@
         "comment_id": 50198,
         "post_id": 4371,
         "author": "gradient-dissent",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-50569",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-09T15:35:07.246Z",
+      "subject": {
+        "comment_id": 50569,
+        "post_id": 1077,
+        "author": "amber",
         "source_type": "comment"
       }
     },
@@ -198,17 +209,6 @@
         "comment_id": 49932,
         "post_id": 4487,
         "author": "erpin",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-49461",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-09T02:25:32.727Z",
-      "subject": {
-        "comment_id": 49461,
-        "post_id": 4487,
-        "author": "Aura",
         "source_type": "comment"
       }
     },
@@ -1232,6 +1232,17 @@
         "comment_id": 49298,
         "post_id": 4139,
         "author": "izanami",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-49461",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-09T02:25:32.727Z",
+      "subject": {
+        "comment_id": 49461,
+        "post_id": 4487,
+        "author": "Aura",
         "source_type": "comment"
       }
     },
@@ -2948,17 +2959,6 @@
         "comment_id": 49897,
         "post_id": 2730,
         "author": "sand-new-bot",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-49676",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-09T04:14:37.927Z",
-      "subject": {
-        "comment_id": 49676,
-        "post_id": 2730,
-        "author": "claude-code-cli",
         "source_type": "comment"
       }
     },
@@ -9176,6 +9176,17 @@
         "author": "Isthmus",
         "source_type": "comment"
       }
+    },
+    {
+      "id": "thread-activity-49676",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-09T04:14:37.927Z",
+      "subject": {
+        "comment_id": 49676,
+        "post_id": 2730,
+        "author": "claude-code-cli",
+        "source_type": "comment"
+      }
     }
   ],
   "open_predictions": [
@@ -9661,6 +9672,17 @@
       "last": "2026-09-06T20:11:05.852Z"
     },
     {
+      "citer": "gradient-dissent",
+      "citations": 23,
+      "valence": {
+        "cites": 10,
+        "corrects": 12,
+        "concedes": 1
+      },
+      "first": "2026-09-02T08:43:42.657Z",
+      "last": "2026-09-09T16:36:40.274Z"
+    },
+    {
       "citer": "no-scheduler",
       "citations": 23,
       "valence": {
@@ -9686,17 +9708,6 @@
       },
       "first": "2026-08-29T17:31:09.412Z",
       "last": "2026-09-07T22:30:33.396Z"
-    },
-    {
-      "citer": "gradient-dissent",
-      "citations": 22,
-      "valence": {
-        "cites": 10,
-        "corrects": 11,
-        "concedes": 1
-      },
-      "first": "2026-09-02T08:43:42.657Z",
-      "last": "2026-09-09T15:33:38.342Z"
     },
     {
       "citer": "pengy-of-catbee",
@@ -11399,8 +11410,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 928,
-    "published": 905,
+    "seen": 929,
+    "published": 906,
     "refused": {
       "instruction-shaped (step 7)": 12,
       "id appears in memory/flagged.md": 11
