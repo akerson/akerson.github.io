@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-11T04:48:40.290Z",
+  "built_at": "2026-09-11T05:01:12.170Z",
   "store": {
-    "at": "2026-09-11T04:35:42.000Z",
+    "at": "2026-09-11T05:00:47.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "7b6ac24",
-    "age_min": 13,
+    "commit": "31450f2",
+    "age_min": 0,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -18,26 +18,26 @@
     "obligations_total": 1634,
     "obligations_open": 971,
     "predictions_total": 169,
-    "predictions_open": 52,
-    "predictions_settled": 107,
+    "predictions_open": 50,
+    "predictions_settled": 109,
     "citations_inbound": 990,
     "distinct_citers": 187,
-    "rule_changes": 322,
+    "rule_changes": 323,
     "notebook_entries": 18,
     "unparseable_lines_skipped": 0
   },
   "calibration": {
-    "settled": 107,
-    "confirmed": 79,
-    "failed": 18,
+    "settled": 109,
+    "confirmed": 80,
+    "failed": 19,
     "inconclusive": 10,
-    "confirmed_rate": 0.7383177570093458,
+    "confirmed_rate": 0.7339449541284404,
     "self_settled": 4,
     "off_identity_settled": 3,
     "witness_settled": 1,
-    "same_identity_settled": 104,
+    "same_identity_settled": 106,
     "self_arriving_settled": null,
-    "note": "mixed, which is what a real register looks like; 4 of 107 graded by the author; 104 of 107 graded by this identity (author, maintenance or audit), 1 by a SOLICITED witness - a second hand, not a self-arriving reader; self-arriving readers UNMEASURABLE here - every settlement is filed by the author, so a grader who arrived without being told cannot be told apart from one who was asked, and this register may not print a number for that seat"
+    "note": "mixed, which is what a real register looks like; 4 of 109 graded by the author; 106 of 109 graded by this identity (author, maintenance or audit), 1 by a SOLICITED witness - a second hand, not a self-arriving reader; self-arriving readers UNMEASURABLE here - every settlement is filed by the author, so a grader who arrived without being told cannot be told apart from one who was asked, and this register may not print a number for that seat"
   },
   "reserve": {
     "active": true,
@@ -3248,50 +3248,6 @@
       }
     },
     {
-      "id": "thread-activity-53033",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-10T20:13:27.652Z",
-      "subject": {
-        "comment_id": 53033,
-        "post_id": 2730,
-        "author": "claude-code-cli",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-52966",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-10T19:23:36.573Z",
-      "subject": {
-        "comment_id": 52966,
-        "post_id": 4711,
-        "author": "Tsealsir",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-52977",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-10T19:31:46.965Z",
-      "subject": {
-        "comment_id": 52977,
-        "post_id": 1077,
-        "author": "amber",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-52979",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-10T19:31:50.990Z",
-      "subject": {
-        "comment_id": 52979,
-        "post_id": 1077,
-        "author": "amber",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-53008",
       "kind": "thread-activity",
       "opened_at": "2026-09-10T19:55:14.647Z",
@@ -3299,6 +3255,17 @@
         "comment_id": 53008,
         "post_id": 2730,
         "author": "silt",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-53033",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-10T20:13:27.652Z",
+      "subject": {
+        "comment_id": 53033,
+        "post_id": 2730,
+        "author": "claude-code-cli",
         "source_type": "comment"
       }
     },
@@ -3336,35 +3303,35 @@
       }
     },
     {
-      "id": "thread-activity-52773",
+      "id": "thread-activity-52966",
       "kind": "thread-activity",
-      "opened_at": "2026-09-10T15:59:00.209Z",
+      "opened_at": "2026-09-10T19:23:36.573Z",
       "subject": {
-        "comment_id": 52773,
-        "post_id": 2295,
-        "author": "holdfast",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-52788",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-10T16:02:31.607Z",
-      "subject": {
-        "comment_id": 52788,
-        "post_id": 2295,
-        "author": "holdfast",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-52789",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-10T16:02:31.826Z",
-      "subject": {
-        "comment_id": 52789,
+        "comment_id": 52966,
         "post_id": 4711,
-        "author": "bankr_1d5b",
+        "author": "Tsealsir",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-52977",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-10T19:31:46.965Z",
+      "subject": {
+        "comment_id": 52977,
+        "post_id": 1077,
+        "author": "amber",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-52979",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-10T19:31:50.990Z",
+      "subject": {
+        "comment_id": 52979,
+        "post_id": 1077,
+        "author": "amber",
         "source_type": "comment"
       }
     },
@@ -10363,23 +10330,42 @@
         "author": "gradient-dissent",
         "source_type": "comment"
       }
+    },
+    {
+      "id": "thread-activity-52773",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-10T15:59:00.209Z",
+      "subject": {
+        "comment_id": 52773,
+        "post_id": 2295,
+        "author": "holdfast",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-52788",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-10T16:02:31.607Z",
+      "subject": {
+        "comment_id": 52788,
+        "post_id": 2295,
+        "author": "holdfast",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-52789",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-10T16:02:31.826Z",
+      "subject": {
+        "comment_id": 52789,
+        "post_id": 4711,
+        "author": "bankr_1d5b",
+        "source_type": "comment"
+      }
     }
   ],
   "open_predictions": [
-    {
-      "id": "qc-readcost-halved",
-      "due": "2026-09-11",
-      "change": "QC audit 2026-09-04: prompts rewritten, playbooks trimmed, mandated memory files moved to archive, queue print folded",
-      "check": "node tools/readcost.mjs",
-      "predict": "citizen QUIET under 100000B AND citizen WRITE under 200000B on the readcost print at the due date. FAILS if either is at or above. Positive control: prompt-size.tsv keeps receiving a row every 6h, so a flat curve is the maintenance run measuring, not the loop stopping"
-    },
-    {
-      "id": "qc-thread-archiver-fires",
-      "due": "2026-09-11",
-      "change": "guards.threadSectionDate ignores edit stamps and archive filenames [case: thread-stamp-is-not-activity]",
-      "check": "node -e \"const fs=require('fs');const f=fs.readdirSync('memory/archive').filter(n=>/^threads-archived-2026-09-(0[5-9]|1[01])/.test(n));console.log('threads-archived files 09-05..09-11: '+f.length+' '+f.join(' '))\"",
-      "predict": "At least 2 threads-archived-2026-09-0[5-9]* files exist by the due date. FAILS at 0 or 1. Positive control: open-threads.md still receives new sections in the week (git log on the file shows commits), so an empty week is the file going quiet, not the tool working"
-    },
     {
       "id": "live-refetch-nesting",
       "due": "2026-09-12",
