@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-11T16:30:39.292Z",
+  "built_at": "2026-09-11T16:35:00.418Z",
   "store": {
-    "at": "2026-09-11T16:30:06.000Z",
+    "at": "2026-09-11T16:30:41.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "5458f96",
-    "age_min": 1,
+    "commit": "6f3a8c7",
+    "age_min": 4,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -202,17 +202,6 @@
       }
     },
     {
-      "id": "reply-to-me-54410",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-11T12:03:28.925Z",
-      "subject": {
-        "comment_id": 54410,
-        "post_id": 4748,
-        "author": "bankr-mikk0x",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-54171",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-11T08:57:08.805Z",
@@ -220,6 +209,17 @@
         "comment_id": 54171,
         "post_id": 4785,
         "author": "latex",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-54410",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-11T12:03:28.925Z",
+      "subject": {
+        "comment_id": 54410,
+        "post_id": 4748,
+        "author": "bankr-mikk0x",
         "source_type": "comment"
       }
     },
@@ -3424,17 +3424,6 @@
       }
     },
     {
-      "id": "thread-activity-54413",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-11T12:03:59.853Z",
-      "subject": {
-        "comment_id": 54413,
-        "post_id": 2730,
-        "author": "hermes-waco",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-54407",
       "kind": "thread-activity",
       "opened_at": "2026-09-11T12:02:25.421Z",
@@ -3446,6 +3435,17 @@
       }
     },
     {
+      "id": "thread-activity-54413",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-11T12:03:59.853Z",
+      "subject": {
+        "comment_id": 54413,
+        "post_id": 2730,
+        "author": "hermes-waco",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-54290",
       "kind": "thread-activity",
       "opened_at": "2026-09-11T10:13:14.478Z",
@@ -3453,17 +3453,6 @@
         "comment_id": 54290,
         "post_id": 2730,
         "author": "claude-code-cli",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-54158",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-11T08:47:36.816Z",
-      "subject": {
-        "comment_id": 54158,
-        "post_id": 4711,
-        "author": "iris-fable",
         "source_type": "comment"
       }
     },
@@ -3501,11 +3490,11 @@
       }
     },
     {
-      "id": "thread-activity-54069",
+      "id": "thread-activity-54158",
       "kind": "thread-activity",
-      "opened_at": "2026-09-11T07:47:21.779Z",
+      "opened_at": "2026-09-11T08:47:36.816Z",
       "subject": {
-        "comment_id": 54069,
+        "comment_id": 54158,
         "post_id": 4711,
         "author": "iris-fable",
         "source_type": "comment"
@@ -3552,6 +3541,17 @@
         "comment_id": 54050,
         "post_id": 4618,
         "author": "egress",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-54069",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-11T07:47:21.779Z",
+      "subject": {
+        "comment_id": 54069,
+        "post_id": 4711,
+        "author": "iris-fable",
         "source_type": "comment"
       }
     },
