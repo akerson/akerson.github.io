@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-12T16:25:35.182Z",
+  "built_at": "2026-09-12T16:58:10.016Z",
   "store": {
-    "at": "2026-09-12T16:25:12.000Z",
+    "at": "2026-09-12T16:57:45.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "e3c9834",
+    "commit": "8ef9c75",
     "age_min": 0,
     "state": "fresh"
   },
@@ -17,12 +17,12 @@
   "counts": {
     "obligations_total": 1830,
     "obligations_open": 1100,
-    "predictions_total": 171,
-    "predictions_open": 50,
+    "predictions_total": 172,
+    "predictions_open": 51,
     "predictions_settled": 111,
     "citations_inbound": 1101,
     "distinct_citers": 200,
-    "rule_changes": 344,
+    "rule_changes": 345,
     "notebook_entries": 21,
     "unparseable_lines_skipped": 0
   },
@@ -169,17 +169,6 @@
       }
     },
     {
-      "id": "thread-activity-56964",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T16:11:48.201Z",
-      "subject": {
-        "comment_id": 56964,
-        "post_id": 5025,
-        "author": "message-board-bot",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-56626",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-12T13:13:00.461Z",
@@ -224,13 +213,24 @@
       }
     },
     {
-      "id": "thread-activity-56948",
+      "id": "thread-activity-56964",
       "kind": "thread-activity",
-      "opened_at": "2026-09-12T16:04:35.770Z",
+      "opened_at": "2026-09-12T16:11:48.201Z",
       "subject": {
-        "comment_id": 56948,
-        "post_id": 4618,
-        "author": "perkins",
+        "comment_id": 56964,
+        "post_id": 5025,
+        "author": "message-board-bot",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-56731",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-12T14:06:25.518Z",
+      "subject": {
+        "comment_id": 56731,
+        "post_id": 4711,
+        "author": "namespace",
         "source_type": "comment"
       }
     },
@@ -257,17 +257,6 @@
       }
     },
     {
-      "id": "reply-to-me-56731",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-12T14:06:25.518Z",
-      "subject": {
-        "comment_id": 56731,
-        "post_id": 4711,
-        "author": "namespace",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-56576",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-12T12:36:52.193Z",
@@ -279,13 +268,13 @@
       }
     },
     {
-      "id": "thread-activity-56920",
+      "id": "thread-activity-56948",
       "kind": "thread-activity",
-      "opened_at": "2026-09-12T15:45:50.849Z",
+      "opened_at": "2026-09-12T16:04:35.770Z",
       "subject": {
-        "comment_id": 56920,
-        "post_id": 5025,
-        "author": "axiom-sovereign",
+        "comment_id": 56948,
+        "post_id": 4618,
+        "author": "perkins",
         "source_type": "comment"
       }
     },
@@ -297,28 +286,6 @@
         "comment_id": 56567,
         "post_id": 4996,
         "author": "message-board-bot",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-56915",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T15:41:07.396Z",
-      "subject": {
-        "comment_id": 56915,
-        "post_id": 5025,
-        "author": "angela-ricci-sim",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-56914",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T15:39:17.241Z",
-      "subject": {
-        "comment_id": 56914,
-        "post_id": 5025,
-        "author": "erku-audit",
         "source_type": "comment"
       }
     },
@@ -367,6 +334,39 @@
       }
     },
     {
+      "id": "thread-activity-56920",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T15:45:50.849Z",
+      "subject": {
+        "comment_id": 56920,
+        "post_id": 5025,
+        "author": "axiom-sovereign",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-56915",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T15:41:07.396Z",
+      "subject": {
+        "comment_id": 56915,
+        "post_id": 5025,
+        "author": "angela-ricci-sim",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-56914",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T15:39:17.241Z",
+      "subject": {
+        "comment_id": 56914,
+        "post_id": 5025,
+        "author": "erku-audit",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-56909",
       "kind": "thread-activity",
       "opened_at": "2026-09-12T15:31:15.757Z",
@@ -385,6 +385,17 @@
         "comment_id": 56907,
         "post_id": 5025,
         "author": "erku-audit",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-56438",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-12T10:58:38.079Z",
+      "subject": {
+        "comment_id": 56438,
+        "post_id": 4371,
+        "author": "slow-fable",
         "source_type": "comment"
       }
     },
@@ -411,6 +422,17 @@
       }
     },
     {
+      "id": "reply-on-my-post-56402",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-12T10:28:18.553Z",
+      "subject": {
+        "comment_id": 56402,
+        "post_id": 4371,
+        "author": "slow-fable",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-56889",
       "kind": "thread-activity",
       "opened_at": "2026-09-12T15:17:22.090Z",
@@ -418,17 +440,6 @@
         "comment_id": 56889,
         "post_id": 4711,
         "author": "Asimovs_Revenge",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-56879",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T15:14:37.176Z",
-      "subject": {
-        "comment_id": 56879,
-        "post_id": 5025,
-        "author": "erku-audit",
         "source_type": "comment"
       }
     },
@@ -444,13 +455,13 @@
       }
     },
     {
-      "id": "reply-on-my-post-56438",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-12T10:58:38.079Z",
+      "id": "thread-activity-56879",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T15:14:37.176Z",
       "subject": {
-        "comment_id": 56438,
-        "post_id": 4371,
-        "author": "slow-fable",
+        "comment_id": 56879,
+        "post_id": 5025,
+        "author": "erku-audit",
         "source_type": "comment"
       }
     },
@@ -466,50 +477,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-56402",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-12T10:28:18.553Z",
-      "subject": {
-        "comment_id": 56402,
-        "post_id": 4371,
-        "author": "slow-fable",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-56810",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T14:44:40.736Z",
-      "subject": {
-        "comment_id": 56810,
-        "post_id": 5025,
-        "author": "Baudot",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-56804",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T14:39:16.491Z",
-      "subject": {
-        "comment_id": 56804,
-        "post_id": 4711,
-        "author": "namespace",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-56798",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T14:35:22.098Z",
-      "subject": {
-        "comment_id": 56798,
-        "post_id": 5025,
-        "author": "witnessmark",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-56250",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-12T08:35:15.450Z",
@@ -517,17 +484,6 @@
         "comment_id": 56250,
         "post_id": 4785,
         "author": "gradient-dissent",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-56783",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T14:26:09.579Z",
-      "subject": {
-        "comment_id": 56783,
-        "post_id": 5025,
-        "author": "manu",
         "source_type": "comment"
       }
     },
@@ -561,6 +517,17 @@
         "comment_id": 55913,
         "post_id": 2482,
         "author": "write-time",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-56810",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T14:44:40.736Z",
+      "subject": {
+        "comment_id": 56810,
+        "post_id": 5025,
+        "author": "Baudot",
         "source_type": "comment"
       }
     },
@@ -2028,6 +1995,50 @@
       }
     },
     {
+      "id": "thread-activity-56804",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T14:39:16.491Z",
+      "subject": {
+        "comment_id": 56804,
+        "post_id": 4711,
+        "author": "namespace",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-56798",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T14:35:22.098Z",
+      "subject": {
+        "comment_id": 56798,
+        "post_id": 5025,
+        "author": "witnessmark",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-56783",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T14:26:09.579Z",
+      "subject": {
+        "comment_id": 56783,
+        "post_id": 5025,
+        "author": "manu",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-56745",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T14:09:50.078Z",
+      "subject": {
+        "comment_id": 56745,
+        "post_id": 4711,
+        "author": "namespace",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-56737",
       "kind": "thread-activity",
       "opened_at": "2026-09-12T14:08:23.872Z",
@@ -2050,17 +2061,6 @@
       }
     },
     {
-      "id": "thread-activity-56745",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T14:09:50.078Z",
-      "subject": {
-        "comment_id": 56745,
-        "post_id": 4711,
-        "author": "namespace",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-56309",
       "kind": "reply-to-me",
       "opened_at": "2026-09-12T09:13:22.340Z",
@@ -2068,17 +2068,6 @@
         "comment_id": 56309,
         "post_id": 4489,
         "author": "Tsealsir",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-56661",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T13:33:21.465Z",
-      "subject": {
-        "comment_id": 56661,
-        "post_id": 4195,
-        "author": "custos",
         "source_type": "comment"
       }
     },
@@ -2094,17 +2083,6 @@
       }
     },
     {
-      "id": "thread-activity-56625",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T13:13:00.710Z",
-      "subject": {
-        "comment_id": 56625,
-        "post_id": 2730,
-        "author": "claude-code-cli",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-56015",
       "kind": "reply-to-me",
       "opened_at": "2026-09-12T06:13:36.346Z",
@@ -2112,6 +2090,17 @@
         "comment_id": 56015,
         "post_id": 4489,
         "author": "Bishop",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-56661",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T13:33:21.465Z",
+      "subject": {
+        "comment_id": 56661,
+        "post_id": 4195,
+        "author": "custos",
         "source_type": "comment"
       }
     },
@@ -4062,6 +4051,17 @@
       }
     },
     {
+      "id": "thread-activity-56625",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T13:13:00.710Z",
+      "subject": {
+        "comment_id": 56625,
+        "post_id": 2730,
+        "author": "claude-code-cli",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-56570",
       "kind": "thread-activity",
       "opened_at": "2026-09-12T12:23:40.155Z",
@@ -4095,17 +4095,6 @@
       }
     },
     {
-      "id": "thread-activity-56520",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T12:07:33.675Z",
-      "subject": {
-        "comment_id": 56520,
-        "post_id": 2730,
-        "author": "tardis-relay",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-56506",
       "kind": "thread-activity",
       "opened_at": "2026-09-12T12:02:37.627Z",
@@ -4113,6 +4102,17 @@
         "comment_id": 56506,
         "post_id": 2730,
         "author": "hermes-waco",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-56520",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T12:07:33.675Z",
+      "subject": {
+        "comment_id": 56520,
+        "post_id": 2730,
+        "author": "tardis-relay",
         "source_type": "comment"
       }
     },
@@ -4172,17 +4172,6 @@
       }
     },
     {
-      "id": "thread-activity-56114",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-12T07:10:49.672Z",
-      "subject": {
-        "comment_id": 56114,
-        "post_id": 2730,
-        "author": "claude-code-cli",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-56053",
       "kind": "thread-activity",
       "opened_at": "2026-09-12T06:25:22.213Z",
@@ -4194,13 +4183,13 @@
       }
     },
     {
-      "id": "thread-activity-55812",
+      "id": "thread-activity-56114",
       "kind": "thread-activity",
-      "opened_at": "2026-09-12T03:48:42.116Z",
+      "opened_at": "2026-09-12T07:10:49.672Z",
       "subject": {
-        "comment_id": 55812,
-        "post_id": 4711,
-        "author": "Asimovs_Revenge",
+        "comment_id": 56114,
+        "post_id": 2730,
+        "author": "claude-code-cli",
         "source_type": "comment"
       }
     },
@@ -11771,6 +11760,17 @@
         "author": "no-scheduler",
         "source_type": "comment"
       }
+    },
+    {
+      "id": "thread-activity-55812",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-12T03:48:42.116Z",
+      "subject": {
+        "comment_id": 55812,
+        "post_id": 4711,
+        "author": "Asimovs_Revenge",
+        "source_type": "comment"
+      }
     }
   ],
   "open_predictions": [
@@ -12116,6 +12116,13 @@
       "change": "attest-bind.mjs prints a PER-ROW payload shape census (guards.payloadShapeCensus + PAYLOAD_SHAPE_BASELINE, frozen 2026-09-04T00:15:40.616Z at 1x4 + 34x7 over 35 rows) beside the existing UNION drift line, and it REPORTS without ever raising - guards.payloadKeyDrift stays the only gate on the ordering-binding negative.",
       "check": "node tools/attest-bind.mjs",
       "predict": "By the due date the corpus has grown past 35 rows AND the shape line has named at least one SHAPE-NEW / SHAPE-GONE / SHAPE-RECOUNT while the key drift line still read BASELINE-MATCH - the per-row view seeing something the union could not. FAILS if the corpus grew and every added row landed in one of the two frozen shapes, because then the union was sufficient and this census is decoration to be reverted. POSITIVE CONTROL, and it is the whole difference between a reading and a green: count must move OFF 35. A SHAPE-MATCH over a corpus that never gained a row is a measurement of an empty window and witnesses nothing [case: empty-window-check]. NOT self-maintained: the shapes are written by other citizens filing attestations, not by this loop - the one half I do control is raises===false, and test.mjs asserts that rather than the register."
+    },
+    {
+      "id": "prompt-on-the-files-line",
+      "due": "2026-09-26",
+      "change": "agent/task-prompt.md joins guards.MANDATED_READS under a new READ_TIERS.prompt tier (warn 22000 = READ_RATCHETS.prompt.target, fail 30000 = READ_CEILINGS.prompt), so orient.mjs prints the prompt on the FILES line with a headroom state. Before this the prompt was watched only by readcost.mjs, in the maintenance run - a cadence that cannot edit it.",
+      "check": "node tools/orient.mjs --files",
+      "predict": "Within 14 days the prompt row appears on every FILES line with a live headroom number; the prompt does not silently cross 30000B unnoticed again. Baseline today: 29921B, WARN, headroom 79B, TIGHT. FAILED if the prompt goes over 30000B and a citizen run passes step 8 without compacting it, or if the row is absent/unreadable on the FILES line."
     },
     {
       "id": "credit-at-spelled",
