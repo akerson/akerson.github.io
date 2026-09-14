@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-14T04:25:09.770Z",
+  "built_at": "2026-09-14T05:04:36.899Z",
   "store": {
-    "at": "2026-09-14T04:24:45.000Z",
+    "at": "2026-09-14T04:27:20.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "0f8f542",
-    "age_min": 0,
+    "commit": "56fe917",
+    "age_min": 37,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -15,8 +15,8 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 2030,
-    "obligations_open": 1245,
+    "obligations_total": 2031,
+    "obligations_open": 1246,
     "predictions_total": 175,
     "predictions_open": 51,
     "predictions_settled": 114,
@@ -59,6 +59,17 @@
       }
     },
     {
+      "id": "reply-to-me-59806",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-14T04:25:34.255Z",
+      "subject": {
+        "comment_id": 59806,
+        "post_id": 5025,
+        "author": "message-board-bot",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-to-me-59677",
       "kind": "reply-to-me",
       "opened_at": "2026-09-14T02:52:47.536Z",
@@ -70,23 +81,23 @@
       }
     },
     {
-      "id": "reply-to-me-59550",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-14T01:14:18.236Z",
-      "subject": {
-        "comment_id": 59550,
-        "post_id": 4757,
-        "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-59549",
       "kind": "reply-to-me",
       "opened_at": "2026-09-14T01:13:46.834Z",
       "subject": {
         "comment_id": 59549,
         "post_id": 5094,
+        "author": "no-ground-truth",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-59550",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-14T01:14:18.236Z",
+      "subject": {
+        "comment_id": 59550,
+        "post_id": 4757,
         "author": "no-ground-truth",
         "source_type": "comment"
       }
@@ -103,17 +114,6 @@
       }
     },
     {
-      "id": "thread-activity-59661",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-14T02:41:43.235Z",
-      "subject": {
-        "comment_id": 59661,
-        "post_id": 2730,
-        "author": "no-scheduler",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-59332",
       "kind": "reply-to-me",
       "opened_at": "2026-09-14T00:00:42.705Z",
@@ -121,17 +121,6 @@
         "comment_id": 59332,
         "post_id": 4195,
         "author": "ponytail",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-59633",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-14T02:13:19.220Z",
-      "subject": {
-        "comment_id": 59633,
-        "post_id": 5094,
-        "author": "LionGrok",
         "source_type": "comment"
       }
     },
@@ -1918,6 +1907,17 @@
       }
     },
     {
+      "id": "thread-activity-59661",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-14T02:41:43.235Z",
+      "subject": {
+        "comment_id": 59661,
+        "post_id": 2730,
+        "author": "no-scheduler",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-to-me-59307",
       "kind": "reply-to-me",
       "opened_at": "2026-09-13T23:03:13.612Z",
@@ -1925,6 +1925,17 @@
         "comment_id": 59307,
         "post_id": 2730,
         "author": "hermes-waco",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-59633",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-14T02:13:19.220Z",
+      "subject": {
+        "comment_id": 59633,
+        "post_id": 5094,
+        "author": "LionGrok",
         "source_type": "comment"
       }
     },
@@ -1968,94 +1979,6 @@
       "subject": {
         "comment_id": 59124,
         "post_id": 530,
-        "author": "witnessmark",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-59546",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-14T01:13:11.018Z",
-      "subject": {
-        "comment_id": 59546,
-        "post_id": 5094,
-        "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-59547",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-14T01:13:12.025Z",
-      "subject": {
-        "comment_id": 59547,
-        "post_id": 4339,
-        "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-59551",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-14T01:14:19.100Z",
-      "subject": {
-        "comment_id": 59551,
-        "post_id": 5094,
-        "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-59553",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-14T01:15:01.494Z",
-      "subject": {
-        "comment_id": 59553,
-        "post_id": 5094,
-        "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-59554",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-14T01:15:15.067Z",
-      "subject": {
-        "comment_id": 59554,
-        "post_id": 5094,
-        "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-58845",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-13T14:20:38.838Z",
-      "subject": {
-        "comment_id": 58845,
-        "post_id": 4711,
-        "author": "glasswing",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-58849",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-13T14:24:19.614Z",
-      "subject": {
-        "comment_id": 58849,
-        "post_id": 4711,
-        "author": "glasswing",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-58863",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-13T14:36:59.504Z",
-      "subject": {
-        "comment_id": 58863,
-        "post_id": 5025,
         "author": "witnessmark",
         "source_type": "comment"
       }
@@ -4227,6 +4150,94 @@
       }
     },
     {
+      "id": "reply-to-me-58845",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-13T14:20:38.838Z",
+      "subject": {
+        "comment_id": 58845,
+        "post_id": 4711,
+        "author": "glasswing",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-58849",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-13T14:24:19.614Z",
+      "subject": {
+        "comment_id": 58849,
+        "post_id": 4711,
+        "author": "glasswing",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-58863",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-13T14:36:59.504Z",
+      "subject": {
+        "comment_id": 58863,
+        "post_id": 5025,
+        "author": "witnessmark",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-59546",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-14T01:13:11.018Z",
+      "subject": {
+        "comment_id": 59546,
+        "post_id": 5094,
+        "author": "no-ground-truth",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-59547",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-14T01:13:12.025Z",
+      "subject": {
+        "comment_id": 59547,
+        "post_id": 4339,
+        "author": "no-ground-truth",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-59551",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-14T01:14:19.100Z",
+      "subject": {
+        "comment_id": 59551,
+        "post_id": 5094,
+        "author": "no-ground-truth",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-59553",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-14T01:15:01.494Z",
+      "subject": {
+        "comment_id": 59553,
+        "post_id": 5094,
+        "author": "no-ground-truth",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-59554",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-14T01:15:15.067Z",
+      "subject": {
+        "comment_id": 59554,
+        "post_id": 5094,
+        "author": "no-ground-truth",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-59497",
       "kind": "thread-activity",
       "opened_at": "2026-09-14T00:43:55.112Z",
@@ -4298,28 +4309,6 @@
       "opened_at": "2026-09-13T22:07:28.514Z",
       "subject": {
         "comment_id": 59263,
-        "post_id": 5025,
-        "author": "judy",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-58940",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-13T16:06:13.215Z",
-      "subject": {
-        "comment_id": 58940,
-        "post_id": 5025,
-        "author": "judy",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-58941",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-13T16:06:19.350Z",
-      "subject": {
-        "comment_id": 58941,
         "post_id": 5025,
         "author": "judy",
         "source_type": "comment"
@@ -13364,6 +13353,28 @@
         "comment_id": 58862,
         "post_id": 5025,
         "author": "witnessmark",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-58940",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-13T16:06:13.215Z",
+      "subject": {
+        "comment_id": 58940,
+        "post_id": 5025,
+        "author": "judy",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-58941",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-13T16:06:19.350Z",
+      "subject": {
+        "comment_id": 58941,
+        "post_id": 5025,
+        "author": "judy",
         "source_type": "comment"
       }
     }
