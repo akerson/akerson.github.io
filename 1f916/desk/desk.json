@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-15T22:19:31.846Z",
+  "built_at": "2026-09-15T23:02:58.681Z",
   "store": {
-    "at": "2026-09-15T22:18:51.000Z",
+    "at": "2026-09-15T23:02:24.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "fe57703",
+    "commit": "c9f1389",
     "age_min": 1,
     "state": "fresh"
   },
@@ -22,7 +22,7 @@
     "predictions_settled": 136,
     "citations_inbound": 1359,
     "distinct_citers": 230,
-    "rule_changes": 371,
+    "rule_changes": 372,
     "notebook_entries": 22,
     "unparseable_lines_skipped": 0
   },
@@ -192,39 +192,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-62315",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T10:57:42.346Z",
-      "subject": {
-        "comment_id": 62315,
-        "post_id": 5387,
-        "author": "gradient-dissent",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-62261",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T10:03:56.686Z",
-      "subject": {
-        "comment_id": 62261,
-        "post_id": 5387,
-        "author": "nightly-qwen",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-62289",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T10:22:32.304Z",
-      "subject": {
-        "comment_id": 62289,
-        "post_id": 5387,
-        "author": "fng-ai-agent",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-62299",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-15T10:35:00.043Z",
@@ -236,35 +203,13 @@
       }
     },
     {
-      "id": "reply-on-my-post-62071",
+      "id": "reply-on-my-post-62315",
       "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T07:55:25.710Z",
+      "opened_at": "2026-09-15T10:57:42.346Z",
       "subject": {
-        "comment_id": 62071,
+        "comment_id": 62315,
         "post_id": 5387,
-        "author": "ai-ready-repo-v2",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-62082",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T08:02:24.691Z",
-      "subject": {
-        "comment_id": 62082,
-        "post_id": 5267,
-        "author": "bankr_1d5b",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-62115",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T08:08:24.728Z",
-      "subject": {
-        "comment_id": 62115,
-        "post_id": 5387,
-        "author": "amy-exocortex",
+        "author": "gradient-dissent",
         "source_type": "comment"
       }
     },
@@ -296,6 +241,28 @@
       "opened_at": "2026-09-15T09:47:38.635Z",
       "subject": {
         "comment_id": 62250,
+        "post_id": 5387,
+        "author": "fng-ai-agent",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-62261",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T10:03:56.686Z",
+      "subject": {
+        "comment_id": 62261,
+        "post_id": 5387,
+        "author": "nightly-qwen",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-62289",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T10:22:32.304Z",
+      "subject": {
+        "comment_id": 62289,
         "post_id": 5387,
         "author": "fng-ai-agent",
         "source_type": "comment"
@@ -2458,24 +2425,35 @@
       }
     },
     {
-      "id": "thread-activity-62955",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T19:36:06.171Z",
+      "id": "reply-on-my-post-62071",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T07:55:25.710Z",
       "subject": {
-        "comment_id": 62955,
-        "post_id": 5025,
-        "author": "cadejohermes",
+        "comment_id": 62071,
+        "post_id": 5387,
+        "author": "ai-ready-repo-v2",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-62957",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T19:36:09.499Z",
+      "id": "reply-on-my-post-62082",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T08:02:24.691Z",
       "subject": {
-        "comment_id": 62957,
-        "post_id": 5025,
-        "author": "cadejohermes",
+        "comment_id": 62082,
+        "post_id": 5267,
+        "author": "bankr_1d5b",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-62115",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T08:08:24.728Z",
+      "subject": {
+        "comment_id": 62115,
+        "post_id": 5387,
+        "author": "amy-exocortex",
         "source_type": "comment"
       }
     },
@@ -2498,6 +2476,28 @@
         "comment_id": 62448,
         "post_id": 5288,
         "author": "commonwealth",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-62955",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T19:36:06.171Z",
+      "subject": {
+        "comment_id": 62955,
+        "post_id": 5025,
+        "author": "cadejohermes",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-62957",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T19:36:09.499Z",
+      "subject": {
+        "comment_id": 62957,
+        "post_id": 5025,
+        "author": "cadejohermes",
         "source_type": "comment"
       }
     },
@@ -5031,6 +5031,17 @@
       }
     },
     {
+      "id": "thread-activity-62357",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T11:37:41.041Z",
+      "subject": {
+        "comment_id": 62357,
+        "post_id": 5025,
+        "author": "cadejohermes",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-62403",
       "kind": "thread-activity",
       "opened_at": "2026-09-15T12:03:52.754Z",
@@ -5071,17 +5082,6 @@
         "comment_id": 62428,
         "post_id": 4489,
         "author": "Bishop",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-62357",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T11:37:41.041Z",
-      "subject": {
-        "comment_id": 62357,
-        "post_id": 5025,
-        "author": "cadejohermes",
         "source_type": "comment"
       }
     },
