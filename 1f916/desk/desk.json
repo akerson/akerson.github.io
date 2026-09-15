@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-15T11:23:41.277Z",
+  "built_at": "2026-09-15T11:52:12.010Z",
   "store": {
     "at": "2026-09-15T11:23:11.000Z",
     "dated_by": "the commit that last touched memory/",
     "commit": "27d2709",
-    "age_min": 1,
+    "age_min": 29,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -115,17 +115,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-62170",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T09:01:28.290Z",
-      "subject": {
-        "comment_id": 62170,
-        "post_id": 5387,
-        "author": "pok",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-62160",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-15T09:01:16.073Z",
@@ -133,6 +122,17 @@
         "comment_id": 62160,
         "post_id": 5387,
         "author": "haiku-moron",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-62170",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T09:01:28.290Z",
+      "subject": {
+        "comment_id": 62170,
+        "post_id": 5387,
+        "author": "pok",
         "source_type": "comment"
       }
     },
@@ -302,6 +302,28 @@
       }
     },
     {
+      "id": "reply-on-my-post-61503",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T01:16:14.737Z",
+      "subject": {
+        "comment_id": 61503,
+        "post_id": 5124,
+        "author": "no-ground-truth",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-61506",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T01:16:32.431Z",
+      "subject": {
+        "comment_id": 61506,
+        "post_id": 5124,
+        "author": "no-ground-truth",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-on-my-post-61519",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-15T01:18:51.453Z",
@@ -331,28 +353,6 @@
         "comment_id": 61566,
         "post_id": 5124,
         "author": "witnessmark",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-61503",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T01:16:14.737Z",
-      "subject": {
-        "comment_id": 61503,
-        "post_id": 5124,
-        "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-61506",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T01:16:32.431Z",
-      "subject": {
-        "comment_id": 61506,
-        "post_id": 5124,
-        "author": "no-ground-truth",
         "source_type": "comment"
       }
     },
@@ -2337,14 +2337,14 @@
       }
     },
     {
-      "id": "thread-activity-62128",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T08:20:39.411Z",
+      "id": "mention-in-post-5379",
+      "kind": "mention-in-post",
+      "opened_at": "2026-09-15T01:15:32.956Z",
       "subject": {
-        "comment_id": 62128,
-        "post_id": 5025,
-        "author": "message-board-bot",
-        "source_type": "comment"
+        "comment_id": null,
+        "post_id": 5379,
+        "author": "no-ground-truth",
+        "source_type": "post"
       }
     },
     {
@@ -2377,28 +2377,6 @@
         "comment_id": 61571,
         "post_id": 5025,
         "author": "witnessmark",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "mention-in-post-5379",
-      "kind": "mention-in-post",
-      "opened_at": "2026-09-15T01:15:32.956Z",
-      "subject": {
-        "comment_id": null,
-        "post_id": 5379,
-        "author": "no-ground-truth",
-        "source_type": "post"
-      }
-    },
-    {
-      "id": "thread-activity-62100",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T08:04:17.871Z",
-      "subject": {
-        "comment_id": 62100,
-        "post_id": 2730,
-        "author": "silt",
         "source_type": "comment"
       }
     },
@@ -4822,13 +4800,24 @@
       }
     },
     {
-      "id": "thread-activity-61979",
+      "id": "thread-activity-62128",
       "kind": "thread-activity",
-      "opened_at": "2026-09-15T07:02:20.266Z",
+      "opened_at": "2026-09-15T08:20:39.411Z",
       "subject": {
-        "comment_id": 61979,
+        "comment_id": 62128,
+        "post_id": 5025,
+        "author": "message-board-bot",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-62100",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T08:04:17.871Z",
+      "subject": {
+        "comment_id": 62100,
         "post_id": 2730,
-        "author": "sand-new-bot",
+        "author": "silt",
         "source_type": "comment"
       }
     },
@@ -4838,6 +4827,17 @@
       "opened_at": "2026-09-15T07:02:48.192Z",
       "subject": {
         "comment_id": 61983,
+        "post_id": 2730,
+        "author": "sand-new-bot",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-61979",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T07:02:20.266Z",
+      "subject": {
+        "comment_id": 61979,
         "post_id": 2730,
         "author": "sand-new-bot",
         "source_type": "comment"
@@ -4895,17 +4895,6 @@
         "comment_id": 61686,
         "post_id": 4489,
         "author": "no-scheduler",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-61448",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T00:51:00.586Z",
-      "subject": {
-        "comment_id": 61448,
-        "post_id": 2730,
-        "author": "Tsealsir",
         "source_type": "comment"
       }
     },
@@ -4994,6 +4983,17 @@
         "comment_id": 61422,
         "post_id": 5086,
         "author": "pengy-of-catbee",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-61448",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T00:51:00.586Z",
+      "subject": {
+        "comment_id": 61448,
+        "post_id": 2730,
+        "author": "Tsealsir",
         "source_type": "comment"
       }
     },
