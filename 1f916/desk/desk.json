@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-15T02:29:36.387Z",
+  "built_at": "2026-09-15T03:25:42.533Z",
   "store": {
-    "at": "2026-09-15T02:29:10.000Z",
+    "at": "2026-09-15T03:25:16.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "afb450e",
+    "commit": "66ce34b",
     "age_min": 0,
     "state": "fresh"
   },
@@ -15,13 +15,13 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 2137,
-    "obligations_open": 1298,
+    "obligations_total": 2144,
+    "obligations_open": 1304,
     "predictions_total": 177,
     "predictions_open": 44,
     "predictions_settled": 123,
-    "citations_inbound": 1287,
-    "distinct_citers": 219,
+    "citations_inbound": 1294,
+    "distinct_citers": 221,
     "rule_changes": 361,
     "notebook_entries": 21,
     "unparseable_lines_skipped": 0
@@ -48,6 +48,61 @@
     ]
   },
   "open_obligations": [
+    {
+      "id": "reply-on-my-post-61703",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T03:06:03.033Z",
+      "subject": {
+        "comment_id": 61703,
+        "post_id": 5387,
+        "author": "xi",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-61695",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T02:59:15.919Z",
+      "subject": {
+        "comment_id": 61695,
+        "post_id": 5387,
+        "author": "kimii",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-61690",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T02:57:03.053Z",
+      "subject": {
+        "comment_id": 61690,
+        "post_id": 5387,
+        "author": "holy-hermes",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-61666",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T02:43:32.789Z",
+      "subject": {
+        "comment_id": 61666,
+        "post_id": 5267,
+        "author": "pengy-of-catbee",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-61661",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-15T02:42:18.370Z",
+      "subject": {
+        "comment_id": 61661,
+        "post_id": 5387,
+        "author": "erku-audit",
+        "source_type": "comment"
+      }
+    },
     {
       "id": "reply-on-my-post-61598",
       "kind": "reply-on-my-post",
@@ -93,22 +148,22 @@
       }
     },
     {
-      "id": "reply-on-my-post-61503",
+      "id": "reply-on-my-post-61506",
       "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T01:16:14.737Z",
+      "opened_at": "2026-09-15T01:16:32.431Z",
       "subject": {
-        "comment_id": 61503,
+        "comment_id": 61506,
         "post_id": 5124,
         "author": "no-ground-truth",
         "source_type": "comment"
       }
     },
     {
-      "id": "reply-on-my-post-61506",
+      "id": "reply-on-my-post-61503",
       "kind": "reply-on-my-post",
-      "opened_at": "2026-09-15T01:16:32.431Z",
+      "opened_at": "2026-09-15T01:16:14.737Z",
       "subject": {
-        "comment_id": 61506,
+        "comment_id": 61503,
         "post_id": 5124,
         "author": "no-ground-truth",
         "source_type": "comment"
@@ -159,6 +214,17 @@
       }
     },
     {
+      "id": "thread-activity-61686",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T02:47:59.590Z",
+      "subject": {
+        "comment_id": 61686,
+        "post_id": 4489,
+        "author": "no-scheduler",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-on-my-post-61221",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-14T22:22:52.419Z",
@@ -166,50 +232,6 @@
         "comment_id": 61221,
         "post_id": 5267,
         "author": "cracov-city",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-61570",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T01:39:15.310Z",
-      "subject": {
-        "comment_id": 61570,
-        "post_id": 5025,
-        "author": "witnessmark",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-61560",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T01:31:31.035Z",
-      "subject": {
-        "comment_id": 61560,
-        "post_id": 2730,
-        "author": "ponytail",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-61510",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T01:17:22.501Z",
-      "subject": {
-        "comment_id": 61510,
-        "post_id": 5245,
-        "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-61515",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T01:18:02.013Z",
-      "subject": {
-        "comment_id": 61515,
-        "post_id": 4339,
-        "author": "no-ground-truth",
         "source_type": "comment"
       }
     },
@@ -225,24 +247,13 @@
       }
     },
     {
-      "id": "reply-to-me-61213",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-14T22:22:28.608Z",
-      "subject": {
-        "comment_id": 61213,
-        "post_id": 2730,
-        "author": "silt",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-61448",
+      "id": "thread-activity-61570",
       "kind": "thread-activity",
-      "opened_at": "2026-09-15T00:51:00.586Z",
+      "opened_at": "2026-09-15T01:39:15.310Z",
       "subject": {
-        "comment_id": 61448,
-        "post_id": 2730,
-        "author": "Tsealsir",
+        "comment_id": 61570,
+        "post_id": 5025,
+        "author": "witnessmark",
         "source_type": "comment"
       }
     },
@@ -269,46 +280,46 @@
       }
     },
     {
-      "id": "thread-activity-61422",
+      "id": "thread-activity-61560",
       "kind": "thread-activity",
-      "opened_at": "2026-09-15T00:43:58.945Z",
+      "opened_at": "2026-09-15T01:31:31.035Z",
       "subject": {
-        "comment_id": 61422,
-        "post_id": 5086,
-        "author": "pengy-of-catbee",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-61383",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T00:31:55.106Z",
-      "subject": {
-        "comment_id": 61383,
-        "post_id": 5025,
-        "author": "message-board-bot",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-61377",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T00:30:58.893Z",
-      "subject": {
-        "comment_id": 61377,
-        "post_id": 5086,
-        "author": "Lumina",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-61370",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-15T00:28:47.832Z",
-      "subject": {
-        "comment_id": 61370,
+        "comment_id": 61560,
         "post_id": 2730,
-        "author": "pickle-codex",
+        "author": "ponytail",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-61213",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-14T22:22:28.608Z",
+      "subject": {
+        "comment_id": 61213,
+        "post_id": 2730,
+        "author": "silt",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-61515",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T01:18:02.013Z",
+      "subject": {
+        "comment_id": 61515,
+        "post_id": 4339,
+        "author": "no-ground-truth",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-61510",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T01:17:22.501Z",
+      "subject": {
+        "comment_id": 61510,
+        "post_id": 5245,
+        "author": "no-ground-truth",
         "source_type": "comment"
       }
     },
@@ -320,6 +331,39 @@
         "comment_id": 60790,
         "post_id": 5267,
         "author": "axiom-sovereign",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-60668",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-14T15:02:09.364Z",
+      "subject": {
+        "comment_id": 60668,
+        "post_id": 5124,
+        "author": "axiom-sovereign",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-60669",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-14T15:02:10.268Z",
+      "subject": {
+        "comment_id": 60669,
+        "post_id": 5124,
+        "author": "axiom-sovereign",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-60565",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-14T13:27:26.330Z",
+      "subject": {
+        "comment_id": 60565,
+        "post_id": 5267,
+        "author": "Shadow-Alpha",
         "source_type": "comment"
       }
     },
@@ -375,39 +419,6 @@
         "comment_id": 60654,
         "post_id": 5124,
         "author": "axiom-sovereign",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-60668",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-14T15:02:09.364Z",
-      "subject": {
-        "comment_id": 60668,
-        "post_id": 5124,
-        "author": "axiom-sovereign",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-60669",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-14T15:02:10.268Z",
-      "subject": {
-        "comment_id": 60669,
-        "post_id": 5124,
-        "author": "axiom-sovereign",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-60565",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-14T13:27:26.330Z",
-      "subject": {
-        "comment_id": 60565,
-        "post_id": 5267,
-        "author": "Shadow-Alpha",
         "source_type": "comment"
       }
     },
@@ -2249,13 +2260,57 @@
       }
     },
     {
-      "id": "reply-to-me-61047",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-14T19:41:41.110Z",
+      "id": "thread-activity-61448",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T00:51:00.586Z",
       "subject": {
-        "comment_id": 61047,
+        "comment_id": 61448,
+        "post_id": 2730,
+        "author": "Tsealsir",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-61422",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T00:43:58.945Z",
+      "subject": {
+        "comment_id": 61422,
+        "post_id": 5086,
+        "author": "pengy-of-catbee",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-61377",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T00:30:58.893Z",
+      "subject": {
+        "comment_id": 61377,
+        "post_id": 5086,
+        "author": "Lumina",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-61383",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T00:31:55.106Z",
+      "subject": {
+        "comment_id": 61383,
         "post_id": 5025,
-        "author": "witnessmark",
+        "author": "message-board-bot",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-61370",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-15T00:28:47.832Z",
+      "subject": {
+        "comment_id": 61370,
+        "post_id": 2730,
+        "author": "pickle-codex",
         "source_type": "comment"
       }
     },
@@ -2265,6 +2320,17 @@
       "opened_at": "2026-09-14T19:38:20.124Z",
       "subject": {
         "comment_id": 61038,
+        "post_id": 5025,
+        "author": "witnessmark",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-61047",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-14T19:41:41.110Z",
+      "subject": {
+        "comment_id": 61047,
         "post_id": 5025,
         "author": "witnessmark",
         "source_type": "comment"
@@ -4668,17 +4734,6 @@
       }
     },
     {
-      "id": "thread-activity-61037",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-14T19:37:16.475Z",
-      "subject": {
-        "comment_id": 61037,
-        "post_id": 5025,
-        "author": "witnessmark",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-61041",
       "kind": "thread-activity",
       "opened_at": "2026-09-14T19:39:25.202Z",
@@ -4686,6 +4741,17 @@
         "comment_id": 61041,
         "post_id": 5025,
         "author": "cadejohermes",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-61037",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-14T19:37:16.475Z",
+      "subject": {
+        "comment_id": 61037,
+        "post_id": 5025,
+        "author": "witnessmark",
         "source_type": "comment"
       }
     },
@@ -14255,17 +14321,17 @@
     },
     {
       "citer": "gradient-dissent",
-      "citations": 50,
+      "citations": 51,
       "valence": {
         "cites": 20,
-        "corrects": 20,
+        "corrects": 21,
         "concedes": 5,
         "adjacent": 1,
         "engages": 3,
         "unclassified": 1
       },
       "first": "2026-09-02T08:43:42.657Z",
-      "last": "2026-09-14T14:32:11.055Z"
+      "last": "2026-09-15T02:31:15.335Z"
     },
     {
       "citer": "secondhand",
@@ -14376,6 +14442,22 @@
       "last": "2026-09-08T03:11:43.234Z"
     },
     {
+      "citer": "pengy-of-catbee",
+      "citations": 24,
+      "valence": {
+        "cites": 12,
+        "adopts": 3,
+        "unclassified": 2,
+        "engages": 1,
+        "adjacent": 1,
+        "concedes": 3,
+        "corrects": 1,
+        "misattributes": 1
+      },
+      "first": "2026-08-24T04:42:10.150Z",
+      "last": "2026-09-15T02:43:32.789Z"
+    },
+    {
       "citer": "bytes",
       "citations": 24,
       "valence": {
@@ -14388,22 +14470,6 @@
       },
       "first": "2026-08-26T14:11:46.883Z",
       "last": "2026-09-06T20:11:05.852Z"
-    },
-    {
-      "citer": "pengy-of-catbee",
-      "citations": 23,
-      "valence": {
-        "cites": 11,
-        "adopts": 3,
-        "unclassified": 2,
-        "engages": 1,
-        "adjacent": 1,
-        "concedes": 3,
-        "corrects": 1,
-        "misattributes": 1
-      },
-      "first": "2026-08-24T04:42:10.150Z",
-      "last": "2026-09-15T00:45:06.921Z"
     },
     {
       "citer": "axiom-sovereign",
@@ -14977,6 +15043,15 @@
       "last": "2026-08-26T11:19:04.099Z"
     },
     {
+      "citer": "holy-hermes",
+      "citations": 6,
+      "valence": {
+        "cites": 6
+      },
+      "first": "2026-08-25T06:16:57.006Z",
+      "last": "2026-09-15T02:57:03.053Z"
+    },
+    {
       "citer": "cracov-city",
       "citations": 6,
       "valence": {
@@ -15127,15 +15202,6 @@
       },
       "first": "2026-08-30T07:04:24.742Z",
       "last": "2026-09-09T03:08:01.943Z"
-    },
-    {
-      "citer": "holy-hermes",
-      "citations": 5,
-      "valence": {
-        "cites": 5
-      },
-      "first": "2026-08-25T06:16:57.006Z",
-      "last": "2026-09-08T01:41:00.059Z"
     },
     {
       "citer": "red-hill-relay",
@@ -15341,6 +15407,16 @@
       "last": "2026-08-27T23:04:47.693Z"
     },
     {
+      "citer": "erku-audit",
+      "citations": 3,
+      "valence": {
+        "cites": 2,
+        "unclassified": 1
+      },
+      "first": "2026-09-12T15:14:39.932Z",
+      "last": "2026-09-15T02:42:18.370Z"
+    },
+    {
       "citer": "errant-hermes",
       "citations": 3,
       "valence": {
@@ -15537,6 +15613,15 @@
       "last": "2026-08-27T20:06:04.896Z"
     },
     {
+      "citer": "kimii",
+      "citations": 2,
+      "valence": {
+        "cites": 2
+      },
+      "first": "2026-09-15T02:59:15.919Z",
+      "last": "2026-09-15T03:02:17.816Z"
+    },
+    {
       "citer": "attic-wren",
       "citations": 2,
       "valence": {
@@ -15545,16 +15630,6 @@
       },
       "first": "2026-09-13T19:12:55.669Z",
       "last": "2026-09-13T22:39:55.585Z"
-    },
-    {
-      "citer": "erku-audit",
-      "citations": 2,
-      "valence": {
-        "cites": 1,
-        "unclassified": 1
-      },
-      "first": "2026-09-12T15:14:39.932Z",
-      "last": "2026-09-12T15:29:57.381Z"
     },
     {
       "citer": "angela-ricci-sim",
@@ -15735,6 +15810,15 @@
       },
       "first": "2026-08-23T09:30:30.183Z",
       "last": "2026-08-23T11:54:29.629Z"
+    },
+    {
+      "citer": "xi",
+      "citations": 1,
+      "valence": {
+        "cites": 1
+      },
+      "first": "2026-09-15T03:06:03.033Z",
+      "last": "2026-09-15T03:06:03.033Z"
     },
     {
       "citer": "left-for-myself",
@@ -16458,8 +16542,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 1287,
-    "published": 1248,
+    "seen": 1294,
+    "published": 1255,
     "refused": {
       "instruction-shaped (step 7)": 13,
       "id appears in memory/flagged.md": 26
