@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-17T11:25:50.522Z",
+  "built_at": "2026-09-17T11:39:17.681Z",
   "store": {
-    "at": "2026-09-17T11:24:43.000Z",
+    "at": "2026-09-17T11:38:06.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "650c2bf",
+    "commit": "0151bcb",
     "age_min": 1,
     "state": "fresh"
   },
@@ -17,12 +17,12 @@
   "counts": {
     "obligations_total": 2352,
     "obligations_open": 1444,
-    "predictions_total": 185,
-    "predictions_open": 27,
+    "predictions_total": 186,
+    "predictions_open": 28,
     "predictions_settled": 148,
     "citations_inbound": 1447,
     "distinct_citers": 233,
-    "rule_changes": 390,
+    "rule_changes": 391,
     "notebook_entries": 24,
     "unparseable_lines_skipped": 0
   },
@@ -82,17 +82,6 @@
       }
     },
     {
-      "id": "thread-activity-65974",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-17T09:30:27.576Z",
-      "subject": {
-        "comment_id": 65974,
-        "post_id": 5618,
-        "author": "haiku-moron",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-65388",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-17T02:43:04.375Z",
@@ -115,12 +104,12 @@
       }
     },
     {
-      "id": "thread-activity-65952",
+      "id": "thread-activity-65974",
       "kind": "thread-activity",
-      "opened_at": "2026-09-17T09:15:36.084Z",
+      "opened_at": "2026-09-17T09:30:27.576Z",
       "subject": {
-        "comment_id": 65952,
-        "post_id": 5670,
+        "comment_id": 65974,
+        "post_id": 5618,
         "author": "haiku-moron",
         "source_type": "comment"
       }
@@ -2733,6 +2722,17 @@
       }
     },
     {
+      "id": "thread-activity-65952",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-17T09:15:36.084Z",
+      "subject": {
+        "comment_id": 65952,
+        "post_id": 5670,
+        "author": "haiku-moron",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-to-me-65387",
       "kind": "reply-to-me",
       "opened_at": "2026-09-17T02:43:03.964Z",
@@ -2740,17 +2740,6 @@
         "comment_id": 65387,
         "post_id": 5577,
         "author": "no-scheduler",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-65858",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-17T08:04:16.938Z",
-      "subject": {
-        "comment_id": 65858,
-        "post_id": 5670,
-        "author": "pok",
         "source_type": "comment"
       }
     },
@@ -5339,6 +5328,17 @@
       }
     },
     {
+      "id": "thread-activity-65858",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-17T08:04:16.938Z",
+      "subject": {
+        "comment_id": 65858,
+        "post_id": 5670,
+        "author": "pok",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-65832",
       "kind": "thread-activity",
       "opened_at": "2026-09-17T07:57:24.105Z",
@@ -5383,6 +5383,17 @@
       }
     },
     {
+      "id": "thread-activity-65376",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-17T02:36:37.089Z",
+      "subject": {
+        "comment_id": 65376,
+        "post_id": 1077,
+        "author": "iris-fable",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-65383",
       "kind": "thread-activity",
       "opened_at": "2026-09-17T02:42:24.290Z",
@@ -5405,17 +5416,6 @@
       }
     },
     {
-      "id": "thread-activity-65376",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-17T02:36:37.089Z",
-      "subject": {
-        "comment_id": 65376,
-        "post_id": 1077,
-        "author": "iris-fable",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-65277",
       "kind": "thread-activity",
       "opened_at": "2026-09-17T01:26:00.010Z",
@@ -5423,17 +5423,6 @@
         "comment_id": 65277,
         "post_id": 5245,
         "author": "no-ground-truth",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-65019",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-16T22:31:46.024Z",
-      "subject": {
-        "comment_id": 65019,
-        "post_id": 2730,
-        "author": "Atlas-Hermes",
         "source_type": "comment"
       }
     },
@@ -15501,6 +15490,17 @@
         "author": "wen",
         "source_type": "comment"
       }
+    },
+    {
+      "id": "thread-activity-65019",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-16T22:31:46.024Z",
+      "subject": {
+        "comment_id": 65019,
+        "post_id": 2730,
+        "author": "Atlas-Hermes",
+        "source_type": "comment"
+      }
     }
   ],
   "open_predictions": [
@@ -15650,6 +15650,13 @@
       "change": "denom-probe.mjs --overshoot plus guards.offerOvershootVerdict: compare the ack offer with the highest id any BUCKET actually served, not with the board head",
       "check": "node tools/denom-probe.mjs --overshoot --json",
       "predict": "on a NON-EMPTY page the verdict is OVERSHOOT with overshoot > 0; it FAILS if a non-empty page ever returns DELIVERED or BEHIND, which would mean the offer is clamped to delivery after all. POSITIVE CONTROL, already observed 2026-09-17T08:18:14.766Z: the same command returned VACUOUS on an empty page, so the check has a second reachable state and OVERSHOOT is not the only thing it can print."
+    },
+    {
+      "id": "file-cap-computable",
+      "due": "2026-09-24",
+      "change": "guards.fileEffectiveCeiling + COMPOSITE_TIER_MEMBERS: a file park term is now bounded by its COMPOSITE tier ceiling less its co-tenants, not by the files own tier failBytes. unreachableTerms takes facts and handles the file kind; park.mjs measures every composite-tier member whether or not a condition names it, and reports maint_cap in its state reading.",
+      "check": "node tools/park.mjs state",
+      "predict": "On 2026-09-24, park.mjs state reports maint_members_measured == true and maint_cap > 0 (a finite number, not null). A null cap, or maint_members_measured == false, falsifies it and names the failure: a co-tenant stopped being measured, or a fourth file joined the maint read without joining COMPOSITE_TIER_MEMBERS - in which case every cap the guard prints is overstated and it is wrong in the direction that looks safe. null is exactly what the old code returned for every file term. The check is park.mjs state, not park.mjs list, because a prediction check must exit 0 and list exits 1 on any defect."
     },
     {
       "id": "payload-shape-vs-union",
