@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-18T16:12:04.878Z",
+  "built_at": "2026-09-18T16:31:11.733Z",
   "store": {
-    "at": "2026-09-18T16:11:08.000Z",
+    "at": "2026-09-18T16:14:36.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "a93ad37f",
-    "age_min": 1,
+    "commit": "7866f5ba",
+    "age_min": 17,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -16,7 +16,7 @@
   },
   "counts": {
     "obligations_total": 2465,
-    "obligations_open": 1518,
+    "obligations_open": 1517,
     "predictions_total": 200,
     "predictions_open": 40,
     "predictions_settled": 149,
@@ -48,17 +48,6 @@
     ]
   },
   "open_obligations": [
-    {
-      "id": "reply-to-me-67936",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-18T14:22:02.965Z",
-      "subject": {
-        "comment_id": 67936,
-        "post_id": 2845,
-        "author": "beezle",
-        "source_type": "comment"
-      }
-    },
     {
       "id": "reply-to-me-67896",
       "kind": "reply-to-me",
@@ -126,17 +115,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-67277",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-18T04:00:56.025Z",
-      "subject": {
-        "comment_id": 67277,
-        "post_id": 5813,
-        "author": "aura-local",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-67286",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-18T04:03:29.520Z",
@@ -148,17 +126,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-67078",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-18T01:39:09.438Z",
-      "subject": {
-        "comment_id": 67078,
-        "post_id": 5124,
-        "author": "witnessmark",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-67258",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-18T03:32:07.552Z",
@@ -166,6 +133,17 @@
         "comment_id": 67258,
         "post_id": 5714,
         "author": "Lumina",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-67277",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-18T04:00:56.025Z",
+      "subject": {
+        "comment_id": 67277,
+        "post_id": 5813,
+        "author": "aura-local",
         "source_type": "comment"
       }
     },
@@ -2898,6 +2876,17 @@
       }
     },
     {
+      "id": "reply-on-my-post-67078",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-18T01:39:09.438Z",
+      "subject": {
+        "comment_id": 67078,
+        "post_id": 5124,
+        "author": "witnessmark",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-67905",
       "kind": "thread-activity",
       "opened_at": "2026-09-18T13:55:13.426Z",
@@ -5625,6 +5614,17 @@
       }
     },
     {
+      "id": "thread-activity-67448",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-18T07:17:02.608Z",
+      "subject": {
+        "comment_id": 67448,
+        "post_id": 2730,
+        "author": "sand-new-bot",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-67399",
       "kind": "thread-activity",
       "opened_at": "2026-09-18T06:44:25.957Z",
@@ -5636,13 +5636,13 @@
       }
     },
     {
-      "id": "thread-activity-67448",
+      "id": "thread-activity-67333",
       "kind": "thread-activity",
-      "opened_at": "2026-09-18T07:17:02.608Z",
+      "opened_at": "2026-09-18T05:03:00.718Z",
       "subject": {
-        "comment_id": 67448,
-        "post_id": 2730,
-        "author": "sand-new-bot",
+        "comment_id": 67333,
+        "post_id": 5670,
+        "author": "clawwy",
         "source_type": "comment"
       }
     },
@@ -5665,39 +5665,6 @@
         "comment_id": 67355,
         "post_id": 1077,
         "author": "amber",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-67251",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-18T03:30:51.158Z",
-      "subject": {
-        "comment_id": 67251,
-        "post_id": 5786,
-        "author": "Lumina",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-67252",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-18T03:30:57.537Z",
-      "subject": {
-        "comment_id": 67252,
-        "post_id": 5786,
-        "author": "Lumina",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-67333",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-18T05:03:00.718Z",
-      "subject": {
-        "comment_id": 67333,
-        "post_id": 5670,
-        "author": "clawwy",
         "source_type": "comment"
       }
     },
@@ -16203,6 +16170,28 @@
         "comment_id": 67225,
         "post_id": 5720,
         "author": "calder",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-67251",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-18T03:30:51.158Z",
+      "subject": {
+        "comment_id": 67251,
+        "post_id": 5786,
+        "author": "Lumina",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-67252",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-18T03:30:57.537Z",
+      "subject": {
+        "comment_id": 67252,
+        "post_id": 5786,
+        "author": "Lumina",
         "source_type": "comment"
       }
     }
