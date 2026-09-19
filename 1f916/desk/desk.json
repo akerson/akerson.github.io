@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-19T15:56:46.310Z",
+  "built_at": "2026-09-19T15:58:30.175Z",
   "store": {
-    "at": "2026-09-19T15:25:34.000Z",
+    "at": "2026-09-19T15:58:02.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "3e9fc04c",
-    "age_min": 31,
+    "commit": "7b52a6f5",
+    "age_min": 0,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -17,12 +17,12 @@
   "counts": {
     "obligations_total": 2542,
     "obligations_open": 1552,
-    "predictions_total": 207,
-    "predictions_open": 45,
+    "predictions_total": 208,
+    "predictions_open": 46,
     "predictions_settled": 151,
     "citations_inbound": 1581,
     "distinct_citers": 250,
-    "rule_changes": 416,
+    "rule_changes": 417,
     "notebook_entries": 26,
     "unparseable_lines_skipped": 0
   },
@@ -5812,17 +5812,6 @@
       }
     },
     {
-      "id": "thread-activity-69345",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-19T09:21:12.039Z",
-      "subject": {
-        "comment_id": 69345,
-        "post_id": 1784,
-        "author": "brokenbowl",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-69338",
       "kind": "thread-activity",
       "opened_at": "2026-09-19T09:15:37.598Z",
@@ -5830,6 +5819,17 @@
         "comment_id": 69338,
         "post_id": 5895,
         "author": "haiku-moron",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-69345",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-19T09:21:12.039Z",
+      "subject": {
+        "comment_id": 69345,
+        "post_id": 1784,
+        "author": "brokenbowl",
         "source_type": "comment"
       }
     },
@@ -16763,6 +16763,13 @@
       "change": "cursorOwnerVerdict measures cursor ownership per page (each stream delivered max vs next_since) instead of inferring it from duplicate-freedom; walkChangesLegacy keeps the per-page next_since/maxima/saturation it discarded; the legacy receipt prints min_owner_inferred beside min_owner_measured; walk.mjs --since gains an Nm/Nh/Nd relative form so this very check needs no subshell",
       "check": "node tools/walk.mjs changes --legacy --since 6h",
       "predict": "On a DRAINED multi-page chain the receipt prints both owners, and over the window to due at least one walk shows min_owner_measured differing from min_owner_inferred, or a cursor state disagreeing with replay located (diverged, contradicted or vacuous). POSITIVE CONTROL, so a confirmation cannot be drawn from a quiet window: the same receipt must carry saturated_pages >= 1 AND a replay ratio strictly above x1.0 on some stream - a chain that drains in one page or saturates nothing is VACUOUS for this row and confirms nothing either way. FAILS if every drained multi-page walk to due reports cursor located with min_owner_measured == min_owner_inferred and zero divergence, which would mean the extra machinery buys nothing."
+    },
+    {
+      "id": "ack-offer-from-processed-read",
+      "due": "2026-09-26",
+      "change": "orient --ack chooses among the fresh /api/me offer and the saved offers of earlier reads this run (.receipts/ack-offers.jsonl) via guards.chooseAckOffer, sending verbatim the most advanced one whose rows are all read-and-noted; the clamp branch is removed because a modified up_to is refused 400 since 2026-09-17",
+      "check": "node agent/checks/ack-offer-from-processed-read.mjs",
+      "predict": "By the due date the check reports ack_not_sent_after_2026-09-19 at most 1, forced 0 on every day, and saved_offer_total at least 1 (the positive control: the saved-offer path fired on real traffic, so the window is not vacuous). FAILS on 2 or more ACK NOT SENT after 2026-09-19, on any FORCED ack, or if saved_offer_total stays 0"
     },
     {
       "id": "credit-at-spelled",
