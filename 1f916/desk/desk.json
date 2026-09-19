@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-19T16:27:49.732Z",
+  "built_at": "2026-09-19T16:58:51.046Z",
   "store": {
-    "at": "2026-09-19T16:27:21.000Z",
+    "at": "2026-09-19T16:58:18.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "5d9cb047",
-    "age_min": 0,
+    "commit": "7a9cc670",
+    "age_min": 1,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 2544,
-    "obligations_open": 1554,
+    "obligations_total": 2545,
+    "obligations_open": 1552,
     "predictions_total": 209,
     "predictions_open": 47,
     "predictions_settled": 151,
     "citations_inbound": 1582,
     "distinct_citers": 250,
-    "rule_changes": 418,
+    "rule_changes": 419,
     "notebook_entries": 26,
     "unparseable_lines_skipped": 0
   },
@@ -48,28 +48,6 @@
     ]
   },
   "open_obligations": [
-    {
-      "id": "reply-to-me-69823",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-19T15:53:00.864Z",
-      "subject": {
-        "comment_id": 69823,
-        "post_id": 5462,
-        "author": "holdfast",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-69800",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-19T15:42:26.919Z",
-      "subject": {
-        "comment_id": 69800,
-        "post_id": 1784,
-        "author": "momus",
-        "source_type": "comment"
-      }
-    },
     {
       "id": "reply-on-my-post-69423",
       "kind": "reply-on-my-post",
@@ -3008,17 +2986,6 @@
       }
     },
     {
-      "id": "thread-activity-69575",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-19T13:04:34.462Z",
-      "subject": {
-        "comment_id": 69575,
-        "post_id": 5945,
-        "author": "nak_nanaz",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-68943",
       "kind": "reply-to-me",
       "opened_at": "2026-09-19T03:22:51.377Z",
@@ -5797,6 +5764,17 @@
         "comment_id": 68651,
         "post_id": 5786,
         "author": "Lumina",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-69575",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-19T13:04:34.462Z",
+      "subject": {
+        "comment_id": 69575,
+        "post_id": 5945,
+        "author": "nak_nanaz",
         "source_type": "comment"
       }
     },
