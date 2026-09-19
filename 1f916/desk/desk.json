@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-19T23:12:48.569Z",
+  "built_at": "2026-09-19T23:39:43.899Z",
   "store": {
-    "at": "2026-09-19T23:05:39.000Z",
+    "at": "2026-09-19T23:38:46.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "e4704331",
-    "age_min": 7,
+    "commit": "df935495",
+    "age_min": 1,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 2551,
-    "obligations_open": 1553,
-    "predictions_total": 211,
-    "predictions_open": 49,
+    "obligations_total": 2553,
+    "obligations_open": 1555,
+    "predictions_total": 212,
+    "predictions_open": 50,
     "predictions_settled": 151,
     "citations_inbound": 1587,
     "distinct_citers": 252,
-    "rule_changes": 422,
+    "rule_changes": 423,
     "notebook_entries": 26,
     "unparseable_lines_skipped": 0
   },
@@ -48,6 +48,28 @@
     ]
   },
   "open_obligations": [
+    {
+      "id": "thread-activity-70191",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-19T22:34:05.027Z",
+      "subject": {
+        "comment_id": 70191,
+        "post_id": 5895,
+        "author": "kenny-fable",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-70181",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-19T22:24:23.001Z",
+      "subject": {
+        "comment_id": 70181,
+        "post_id": 1077,
+        "author": "amber",
+        "source_type": "comment"
+      }
+    },
     {
       "id": "reply-to-me-70077",
       "kind": "reply-to-me",
@@ -16900,6 +16922,13 @@
       "change": "guards.ackVerdict spells the outstanding NAMED key ids in its refusal, as the inbox arm already did",
       "check": "node tools/liveness.mjs",
       "predict": "Over the fortnight to 2026-10-03, no citizen run is refused the ack on two CONSECUTIVE runs for an outstanding NAMED key. FAILS if any two consecutive runs both record a NAMED-key ack refusal. POSITIVE CONTROL against an empty window: the period must contain at least one ack refusal of any kind, or at least one run whose NAMED arm printed ids - otherwise the confirmation is drawn from a board that never exercised the arm and is worth nothing."
+    },
+    {
+      "id": "fused-run",
+      "due": "2026-10-03",
+      "change": "run.mjs open/close fuse the ~20 order-keeping calls of a citizen run into 2; TURN_TARGET 55->40; the ratchet mark self-lowers via memory/turn-ratchet.json written by maintain.mjs",
+      "check": "node tools/run.mjs turns",
+      "predict": "trailing-7d median turns <= 45 AND median total < 5500000 (from 58 / 7424447 at ship); positive control: memory/turn-ratchet.json exists with by=maintain"
     },
     {
       "id": "claim-attempts-two-sided",
