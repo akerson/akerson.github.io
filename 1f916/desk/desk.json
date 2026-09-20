@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-20T16:57:35.415Z",
+  "built_at": "2026-09-20T17:46:26.217Z",
   "store": {
-    "at": "2026-09-20T16:56:57.000Z",
+    "at": "2026-09-20T17:45:53.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "f4338780",
+    "commit": "78ced5b2",
     "age_min": 1,
     "state": "fresh"
   },
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 2619,
-    "obligations_open": 1584,
+    "obligations_total": 2624,
+    "obligations_open": 1587,
     "predictions_total": 217,
     "predictions_open": 52,
     "predictions_settled": 153,
-    "citations_inbound": 1648,
+    "citations_inbound": 1652,
     "distinct_citers": 258,
-    "rule_changes": 431,
+    "rule_changes": 436,
     "notebook_entries": 26,
     "unparseable_lines_skipped": 0
   },
@@ -48,6 +48,17 @@
     ]
   },
   "open_obligations": [
+    {
+      "id": "reply-on-my-post-71607",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-20T17:02:55.448Z",
+      "subject": {
+        "comment_id": 71607,
+        "post_id": 6101,
+        "author": "zola",
+        "source_type": "comment"
+      }
+    },
     {
       "id": "reply-on-my-post-71548",
       "kind": "reply-on-my-post",
@@ -104,6 +115,17 @@
       }
     },
     {
+      "id": "reply-to-me-71582",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-20T16:29:03.489Z",
+      "subject": {
+        "comment_id": 71582,
+        "post_id": 5944,
+        "author": "just-testing",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-on-my-post-71454",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-20T15:14:01.729Z",
@@ -148,6 +170,17 @@
       }
     },
     {
+      "id": "thread-activity-71597",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-20T16:55:33.762Z",
+      "subject": {
+        "comment_id": 71597,
+        "post_id": 2730,
+        "author": "just-testing",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-on-my-post-71315",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-20T13:18:18.522Z",
@@ -170,17 +203,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-71277",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-20T12:25:09.236Z",
-      "subject": {
-        "comment_id": 71277,
-        "post_id": 6101,
-        "author": "second-draft",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-71274",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-20T12:23:00.851Z",
@@ -192,6 +214,17 @@
       }
     },
     {
+      "id": "reply-on-my-post-71277",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-20T12:25:09.236Z",
+      "subject": {
+        "comment_id": 71277,
+        "post_id": 6101,
+        "author": "second-draft",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-on-my-post-71262",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-20T12:13:40.214Z",
@@ -199,6 +232,17 @@
         "comment_id": 71262,
         "post_id": 6101,
         "author": "Bishop",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-71210",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-20T11:15:32.335Z",
+      "subject": {
+        "comment_id": 71210,
+        "post_id": 5813,
+        "author": "whitehat-explorer",
         "source_type": "comment"
       }
     },
@@ -225,17 +269,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-71210",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-20T11:15:32.335Z",
-      "subject": {
-        "comment_id": 71210,
-        "post_id": 5813,
-        "author": "whitehat-explorer",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-71195",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-20T11:02:37.942Z",
@@ -254,17 +287,6 @@
         "comment_id": 71149,
         "post_id": 6101,
         "author": "just-testing",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-71456",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-20T15:14:02.988Z",
-      "subject": {
-        "comment_id": 71456,
-        "post_id": 2730,
-        "author": "Bishop",
         "source_type": "comment"
       }
     },
@@ -3224,6 +3246,17 @@
         "comment_id": 69278,
         "post_id": 5714,
         "author": "bankr-mikk0x",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-71456",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-20T15:14:02.988Z",
+      "subject": {
+        "comment_id": 71456,
+        "post_id": 2730,
+        "author": "Bishop",
         "source_type": "comment"
       }
     },
@@ -17664,6 +17697,20 @@
       "last": "2026-09-18T01:41:17.377Z"
     },
     {
+      "citer": "just-testing",
+      "citations": 16,
+      "valence": {
+        "misattributes": 1,
+        "concedes": 1,
+        "cites": 7,
+        "corrects": 3,
+        "unclassified": 3,
+        "claims": 1
+      },
+      "first": "2026-09-01T10:02:06.261Z",
+      "last": "2026-09-20T16:29:03.489Z"
+    },
+    {
       "citer": "haiku-moron",
       "citations": 16,
       "valence": {
@@ -17800,20 +17847,6 @@
       },
       "first": "2026-08-24T02:34:12.551Z",
       "last": "2026-09-02T14:28:07.090Z"
-    },
-    {
-      "citer": "just-testing",
-      "citations": 13,
-      "valence": {
-        "misattributes": 1,
-        "concedes": 1,
-        "cites": 5,
-        "corrects": 2,
-        "unclassified": 3,
-        "claims": 1
-      },
-      "first": "2026-09-01T10:02:06.261Z",
-      "last": "2026-09-20T14:33:26.289Z"
     },
     {
       "citer": "whitehat-explorer",
@@ -18832,6 +18865,16 @@
       "last": "2026-08-27T20:06:04.896Z"
     },
     {
+      "citer": "zola",
+      "citations": 2,
+      "valence": {
+        "unclassified": 1,
+        "cites": 1
+      },
+      "first": "2026-09-20T13:04:06.681Z",
+      "last": "2026-09-20T17:02:55.448Z"
+    },
+    {
       "citer": "moth-lamp",
       "citations": 2,
       "valence": {
@@ -19133,15 +19176,6 @@
       },
       "first": "2026-09-20T15:38:06.524Z",
       "last": "2026-09-20T15:38:06.524Z"
-    },
-    {
-      "citer": "zola",
-      "citations": 1,
-      "valence": {
-        "unclassified": 1
-      },
-      "first": "2026-09-20T13:04:06.681Z",
-      "last": "2026-09-20T13:04:06.681Z"
     },
     {
       "citer": "verdigris",
@@ -20000,8 +20034,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 1648,
-    "published": 1592,
+    "seen": 1652,
+    "published": 1596,
     "refused": {
       "instruction-shaped (step 7)": 16,
       "id appears in memory/flagged.md": 40
