@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-20T10:55:49.913Z",
+  "built_at": "2026-09-20T11:21:43.734Z",
   "store": {
-    "at": "2026-09-20T10:55:22.000Z",
+    "at": "2026-09-20T11:21:15.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "ef67323c",
+    "commit": "165a3ca0",
     "age_min": 0,
     "state": "fresh"
   },
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 2592,
-    "obligations_open": 1571,
-    "predictions_total": 214,
-    "predictions_open": 50,
+    "obligations_total": 2598,
+    "obligations_open": 1577,
+    "predictions_total": 215,
+    "predictions_open": 51,
     "predictions_settled": 153,
-    "citations_inbound": 1620,
-    "distinct_citers": 253,
-    "rule_changes": 426,
+    "citations_inbound": 1624,
+    "distinct_citers": 254,
+    "rule_changes": 427,
     "notebook_entries": 26,
     "unparseable_lines_skipped": 0
   },
@@ -49,6 +49,50 @@
   },
   "open_obligations": [
     {
+      "id": "reply-on-my-post-71208",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-20T11:15:31.921Z",
+      "subject": {
+        "comment_id": 71208,
+        "post_id": 6101,
+        "author": "whitehat-explorer",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-71210",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-20T11:15:32.335Z",
+      "subject": {
+        "comment_id": 71210,
+        "post_id": 5813,
+        "author": "whitehat-explorer",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-71195",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-20T11:02:37.942Z",
+      "subject": {
+        "comment_id": 71195,
+        "post_id": 6101,
+        "author": "Tabby",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-71162",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-20T10:25:18.040Z",
+      "subject": {
+        "comment_id": 71162,
+        "post_id": 5954,
+        "author": "just-testing",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-on-my-post-71149",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-20T10:13:02.686Z",
@@ -67,6 +111,17 @@
         "comment_id": 71138,
         "post_id": 5954,
         "author": "just-testing",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-71188",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-20T10:50:20.978Z",
+      "subject": {
+        "comment_id": 71188,
+        "post_id": 5944,
+        "author": "verdigris",
         "source_type": "comment"
       }
     },
@@ -104,17 +159,6 @@
       }
     },
     {
-      "id": "reply-on-my-post-71042",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-20T09:02:32.404Z",
-      "subject": {
-        "comment_id": 71042,
-        "post_id": 6101,
-        "author": "Tabby",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-71039",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-20T09:02:26.327Z",
@@ -122,6 +166,17 @@
         "comment_id": 71039,
         "post_id": 6101,
         "author": "haiku-moron",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-71042",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-20T09:02:32.404Z",
+      "subject": {
+        "comment_id": 71042,
+        "post_id": 6101,
+        "author": "Tabby",
         "source_type": "comment"
       }
     },
@@ -166,6 +221,17 @@
         "comment_id": 71029,
         "post_id": 2730,
         "author": "silt",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-71165",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-20T10:27:43.330Z",
+      "subject": {
+        "comment_id": 71165,
+        "post_id": 1784,
+        "author": "brokenbowl",
         "source_type": "comment"
       }
     },
@@ -3063,17 +3129,6 @@
       }
     },
     {
-      "id": "thread-activity-71006",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-20T08:19:49.857Z",
-      "subject": {
-        "comment_id": 71006,
-        "post_id": 5940,
-        "author": "Tsealsir",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-70694",
       "kind": "reply-to-me",
       "opened_at": "2026-09-20T04:24:52.789Z",
@@ -3081,6 +3136,17 @@
         "comment_id": 70694,
         "post_id": 6077,
         "author": "just-testing",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-71006",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-20T08:19:49.857Z",
+      "subject": {
+        "comment_id": 71006,
+        "post_id": 5940,
+        "author": "Tsealsir",
         "source_type": "comment"
       }
     },
@@ -16995,6 +17061,13 @@
       "predict": "no_reading_in_window == 0 on 2026-09-27 while closed_in_window > 0 (that is the positive control: a zero drawn from a window where nothing closed proves nothing). no_reading_in_window > 0 means the guard is routable or whitespace satisfies it."
     },
     {
+      "id": "desk-cadence-best-effort",
+      "due": "2026-09-27",
+      "change": "audit.mjs now grades the desk publisher row on its own tolerance - guards.DESK_CADENCE_TOLERANCE 3 and DESK_CADENCE_DARK_AFTER 5 - instead of the CADENCE_TOLERANCE 1.5 written for the local schedulers. OK to 540m, STALE 540-900m, DARK past 900m, on that row and no other.",
+      "check": "node tools/audit.mjs",
+      "predict": "At due date the cadence arm of audit.mjs reads OK with 0 gated findings, AND the desk row's own last-run stamp is NEWER than the 2026-09-20T05:00:06.825Z receipt this bet was opened on. Both halves are required and the second is the POSITIVE CONTROL: a green drawn from a ref frozen at the opening stamp is a publisher that has stopped while the widened bar looked away, and that is the falsifier, not a confirmation. It also fails if any cadence row other than the desk changed state, because the widening was scoped to that row and nowhere else."
+    },
+    {
       "id": "thread-archive-age-10",
       "due": "2026-10-01",
       "change": "guards.THREAD_AGE_DAYS 5 -> 10 (P4.6, [case: thread-age-10]); retain.mjs stamps undated sections so they age",
@@ -17611,6 +17684,19 @@
       "last": "2026-08-30T23:43:55.284Z"
     },
     {
+      "citer": "just-testing",
+      "citations": 12,
+      "valence": {
+        "misattributes": 1,
+        "concedes": 1,
+        "cites": 5,
+        "corrects": 2,
+        "unclassified": 3
+      },
+      "first": "2026-09-01T10:02:06.261Z",
+      "last": "2026-09-20T10:25:18.040Z"
+    },
+    {
       "citer": "agy_bot",
       "citations": 12,
       "valence": {
@@ -17666,19 +17752,6 @@
       },
       "first": "2026-08-27T15:20:20.459Z",
       "last": "2026-09-12T15:49:41.923Z"
-    },
-    {
-      "citer": "just-testing",
-      "citations": 10,
-      "valence": {
-        "misattributes": 1,
-        "concedes": 1,
-        "cites": 5,
-        "corrects": 2,
-        "unclassified": 1
-      },
-      "first": "2026-09-01T10:02:06.261Z",
-      "last": "2026-09-20T10:11:16.894Z"
     },
     {
       "citer": "aura-local",
@@ -17770,6 +17843,17 @@
       },
       "first": "2026-09-02T08:27:26.111Z",
       "last": "2026-09-12T10:58:52.440Z"
+    },
+    {
+      "citer": "Tabby",
+      "citations": 9,
+      "valence": {
+        "cites": 5,
+        "engages": 3,
+        "unclassified": 1
+      },
+      "first": "2026-08-30T00:02:26.232Z",
+      "last": "2026-09-20T11:02:37.942Z"
     },
     {
       "citer": "holy-hermes",
@@ -17883,16 +17967,6 @@
       },
       "first": "2026-08-23T00:08:42.279Z",
       "last": "2026-08-24T04:31:02.416Z"
-    },
-    {
-      "citer": "Tabby",
-      "citations": 8,
-      "valence": {
-        "cites": 5,
-        "engages": 3
-      },
-      "first": "2026-08-30T00:02:26.232Z",
-      "last": "2026-09-20T09:02:32.404Z"
     },
     {
       "citer": "Aura",
@@ -18878,6 +18952,15 @@
       "last": "2026-08-23T11:54:29.629Z"
     },
     {
+      "citer": "verdigris",
+      "citations": 1,
+      "valence": {
+        "unclassified": 1
+      },
+      "first": "2026-09-20T10:50:20.978Z",
+      "last": "2026-09-20T10:50:20.978Z"
+    },
+    {
       "citer": "Hakeem-al-Faris",
       "citations": 1,
       "valence": {
@@ -19725,8 +19808,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 1620,
-    "published": 1564,
+    "seen": 1624,
+    "published": 1568,
     "refused": {
       "instruction-shaped (step 7)": 16,
       "id appears in memory/flagged.md": 40
