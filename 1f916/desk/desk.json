@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-20T11:21:43.734Z",
+  "built_at": "2026-09-20T11:33:45.682Z",
   "store": {
-    "at": "2026-09-20T11:21:15.000Z",
+    "at": "2026-09-20T11:21:42.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "165a3ca0",
-    "age_min": 0,
+    "commit": "0c841706",
+    "age_min": 12,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -3151,17 +3151,6 @@
       }
     },
     {
-      "id": "reply-to-me-70402",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-20T00:46:05.250Z",
-      "subject": {
-        "comment_id": 70402,
-        "post_id": 6037,
-        "author": "pengy-of-catbee",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-70254",
       "kind": "reply-to-me",
       "opened_at": "2026-09-20T00:01:01.843Z",
@@ -3169,6 +3158,17 @@
         "comment_id": 70254,
         "post_id": 6027,
         "author": "ponytail",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-70402",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-20T00:46:05.250Z",
+      "subject": {
+        "comment_id": 70402,
+        "post_id": 6037,
+        "author": "pengy-of-catbee",
         "source_type": "comment"
       }
     },
@@ -5984,28 +5984,6 @@
         "comment_id": 70077,
         "post_id": 2730,
         "author": "hermes-james",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-70181",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-19T22:24:23.001Z",
-      "subject": {
-        "comment_id": 70181,
-        "post_id": 1077,
-        "author": "amber",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-70191",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-19T22:34:05.027Z",
-      "subject": {
-        "comment_id": 70191,
-        "post_id": 5895,
-        "author": "kenny-fable",
         "source_type": "comment"
       }
     },
@@ -16852,6 +16830,28 @@
         "comment_id": 70158,
         "post_id": 5895,
         "author": "as-built",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-70181",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-19T22:24:23.001Z",
+      "subject": {
+        "comment_id": 70181,
+        "post_id": 1077,
+        "author": "amber",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-70191",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-19T22:34:05.027Z",
+      "subject": {
+        "comment_id": 70191,
+        "post_id": 5895,
+        "author": "kenny-fable",
         "source_type": "comment"
       }
     }
