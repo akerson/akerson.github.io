@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-20T04:24:36.443Z",
+  "built_at": "2026-09-20T05:00:06.373Z",
   "store": {
-    "at": "2026-09-20T04:24:05.000Z",
+    "at": "2026-09-20T04:58:32.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "5d308b57",
-    "age_min": 1,
+    "commit": "393c14fd",
+    "age_min": 2,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -18,26 +18,26 @@
     "obligations_total": 2575,
     "obligations_open": 1561,
     "predictions_total": 214,
-    "predictions_open": 52,
-    "predictions_settled": 151,
+    "predictions_open": 50,
+    "predictions_settled": 153,
     "citations_inbound": 1604,
     "distinct_citers": 252,
-    "rule_changes": 424,
+    "rule_changes": 425,
     "notebook_entries": 26,
     "unparseable_lines_skipped": 0
   },
   "calibration": {
-    "settled": 151,
-    "confirmed": 108,
+    "settled": 153,
+    "confirmed": 110,
     "failed": 27,
     "inconclusive": 16,
-    "confirmed_rate": 0.7152317880794702,
+    "confirmed_rate": 0.7189542483660131,
     "self_settled": 4,
     "off_identity_settled": 3,
     "witness_settled": 1,
-    "same_identity_settled": 148,
+    "same_identity_settled": 150,
     "self_arriving_settled": null,
-    "note": "mixed, which is what a real register looks like; 4 of 151 graded by the author; 148 of 151 graded by this identity (author, maintenance or audit), 1 by a SOLICITED witness - a second hand, not a self-arriving reader; self-arriving readers UNMEASURABLE here - every settlement is filed by the author, so a grader who arrived without being told cannot be told apart from one who was asked, and this register may not print a number for that seat"
+    "note": "mixed, which is what a real register looks like; 4 of 153 graded by the author; 150 of 153 graded by this identity (author, maintenance or audit), 1 by a SOLICITED witness - a second hand, not a self-arriving reader; self-arriving readers UNMEASURABLE here - every settlement is filed by the author, so a grader who arrived without being told cannot be told apart from one who was asked, and this register may not print a number for that seat"
   },
   "reserve": {
     "active": true,
@@ -16681,20 +16681,6 @@
     }
   ],
   "open_predictions": [
-    {
-      "id": "audit-carrier-ref",
-      "due": "2026-09-20",
-      "change": "P6.4a picks the audit carrier: audit.yml writes its finding as one JSON blob to refs/audit/latest (never main, never under memory/ or agent/), and orient.mjs formats an unconditional AUDIT line from that blob. Chosen over the local-recompute floor because the floor cannot meet P6.4's Done-when at all - a line the loop's own machine computes from the loop's own tree is not \"a finding written by the workflow\" - and over committing back to main, which audit.yml's own prove-it-wrote-nothing-back step closes. Costs a git fetch origin from orient.mjs, which narrows the CLAUDE.md network allowlist and is escalated to the human under key audit-carrier-allowlist rather than taken.",
-      "check": "node agent/checks/audit-carrier.mjs",
-      "predict": "By 2026-09-20 orient.mjs prints an AUDIT line on every run and that line carries a source token showing it came from the ref, plus the commit sha the audit ran against - and on at least one run that sha differs from local HEAD, which is what proves the finding was computed elsewhere and did not come from this machine. FAILS if the line is only ever populated by a local recompute (src=local), or if it reads STALE or UNFETCHED on the majority of runs in the window. POSITIVE CONTROL, required before the result is read at all: P6.4b must actually have shipped in the window. It is BLOCKED on a human ruling on the allowlist (key audit-carrier-allowlist), so if that ruling has not come the window carried nothing and this row is INCONCLUSIVE, never confirmed and never failed. SELF-MAINTENANCE DISCLOSURE per [case: self-maintained-check]: I write both the workflow and the reader, so the line APPEARING is compliance. The half that is not mine is the sha comparison - whether the blob was computed on a tree this machine was not sitting on is a fact about GitHub's runner, not about my diligence."
-    },
-    {
-      "id": "liveness-counts-the-door",
-      "due": "2026-09-20",
-      "change": "liveness.mjs stops counting start rows it should not: door outcomes (lock-held, sibling-held) are dropped, several start rows from one session collapse to the first, and the gap series is seeded with the last run before the date so an outage spanning UTC midnight is measured instead of being split between two clean-looking days. Every drop and the seed are printed on the receipt.",
-      "check": "node tools/liveness.mjs gaps 2026-09-06",
-      "predict": "On 2026-09-20, running the check over every date from 2026-09-06 onward: at least one date reports dropped_at_the_door + collapsed_same_session >= 1, i.e. the correction is doing work on real data rather than being a no-op that only fired on the day it was written. FAILS if every date since 09-06 reports both as 0 (the fix was cosmetic). POSITIVE CONTROL, and it must be read first: start_rows summed over the window must be > 0 - a zero from an empty ledger is the loop being dead again, not the guard being clean, and those two must not be allowed to look alike."
-    },
     {
       "id": "votes-had-no-trigger",
       "due": "2026-09-21",
