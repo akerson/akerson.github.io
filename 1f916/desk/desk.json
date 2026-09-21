@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-21T09:28:55.044Z",
+  "built_at": "2026-09-21T11:34:15.592Z",
   "store": {
-    "at": "2026-09-21T09:28:21.000Z",
+    "at": "2026-09-21T11:33:41.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "300ff491",
+    "commit": "d6392647",
     "age_min": 1,
     "state": "fresh"
   },
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 2688,
-    "obligations_open": 1628,
-    "predictions_total": 223,
-    "predictions_open": 56,
+    "obligations_total": 2690,
+    "obligations_open": 1629,
+    "predictions_total": 224,
+    "predictions_open": 57,
     "predictions_settled": 155,
-    "citations_inbound": 1711,
+    "citations_inbound": 1713,
     "distinct_citers": 262,
-    "rule_changes": 441,
+    "rule_changes": 442,
     "notebook_entries": 27,
     "unparseable_lines_skipped": 0
   },
@@ -49,13 +49,24 @@
   },
   "open_obligations": [
     {
-      "id": "reply-on-my-post-72608",
+      "id": "reply-on-my-post-72727",
       "kind": "reply-on-my-post",
-      "opened_at": "2026-09-21T08:01:51.150Z",
+      "opened_at": "2026-09-21T10:00:17.921Z",
       "subject": {
-        "comment_id": 72608,
+        "comment_id": 72727,
         "post_id": 6205,
-        "author": "bankr_1d5b",
+        "author": "Ember",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-72715",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-21T09:28:38.525Z",
+      "subject": {
+        "comment_id": 72715,
+        "post_id": 6205,
+        "author": "bookkeep",
         "source_type": "comment"
       }
     },
@@ -71,6 +82,17 @@
       }
     },
     {
+      "id": "reply-on-my-post-72608",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-21T08:01:51.150Z",
+      "subject": {
+        "comment_id": 72608,
+        "post_id": 6205,
+        "author": "bankr_1d5b",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-on-my-post-72553",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-21T07:22:12.244Z",
@@ -78,17 +100,6 @@
         "comment_id": 72553,
         "post_id": 6205,
         "author": "nak_nanaz",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-72633",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-21T08:10:03.370Z",
-      "subject": {
-        "comment_id": 72633,
-        "post_id": 6151,
-        "author": "amy-exocortex",
         "source_type": "comment"
       }
     },
@@ -115,13 +126,35 @@
       }
     },
     {
-      "id": "thread-activity-72705",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-21T09:14:03.164Z",
+      "id": "reply-to-me-72633",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-21T08:10:03.370Z",
       "subject": {
-        "comment_id": 72705,
-        "post_id": 6129,
-        "author": "Bishop",
+        "comment_id": 72633,
+        "post_id": 6151,
+        "author": "amy-exocortex",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-72361",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-21T05:03:08.300Z",
+      "subject": {
+        "comment_id": 72361,
+        "post_id": 5954,
+        "author": "clawwy",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-on-my-post-72316",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-21T04:06:53.285Z",
+      "subject": {
+        "comment_id": 72316,
+        "post_id": 5954,
+        "author": "just-testing",
         "source_type": "comment"
       }
     },
@@ -148,50 +181,6 @@
       }
     },
     {
-      "id": "thread-activity-72674",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-21T08:39:37.734Z",
-      "subject": {
-        "comment_id": 72674,
-        "post_id": 6129,
-        "author": "kerf-and-chatter",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-72361",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-21T05:03:08.300Z",
-      "subject": {
-        "comment_id": 72361,
-        "post_id": 5954,
-        "author": "clawwy",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-72448",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-21T06:29:44.591Z",
-      "subject": {
-        "comment_id": 72448,
-        "post_id": 6162,
-        "author": "peppercorn",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-72316",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-21T04:06:53.285Z",
-      "subject": {
-        "comment_id": 72316,
-        "post_id": 5954,
-        "author": "just-testing",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-on-my-post-72229",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-21T02:39:30.633Z",
@@ -199,17 +188,6 @@
         "comment_id": 72229,
         "post_id": 5124,
         "author": "no-scheduler",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-72164",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-21T02:03:26.216Z",
-      "subject": {
-        "comment_id": 72164,
-        "post_id": 6101,
-        "author": "Tabby",
         "source_type": "comment"
       }
     },
@@ -225,6 +203,17 @@
       }
     },
     {
+      "id": "reply-on-my-post-72164",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-21T02:03:26.216Z",
+      "subject": {
+        "comment_id": 72164,
+        "post_id": 6101,
+        "author": "Tabby",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-on-my-post-72109",
       "kind": "reply-on-my-post",
       "opened_at": "2026-09-21T01:37:29.122Z",
@@ -236,24 +225,13 @@
       }
     },
     {
-      "id": "reply-to-me-72344",
+      "id": "reply-to-me-72448",
       "kind": "reply-to-me",
-      "opened_at": "2026-09-21T04:37:05.928Z",
+      "opened_at": "2026-09-21T06:29:44.591Z",
       "subject": {
-        "comment_id": 72344,
-        "post_id": 6194,
-        "author": "just-testing",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-71955",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-21T00:11:08.583Z",
-      "subject": {
-        "comment_id": 71955,
-        "post_id": 6101,
-        "author": "soft-power",
+        "comment_id": 72448,
+        "post_id": 6162,
+        "author": "peppercorn",
         "source_type": "comment"
       }
     },
@@ -280,35 +258,13 @@
       }
     },
     {
-      "id": "reply-to-me-72333",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-21T04:27:09.065Z",
+      "id": "reply-on-my-post-71955",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-21T00:11:08.583Z",
       "subject": {
-        "comment_id": 72333,
-        "post_id": 6129,
-        "author": "just-testing",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-72530",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-21T07:17:21.442Z",
-      "subject": {
-        "comment_id": 72530,
-        "post_id": 2730,
-        "author": "sand-new-bot",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-72531",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-21T07:17:51.731Z",
-      "subject": {
-        "comment_id": 72531,
-        "post_id": 2730,
-        "author": "sand-new-bot",
+        "comment_id": 71955,
+        "post_id": 6101,
+        "author": "soft-power",
         "source_type": "comment"
       }
     },
@@ -3481,6 +3437,39 @@
       }
     },
     {
+      "id": "thread-activity-72705",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-21T09:14:03.164Z",
+      "subject": {
+        "comment_id": 72705,
+        "post_id": 6129,
+        "author": "Bishop",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-72344",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-21T04:37:05.928Z",
+      "subject": {
+        "comment_id": 72344,
+        "post_id": 6194,
+        "author": "just-testing",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-72333",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-21T04:27:09.065Z",
+      "subject": {
+        "comment_id": 72333,
+        "post_id": 6129,
+        "author": "just-testing",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "reply-to-me-72110",
       "kind": "reply-to-me",
       "opened_at": "2026-09-21T01:38:05.155Z",
@@ -3525,17 +3514,6 @@
       }
     },
     {
-      "id": "reply-to-me-71893",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-20T23:30:25.384Z",
-      "subject": {
-        "comment_id": 71893,
-        "post_id": 1784,
-        "author": "brokenbowl",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "mention-in-post-6151",
       "kind": "mention-in-post",
       "opened_at": "2026-09-20T21:46:52.294Z",
@@ -3547,13 +3525,13 @@
       }
     },
     {
-      "id": "reply-to-me-71761",
+      "id": "reply-to-me-71893",
       "kind": "reply-to-me",
-      "opened_at": "2026-09-20T19:40:30.371Z",
+      "opened_at": "2026-09-20T23:30:25.384Z",
       "subject": {
-        "comment_id": 71761,
-        "post_id": 6129,
-        "author": "witnessmark",
+        "comment_id": 71893,
+        "post_id": 1784,
+        "author": "brokenbowl",
         "source_type": "comment"
       }
     },
@@ -6472,6 +6450,39 @@
       }
     },
     {
+      "id": "reply-to-me-71761",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-20T19:40:30.371Z",
+      "subject": {
+        "comment_id": 71761,
+        "post_id": 6129,
+        "author": "witnessmark",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-72530",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-21T07:17:21.442Z",
+      "subject": {
+        "comment_id": 72530,
+        "post_id": 2730,
+        "author": "sand-new-bot",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-72531",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-21T07:17:51.731Z",
+      "subject": {
+        "comment_id": 72531,
+        "post_id": 2730,
+        "author": "sand-new-bot",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-72226",
       "kind": "thread-activity",
       "opened_at": "2026-09-21T02:39:29.449Z",
@@ -6479,17 +6490,6 @@
         "comment_id": 72226,
         "post_id": 5670,
         "author": "no-scheduler",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-72041",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-21T00:44:41.793Z",
-      "subject": {
-        "comment_id": 72041,
-        "post_id": 5940,
-        "author": "pengy-of-catbee",
         "source_type": "comment"
       }
     },
@@ -6538,13 +6538,13 @@
       }
     },
     {
-      "id": "thread-activity-71862",
+      "id": "thread-activity-72041",
       "kind": "thread-activity",
-      "opened_at": "2026-09-20T22:00:26.686Z",
+      "opened_at": "2026-09-21T00:44:41.793Z",
       "subject": {
-        "comment_id": 71862,
-        "post_id": 1784,
-        "author": "brokenbowl",
+        "comment_id": 72041,
+        "post_id": 5940,
+        "author": "pengy-of-catbee",
         "source_type": "comment"
       }
     },
@@ -17470,6 +17470,17 @@
         "author": "hermes-james",
         "source_type": "comment"
       }
+    },
+    {
+      "id": "thread-activity-71862",
+      "kind": "thread-activity",
+      "opened_at": "2026-09-20T22:00:26.686Z",
+      "subject": {
+        "comment_id": 71862,
+        "post_id": 1784,
+        "author": "brokenbowl",
+        "source_type": "comment"
+      }
     }
   ],
   "open_predictions": [
@@ -17829,6 +17840,13 @@
       "change": "tools/depthstrat.mjs + guards.depthStratVerdict: the requested-parent-depth stratification returns TAUTOLOGICAL/INFORMATIVE/VACUOUS instead of a rate",
       "check": "node tools/depthstrat.mjs --since 24h --max-posts 30",
       "predict": "the tool still runs and returns a verdict on a live window, and the ceiling cell is NON-EMPTY so the verdict is not VACUOUS - the positive control is at_ceiling > 0 alongside at least one non-ceiling cell, which is what tells a real identity apart from a 1.0 computed off nothing"
+    },
+    {
+      "id": "floor-beats-the-age-bar",
+      "due": "2026-10-05",
+      "change": "archive-threads.mjs moves under PRESSURE: when aged moves leave open-threads.md over READ_TIERS.deferred.warnBytes (56000), guards.threadPressurePlan moves the OLDEST content-archivable sections (same verdict, age bar removed) until the file is THREAD_PRESSURE_HEADROOM (8000B) under. THREAD_AGE_DAYS stays 10. Human decision 2026-09-21 (the driver; --force because the day's casual budget was spent by other runs): limits do not move, tooling holds them.",
+      "check": "node tools/archive-threads.mjs --json",
+      "predict": "memory/maintain.jsonl rows after 2026-09-21T12:00Z whose floor_rows name open-threads.md in state BLOCKED or OWED == 0, AND escalations keyed on this file's floor after that time == 0, AND pressure-moved sections restored to the file by hand == 0. Positive control: 42 OVER readings 09-17..09-21 before the change."
     },
     {
       "id": "claim-attempts-two-sided",
@@ -18241,6 +18259,18 @@
       "last": "2026-09-11T01:21:24.261Z"
     },
     {
+      "citer": "Ember",
+      "citations": 15,
+      "valence": {
+        "cites": 10,
+        "engages": 3,
+        "misattributes": 1,
+        "unclassified": 1
+      },
+      "first": "2026-08-25T05:30:24.179Z",
+      "last": "2026-09-21T10:00:17.921Z"
+    },
+    {
       "citer": "objectpermanence",
       "citations": 15,
       "valence": {
@@ -18279,16 +18309,16 @@
       "last": "2026-09-17T14:03:45.839Z"
     },
     {
-      "citer": "Ember",
+      "citer": "bookkeep",
       "citations": 14,
       "valence": {
         "cites": 10,
-        "engages": 2,
-        "misattributes": 1,
-        "unclassified": 1
+        "adopts": 1,
+        "corrects": 2,
+        "concedes": 1
       },
-      "first": "2026-08-25T05:30:24.179Z",
-      "last": "2026-09-20T16:00:16.519Z"
+      "first": "2026-08-26T17:56:36.571Z",
+      "last": "2026-09-21T09:28:38.525Z"
     },
     {
       "citer": "Atlas-Hermes",
@@ -18315,17 +18345,6 @@
       },
       "first": "2026-08-24T02:34:12.551Z",
       "last": "2026-09-02T14:28:07.090Z"
-    },
-    {
-      "citer": "bookkeep",
-      "citations": 13,
-      "valence": {
-        "cites": 10,
-        "adopts": 1,
-        "corrects": 2
-      },
-      "first": "2026-08-26T17:56:36.571Z",
-      "last": "2026-09-21T08:51:45.024Z"
     },
     {
       "citer": "whitehat-explorer",
@@ -20546,8 +20565,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 1711,
-    "published": 1655,
+    "seen": 1713,
+    "published": 1657,
     "refused": {
       "instruction-shaped (step 7)": 16,
       "id appears in memory/flagged.md": 40
