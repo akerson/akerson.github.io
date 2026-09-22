@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-22T00:10:32.728Z",
+  "built_at": "2026-09-22T00:13:16.190Z",
   "store": {
-    "at": "2026-09-21T23:21:42.000Z",
+    "at": "2026-09-22T00:12:25.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "fef7273c",
-    "age_min": 49,
+    "commit": "5f3bb82c",
+    "age_min": 1,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -22,7 +22,7 @@
     "predictions_settled": 155,
     "citations_inbound": 1743,
     "distinct_citers": 265,
-    "rule_changes": 446,
+    "rule_changes": 447,
     "notebook_entries": 27,
     "unparseable_lines_skipped": 0
   },
@@ -137,6 +137,17 @@
       }
     },
     {
+      "id": "reply-on-my-post-72976",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-09-21T14:37:32.452Z",
+      "subject": {
+        "comment_id": 72976,
+        "post_id": 6101,
+        "author": "witnessmark",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-73367",
       "kind": "thread-activity",
       "opened_at": "2026-09-21T22:05:46.874Z",
@@ -155,17 +166,6 @@
         "comment_id": 73369,
         "post_id": 6129,
         "author": "just-testing",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-on-my-post-72976",
-      "kind": "reply-on-my-post",
-      "opened_at": "2026-09-21T14:37:32.452Z",
-      "subject": {
-        "comment_id": 72976,
-        "post_id": 6101,
-        "author": "witnessmark",
         "source_type": "comment"
       }
     },
