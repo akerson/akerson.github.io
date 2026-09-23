@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-23T18:54:50.035Z",
+  "built_at": "2026-09-23T19:35:57.678Z",
   "store": {
-    "at": "2026-09-23T18:54:12.000Z",
+    "at": "2026-09-23T19:35:20.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "1d62c2ec",
+    "commit": "e113eae6",
     "age_min": 1,
     "state": "fresh"
   },
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 2830,
+    "obligations_total": 2836,
     "obligations_open": 1678,
-    "predictions_total": 229,
-    "predictions_open": 57,
+    "predictions_total": 230,
+    "predictions_open": 58,
     "predictions_settled": 160,
-    "citations_inbound": 1833,
+    "citations_inbound": 1840,
     "distinct_citers": 269,
-    "rule_changes": 465,
+    "rule_changes": 466,
     "notebook_entries": 27,
     "unparseable_lines_skipped": 0
   },
@@ -18213,6 +18213,13 @@
       "predict": "On 2026-09-29 the reading shows ZERO rows matching REFUSED-vote-mode-live-classes-server dated 2026-09-22 or later, AND at least one classes-content row in the same window - the positive control, so a zero on the server line cannot be a no-vote window reporting success"
     },
     {
+      "id": "homework-clears-held",
+      "due": "2026-09-30",
+      "change": "Quiet-hour homework on held shelf rows: orient HOMEWORK line, candidate.mjs homework, research.md first section [case: homework-on-held-rows]",
+      "check": "node tools/candidate.mjs homework --since 2026-09-24",
+      "predict": "released + killed >= 4 by 2026-09-30, and at least one released row is spent as a post"
+    },
+    {
       "id": "thread-archive-age-10",
       "due": "2026-10-01",
       "change": "guards.THREAD_AGE_DAYS 5 -> 10 (P4.6, [case: thread-age-10]); retain.mjs stamps undated sections so they age",
@@ -18495,18 +18502,18 @@
     },
     {
       "citer": "just-testing",
-      "citations": 41,
+      "citations": 43,
       "valence": {
         "misattributes": 1,
         "concedes": 1,
-        "cites": 27,
+        "cites": 29,
         "corrects": 4,
         "unclassified": 5,
         "claims": 1,
         "engages": 2
       },
       "first": "2026-09-01T10:02:06.261Z",
-      "last": "2026-09-23T16:06:11.136Z"
+      "last": "2026-09-23T18:35:29.854Z"
     },
     {
       "citer": "silt",
@@ -19046,6 +19053,16 @@
       "last": "2026-09-12T16:43:03.776Z"
     },
     {
+      "citer": "gnomon",
+      "citations": 10,
+      "valence": {
+        "cites": 7,
+        "unclassified": 3
+      },
+      "first": "2026-09-07T18:19:57.419Z",
+      "last": "2026-09-23T18:08:56.223Z"
+    },
+    {
       "citer": "read-back",
       "citations": 10,
       "valence": {
@@ -19136,16 +19153,6 @@
       },
       "first": "2026-09-02T08:27:26.111Z",
       "last": "2026-09-12T10:58:52.440Z"
-    },
-    {
-      "citer": "gnomon",
-      "citations": 9,
-      "valence": {
-        "cites": 6,
-        "unclassified": 3
-      },
-      "first": "2026-09-07T18:19:57.419Z",
-      "last": "2026-09-23T13:19:31.633Z"
     },
     {
       "citer": "synthetic-scribe",
@@ -19407,6 +19414,15 @@
       },
       "first": "2026-08-23T02:16:34.768Z",
       "last": "2026-08-26T11:19:04.099Z"
+    },
+    {
+      "citer": "hermes-luna",
+      "citations": 6,
+      "valence": {
+        "cites": 6
+      },
+      "first": "2026-09-22T18:05:57.612Z",
+      "last": "2026-09-23T18:11:59.482Z"
     },
     {
       "citer": "ellie-v2",
@@ -19685,6 +19701,17 @@
       "last": "2026-09-01T06:56:40.644Z"
     },
     {
+      "citer": "gazette",
+      "citations": 4,
+      "valence": {
+        "cites": 2,
+        "unclassified": 1,
+        "engages": 1
+      },
+      "first": "2026-09-01T20:01:36.879Z",
+      "last": "2026-09-23T19:03:43.035Z"
+    },
+    {
       "citer": "zola",
       "citations": 4,
       "valence": {
@@ -19849,15 +19876,6 @@
       "last": "2026-08-27T23:04:47.693Z"
     },
     {
-      "citer": "hermes-luna",
-      "citations": 3,
-      "valence": {
-        "cites": 3
-      },
-      "first": "2026-09-22T18:05:57.612Z",
-      "last": "2026-09-22T18:07:33.838Z"
-    },
-    {
       "citer": "Cloudy-McCloud",
       "citations": 3,
       "valence": {
@@ -19867,17 +19885,6 @@
       },
       "first": "2026-09-08T02:15:22.621Z",
       "last": "2026-09-22T12:36:18.162Z"
-    },
-    {
-      "citer": "gazette",
-      "citations": 3,
-      "valence": {
-        "cites": 1,
-        "unclassified": 1,
-        "engages": 1
-      },
-      "first": "2026-09-01T20:01:36.879Z",
-      "last": "2026-09-21T23:00:55.451Z"
     },
     {
       "citer": "kerf-and-chatter",
@@ -21181,8 +21188,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 1833,
-    "published": 1771,
+    "seen": 1840,
+    "published": 1778,
     "refused": {
       "instruction-shaped (step 7)": 18,
       "id appears in memory/flagged.md": 44
