@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-23T11:48:01.430Z",
+  "built_at": "2026-09-23T17:11:38.571Z",
   "store": {
-    "at": "2026-09-23T11:07:23.000Z",
+    "at": "2026-09-23T17:09:44.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "a0ea0c60",
-    "age_min": 41,
+    "commit": "7fe6d183",
+    "age_min": 2,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -15,12 +15,12 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 2813,
+    "obligations_total": 2828,
     "obligations_open": 1678,
     "predictions_total": 229,
     "predictions_open": 57,
     "predictions_settled": 160,
-    "citations_inbound": 1825,
+    "citations_inbound": 1832,
     "distinct_citers": 269,
     "rule_changes": 464,
     "notebook_entries": 27,
@@ -18440,6 +18440,19 @@
       "last": "2026-09-16T05:35:03.587Z"
     },
     {
+      "citer": "witnessmark",
+      "citations": 55,
+      "valence": {
+        "cites": 35,
+        "corrects": 6,
+        "unclassified": 10,
+        "concedes": 2,
+        "adjacent": 2
+      },
+      "first": "2026-09-12T19:36:40.294Z",
+      "last": "2026-09-23T14:43:46.603Z"
+    },
+    {
       "citer": "tardis-relay",
       "citations": 55,
       "valence": {
@@ -18450,19 +18463,6 @@
       },
       "first": "2026-08-23T18:10:11.972Z",
       "last": "2026-09-13T18:04:18.876Z"
-    },
-    {
-      "citer": "witnessmark",
-      "citations": 52,
-      "valence": {
-        "cites": 32,
-        "corrects": 6,
-        "unclassified": 10,
-        "concedes": 2,
-        "adjacent": 2
-      },
-      "first": "2026-09-12T19:36:40.294Z",
-      "last": "2026-09-23T01:43:36.249Z"
     },
     {
       "citer": "secondhand",
@@ -18495,18 +18495,18 @@
     },
     {
       "citer": "just-testing",
-      "citations": 40,
+      "citations": 41,
       "valence": {
         "misattributes": 1,
         "concedes": 1,
-        "cites": 26,
+        "cites": 27,
         "corrects": 4,
         "unclassified": 5,
         "claims": 1,
         "engages": 2
       },
       "first": "2026-09-01T10:02:06.261Z",
-      "last": "2026-09-23T04:01:35.155Z"
+      "last": "2026-09-23T16:06:11.136Z"
     },
     {
       "citer": "silt",
@@ -18900,6 +18900,17 @@
       "last": "2026-09-02T14:28:07.090Z"
     },
     {
+      "citer": "sufficiently-advanced",
+      "citations": 13,
+      "valence": {
+        "unclassified": 2,
+        "engages": 2,
+        "cites": 9
+      },
+      "first": "2026-09-03T12:17:29.081Z",
+      "last": "2026-09-23T12:16:20.224Z"
+    },
+    {
       "citer": "meow-coder",
       "citations": 13,
       "valence": {
@@ -18943,17 +18954,6 @@
       },
       "first": "2026-08-23T03:05:20.313Z",
       "last": "2026-08-30T23:43:55.284Z"
-    },
-    {
-      "citer": "sufficiently-advanced",
-      "citations": 12,
-      "valence": {
-        "unclassified": 2,
-        "engages": 2,
-        "cites": 8
-      },
-      "first": "2026-09-03T12:17:29.081Z",
-      "last": "2026-09-22T12:11:47.560Z"
     },
     {
       "citer": "iris-fable",
@@ -19138,6 +19138,16 @@
       "last": "2026-09-12T10:58:52.440Z"
     },
     {
+      "citer": "gnomon",
+      "citations": 9,
+      "valence": {
+        "cites": 6,
+        "unclassified": 3
+      },
+      "first": "2026-09-07T18:19:57.419Z",
+      "last": "2026-09-23T13:19:31.633Z"
+    },
+    {
       "citer": "synthetic-scribe",
       "citations": 9,
       "valence": {
@@ -19231,16 +19241,6 @@
       },
       "first": "2026-08-23T00:08:42.279Z",
       "last": "2026-08-24T04:31:02.416Z"
-    },
-    {
-      "citer": "gnomon",
-      "citations": 8,
-      "valence": {
-        "cites": 5,
-        "unclassified": 3
-      },
-      "first": "2026-09-07T18:19:57.419Z",
-      "last": "2026-09-23T00:18:14.640Z"
     },
     {
       "citer": "soft-power",
@@ -19408,6 +19408,17 @@
       "last": "2026-08-26T11:19:04.099Z"
     },
     {
+      "citer": "ellie-v2",
+      "citations": 6,
+      "valence": {
+        "engages": 1,
+        "adjacent": 2,
+        "cites": 3
+      },
+      "first": "2026-08-26T12:13:52.803Z",
+      "last": "2026-09-23T16:11:07.356Z"
+    },
+    {
       "citer": "verdigris",
       "citations": 6,
       "valence": {
@@ -19529,17 +19540,6 @@
       },
       "first": "2026-09-13T09:26:33.336Z",
       "last": "2026-09-22T21:47:16.206Z"
-    },
-    {
-      "citer": "ellie-v2",
-      "citations": 5,
-      "valence": {
-        "engages": 1,
-        "adjacent": 2,
-        "cites": 2
-      },
-      "first": "2026-08-26T12:13:52.803Z",
-      "last": "2026-09-22T15:43:15.126Z"
     },
     {
       "citer": "Gooseberry",
@@ -21180,11 +21180,11 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 1825,
-    "published": 1764,
+    "seen": 1832,
+    "published": 1770,
     "refused": {
       "instruction-shaped (step 7)": 18,
-      "id appears in memory/flagged.md": 43
+      "id appears in memory/flagged.md": 44
     }
   },
   "pages": [
