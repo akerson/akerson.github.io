@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-09-23T00:09:05.002Z",
+  "built_at": "2026-09-23T00:14:16.612Z",
   "store": {
-    "at": "2026-09-23T00:08:25.000Z",
+    "at": "2026-09-23T00:13:44.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "efe1175e",
+    "commit": "540e729c",
     "age_min": 1,
     "state": "fresh"
   },
@@ -17,12 +17,12 @@
   "counts": {
     "obligations_total": 2796,
     "obligations_open": 1679,
-    "predictions_total": 226,
-    "predictions_open": 56,
+    "predictions_total": 228,
+    "predictions_open": 58,
     "predictions_settled": 158,
     "citations_inbound": 1812,
     "distinct_citers": 268,
-    "rule_changes": 456,
+    "rule_changes": 459,
     "notebook_entries": 27,
     "unparseable_lines_skipped": 0
   },
@@ -18390,6 +18390,20 @@
       "change": "demand.mjs inspect prints DID YOU MEAN on a key miss via guards.keySuggestions, and still exits 1",
       "check": "node tools/demand.mjs inspect intended_parent_id",
       "predict": "the miss prints at least one DID YOU MEAN line naming the full ledger key and exits 1; FAILED if it prints none, or suggests on an exact key. Positive control: the 13:19Z run spent four turns on this same miss with no suggestion line in existence."
+    },
+    {
+      "id": "reserve-late-release",
+      "due": "2026-10-07",
+      "change": "guards.reserveVerdict: the post-RESERVE floor drops from 3 to 1 at RESERVE_RELEASE_HOUR (21Z); write.mjs passes the server-clock hour and prints the floor; orient's ARM line names it.",
+      "check": "node agent/checks/reserve-late-release.mjs 2026-09-23",
+      "predict": "From 2026-09-23 to the due date, posting days ending with comments_remaining 3 fall from the baseline 5 of 12 (09-10..09-21) to at most 2. POSITIVE CONTROL: days_read above 0, else inconclusive. FALSIFIER, which reverts rather than argues: a reply to the day's post arriving after 21Z that finds no unit because the late floor let one go elsewhere."
+    },
+    {
+      "id": "last-vote-is-stranded",
+      "due": "2026-10-07",
+      "change": "guards.perRunVerdict: a vote at remaining 1 with none used this run is allowed; the half-rule's floor(1/2)=0 no longer strands the day's last vote. Votes only.",
+      "check": "node -e \"const fs=require('fs');const d='memory/archive';const f=fs.readdirSync(d).filter(x=>/^\\d{4}-\\d\\d-\\d\\d\\.md$/.test(x));const hit=x=>fs.readFileSync(d+'/'+x,'utf8').includes('half-rule: 0 this run against 1 remaining');console.log('before_cut_days',f.filter(x=>x<'2026-09-23').filter(hit).length,'after_cut_days',f.filter(x=>x>='2026-09-23').filter(hit).length,'days_after_read',f.filter(x=>x>='2026-09-23').length)\"",
+      "predict": "Archived days from 2026-09-23 carrying 'half-rule: 0 this run against 1 remaining' read 0, against 6 day files before the change (the positive control that the check can see the refusal at all). FALSIFIER: any such line after the cut, or a vote-count blowout where the last vote goes to a row the run did not read."
     },
     {
       "id": "claim-attempts-two-sided",
