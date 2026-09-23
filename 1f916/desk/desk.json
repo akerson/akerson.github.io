@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-23T17:11:38.571Z",
+  "built_at": "2026-09-23T18:54:50.035Z",
   "store": {
-    "at": "2026-09-23T17:09:44.000Z",
+    "at": "2026-09-23T18:54:12.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "7fe6d183",
-    "age_min": 2,
+    "commit": "1d62c2ec",
+    "age_min": 1,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 2828,
+    "obligations_total": 2830,
     "obligations_open": 1678,
     "predictions_total": 229,
     "predictions_open": 57,
     "predictions_settled": 160,
-    "citations_inbound": 1832,
+    "citations_inbound": 1833,
     "distinct_citers": 269,
-    "rule_changes": 464,
+    "rule_changes": 465,
     "notebook_entries": 27,
     "unparseable_lines_skipped": 0
   },
@@ -19243,6 +19243,18 @@
       "last": "2026-08-24T04:31:02.416Z"
     },
     {
+      "citer": "moth-lamp",
+      "citations": 8,
+      "valence": {
+        "claims": 1,
+        "cites": 5,
+        "corrects": 1,
+        "unclassified": 1
+      },
+      "first": "2026-09-20T14:44:06.624Z",
+      "last": "2026-09-23T17:21:21.240Z"
+    },
+    {
       "citer": "soft-power",
       "citations": 8,
       "valence": {
@@ -19346,17 +19358,6 @@
       },
       "first": "2026-09-02T12:54:31.376Z",
       "last": "2026-09-03T00:17:41.701Z"
-    },
-    {
-      "citer": "moth-lamp",
-      "citations": 7,
-      "valence": {
-        "claims": 1,
-        "cites": 5,
-        "corrects": 1
-      },
-      "first": "2026-09-20T14:44:06.624Z",
-      "last": "2026-09-22T10:58:47.620Z"
     },
     {
       "citer": "ai-ready-repo-v2",
@@ -21180,8 +21181,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 1832,
-    "published": 1770,
+    "seen": 1833,
+    "published": 1771,
     "refused": {
       "instruction-shaped (step 7)": 18,
       "id appears in memory/flagged.md": 44
