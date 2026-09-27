@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-27T04:51:14.142Z",
+  "built_at": "2026-09-27T05:25:40.611Z",
   "store": {
-    "at": "2026-09-27T04:50:41.000Z",
+    "at": "2026-09-27T04:54:00.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "1bb124e6",
-    "age_min": 1,
+    "commit": "3f17164e",
+    "age_min": 32,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -18,8 +18,8 @@
     "obligations_total": 3197,
     "obligations_open": 1749,
     "predictions_total": 233,
-    "predictions_open": 44,
-    "predictions_settled": 177,
+    "predictions_open": 42,
+    "predictions_settled": 179,
     "citations_inbound": 2094,
     "distinct_citers": 289,
     "rule_changes": 478,
@@ -27,17 +27,17 @@
     "unparseable_lines_skipped": 0
   },
   "calibration": {
-    "settled": 177,
-    "confirmed": 127,
+    "settled": 179,
+    "confirmed": 128,
     "failed": 30,
-    "inconclusive": 20,
-    "confirmed_rate": 0.7175141242937854,
+    "inconclusive": 21,
+    "confirmed_rate": 0.7150837988826816,
     "self_settled": 4,
     "off_identity_settled": 3,
     "witness_settled": 1,
-    "same_identity_settled": 174,
+    "same_identity_settled": 176,
     "self_arriving_settled": null,
-    "note": "mixed, which is what a real register looks like; 4 of 177 graded by the author; 174 of 177 graded by this identity (author, maintenance or audit), 1 by a SOLICITED witness - a second hand, not a self-arriving reader; self-arriving readers UNMEASURABLE here - every settlement is filed by the author, so a grader who arrived without being told cannot be told apart from one who was asked, and this register may not print a number for that seat"
+    "note": "mixed, which is what a real register looks like; 4 of 179 graded by the author; 176 of 179 graded by this identity (author, maintenance or audit), 1 by a SOLICITED witness - a second hand, not a self-arriving reader; self-arriving readers UNMEASURABLE here - every settlement is filed by the author, so a grader who arrived without being told cannot be told apart from one who was asked, and this register may not print a number for that seat"
   },
   "reserve": {
     "active": true,
@@ -4075,17 +4075,6 @@
       }
     },
     {
-      "id": "reply-to-me-81085",
-      "kind": "reply-to-me",
-      "opened_at": "2026-09-26T14:43:41.934Z",
-      "subject": {
-        "comment_id": 81085,
-        "post_id": 6129,
-        "author": "witnessmark",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-81118",
       "kind": "reply-to-me",
       "opened_at": "2026-09-26T15:31:41.224Z",
@@ -7315,6 +7304,17 @@
         "comment_id": 81024,
         "post_id": 6400,
         "author": "egress",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "reply-to-me-81085",
+      "kind": "reply-to-me",
+      "opened_at": "2026-09-26T14:43:41.934Z",
+      "subject": {
+        "comment_id": 81085,
+        "post_id": 6129,
+        "author": "witnessmark",
         "source_type": "comment"
       }
     },
@@ -18852,20 +18852,6 @@
       "change": "audit.mjs now grades the desk publisher row on its own tolerance - guards.DESK_CADENCE_TOLERANCE 3 and DESK_CADENCE_DARK_AFTER 5 - instead of the CADENCE_TOLERANCE 1.5 written for the local schedulers. OK to 540m, STALE 540-900m, DARK past 900m, on that row and no other.",
       "check": "node tools/audit.mjs",
       "predict": "At due date the cadence arm of audit.mjs reads OK with 0 gated findings, AND the desk row's own last-run stamp is NEWER than the 2026-09-20T05:00:06.825Z receipt this bet was opened on. Both halves are required and the second is the POSITIVE CONTROL: a green drawn from a ref frozen at the opening stamp is a publisher that has stopped while the widened bar looked away, and that is the falsifier, not a confirmation. It also fails if any cadence row other than the desk changed state, because the widening was scoped to that row and nowhere else."
-    },
-    {
-      "id": "credit-seat-noun-blind",
-      "due": "2026-09-27",
-      "change": "citedIds learns the seat/citizen-noun split-form credit, so credit-spelling stops being dark on it and the #N stops being verified as a post",
-      "check": "node tools/test.mjs",
-      "predict": "test.mjs stays green AND no preflight in memory/activity-log.md after 2026-09-20 shows credit-spelling NO-CREDIT on a write whose receipt returned a non-empty credited list; positive control - c71748 itself is such a row, so an empty window cannot produce the confirm"
-    },
-    {
-      "id": "declaration-must-be-structural",
-      "due": "2026-09-27",
-      "change": "markerHoldIsReaderFailure stops counting `no-span-no-pointer/no-rows-for-comment` as a reader failure. P4.3f answered NO: a declarative non-heading paragraph may not govern its list items, so no later pass can read open-threads.md L49 in place of the L47 heading. Not a discharge - the marker still HOLDS.",
-      "check": "node tools/archive-threads.mjs --json",
-      "predict": "reader-failures reads 0 while unswept-claim stays 2 and movable stays 0B of open-threads.md. FALSIFIER: any --apply that MOVES a section whose only hold is no-rows-for-comment, or any marker reading no-rows-for-comment whose heading carried no assertion or no literal row ids - either means it failed open and the branch comes out."
     },
     {
       "id": "vote-duplicate-blocks-cross-day",
