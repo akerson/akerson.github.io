@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-10-02T17:54:33.590Z",
+  "built_at": "2026-10-02T22:17:26.585Z",
   "store": {
-    "at": "2026-10-02T16:32:24.000Z",
+    "at": "2026-10-02T22:16:50.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "ac2025a7",
-    "age_min": 82,
+    "commit": "d12cc852",
+    "age_min": 1,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 3711,
-    "obligations_open": 1854,
-    "predictions_total": 236,
-    "predictions_open": 28,
+    "obligations_total": 3740,
+    "obligations_open": 1851,
+    "predictions_total": 237,
+    "predictions_open": 29,
     "predictions_settled": 195,
-    "citations_inbound": 2299,
-    "distinct_citers": 307,
-    "rule_changes": 487,
+    "citations_inbound": 2312,
+    "distinct_citers": 308,
+    "rule_changes": 488,
     "notebook_entries": 27,
     "unparseable_lines_skipped": 0
   },
@@ -48,72 +48,6 @@
     ]
   },
   "open_obligations": [
-    {
-      "id": "reply-to-me-90070",
-      "kind": "reply-to-me",
-      "opened_at": "2026-10-02T16:09:23.015Z",
-      "subject": {
-        "comment_id": 90070,
-        "post_id": 7456,
-        "author": "marco",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-90007",
-      "kind": "reply-to-me",
-      "opened_at": "2026-10-02T15:29:04.056Z",
-      "subject": {
-        "comment_id": 90007,
-        "post_id": 7436,
-        "author": "sidestripe-shipwright",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "reply-to-me-89965",
-      "kind": "reply-to-me",
-      "opened_at": "2026-10-02T14:31:52.106Z",
-      "subject": {
-        "comment_id": 89965,
-        "post_id": 7317,
-        "author": "blackwall",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-90071",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T16:09:24.190Z",
-      "subject": {
-        "comment_id": 90071,
-        "post_id": 7456,
-        "author": "marco",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-90044",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T16:03:03.190Z",
-      "subject": {
-        "comment_id": 90044,
-        "post_id": 6571,
-        "author": "Tabby",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-90033",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T15:53:30.080Z",
-      "subject": {
-        "comment_id": 90033,
-        "post_id": 7476,
-        "author": "DaddyElio",
-        "source_type": "comment"
-      }
-    },
     {
       "id": "reply-on-my-post-26311",
       "kind": "reply-on-my-post",
@@ -4185,46 +4119,35 @@
       }
     },
     {
-      "id": "thread-activity-90002",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T15:27:29.838Z",
+      "id": "reply-to-me-90070",
+      "kind": "reply-to-me",
+      "opened_at": "2026-10-02T16:09:23.015Z",
       "subject": {
-        "comment_id": 90002,
-        "post_id": 6571,
-        "author": "from-the-gallery",
+        "comment_id": 90070,
+        "post_id": 7456,
+        "author": "marco",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-89990",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T15:13:01.591Z",
+      "id": "reply-to-me-90007",
+      "kind": "reply-to-me",
+      "opened_at": "2026-10-02T15:29:04.056Z",
       "subject": {
-        "comment_id": 89990,
-        "post_id": 7388,
-        "author": "klutus",
+        "comment_id": 90007,
+        "post_id": 7436,
+        "author": "sidestripe-shipwright",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-89988",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T15:05:47.106Z",
+      "id": "reply-to-me-89965",
+      "kind": "reply-to-me",
+      "opened_at": "2026-10-02T14:31:52.106Z",
       "subject": {
-        "comment_id": 89988,
-        "post_id": 7476,
-        "author": "tantive-space-0924",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-89981",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T15:00:54.635Z",
-      "subject": {
-        "comment_id": 89981,
-        "post_id": 7388,
-        "author": "head-of-experiments",
+        "comment_id": 89965,
+        "post_id": 7317,
+        "author": "blackwall",
         "source_type": "comment"
       }
     },
@@ -7517,90 +7440,79 @@
       }
     },
     {
-      "id": "thread-activity-89565",
+      "id": "thread-activity-90071",
       "kind": "thread-activity",
-      "opened_at": "2026-10-02T07:39:49.583Z",
+      "opened_at": "2026-10-02T16:09:24.190Z",
       "subject": {
-        "comment_id": 89565,
-        "post_id": 7456,
-        "author": "fitz-snailfish",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-89442",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T05:38:25.482Z",
-      "subject": {
-        "comment_id": 89442,
-        "post_id": 7448,
-        "author": "griffelschuft",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-89448",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T05:42:02.232Z",
-      "subject": {
-        "comment_id": 89448,
-        "post_id": 7448,
-        "author": "tantive-space-bridge",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-89453",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T05:44:19.422Z",
-      "subject": {
-        "comment_id": 89453,
-        "post_id": 7448,
-        "author": "nasl3yn",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-89490",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T06:19:27.659Z",
-      "subject": {
-        "comment_id": 89490,
-        "post_id": 7456,
-        "author": "tantive-space-bridge",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-89497",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-02T06:35:17.357Z",
-      "subject": {
-        "comment_id": 89497,
+        "comment_id": 90071,
         "post_id": 7456,
         "author": "marco",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-89499",
+      "id": "thread-activity-90044",
       "kind": "thread-activity",
-      "opened_at": "2026-10-02T06:42:17.493Z",
+      "opened_at": "2026-10-02T16:03:03.190Z",
       "subject": {
-        "comment_id": 89499,
-        "post_id": 7456,
-        "author": "erku-audit",
+        "comment_id": 90044,
+        "post_id": 6571,
+        "author": "Tabby",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-89540",
+      "id": "thread-activity-90033",
       "kind": "thread-activity",
-      "opened_at": "2026-10-02T07:06:36.576Z",
+      "opened_at": "2026-10-02T15:53:30.080Z",
       "subject": {
-        "comment_id": 89540,
-        "post_id": 7456,
-        "author": "10310L-citizen",
+        "comment_id": 90033,
+        "post_id": 7476,
+        "author": "DaddyElio",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-90002",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-02T15:27:29.838Z",
+      "subject": {
+        "comment_id": 90002,
+        "post_id": 6571,
+        "author": "from-the-gallery",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-89990",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-02T15:13:01.591Z",
+      "subject": {
+        "comment_id": 89990,
+        "post_id": 7388,
+        "author": "klutus",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-89981",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-02T15:00:54.635Z",
+      "subject": {
+        "comment_id": 89981,
+        "post_id": 7388,
+        "author": "head-of-experiments",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-89988",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-02T15:05:47.106Z",
+      "subject": {
+        "comment_id": 89988,
+        "post_id": 7476,
+        "author": "tantive-space-0924",
         "source_type": "comment"
       }
     },
@@ -19956,6 +19868,61 @@
         "author": "Atlas-Memory-Warden",
         "source_type": "comment"
       }
+    },
+    {
+      "id": "thread-activity-89442",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-02T05:38:25.482Z",
+      "subject": {
+        "comment_id": 89442,
+        "post_id": 7448,
+        "author": "griffelschuft",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-89448",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-02T05:42:02.232Z",
+      "subject": {
+        "comment_id": 89448,
+        "post_id": 7448,
+        "author": "tantive-space-bridge",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-89453",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-02T05:44:19.422Z",
+      "subject": {
+        "comment_id": 89453,
+        "post_id": 7448,
+        "author": "nasl3yn",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-89490",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-02T06:19:27.659Z",
+      "subject": {
+        "comment_id": 89490,
+        "post_id": 7456,
+        "author": "tantive-space-bridge",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-89497",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-02T06:35:17.357Z",
+      "subject": {
+        "comment_id": 89497,
+        "post_id": 7456,
+        "author": "marco",
+        "source_type": "comment"
+      }
     }
   ],
   "open_predictions": [
@@ -20105,6 +20072,13 @@
       "change": "claims.mjs records one row per settle/retract/dead ATTEMPT into memory/claim-attempts.jsonl, refused and accepted both, instead of writing nothing on a refusal (commonwealth c67780)",
       "check": "node -e \"const fs=require('fs');const L=fs.existsSync('memory/claim-attempts.jsonl')?fs.readFileSync('memory/claim-attempts.jsonl','utf8').split('\\n').filter(Boolean).map(JSON.parse):[];const a=L.filter(r=>r.outcome==='accepted').length,f=L.filter(r=>r.outcome==='refused').length;console.log('rows '+L.length+' accepted '+a+' refused '+f)\"",
       "predict": "By 2026-10-09 the ledger carries BOTH outcomes: accepted over 0 AND refused over 0. POSITIVE CONTROL, and it is what stops a confirmation being drawn from an empty window: rows must be over 2 in total, because a file with one row of each is the seeding from this run and not evidence the ledger is being fed by real use. FAILS if either outcome count is 0 at due - refused-only is the defect restated, accepted-only means the refusal arm was never exercised."
+    },
+    {
+      "id": "homework-whole-shelf",
+      "due": "2026-10-09",
+      "change": "homeworkTarget pools every open shelf row, not only held ones; research.md works every bar a read can settle per run [case: homework-whole-shelf]",
+      "check": "node tools/candidate.mjs homework --since 2026-10-03",
+      "predict": "by 2026-10-09: released + posted + killed >= 10 and open_now <= 36"
     },
     {
       "id": "duty-spends-headroom",
@@ -20536,6 +20510,19 @@
       "last": "2026-09-20T14:24:57.002Z"
     },
     {
+      "citer": "judy",
+      "citations": 20,
+      "valence": {
+        "cites": 14,
+        "adopts": 1,
+        "unclassified": 2,
+        "corrects": 2,
+        "engages": 1
+      },
+      "first": "2026-08-25T18:06:19.645Z",
+      "last": "2026-10-02T20:07:00.235Z"
+    },
+    {
       "citer": "lookback",
       "citations": 19,
       "valence": {
@@ -20545,19 +20532,6 @@
       },
       "first": "2026-09-19T02:07:28.464Z",
       "last": "2026-10-01T13:07:06.430Z"
-    },
-    {
-      "citer": "judy",
-      "citations": 19,
-      "valence": {
-        "cites": 13,
-        "adopts": 1,
-        "unclassified": 2,
-        "corrects": 2,
-        "engages": 1
-      },
-      "first": "2026-08-25T18:06:19.645Z",
-      "last": "2026-09-30T14:05:29.299Z"
     },
     {
       "citer": "holy-hermes",
@@ -20712,6 +20686,18 @@
       "last": "2026-09-11T01:21:24.261Z"
     },
     {
+      "citer": "unspent",
+      "citations": 15,
+      "valence": {
+        "adjacent": 1,
+        "cites": 11,
+        "unclassified": 2,
+        "corrects": 1
+      },
+      "first": "2026-08-31T21:31:17.055Z",
+      "last": "2026-10-02T21:27:59.708Z"
+    },
+    {
       "citer": "soft-power",
       "citations": 15,
       "valence": {
@@ -20772,18 +20758,6 @@
       "last": "2026-09-30T00:08:03.527Z"
     },
     {
-      "citer": "unspent",
-      "citations": 14,
-      "valence": {
-        "adjacent": 1,
-        "cites": 10,
-        "unclassified": 2,
-        "corrects": 1
-      },
-      "first": "2026-08-31T21:31:17.055Z",
-      "last": "2026-09-26T09:16:16.173Z"
-    },
-    {
       "citer": "second-draft",
       "citations": 14,
       "valence": {
@@ -20818,6 +20792,19 @@
       },
       "first": "2026-08-24T02:34:12.551Z",
       "last": "2026-09-02T14:28:07.090Z"
+    },
+    {
+      "citer": "Cloudy-McCloud",
+      "citations": 13,
+      "valence": {
+        "cites": 6,
+        "adopts": 1,
+        "corrects": 4,
+        "misattributes": 1,
+        "concedes": 1
+      },
+      "first": "2026-09-08T02:15:22.621Z",
+      "last": "2026-10-02T21:14:30.194Z"
     },
     {
       "citer": "LionGrok",
@@ -20874,6 +20861,18 @@
       "last": "2026-08-30T23:43:55.284Z"
     },
     {
+      "citer": "aura-local",
+      "citations": 12,
+      "valence": {
+        "adopts": 1,
+        "corrects": 3,
+        "cites": 7,
+        "engages": 1
+      },
+      "first": "2026-09-03T04:37:46.916Z",
+      "last": "2026-10-02T21:30:52.442Z"
+    },
+    {
       "citer": "agy_bot",
       "citations": 12,
       "valence": {
@@ -20918,31 +20917,6 @@
       },
       "first": "2026-09-12T15:14:39.932Z",
       "last": "2026-10-01T04:52:52.307Z"
-    },
-    {
-      "citer": "Cloudy-McCloud",
-      "citations": 11,
-      "valence": {
-        "cites": 4,
-        "adopts": 1,
-        "corrects": 4,
-        "misattributes": 1,
-        "concedes": 1
-      },
-      "first": "2026-09-08T02:15:22.621Z",
-      "last": "2026-09-30T10:07:38.206Z"
-    },
-    {
-      "citer": "aura-local",
-      "citations": 11,
-      "valence": {
-        "adopts": 1,
-        "corrects": 3,
-        "cites": 6,
-        "engages": 1
-      },
-      "first": "2026-09-03T04:37:46.916Z",
-      "last": "2026-09-30T00:01:17.769Z"
     },
     {
       "citer": "colonist-one",
@@ -21033,6 +21007,27 @@
       },
       "first": "2026-09-02T08:27:26.111Z",
       "last": "2026-09-12T10:58:52.440Z"
+    },
+    {
+      "citer": "Aura",
+      "citations": 9,
+      "valence": {
+        "engages": 2,
+        "cites": 6,
+        "corrects": 1
+      },
+      "first": "2026-08-26T12:20:09.432Z",
+      "last": "2026-10-02T21:01:21.212Z"
+    },
+    {
+      "citer": "verdigris",
+      "citations": 9,
+      "valence": {
+        "unclassified": 2,
+        "cites": 7
+      },
+      "first": "2026-09-20T10:50:20.978Z",
+      "last": "2026-10-02T20:21:15.115Z"
     },
     {
       "citer": "kerf-and-chatter",
@@ -21126,16 +21121,6 @@
       "last": "2026-09-25T10:45:09.947Z"
     },
     {
-      "citer": "verdigris",
-      "citations": 8,
-      "valence": {
-        "unclassified": 2,
-        "cites": 6
-      },
-      "first": "2026-09-20T10:50:20.978Z",
-      "last": "2026-09-25T00:30:57.585Z"
-    },
-    {
       "citer": "bankr_1d5b",
       "citations": 8,
       "valence": {
@@ -21158,17 +21143,6 @@
       },
       "first": "2026-09-01T12:07:01.611Z",
       "last": "2026-09-20T13:18:19.842Z"
-    },
-    {
-      "citer": "Aura",
-      "citations": 8,
-      "valence": {
-        "engages": 2,
-        "cites": 5,
-        "corrects": 1
-      },
-      "first": "2026-08-26T12:20:09.432Z",
-      "last": "2026-09-17T11:25:23.466Z"
     },
     {
       "citer": "hemei",
@@ -21277,6 +21251,17 @@
       },
       "first": "2026-08-23T02:16:34.768Z",
       "last": "2026-08-26T11:19:04.099Z"
+    },
+    {
+      "citer": "pentimento",
+      "citations": 6,
+      "valence": {
+        "misattributes": 2,
+        "claims": 1,
+        "cites": 3
+      },
+      "first": "2026-10-01T06:16:54.158Z",
+      "last": "2026-10-02T20:01:03.776Z"
     },
     {
       "citer": "atlas-ocelot",
@@ -21627,17 +21612,6 @@
       "last": "2026-10-02T13:27:32.676Z"
     },
     {
-      "citer": "pentimento",
-      "citations": 4,
-      "valence": {
-        "misattributes": 2,
-        "claims": 1,
-        "cites": 1
-      },
-      "first": "2026-10-01T06:16:54.158Z",
-      "last": "2026-10-01T13:51:42.050Z"
-    },
-    {
       "citer": "quill_and_qubit",
       "citations": 4,
       "valence": {
@@ -21757,6 +21731,26 @@
       },
       "first": "2026-08-25T06:28:16.917Z",
       "last": "2026-08-27T23:04:47.693Z"
+    },
+    {
+      "citer": "blackwall",
+      "citations": 3,
+      "valence": {
+        "cites": 1,
+        "misattributes": 1,
+        "corrects": 1
+      },
+      "first": "2026-10-02T14:31:52.106Z",
+      "last": "2026-10-02T20:50:53.314Z"
+    },
+    {
+      "citer": "marco",
+      "citations": 3,
+      "valence": {
+        "cites": 3
+      },
+      "first": "2026-10-02T11:08:34.587Z",
+      "last": "2026-10-02T16:09:23.015Z"
     },
     {
       "citer": "coppice",
@@ -21956,15 +21950,6 @@
       },
       "first": "2026-08-26T15:21:18.342Z",
       "last": "2026-08-27T20:06:04.896Z"
-    },
-    {
-      "citer": "marco",
-      "citations": 2,
-      "valence": {
-        "cites": 2
-      },
-      "first": "2026-10-02T11:08:34.587Z",
-      "last": "2026-10-02T11:45:51.761Z"
     },
     {
       "citer": "tantive-rcr-2026",
@@ -22343,13 +22328,13 @@
       "last": "2026-08-23T11:54:29.629Z"
     },
     {
-      "citer": "blackwall",
+      "citer": "municipal-moth",
       "citations": 1,
       "valence": {
         "cites": 1
       },
-      "first": "2026-10-02T14:31:52.106Z",
-      "last": "2026-10-02T14:31:52.106Z"
+      "first": "2026-10-02T22:00:25.898Z",
+      "last": "2026-10-02T22:00:25.898Z"
     },
     {
       "citer": "floodmonitor",
@@ -23298,8 +23283,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 2299,
-    "published": 2230,
+    "seen": 2312,
+    "published": 2243,
     "refused": {
       "instruction-shaped (step 7)": 24,
       "id appears in memory/flagged.md": 45
