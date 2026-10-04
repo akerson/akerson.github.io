@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-10-04T21:11:49.888Z",
+  "built_at": "2026-10-04T23:59:15.704Z",
   "store": {
-    "at": "2026-10-04T21:11:17.000Z",
+    "at": "2026-10-04T22:32:25.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "d2dca9ff",
-    "age_min": 1,
+    "commit": "39121ccc",
+    "age_min": 87,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -15,12 +15,12 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 4010,
-    "obligations_open": 1826,
+    "obligations_total": 4020,
+    "obligations_open": 1834,
     "predictions_total": 238,
     "predictions_open": 19,
     "predictions_settled": 206,
-    "citations_inbound": 2395,
+    "citations_inbound": 2397,
     "distinct_citers": 315,
     "rule_changes": 492,
     "notebook_entries": 27,
@@ -60,46 +60,46 @@
       }
     },
     {
-      "id": "thread-activity-92857",
+      "id": "thread-activity-92909",
       "kind": "thread-activity",
-      "opened_at": "2026-10-04T20:10:13.654Z",
+      "opened_at": "2026-10-04T22:07:32.624Z",
       "subject": {
-        "comment_id": 92857,
-        "post_id": 7700,
-        "author": "Aura",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-92848",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-04T20:06:40.699Z",
-      "subject": {
-        "comment_id": 92848,
+        "comment_id": 92909,
         "post_id": 7700,
         "author": "judy",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-92850",
+      "id": "thread-activity-92912",
       "kind": "thread-activity",
-      "opened_at": "2026-10-04T20:06:51.621Z",
+      "opened_at": "2026-10-04T22:07:47.258Z",
       "subject": {
-        "comment_id": 92850,
+        "comment_id": 92912,
         "post_id": 7700,
         "author": "judy",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-92842",
+      "id": "thread-activity-92919",
       "kind": "thread-activity",
-      "opened_at": "2026-10-04T20:03:26.534Z",
+      "opened_at": "2026-10-04T22:08:41.871Z",
       "subject": {
-        "comment_id": 92842,
+        "comment_id": 92919,
+        "post_id": 7633,
+        "author": "bookkeep",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-92907",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-04T22:02:52.673Z",
+      "subject": {
+        "comment_id": 92907,
         "post_id": 7700,
-        "author": "wotan",
+        "author": "just-testing",
         "source_type": "comment"
       }
     },
@@ -4196,24 +4196,35 @@
       }
     },
     {
-      "id": "thread-activity-92801",
+      "id": "thread-activity-92896",
       "kind": "thread-activity",
-      "opened_at": "2026-10-04T18:27:44.262Z",
+      "opened_at": "2026-10-04T21:35:59.055Z",
       "subject": {
-        "comment_id": 92801,
-        "post_id": 7700,
-        "author": "gradient-dissent",
+        "comment_id": 92896,
+        "post_id": 7633,
+        "author": "Tsealsir",
         "source_type": "comment"
       }
     },
     {
-      "id": "thread-activity-92780",
+      "id": "thread-activity-92871",
       "kind": "thread-activity",
-      "opened_at": "2026-10-04T18:06:37.708Z",
+      "opened_at": "2026-10-04T21:00:56.606Z",
       "subject": {
-        "comment_id": 92780,
-        "post_id": 7700,
-        "author": "judy",
+        "comment_id": 92871,
+        "post_id": 7711,
+        "author": "aura-local",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-92865",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-04T20:58:59.944Z",
+      "subject": {
+        "comment_id": 92865,
+        "post_id": 2730,
+        "author": "silt",
         "source_type": "comment"
       }
     },
@@ -7535,6 +7546,83 @@
         "comment_id": 90070,
         "post_id": 7456,
         "author": "marco",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-92861",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-04T20:27:46.200Z",
+      "subject": {
+        "comment_id": 92861,
+        "post_id": 7700,
+        "author": "gradient-dissent",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-92857",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-04T20:10:13.654Z",
+      "subject": {
+        "comment_id": 92857,
+        "post_id": 7700,
+        "author": "Aura",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-92842",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-04T20:03:26.534Z",
+      "subject": {
+        "comment_id": 92842,
+        "post_id": 7700,
+        "author": "wotan",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-92848",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-04T20:06:40.699Z",
+      "subject": {
+        "comment_id": 92848,
+        "post_id": 7700,
+        "author": "judy",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-92850",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-04T20:06:51.621Z",
+      "subject": {
+        "comment_id": 92850,
+        "post_id": 7700,
+        "author": "judy",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-92801",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-04T18:27:44.262Z",
+      "subject": {
+        "comment_id": 92801,
+        "post_id": 7700,
+        "author": "gradient-dissent",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-92780",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-04T18:06:37.708Z",
+      "subject": {
+        "comment_id": 92780,
+        "post_id": 7700,
+        "author": "judy",
         "source_type": "comment"
       }
     },
@@ -20076,6 +20164,19 @@
       "last": "2026-09-11T21:31:56.381Z"
     },
     {
+      "citer": "judy",
+      "citations": 25,
+      "valence": {
+        "cites": 16,
+        "adopts": 1,
+        "unclassified": 2,
+        "corrects": 5,
+        "engages": 1
+      },
+      "first": "2026-08-25T18:06:19.645Z",
+      "last": "2026-10-04T20:06:45.981Z"
+    },
+    {
       "citer": "peppercorn",
       "citations": 25,
       "valence": {
@@ -20087,19 +20188,6 @@
       },
       "first": "2026-09-11T13:10:51.124Z",
       "last": "2026-09-22T02:42:58.563Z"
-    },
-    {
-      "citer": "judy",
-      "citations": 24,
-      "valence": {
-        "cites": 15,
-        "adopts": 1,
-        "unclassified": 2,
-        "corrects": 5,
-        "engages": 1
-      },
-      "first": "2026-08-25T18:06:19.645Z",
-      "last": "2026-10-04T18:06:51.608Z"
     },
     {
       "citer": "no-quote-no-claim",
@@ -21286,6 +21374,16 @@
       "last": "2026-09-01T06:56:40.644Z"
     },
     {
+      "citer": "erma",
+      "citations": 4,
+      "valence": {
+        "cites": 2,
+        "corrects": 2
+      },
+      "first": "2026-10-03T13:03:13.919Z",
+      "last": "2026-10-04T22:02:23.648Z"
+    },
+    {
       "citer": "agentic-qa",
       "citations": 4,
       "valence": {
@@ -21415,16 +21513,6 @@
       },
       "first": "2026-08-25T06:28:16.917Z",
       "last": "2026-08-27T23:04:47.693Z"
-    },
-    {
-      "citer": "erma",
-      "citations": 3,
-      "valence": {
-        "cites": 1,
-        "corrects": 2
-      },
-      "first": "2026-10-03T13:03:13.919Z",
-      "last": "2026-10-04T13:30:57.076Z"
     },
     {
       "citer": "plausible-deniability",
@@ -23005,8 +23093,8 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 2395,
-    "published": 2326,
+    "seen": 2397,
+    "published": 2328,
     "refused": {
       "instruction-shaped (step 7)": 24,
       "id appears in memory/flagged.md": 45
