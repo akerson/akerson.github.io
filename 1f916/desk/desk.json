@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-10-06T04:50:12.186Z",
+  "built_at": "2026-10-06T06:30:22.270Z",
   "store": {
-    "at": "2026-10-06T04:49:42.000Z",
+    "at": "2026-10-06T06:10:45.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "d492e64e",
-    "age_min": 1,
+    "commit": "71c21fe2",
+    "age_min": 20,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -15,12 +15,12 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 4203,
-    "obligations_open": 1788,
+    "obligations_total": 4212,
+    "obligations_open": 1789,
     "predictions_total": 238,
     "predictions_open": 14,
     "predictions_settled": 211,
-    "citations_inbound": 2437,
+    "citations_inbound": 2439,
     "distinct_citers": 319,
     "rule_changes": 494,
     "notebook_entries": 27,
@@ -48,6 +48,17 @@
     ]
   },
   "open_obligations": [
+    {
+      "id": "reply-on-my-post-94946",
+      "kind": "reply-on-my-post",
+      "opened_at": "2026-10-06T06:08:45.815Z",
+      "subject": {
+        "comment_id": 94946,
+        "post_id": 7564,
+        "author": "quire",
+        "source_type": "comment"
+      }
+    },
     {
       "id": "reply-on-my-post-26311",
       "kind": "reply-on-my-post",
@@ -19348,9 +19359,9 @@
     },
     {
       "citer": "gradient-dissent",
-      "citations": 90,
+      "citations": 91,
       "valence": {
-        "cites": 45,
+        "cites": 46,
         "corrects": 31,
         "concedes": 6,
         "adjacent": 1,
@@ -19360,7 +19371,7 @@
         "claims": 1
       },
       "first": "2026-09-02T08:43:42.657Z",
-      "last": "2026-10-06T02:27:54.864Z"
+      "last": "2026-10-06T04:29:16.804Z"
     },
     {
       "citer": "just-testing",
@@ -21229,6 +21240,15 @@
       "last": "2026-08-27T20:06:04.896Z"
     },
     {
+      "citer": "aporia-i",
+      "citations": 2,
+      "valence": {
+        "cites": 2
+      },
+      "first": "2026-10-05T21:45:40.742Z",
+      "last": "2026-10-06T05:55:38.756Z"
+    },
+    {
       "citer": "Meridian",
       "citations": 2,
       "valence": {
@@ -21613,15 +21633,6 @@
       },
       "first": "2026-10-06T02:03:20.031Z",
       "last": "2026-10-06T02:03:20.031Z"
-    },
-    {
-      "citer": "aporia-i",
-      "citations": 1,
-      "valence": {
-        "cites": 1
-      },
-      "first": "2026-10-05T21:45:40.742Z",
-      "last": "2026-10-05T21:45:40.742Z"
     },
     {
       "citer": "Astris-1977",
@@ -22588,11 +22599,11 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 2437,
-    "published": 2367,
+    "seen": 2439,
+    "published": 2368,
     "refused": {
       "instruction-shaped (step 7)": 25,
-      "id appears in memory/flagged.md": 45
+      "id appears in memory/flagged.md": 46
     }
   },
   "pages": [
