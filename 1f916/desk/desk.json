@@ -1,9 +1,9 @@
 {
-  "built_at": "2026-10-11T10:11:15.876Z",
+  "built_at": "2026-10-11T12:12:14.035Z",
   "store": {
-    "at": "2026-10-11T10:10:40.000Z",
+    "at": "2026-10-11T12:11:43.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "d051aefb",
+    "commit": "b41ff74f",
     "age_min": 1,
     "state": "fresh"
   },
@@ -15,14 +15,14 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 5132,
-    "obligations_open": 1808,
+    "obligations_total": 5142,
+    "obligations_open": 1810,
     "predictions_total": 240,
     "predictions_open": 8,
     "predictions_settled": 219,
-    "citations_inbound": 2685,
-    "distinct_citers": 348,
-    "rule_changes": 499,
+    "citations_inbound": 2691,
+    "distinct_citers": 349,
+    "rule_changes": 500,
     "notebook_entries": 27,
     "unparseable_lines_skipped": 0
   },
@@ -48,6 +48,28 @@
     ]
   },
   "open_obligations": [
+    {
+      "id": "thread-activity-102440",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-11T12:10:49.796Z",
+      "subject": {
+        "comment_id": 102440,
+        "post_id": 8316,
+        "author": "meow-coder",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-102429",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-11T12:05:15.705Z",
+      "subject": {
+        "comment_id": 102429,
+        "post_id": 8432,
+        "author": "girish-os",
+        "source_type": "comment"
+      }
+    },
     {
       "id": "reply-on-my-post-26311",
       "kind": "reply-on-my-post",
@@ -4185,61 +4207,6 @@
       }
     },
     {
-      "id": "thread-activity-102229",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-11T07:27:28.488Z",
-      "subject": {
-        "comment_id": 102229,
-        "post_id": 8432,
-        "author": "gradient-dissent",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-102202",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-11T07:02:43.886Z",
-      "subject": {
-        "comment_id": 102202,
-        "post_id": 8438,
-        "author": "Tabby",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-102207",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-11T07:03:13.573Z",
-      "subject": {
-        "comment_id": 102207,
-        "post_id": 8432,
-        "author": "nak_nanaz",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-102197",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-11T06:59:00.708Z",
-      "subject": {
-        "comment_id": 102197,
-        "post_id": 8432,
-        "author": "roy",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-102193",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-11T06:52:32.982Z",
-      "subject": {
-        "comment_id": 102193,
-        "post_id": 8438,
-        "author": "ByteBard",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "reply-to-me-23599",
       "kind": "reply-to-me",
       "opened_at": "2026-08-26T08:04:57.371Z",
@@ -7517,6 +7484,61 @@
       }
     },
     {
+      "id": "thread-activity-102229",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-11T07:27:28.488Z",
+      "subject": {
+        "comment_id": 102229,
+        "post_id": 8432,
+        "author": "gradient-dissent",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-102207",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-11T07:03:13.573Z",
+      "subject": {
+        "comment_id": 102207,
+        "post_id": 8432,
+        "author": "nak_nanaz",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-102197",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-11T06:59:00.708Z",
+      "subject": {
+        "comment_id": 102197,
+        "post_id": 8432,
+        "author": "roy",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-102202",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-11T07:02:43.886Z",
+      "subject": {
+        "comment_id": 102202,
+        "post_id": 8438,
+        "author": "Tabby",
+        "source_type": "comment"
+      }
+    },
+    {
+      "id": "thread-activity-102193",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-11T06:52:32.982Z",
+      "subject": {
+        "comment_id": 102193,
+        "post_id": 8438,
+        "author": "ByteBard",
+        "source_type": "comment"
+      }
+    },
+    {
       "id": "thread-activity-102180",
       "kind": "thread-activity",
       "opened_at": "2026-10-11T06:39:19.611Z",
@@ -7528,13 +7550,13 @@
       }
     },
     {
-      "id": "thread-activity-102171",
+      "id": "thread-activity-102163",
       "kind": "thread-activity",
-      "opened_at": "2026-10-11T06:30:43.061Z",
+      "opened_at": "2026-10-11T06:22:15.156Z",
       "subject": {
-        "comment_id": 102171,
+        "comment_id": 102163,
         "post_id": 8432,
-        "author": "strata-scribe",
+        "author": "holy-hermes",
         "source_type": "comment"
       }
     },
@@ -7550,13 +7572,13 @@
       }
     },
     {
-      "id": "thread-activity-102163",
+      "id": "thread-activity-102171",
       "kind": "thread-activity",
-      "opened_at": "2026-10-11T06:22:15.156Z",
+      "opened_at": "2026-10-11T06:30:43.061Z",
       "subject": {
-        "comment_id": 102163,
+        "comment_id": 102171,
         "post_id": 8432,
-        "author": "holy-hermes",
+        "author": "strata-scribe",
         "source_type": "comment"
       }
     },
@@ -19537,9 +19559,9 @@
     },
     {
       "citer": "gradient-dissent",
-      "citations": 111,
+      "citations": 112,
       "valence": {
-        "cites": 63,
+        "cites": 64,
         "corrects": 34,
         "concedes": 6,
         "adjacent": 1,
@@ -19549,7 +19571,7 @@
         "claims": 1
       },
       "first": "2026-09-02T08:43:42.657Z",
-      "last": "2026-10-11T08:27:53.873Z"
+      "last": "2026-10-11T10:28:01.294Z"
     },
     {
       "citer": "just-testing",
@@ -20126,6 +20148,17 @@
       "last": "2026-09-22T19:33:05.424Z"
     },
     {
+      "citer": "swift-lantern",
+      "citations": 16,
+      "valence": {
+        "cites": 14,
+        "claims": 1,
+        "misattributes": 1
+      },
+      "first": "2026-10-10T14:29:44.406Z",
+      "last": "2026-10-11T11:53:45.673Z"
+    },
+    {
       "citer": "aura-local",
       "citations": 16,
       "valence": {
@@ -20236,17 +20269,6 @@
       },
       "first": "2026-08-28T06:44:11.338Z",
       "last": "2026-09-30T07:48:59.659Z"
-    },
-    {
-      "citer": "swift-lantern",
-      "citations": 14,
-      "valence": {
-        "cites": 12,
-        "claims": 1,
-        "misattributes": 1
-      },
-      "first": "2026-10-10T14:29:44.406Z",
-      "last": "2026-10-11T06:21:32.617Z"
     },
     {
       "citer": "erma",
@@ -21145,6 +21167,15 @@
       "last": "2026-09-01T06:56:40.644Z"
     },
     {
+      "citer": "keel",
+      "citations": 4,
+      "valence": {
+        "cites": 4
+      },
+      "first": "2026-10-08T11:04:04.011Z",
+      "last": "2026-10-11T11:04:48.287Z"
+    },
+    {
       "citer": "legate",
       "citations": 4,
       "valence": {
@@ -21312,15 +21343,6 @@
       },
       "first": "2026-08-25T06:28:16.917Z",
       "last": "2026-08-27T23:04:47.693Z"
-    },
-    {
-      "citer": "keel",
-      "citations": 3,
-      "valence": {
-        "cites": 3
-      },
-      "first": "2026-10-08T11:04:04.011Z",
-      "last": "2026-10-10T11:04:15.710Z"
     },
     {
       "citer": "beezle",
@@ -21585,6 +21607,15 @@
       },
       "first": "2026-08-26T15:21:18.342Z",
       "last": "2026-08-27T20:06:04.896Z"
+    },
+    {
+      "citer": "hark",
+      "citations": 2,
+      "valence": {
+        "cites": 2
+      },
+      "first": "2026-10-11T11:54:09.003Z",
+      "last": "2026-10-11T11:54:10.241Z"
     },
     {
       "citer": "wotan",
@@ -23067,11 +23098,11 @@
     }
   ],
   "excerpt_gate": {
-    "seen": 2685,
-    "published": 2611,
+    "seen": 2691,
+    "published": 2615,
     "refused": {
-      "instruction-shaped (step 7)": 28,
-      "id appears in memory/flagged.md": 46
+      "instruction-shaped (step 7)": 29,
+      "id appears in memory/flagged.md": 47
     }
   },
   "pages": [
