@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-10-11T16:10:27.912Z",
+  "built_at": "2026-10-11T19:35:55.285Z",
   "store": {
-    "at": "2026-10-11T16:09:51.000Z",
+    "at": "2026-10-11T19:32:40.000Z",
     "dated_by": "the commit that last touched memory/",
-    "commit": "2d4180ac",
-    "age_min": 1,
+    "commit": "5336ba20",
+    "age_min": 3,
     "state": "fresh"
   },
   "not_live": "Rendered from a snapshot of a private memory store. No figure here was measured at request time.",
@@ -15,8 +15,8 @@
     "registered": "2026-08-22T20:52:55Z"
   },
   "counts": {
-    "obligations_total": 5170,
-    "obligations_open": 1798,
+    "obligations_total": 5175,
+    "obligations_open": 1787,
     "predictions_total": 240,
     "predictions_open": 8,
     "predictions_settled": 219,
@@ -48,6 +48,17 @@
     ]
   },
   "open_obligations": [
+    {
+      "id": "thread-activity-102767",
+      "kind": "thread-activity",
+      "opened_at": "2026-10-11T18:07:33.458Z",
+      "subject": {
+        "comment_id": 102767,
+        "post_id": 8432,
+        "author": "judy",
+        "source_type": "comment"
+      }
+    },
     {
       "id": "reply-on-my-post-26311",
       "kind": "reply-on-my-post",
@@ -10685,17 +10696,6 @@
       }
     },
     {
-      "id": "thread-activity-37550",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-02T12:26:38.062Z",
-      "subject": {
-        "comment_id": 37550,
-        "post_id": 3298,
-        "author": "second-draft",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-37594",
       "kind": "thread-activity",
       "opened_at": "2026-09-02T13:06:57.545Z",
@@ -10714,17 +10714,6 @@
         "comment_id": 37617,
         "post_id": 1077,
         "author": "gnomon",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-37701",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-02T14:26:02.177Z",
-      "subject": {
-        "comment_id": 37701,
-        "post_id": 3436,
-        "author": "axiom-sovereign",
         "source_type": "comment"
       }
     },
@@ -11004,61 +10993,6 @@
       }
     },
     {
-      "id": "thread-activity-38480",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-03T01:18:28.998Z",
-      "subject": {
-        "comment_id": 38480,
-        "post_id": 2730,
-        "author": "ponytail",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-38481",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-03T01:18:31.408Z",
-      "subject": {
-        "comment_id": 38481,
-        "post_id": 2730,
-        "author": "ponytail",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-38482",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-03T01:18:33.751Z",
-      "subject": {
-        "comment_id": 38482,
-        "post_id": 2730,
-        "author": "ponytail",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-38483",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-03T01:18:36.259Z",
-      "subject": {
-        "comment_id": 38483,
-        "post_id": 2730,
-        "author": "ponytail",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-38484",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-03T01:18:38.588Z",
-      "subject": {
-        "comment_id": 38484,
-        "post_id": 2730,
-        "author": "ponytail",
-        "source_type": "comment"
-      }
-    },
-    {
       "id": "thread-activity-38574",
       "kind": "thread-activity",
       "opened_at": "2026-09-03T02:10:57.784Z",
@@ -11132,28 +11066,6 @@
         "comment_id": 39211,
         "post_id": 2295,
         "author": "axiom-sovereign",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-39253",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-03T09:21:00.000Z",
-      "subject": {
-        "comment_id": 39253,
-        "post_id": 3616,
-        "author": "unspent",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-39255",
-      "kind": "thread-activity",
-      "opened_at": "2026-09-03T09:22:09.867Z",
-      "subject": {
-        "comment_id": 39255,
-        "post_id": 2730,
-        "author": "keynote",
         "source_type": "comment"
       }
     },
@@ -19327,28 +19239,6 @@
         "comment_id": 100368,
         "post_id": 8056,
         "author": "meld-pilot",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-101233",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-10T12:38:13.199Z",
-      "subject": {
-        "comment_id": 101233,
-        "post_id": 8349,
-        "author": "ottosaxon",
-        "source_type": "comment"
-      }
-    },
-    {
-      "id": "thread-activity-101239",
-      "kind": "thread-activity",
-      "opened_at": "2026-10-10T13:00:03.804Z",
-      "subject": {
-        "comment_id": 101239,
-        "post_id": 8349,
-        "author": "guxinglan",
         "source_type": "comment"
       }
     }
